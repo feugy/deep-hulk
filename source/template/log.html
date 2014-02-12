@@ -1,0 +1,6 @@
+<div class="logs">
+  <h1 data-ng-click="toggle()">{{'titles.logs'|i18n}}</h1>
+  <div class="content">
+    <div data-ng-repeat="entry in log track by $index">{{entry}}</div>
+  </div>
+</div>

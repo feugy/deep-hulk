@@ -1,0 +1,9 @@
+<div class="character-details ng-class:{selected:selected === src, marine:!isAlien, alien:isAlien}" 
+     data-ng-click="onSelect()"
+     data-ng-hide="src.dead || src.map == null">
+  <h1><span data-ng-show="src.isCommander">{{'labels.sergentPrefix'|i18n}}</span>{{name}}</h1>
+  <div class="weapon {{isAlien ? src.revealed ? src.kind : 'blip' : src.weapon.id}}" title="{{isAlien ? name : 'names.'+src.weapon.id|i18n}}"></div>
+  <div ng-hide="{{isAlien}}" class="life gauge" title="{{'labels.life'|i18n:{sep:true} }}{{src.life}}">{{src.life}}</div>
+  <div class="attack gauge" title="{{'labels.attacks'|i18n:{sep:true} }}{{src.rcNum || src.ccNum}}">{{src.rcNum || src.ccNum}}</div>
+  <div class="move gauge" title="{{'labels.moves'|i18n:{sep:true} }}{{src.moves}}">{{src.moves}}</div>
+</div>

@@ -1,0 +1,465 @@
+@import constant
+@import mixin
+
+//------------------------------------------------------------------------------
+// Map directive
+
+@keyframes fadeDamages
+  0%
+    margin-top 0
+  50%
+    opacity 1
+  100%
+    margin-top -75px
+    opacity 0
+
+assaultShift = 40px
+assaultInvert = 45deg
+assaultRotation = 60deg
+@keyframes assault
+  0%
+    transform translate(- assaultShift, - assaultShift) rotate(0deg)
+  25%
+    transform translate(assaultShift, 0) rotate(0deg)
+  49%
+    transform translate(assaultShift*0.7, assaultShift) rotate(assaultRotation)
+  50%
+    transform translate(assaultShift, - assaultShift) rotate(assaultInvert)
+  75%
+    transform translate(- assaultShift, 0) rotate(assaultInvert)
+  100%
+    transform translate(assaultShift*-0.7, assaultShift) rotate(assaultInvert - assaultRotation)
+
+.map
+  box-sizing border-box
+  overflow hidden
+  z-index 0
+
+  .loading
+    position absolute
+    top 0
+    left 0
+    bottom 0
+    right 0
+    background mapLoadingBackground
+    z-index 10
+
+  .map-container
+    position absolute
+    display block
+  
+    > *
+    .zone-display
+      position absolute
+      z-index 1
+    > .fields
+      padding-left 0
+
+    > .indications
+      pointer-events none
+
+      .values
+        position absolute
+        color cursorColor
+        background indicColor
+        box-shadow 0 0 5px 2px indicColor
+        font-size 20px
+        padding 5px
+      
+      .damages
+        animation fadeDamages 3200ms ease-in
+
+      .damages.shoot
+        position absolute
+        width 60px
+        height 13px
+        background-image url(../image/shoot.png)
+        background-size 100% 100%
+
+      .damages.assault
+        position absolute
+        width 23px
+        height 24px
+        background-image url(../image/claws.png)
+        background-size 100% 100%
+
+    .hover
+      position absolute
+      box-shadow 0 0 8px 8px rgba(hoverColor, 0.5) inset
+      border-radius 3px
+
+    .menu
+      display none
+      position absolute
+      applyAlertSkin()
+      padding 0
+      
+      > li
+        list-style none
+        padding 0.5em 1em
+        cursor pointer
+      > li:hover
+        color characterHoverColor
+        background rgba(white, 20%)
+
+    .menu.open
+      display block
+    
+  .item
+    position absolute
+
+//------------------------------------------------------------------------------
+// Item displayal
+
+.item
+  transform-origin 0 0
+  transition top moveDuration, left moveDuration
+
+  > div
+    transform-origin 0 0
+
+// avoid retaining clicks on wall and doors, to always allow redeployement
+.item.wall
+.item.door
+  pointer-events none
+
+.item.alien
+.item.marine
+  cursor pointer
+
+//------------------------------------------------------------------------------
+// Item cursor
+
+.cursor
+.cursor.rear
+  position absolute
+  width 200px
+  height 200px
+  margin-top 5px
+  background-repeat no-repeat
+  transform-origin 0 0 0
+  z-index 1000000
+  pointer-events none
+
+  > a
+    pointer-events auto
+    position absolute
+    width cursorActionSize
+    height 0
+    background-repeat no-repeat
+    background-image url(../image/commands.png)
+    transition height 250ms, bottom 250ms
+    bottom cursorActionSize + cursorActionOffset
+
+    i 
+      position absolute
+      color cursorColor
+      font-size 150%
+      font-style normal
+      bottom 3px
+      right 12px
+
+  > a:hover
+    text-decoration none
+    cursor pointer
+
+  > .open:not(.active):hover
+    cursor default
+  
+  .move
+  .open
+    left (cursorActionSize*-0.7)
+  .shoot
+  .assault
+    right (cursorActionSize*-0.7)
+
+  .move
+    background-position -2*cursorActionSize 0
+  .move.active
+    background-position 0 0
+  .move:hover
+    background-position -4*cursorActionSize 0
+  
+  .open
+    background-position -2*cursorActionSize -1*cursorActionSize
+  .open.active
+    background-position 0 -1*cursorActionSize
+
+  .shoot
+    background-position -3*cursorActionSize 0
+  .shoot.active
+    background-position -1*cursorActionSize 0
+  .shoot:hover
+    background-position -5*cursorActionSize 0
+ 
+  .assault
+    background-position -3*cursorActionSize -1*cursorActionSize
+  .assault.active
+    background-position -1*cursorActionSize -1*cursorActionSize
+  .assault:hover
+    background-position -5*cursorActionSize -1*cursorActionSize
+  .assault  i
+    bottom 15px
+
+.cursor.rear
+  background-image url(../image/cursor.png)
+  z-index 0
+  opacity 0
+  transition opacity 150ms
+
+.cursor.animated
+  a
+    height cursorActionSize
+  .open
+  .assault
+    bottom cursorActionOffset
+
+.cursor.movable
+  transition top moveDuration, left moveDuration
+
+.cursor.rear.animated
+  opacity 1
+
+.cursor.rear.movable
+  transition opacity 150ms, top moveDuration, left moveDuration
+
+//------------------------------------------------------------------------------
+// Item tooltip
+
+.item-tip
+  position absolute
+  applyAlertSkin()
+  
+  squadImgSize = 30px
+
+  > h2
+    font-size textSize
+    margin 0 0 14px
+    padding-right squadImgSize + 10px
+
+    > img
+      float right
+      width squadImgSize
+      margin -5px (- squadImgSize - 15px) 0 0
+
+  li 
+    font-size textSize*0.9
+    margin-top 3px
+
+    > * 
+      display inline-block
+
+    label
+      min-width 100px
+      text-align right
+      padding-right 5px
+      vertical-align top
+
+    .value
+      color characterHoverColor
+      max-width 110px
+
+//------------------------------------------------------------------------------
+// Marine details directive
+
+.character-details
+  box-sizing border-box
+  display inline-block
+  width 106px
+  height 106px
+  margin 22px 12px 12px 12px 
+  padding 2px
+  color characterDetailsColor
+  cursor pointer
+  position relative
+  background-image url(../image/marine-details.png)
+  background-size 100% 100%
+
+  > *
+    position absolute
+
+  h1
+    top 5px
+    right 5px
+    margin 0
+    font-size textSize*0.8
+    line-height textSize*1
+
+  .weapon
+    bottom 2px
+    left 2px
+    background-image url(../image/weapon-wireframes.png)
+    background-size 200px 330px
+    width 100px
+
+  padd = 6px
+  .move, .life, .attack
+    width 40px - padd
+    height 18px
+  .move
+    left 10px
+    top 50px
+    padding-right padd
+    text-align right
+  .life
+    left 10px
+    top 28px
+    padding-right padd
+    text-align right
+  .attack
+    right 8px
+    top 28px
+    padding-left padd
+    text-align left
+
+.character-details + .character-details
+  margin-left 7px
+
+.character-details.selected
+  color characterHoverColor
+
+weaponSizes = {
+  pistolAxe: 45,
+  gloveSword: 50,
+  heavyBolter: 45,
+  bolter: 45,
+  flamer: 45,
+  missileLauncher: 60,
+  autoCannon: 40
+}
+sum = 0
+
+for selector, size in weaponSizes
+  
+  .character-details .weapon.{selector}
+    background-position 0 unit(- sum, 'px')
+    height unit(size, 'px')
+
+  .character-details.selected .weapon.{selector}
+    background-position -100px unit(- sum, 'px')
+
+  sum += size
+
+.character-details.alien
+  width 75px
+  height 75px
+  margin 8px
+  background-image url(../image/alien-details.png)
+
+  padd = 4px
+  .attack, .move
+    width 30px - padd
+    top auto
+    bottom 5px
+
+  .attack
+    right 5px
+    padding-left padd
+    text-align left
+
+  .move
+    left 5px
+    padding-right padd
+    text-align right
+
+  .weapon
+    top 0px
+    left 12.5px
+    width 50px
+    height 50px
+    background-image url(../image/alien-wireframes.png)
+    background-size 100px 400px
+
+alienSizes = {
+  dreadnought: 50,
+  genestealer: 50,
+  android: 50,
+  'chaos-commander': 50,
+  'chaos-marine': 50,
+  gretchin: 50,
+  ork: 50,
+  blip: 50
+}
+sum = 0
+
+for selector, size in alienSizes
+
+  .character-details.alien .weapon.{selector}
+    background-position 0 unit(- sum, 'px')
+    height unit(size, 'px')
+
+  .character-details.alien.selected .weapon.{selector}
+    background-position -50px unit(- sum, 'px')
+
+  sum += size
+
+//------------------------------------------------------------------------------
+// Marine configuration
+
+.configure-marine
+  margin 0.5em 0
+
+//------------------------------------------------------------------------------
+// Deployable blips directive
+
+blipSize = 50px
+
+.deployable-blips 
+  display block
+  text-align center
+  margin-top 20px
+  color textDarkColor
+
+  label
+    display block
+    
+.deploying-blip
+.deployable-blips .handle
+  cursor pointer
+  display inline-block
+  width blipSize
+  height blipSize
+  background-size 100% 100%
+  background-image url(/images/alien-type.png)
+
+.deployable-blips.disabled
+  color textColor
+  
+  .handle
+    cursor auto
+    opacity 0.5
+
+//------------------------------------------------------------------------------
+// Logs directive
+
+.logs
+  box-sizing border-box
+  border 1px solid transparent
+  border 1px solid transparent
+  border-image-source url(../image/logs.png)
+  border-image-slice 100% 50% 0 49%
+  border-image-width 60px 50% 0
+  border-image-outset 5px 10px 0
+  background-color #E9DDAF
+  display flex
+  flex-direction column
+  
+  h1
+    height 13px
+    margin -3px 0 4px
+    padding-top 2px
+    font-size 10px
+    text-align center
+    cursor pointer
+
+  .content
+    flex 1
+    color textDarkColor
+    margin 2px 5px
+    overflow hidden
+  
+    > *
+      margin-bottom 5px
+
+.logs.ng-show .content
+  overflow auto

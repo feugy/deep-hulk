@@ -1,0 +1,9 @@
+<div class="configure-marine">
+  <label><span data-ng-show="src.isCommander">Sgt.</span> {{src.name}}{{'labels.fieldSeparator'|i18n}}</label>
+  <select class="weapon">
+    <option data-ng-repeat="weapon in weapons"
+            data-ng-selected="weapon === target.weapon"
+            data-ng-mouseover="hoverOption($event, weapon)"
+            value="{{weapon}}">{{'names.'+weapon|i18n}}</option>
+  </select>
+</div>

@@ -1,0 +1,18 @@
+<div>
+  <alert data-ng-hide="error == null" close='closeError()'>{{error}}</alert>
+  <h1 class="app-title">{{'titles.application'|i18n}}</h1>
+</div>
+<aside>
+  <form class="login-frame frame" method="POST" action="{{loginUrl}}" data-ng-submit="_onSubmit()">
+    <h1>{{'titles.welcome'|i18n}}</h1>
+    <div class="row">
+      <label for="username">{{'labels.username'|i18n:{sep:true} }}</label>
+      <input name="username" type="text"/>
+    </div>
+    <div class="row">
+      <label for="password">{{'labels.password'|i18n:{sep:true} }}</label>
+      <input name="password" type="password"/>
+    </div>
+    <input type="submit" class="btn" value="{{'buttons.connect'|i18n}}"/>
+  </form>
+</aside>

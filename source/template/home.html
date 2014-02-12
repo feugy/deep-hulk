@@ -1,0 +1,57 @@
+<div>
+  <alert data-ng-hide="error == null" close='closeError()'>{{error}}</alert>
+  <h1 class="app-title">{{'titles.application'|i18n}}</h1>
+  <!-- Game creation panel -->
+  <div data-ng-hide="currentRuleName !== 'creation'" class="create-game frame">
+    <h2>{{'titles.newGame'|i18n}}</h2>
+    <form>
+      <param data-src="currentRule.params[0]" data-target="ruleParams"></param>
+      <!-- mission selection -->
+      <param data-src="currentRule.params[1]" data-target="ruleParams" data-change="onMissionSelected()"></param>
+      <article data-ng-show="ruleParams.mission != null" class="alert">
+        <div ng-bind-html="'texts[\''+ruleParams.mission+'\']'|i18n"></div>
+      </article>
+      <!-- squad selection -->
+      <param data-src="currentRule.params[2]" data-target="ruleParams"></param>
+      <article data-ng-show="ruleParams.squad != null" class="alert">
+        <div ng-bind-html="'texts[\''+ruleParams.squad+'\']'|i18n"></div>
+      </article>
+    </form>
+    <div class="buttons">
+      <a href="" data-ng-click="onCreateGame()" class="btn">{{'buttons.createGame'|i18n}}</a>
+      <a href="" data-ng-click="onHideRule()" class="btn">{{'buttons.cancel'|i18n}}</a>
+    </div>
+  </div>
+  
+  <!-- Game join panel -->
+  <div data-ng-hide="currentRuleName !== 'join'" class="join-game frame">
+    <h2>{{'titles.joinGame'|i18n}}{{target.name}}</h2>
+    <rule-params data-rule="currentRule" data-values="ruleParams"></rule-params>
+    <div class="buttons">
+      <a href="" data-ng-click="onJoinGame()" class="btn">{{'buttons.joinGame'|i18n}}</a>
+      <a href="" data-ng-click="onHideRule()" class="btn">{{'buttons.cancel'|i18n}}</a>
+    </div>
+  </div>
+</div>
+<aside>
+  <!-- Existing game list -->
+  <a href="" data-ng-click="onNewGame()" class="btn new-game">{{'buttons.newGame'|i18n}}</a>
+  <div class="frame my-games">
+    <h2>{{'titles.myGames'|i18n}}</h2>
+    <ul>
+      <li data-ng-repeat="squad in player.characters">
+        <i class="fa fa-toggle-right"></i><a href="board?id={{squad.game.id}}">{{squad.game.name}} <img src="{{getInstanceImage(squad)}}"/></a>
+      </li>
+    </ul>
+    <div data-ng-show="player.characters.length === 0" class="empty-list">{{'labels.noGames'|i18n}}</div>
+  </div>
+  <div class="frame free-games">
+    <h2>{{'titles.freeGames'|i18n}}</h2>
+    <ul>
+      <li data-ng-repeat="game in freeGames">
+        <i class="fa fa-toggle-right"></i>{{game.name}} <a href="" data-ng-click="onAskJoin(game)">{{'buttons.joinGame'|i18n}}</a>
+      </li>
+    </ul>
+    <div data-ng-show="freeGames.length === 0" class="empty-list">{{'labels.noGames'|i18n}}</div>
+  </div>
+</aside>

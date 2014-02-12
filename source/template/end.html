@@ -1,0 +1,18 @@
+<article class="frame">
+  <h1>{{game.name}}{{''|i18n:{sep:true} }}{{'labels.gameEnd'|i18n}}</h1>
+  <table class="result">
+    <thead>
+      <tr><th>{{'names.squad'|i18n}}</th><th>{{'labels.player'|i18n}}</th><th>{{'labels.points'|i18n}}</th></tr>
+    </thead>
+    <tbody>
+      <tr data-ng-repeat="squad in game.squads|orderBy:'-points'">
+        <td class="squad"><img src="{{getInstanceImage(squad)}}"/></td>
+        <td class="player">{{squad.player}}</td>
+        <td class="score">{{squad.points}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="buttons">
+    <a href="" data-ng-click="_onBackHome()" class="btn">{{'buttons.home'|i18n}}</a>
+  </div>
+</article>

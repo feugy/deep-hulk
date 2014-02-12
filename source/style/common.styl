@@ -1,0 +1,50 @@
+@import 'constant'  
+
+@import 'reset.css'
+@import 'font-awesome-4.0.3-min.css'
+
+@import 'mixin'  
+@import 'ui'
+@import 'directives'
+@import 'home'
+@import 'board'
+
+html
+body
+body > div
+  height 100%
+  padding 0
+  overflow hidden
+  user-select none
+
+html
+body
+  font-family textFont
+  font-size textSize
+  color textColor
+  background mainBackground
+  overflow auto
+
+.fa
+  font-size textSize*0.9
+  padding-right 0.5em  
+
+a, a:visited, a:link, a:hover
+  text-decoration none
+  color textColor
+
+body > div 
+  width mainWidth 
+  margin 0 auto
+
+  progress
+    display block
+    width 250px
+    margin 25% auto 0 auto
+
+for i in(1..6)
+  h{i}
+    font-family headingFont
+    font-size headingSize*(1+(i - 1)*-0.15)
+    margin-bottom unit(20*(1+(i - 1)*-0.15) , 'px') 
+  

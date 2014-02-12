@@ -1,0 +1,191 @@
+@import 'constant'  
+@import 'mixin' 
+
+//------------------------------------------------------------------------------
+// Form rendering
+
+form
+  display flex
+  flex-direction column
+  align-items center
+  
+  > .row
+  > .param
+    width 100%
+    display flex
+    align-items center
+    padding-bottom 0.5em
+
+    > *
+      flex 1
+
+    label
+      text-align right
+      margin-right 1em
+      flex-grow 0
+      flex-basis 150px
+
+  > .param 
+    > span > *
+      width 100%
+
+input, textarea, select
+  font-family textFont
+  font-size textSize
+  color textDarkColor
+  box-sizing border-box
+  border 1px solid #CCCCCC
+  border-radius 4px
+  padding 0.2em
+  margin 0
+  
+:focus, :active
+  outline 0 none
+
+input:focus, select:focus, .btn:focus, textarea:focus
+  box-shadow 0 1px 1px alertColor inset, 0 0 4px alertColor
+
+//------------------------------------------------------------------------------
+// Buttons
+
+.btn
+button.close
+.btn:visited
+.btn:hover
+  font-family textFont
+  font-size textSize
+  text-shadow 0 0 2px 0 white
+  text-decoration none
+  color buttonColor
+  box-sizing border-box
+  border-radius 5px
+
+.btn
+  position relative
+  display inline-block
+  padding buttonPadding
+  //margin-top buttonMove
+  transition margin 100ms, top 100ms
+  border 2px solid transparent
+  border-image-source url('../image/button.png')
+  border-image-slice 45% 50% 54.5% 49.5%
+  border-image-width 100%
+  border-image-repeat repeat
+  border-image-outset 2px
+  background none
+
+.btn:hover
+  border-image-source url('../image/button-hover.png')
+
+.btn:hover
+button.close:hover
+  cursor pointer
+  //top (- buttonMove)
+
+button.close
+  background buttonBackground
+  border 1px solid buttonBorderColor
+  padding 0 3px
+  line-height textSize
+  font-size textSize*1.2
+  
+button.close:hover
+  border-color hoverButtonBorderColor
+
+//------------------------------------------------------------------------------
+// Frames
+
+.frame
+  position relative
+  margin 20px
+  padding 30px 40px
+  background textBackground
+  color textColor
+  text-align left
+  border 5px solid transparent
+  border-image-source url('../image/frame.png')
+  border-image-slice 41% 45%
+  border-image-width 18 32
+  border-image-repeat round
+  border-image-outset 3
+
+  h1, h2
+    text-shadow 0 0 3px #D40000
+    border-bottom 1px solid rgba(black, 0.5)
+    padding 0.25em
+    margin-bottom 0.5em
+    display inline-block
+
+  > .buttons
+    text-align center
+    margin 8px 0
+
+//------------------------------------------------------------------------------
+// Alerts
+
+.alert
+  applyAlertSkin()
+  display flex
+  width 100%
+  box-sizing border-box
+  align-items flex-start
+  margin-bottom 1em
+  
+  > div
+    flex 1    
+  .close
+    order 2
+
+.alert.ng-hide
+  opacity 0
+
+.alert.ng-hide-add
+.alert.ng-hide-remove
+  transition opacity moveDuration
+  display flex  !important
+
+
+//------------------------------------------------------------------------------
+// Modals
+
+.modal
+  display flex
+  flex-direction column
+  align-items center
+  justify-content center
+  z-index 1001
+  // we need to animate something in modal otherwise ngAnimate won't wait for inner animation to finish
+  margin-bottom -1px
+  transition margin modalDuration
+
+  .modal-dialog
+    position relative
+    opacity 0
+    top -200px
+    transition opacity modalDuration, top modalDuration
+    
+    footer
+      margin-top 1em
+      text-align center
+  
+      .btn + .btn
+        margin-left 1em
+
+.modal.ng-show
+  margin-bottom 0px
+
+  .modal-dialog
+    opacity 1
+    top -150px
+
+.modal
+.modal-backdrop
+  position absolute
+  top 0
+  height 100%
+  left 0
+  width 100%
+
+.modal-backdrop
+  background backdropBackground
+  z-index 1000

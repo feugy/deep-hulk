@@ -1,0 +1,190 @@
+@import 'constant'  
+@import 'mixin' 
+
+//------------------------------------------------------------------------------
+// Common layering
+
+.login
+.home
+.configure-squad
+.end
+  display flex
+  align-items center
+  background-image  url('../image/bg-home.png')
+  background-size cover
+
+  > *:not(aside)
+    flex 1
+    padding 2%
+    position relative
+    box-sizing border-box
+    height 100%
+
+    .app-title
+      position absolute
+      top 48%
+      width 100%
+      text-align center
+
+  > aside
+    width 40%
+    height 100%
+    order 1
+    margin-right 2%
+    display flex
+    flex-direction column
+    justify-content center
+    background-image url('../image/column.png')
+    background-size auto 100%
+    background-repeat no-repeat
+    background-position center
+
+//------------------------------------------------------------------------------
+// End specificities
+
+.end
+
+  article
+    margin 50px 5%
+    height auto
+
+    .result
+      font-size headingSize
+      margin 15px auto
+      width 65%
+
+      thead > tr
+        text-shadow 0 0 3px #D40000
+        background-color rgba(white, 0.3)
+
+      td, th
+        vertical-align middle
+        padding 0.15em 1em
+        text-align center
+
+      .squad img
+        width 50px
+
+      tbody 
+        tr:first-child
+          color alertColor
+        tr:nth-child(even) td
+          background-color rgba(white, 0.1)
+          
+//------------------------------------------------------------------------------
+// Home specificities
+
+.home
+
+  aside
+    text-align center
+    
+    .new-game
+      align-self center
+  
+  .empty-list
+    text-align center
+    color alertColor
+  
+  .my-games
+    transition-delay 250ms
+
+  .free-games
+    transition-delay 500ms
+
+    a
+      background-image url('../image/replay-buttons.png')
+      background-position -29px 0
+      background-size 120px 74px
+      cursor default
+      display inline-block
+      width 91px
+      height 25px
+      text-align center
+      line-height 25px
+      margin-left 1em
+      font-size 90%
+
+    a:hover
+      background-position -29px -25px
+      color textDarkColor
+      cursor pointer
+
+  .free-games 
+  .my-games
+    li
+      margin-top .5em
+    img 
+      width 1.5em
+      margin 0 0 -0.25em 0.5em
+
+  .create-game
+  .join-game
+    box-sizing border-box
+    position absolute
+    top 15%
+    left 0
+    width 90%
+
+    .btn
+      margin 0 0.5em
+
+    .rule-params
+      margin-bottom 1em
+
+    .ng-hide-add
+    .ng-hide-remove
+      transition line-height 150ms
+      display block!important
+
+    .ng-hide
+      line-height 0
+
+//------------------------------------------------------------------------------
+// Squad configuration specificities
+
+.configure-squad
+
+  .details
+    margin-top 20%
+  
+  > aside
+    width 45%
+
+    > .frame
+      
+      > div > img
+        display inline-block
+        width 50px
+        margin 0 0 -1em 1em
+
+//------------------------------------------------------------------------------
+// Aside animations
+
+movable = {
+  '.login': '.login-frame', 
+  '.home': 'aside > *'
+  '.configure-squad': 'aside > *'
+}
+
+for selector, moved in movable
+  {selector} {moved}
+    opacity 1
+    top 0
+    transition opacity fallDuration, top fallDuration
+
+  {selector}.ng-enter {moved}
+  {selector}.ng-leave {moved}
+    opacity 0
+    top -1000px
+
+fadable = '.create-game', '.join-game'
+for faded in fadable
+  {faded}.ng-hide-add
+  {faded}.ng-hide-remove
+    transition opacity fromRightDuration, left fromRightDuration
+    display block!important
+
+  {faded}.ng-hide
+    opacity 0
+    left -500px

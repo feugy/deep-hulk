@@ -1,0 +1,42 @@
+@import 'constant' 
+
+//------------------------------------------------------------------------------
+// Browser compatibility mixin
+
+vendor-prefix(property, args)
+  -webkit-{property} args
+  -moz-{property} args
+  {property} args
+
+transition()
+  vendor-prefix('transition', arguments)
+
+animation()
+  vendor-prefix('animation', arguments)
+
+transform()
+  vendor-prefix('transform', arguments)
+
+transform-origin()
+  vendor-prefix('transform-origin', arguments)
+  
+perspective()
+  vendor-prefix('perspective', arguments)
+
+box-sizing()
+  vendor-prefix('box-sizing', arguments)
+
+user-select()
+  vendor-prefix('user-select', arguments)
+
+//------------------------------------------------------------------------------
+// Common styles
+
+// apply on current rule background and border for an alert
+applyAlertSkin()
+  color alertColor
+  padding 1em
+  background url(../image/alert-background.png) repeat
+  box-shadow 0 0 6px 1px alertColor inset
+  border 1px solid alertColor
+  border-radius 5px

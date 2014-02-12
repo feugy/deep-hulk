@@ -1,0 +1,50 @@
+<div class="board">
+  <!-- map displayal and interactive cursor -->
+  <map
+    data-src="squad.map" 
+    data-dimensions="game.mapDimensions"
+    data-vertical-tile-num="13"
+    data-horizontal-tile-num="10"
+    data-error="error"
+    data-selected="selected" 
+    data-zone="zone"
+    data-click="_onMapClick"
+    data-rightclick="_onMapRightclick"
+    data-hover="_onHover"
+    data-select-active-rule="_onSelectActiveRule"
+    data-ask-to-execute-rule="_askToExecuteRule"
+    data-deploy-scope="deployScope"
+    data-blip-deployed="_onBlipDeployed"
+    data-menu-items="menuItems"
+    data-select-menu-item="_onSelectMenuItem"
+    data-display-grid="false"
+    data-display-markers="false"></map>
+  
+  <aside class="ng-class: squad ? squad.isAlien ? 'alien' : 'marine': '';">
+    <!-- blips and reinforcements -->
+    <div class="blips" data-ng-show="squad.isAlien">
+      <deployable-blips 
+        data-label="{{'labels.blips'|i18n:{sep:true} }}"
+        data-squad="squad"
+        data-deploy-scope="deployScope"></deployable-blips>
+        <a href="" class="end-deploy" data-ng-show="deployScope != null" data-ng-click="_onEndDeploy()">{{'names.endDeploy'|i18n}}</a>
+    </div>
+    <!-- squad details -->
+    <div class="squad">
+      <character-details data-ng-repeat="member in squad.members" data-src="member" data-selected="$parent.selected"></character-details>
+    </div>
+    <img class="logo" src="{{getInstanceImage(squad)}}"/>
+    <!-- messages -->
+    <log data-src="log"/>
+    <!-- action replay commands -->
+    <div class="commands">
+      <a href="" class="ng-class:hasPrevAction;" data-ng-click="_onPrevAction()"><i class="fa fa-backward"></i></a>
+      <a href="" class="ng-class:hasNextAction;" data-ng-click="_onNextAction()"><i class="fa fa-forward"></i></a>
+      <a href="" class="ng-class:canStopReplay;" data-ng-click="_onStopReplay()"><i class="fa fa-stop"></i></a>
+      <a href="" class="end-turn ng-class:canEndTurn;" data-ng-click="_onEndTurn()">{{'names.endOfTurn'|i18n}}</i></a>
+    </div>
+    <!-- score and turn number -->
+    <div class="score"><h4>{{'labels.score'|i18n}}</h4><span class="value">{{squad.points}}</span></div>
+    <div class="turn"><h4>{{'labels.turn'|i18n}}</h4><span class="value">{{game.turn}}</span></div>
+  </aside>
+</div>

@@ -1,0 +1,13 @@
+<article class="item-tip">
+  <h2 data-ng-hide="isAlien"><span data-ng-show="src.isCommander">{{'labels.sergentPrefix'|i18n}}</span>{{src.name}}<img src="{{squadImage}}"></h2>
+  <h2 data-ng-show="isAlien">{{(src.revealed ? 'labels.'+src.kind : 'labels.blip') | i18n}}<img src="{{squadImage}}"></h2>
+  <ul>
+    <li data-ng-hide="src.revealed === false"><label>{{'labels.life'|i18n:{sep:true} }}</label><span class="value">{{src.life}}</span></li>
+    <li data-ng-hide="src.revealed === false"><label>{{'labels.armor'|i18n:{sep:true} }}</label><span class="value">{{src.armor}}</span></li>
+    <li><label>{{'labels.moves'|i18n:{sep:true} }}</label><span class="value">{{src.moves}}</span></li>
+    <li data-ng-hide="src.revealed === false"><label>{{'labels.attacks'|i18n:{sep:true} }}</label><span class="value">{{src.rcNum || src.ccNum}}</span></li>
+    <li data-ng-hide="src.revealed === false"><label>{{'labels.weapon'|i18n:{sep:true} }}</label><span class="value">{{'names.' + (src.weapon.id || src.weapon) | i18n}}</span></li>
+    <li data-ng-hide="src.revealed === false"><label>{{'labels.rangeDamages'|i18n:{sep:true} }}</label><span class="value">{{rcDamages | i18n}}</span></li>
+    <li data-ng-hide="src.revealed === false"><label>{{'labels.closeDamages'|i18n:{sep:true} }}</label><span class="value">{{ccDamages | i18n}}</span></li>
+  </ul>
+</article>

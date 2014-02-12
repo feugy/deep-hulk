@@ -1,0 +1,27 @@
+<div>
+  <alert data-ng-hide="error == null" data-close="closeError()">{{error}}</alert>
+  <h1 class="app-title">{{'titles.application'|i18n}}</h1>
+  <alert class="details" data-ng-hide="lastSelected == null" data-close="lastSelected = null">
+    <h1>{{'names.'+lastSelected | i18n}}</h1>
+    <div data-ng-bind-html="'texts.'+lastSelected | i18n"></div>
+  </alert>
+</div>
+<aside>
+  <!-- for marine players only: squad configuration -->
+  <div class="frame">
+    <div>
+      <h1>{{'labels.'+squad.name | i18n}}</h1> <img src="{{getInstanceImage(squad)}}"/>
+    </div>
+    <div ng-bind-html="'texts.configureSquad' | i18n"></div>
+    <form>
+      <configure-marine data-ng-repeat="member in squad.members" 
+        data-src="member" 
+        data-target="$parent.configured[member.id]"
+        data-hover-option="onHoverOption"
+        class="row"></configure-marine>
+    </form>
+    <div class="buttons">
+      <a href="" data-ng-click="onDeploy()" class="btn">{{'buttons.deploy'|i18n}}</a>
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,6 @@
+<div class="cursor">
+  <a class="move ng-class:activeRule == 'move'?'active':'';" data-ng-click="_onActivate($event, 'move')" title="{{'names.move'|i18n:{sep:true} }}{{selected.moves}}"><i>{{selected.moves}}</i></a>
+  <a class="open ng-class:canOpenDoor?'active':'';" data-ng-click="_onOpen($event)" title="{{'names.open'|i18n:{sep:true} }}{{'labels.' + (canOpenDoor?'yes':'no') |i18n}}"></a>
+  <a class="shoot ng-class:activeRule == 'shoot'?'active':''" data-ng-click="_onActivate($event, 'shoot')" title="{{'names.shoot'|i18n:{sep:true} }}{{selected.rcNum}}"><i>{{selected.rcNum}}</i></a>
+  <a class="assault ng-class:activeRule == 'assault'?'active':''" data-ng-click="_onActivate($event, 'assault')" title="{{'names.assault'|i18n:{sep:true} }}{{selected.ccNum}}"><i>{{selected.ccNum}}</i></a>
+</div>

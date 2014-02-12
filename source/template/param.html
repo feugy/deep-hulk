@@ -1,0 +1,10 @@
+<div class="param">
+  <label>{{'params.'+src.name|i18n:{sep:true} }}</label>
+  <span data-ng-switch on="type">
+    <select data-ng-switch-when="select-string" data-ng-model="target[src.name]"data-ng-change="change()">
+      <option data-ng-repeat="choice in src.within" value="{{choice}}">{{'labels["'+choice+'"]'|i18n}}</option>
+    </select>
+    <input data-ng-switch-when="number" data-ng-model="target[src.name]" type="number" min="{{src.min}}" max="{{src.max}}" required data-ng-change="change()">
+    <input data-ng-switch-default data-ng-model="target[src.name]" type="text" required data-ng-change="change()">
+  </span>
+</div>

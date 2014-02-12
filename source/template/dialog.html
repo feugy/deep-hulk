@@ -1,0 +1,10 @@
+<div class="modal">
+  <div class="frame modal-dialog">
+    <header><h1>{{title}}</h1></header>
+    <div class="modal-body" data-ng-bind-html="message"></div>
+    <footer class="buttons">
+      <a class="btn {{button.classes}}" href="" data-ng-click="close(button.result, $index)" data-ng-repeat="button in buttons">{{button.label}}</a>
+    </footer>
+  </div>
+</div>
+<div class="modal-backdrop"></div>
