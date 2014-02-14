@@ -55,7 +55,7 @@ module.exports = {
         else if item.type.id is 'door'
           # closed door
           pos = doorPositions[item.imageNum] if item.closed
-        else if withCharacters and not item.dead and not(item.x is from.x and item.y is from.y) and !(item.x is to.x and item.y is to.y)
+        else if withCharacters and item.type.id in ['alien', 'marine'] and not item.dead and not(item.x is from.x and item.y is from.y) and !(item.x is to.x and item.y is to.y)
           # characters occupy whole tile
           pos = top: true, bottom: true, left: true, right: true
         # complete wall matrix
@@ -210,7 +210,7 @@ module.exports = {
         blip.revealed = true
         blip.imageNum = alienCapacities[blip.kind].imageNum
         # subtract already done moves to possible moves
-        blip.moves = moveCapacities[blip.weapon?.id or blip.weapon]
+        blip.moves = moveCapacities[blip.weapon?.id or blip.weapon] - blip.moves
         blip.moves = 0 if blip.moves < 0
         blip.rcNum = 1
         blip.ccNum = 1

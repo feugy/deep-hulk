@@ -20,7 +20,7 @@ class CreationRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (actor, target, context, callback) =>
-    return callback null, null unless actor?._className is 'Player'
+    return callback null, null unless actor?._className is 'Player' and actor is target
     callback null, [
       {name: 'gameName', type: 'string'}
       {name: 'mission', type: 'string', within: ['mission-3']}

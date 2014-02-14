@@ -23,7 +23,7 @@ cleanValues = (obj) ->
     # do not store linked objects types within arrays
     for value, i in obj 
       if _.isObject value
-        if value._className in ['ItemType', 'EventType']
+        if value._className in ['ItemType', 'EventType', 'Map']
           # do not store whole type
           res[i] = value.id
         else
@@ -38,7 +38,7 @@ cleanValues = (obj) ->
         
   else if _.isObject obj
     res = {}
-    if obj._className in ['ItemType', 'EventType']
+    if obj._className in ['ItemType', 'EventType', 'Map']
       # do not store whole type
       return obj.id
     else if obj._className in ['Item', 'Event']
@@ -131,7 +131,7 @@ module.exports = {
       Item.find {map: mapId, x: from.x, y: from.y}, callback
     else
       Item.where('map', mapId)
-        .where('type').nin(['deployable', 'logEntry'])
+        .where('type').ne('logEntry')
         .where('x').gte(if from.x > to.x then to.x else from.x)
         .where('x').lte(if from.x > to.x then from.x else to.x)
         .where('y').gte(if from.y > to.y then to.y else from.y)
@@ -147,11 +147,10 @@ module.exports = {
   # @param callback [Function] end callback, invoked with: 
   # @option callback err [Error] an Error object, or null it no error occurs
   countPoints: (winner, looser, rule, callback) ->
-    # add points to winner (if possible) and removes points from looser
-    # subtract points to target team if it's a marine
+    # subtract points to target team if it's a marine (alien can't loose points)
     looser.squad.points -= looser.points unless looser.squad.isAlien
-    # add points to actor team unless target is marine and actor also
-    winner.squad.points += looser.points if looser.squad.isAlien or winner.squad.isAlien
+    # add points to actor team unless target kind is same (do not count friendly fire)
+    winner.squad.points += looser.points if looser.squad.isAlien isnt winner.squad.isAlien
     rule.saved.push looser.squad, winner.squad
     callback null
     

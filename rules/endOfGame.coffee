@@ -28,14 +28,17 @@ class EndOfGameRule extends Rule
   # @option callback result [Object] an arbitrary result of this rule.
   execute: (player, game, params, context, callback) =>
     console.log "player #{player.email} confirm finished game #{game.name}"
-    # remove concerned squad from player's characters
+    # remove concerned squad from player's characters to avoid playing again
     squad = _.find player.characters, (squad) -> squad.game is game?.id
     player.characters.splice player.characters.indexOf(squad), 1
-    @removed.push squad
+    # mark squad as finished
+    squad.finished = true
+    @saved.push squad
     
-    if game.squads.length is 1 and game.squads[0]?.id is squad?.id
-      removeGame.execute player, game, params, context, (err) =>
-        console.log "remove game #{game.name} and map #{squad.map}"
+    # when all players have finished, remove game
+    if _.every(game.squads, (squad) -> squad.finished)
+      removeGame.execute player, game, params, {player: isAdmin:true}, (err) =>
+        console.log "remove game #{game.name} and map #{squad.map}", err
         console.error err if err?
         @saved = @saved.concat removeGame.saved
         @removed = @saved.concat removeGame.removed
