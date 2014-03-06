@@ -18,7 +18,13 @@ define [
   
   app.config ['$locationProvider', '$routeProvider', '$sceDelegateProvider', (location, route, sce) ->
     # autorize call to api
-    sce.resourceUrlWhitelist ['self', "#{conf.apiBaseUrl}/**"]
+    authorized = ['self']
+    if /^https?:\/\/www/.test conf.apiBaseUrl
+      authorized.push conf.apiBaseUrl.replace 'www.', ''
+    else
+      authorized.push conf.apiBaseUrl.replace ':\/\/', ':\/\/www.'
+    authorized.push conf.apiBaseUrl
+    sce.resourceUrlWhitelist authorized
 
     base = /^(.*\/)([^\/]*)\/\.$/g.exec(require.toUrl('.'))?[1] or ''
     
