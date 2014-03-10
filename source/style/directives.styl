@@ -432,6 +432,22 @@ blipSize = 50px
 //------------------------------------------------------------------------------
 // Logs directive
 
+@keyframes blink
+  0%
+    background-color transparent
+  17%
+    background-color errorColor
+  34%
+    background-color transparent
+  51%
+    background-color errorColor
+  68%
+    background-color transparent
+  85%
+    background-color errorColor
+  100%
+    background-color transparent
+
 .logs
   box-sizing border-box
   border 1px solid transparent
@@ -457,9 +473,70 @@ blipSize = 50px
     color textDarkColor
     margin 2px 5px
     overflow hidden
+    font-size 80%
   
     > *
       margin-bottom 5px
+      .time
+        color logTimeColor
+        display inline-block
+        margin-right 5px
+      .owner
+        display inline-block
+        margin-right 5px
+      .owner.alien
+        color alienColor
+      .owner.ultramarine
+        color ultramarineColor
+      .owner.bloodangel
+        color bloodangelColor
+      .owner.imperialfist
+        color imperialfistColor
+
+    .info .owner
+      color infoColor
+
+    .error .owner
+      color errorColor
+    
+    .input
+      display flex
+
+      .owner 
+        flex-grow 0
+        flex-shrink 0
+        vertical-align top
+        margin 4px 5px 0 0
+
+      textarea
+        resize vertical
+        min-height textSize*1.4
+        height textSize*1.4
+        font-size 100%
+        flex-grow 1
+        background-color rgba(white, 0.3)
+
+.logs.new-log > h1
+  border-radius 5px
+  animation blink 1s
 
 .logs.ng-show .content
   overflow auto
+
+//------------------------------------------------------------------------------
+// Short game representation
+
+.short-game
+  margin-top .5em
+
+  h3
+    color alertColor
+
+  img 
+    width 1.5em
+    margin 0 4px -0.5em 0
+
+  .player
+    display inline-block
+    margin-right 1.5em
+    margin-bottom 0.5em

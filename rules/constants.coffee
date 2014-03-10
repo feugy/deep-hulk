@@ -9,6 +9,9 @@ module.exports = {
   # Maximum of games a player can create
   maxGames: 5
   
+  # Maximum entries in the war log
+  warLogMax: 100
+  
   # id of list game object that contains free games
   freeGamesId: 'freeGames'
   
@@ -111,6 +114,7 @@ module.exports = {
       weapon: 'heavyBolter'
       points: 10
     android:
+      imageNum: 3
       armor: 2
       weapon: 'assaultRifle'
       points: 10

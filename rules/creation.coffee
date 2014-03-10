@@ -59,8 +59,9 @@ class CreationRule extends Rule
       # get items types
       ItemType.findCached ['squad', 'game', 'marine', 'wall', 'alien'], (err, [Squad, Game, Marine, Wall, Alien]) =>
         return callback err if err?
+        players = [player: actor.email, squad: param.squad]
         # creates the game
-        game = new Item id: "game-#{id}", name: params.gameName, squads: (
+        game = new Item id: "game-#{id}", name: params.gameName, players: JSON.stringify(players), squads: (
           # creates squads
           for i in [0...squadIds.length]
             name = squadIds[i]

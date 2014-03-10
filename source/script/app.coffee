@@ -11,10 +11,11 @@ define [
   'angular-route'
   'angular-sanitize'
   'angular-animate'
+  'angular-mousewheel'
 ], (angular, utils, LoginCtrl, HomeCtrl, BoardCtrl, ConfigureSquadCtrl, EndCtrl) ->
   
   # declare main module that configures routing
-  app = angular.module 'app', ['ngRoute', 'ngSanitize', 'ngAnimate']
+  app = angular.module 'app', ['ngRoute', 'ngSanitize', 'ngAnimate', 'monospaced.mousewheel']
   
   app.config ['$locationProvider', '$routeProvider', '$sceDelegateProvider', (location, route, sce) ->
     # autorize call to api

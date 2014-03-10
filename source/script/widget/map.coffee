@@ -16,7 +16,7 @@ define [
   # The map directive displays map with fields and items
   app.directive 'map', -> 
     # directive template
-    template: '<div class="map"></div>'
+    template: '<div class="map" msd-wheel="onZoom($event, $delta)"></div>'
     # will remplace hosting element
     replace: true
     # applicable as element and attribute
@@ -168,6 +168,10 @@ define [
     # **private**
     # menu container
     _menu: null
+    
+    # **private**
+    # widget for current cursor 
+    _cursorWidget: null
         
     # **private**
     # Currently highlighted zone
@@ -176,6 +180,10 @@ define [
     # **private**
     # Flag to avoid removing unexistent droppable, or creating it twice
     _isDroppable: false
+    
+    # **private**
+    # Mousewheel zoom increment.
+    _zoomStep: 0.05
     
     # Controller constructor: bind methods and attributes to current scope
     #
@@ -193,6 +201,8 @@ define [
       @scope.items = [] unless _.isArray @scope.items
       # make selected item widget available to exterior 
       @scope.getSelectedWidget = => @_items[@scope.selected?.id]
+      @scope.onZoom = (evt, delta) =>
+        @scope.zoom += delta*@_zoomStep
       
       # redraw content when map or its dimension changes
       @scope.$watch 'src', (value, old) =>
@@ -203,11 +213,16 @@ define [
         @_create false
       , 300, leading: false
         
+      
       # clean and display new items and fields
       redraw = (value, old) =>
         return unless value?
         @_removeData old if old?
         @_addData value
+        
+      # redraw on zoom
+      @scope.$watch 'zoom', =>
+        @_create false
         
       # update displayed items and fields on changes
       @scope.$watch 'items', redraw
@@ -238,11 +253,30 @@ define [
         return unless value? and value isnt old
         @center value
         
+      @scope.$watch 'deployScope', (value, old) =>
+        return unless value isnt old
+        @_toggleDeployment()
+        
       # shows temporary indications
       @scope.displayIndications = (indications) =>
         return unless indications?
         indications = [indications] unless _.isArray indications
         @_renderIndications indic for indic in indications
+              
+      # adds a cursor
+      @_cursorWidget = $ @compile("""<cursor 
+        data-selected="selected" 
+        data-renderer="renderer"
+        data-zoom="zoom"
+        data-get-selected-widget="getSelectedWidget"
+        data-select-active-rule="selectActiveRule"
+        data-ask-to-execute-rule="askToExecuteRule"/>""") @scope
+                
+      # adds a menu
+      @_menu = $ @compile("""<ul class="menu">
+          <li ng-repeat="item in menuItems" data-value={{item}}>{{'names.'+item|i18n}}</li>
+        </ul>""") @scope
+      @_menu.on 'click', @_onMenuItemClick
 
     # Center map on given coordinate 
     #
@@ -290,7 +324,7 @@ define [
       previous = @scope.selected
       @scope.selected = null
       
-      @$el.empty().append '<div class="loading"><progress value="0"/></div>'
+      @$el.wrapInner("<div class='temp'></div>").append '<div class="loading"><progress value="0"/></div>'
       @_progress = @$el.find '.loading progress'
       
       # compute element dimensions and offset
@@ -309,7 +343,7 @@ define [
         width: @scope.verticalTileNum*@scope.src.tileDim
         height: @scope.horizontalTileNum*@scope.src.tileDim
       # set zoom to display map on available width (or height)
-      @scope.zoom = Math.max @_dims.width/mapDim.width, @_dims.height/mapDim.height
+      @scope.zoom = Math.max @_dims.width/mapDim.width, @_dims.height/mapDim.height if reload
       
       # once zoom is set, init renderer
       @scope.renderer.init @
@@ -341,10 +375,6 @@ define [
       @_layers.items = $("<div class='items'></div>").appendTo(@_container).on 'click contextmenu', @_onMapClick
       @_layers.indics = $("<div class='indications'></div>").appendTo @_container
       
-      @scope.$watch 'deployScope', (value, old) =>
-        return unless value isnt old
-        @_toggleDeployment()
-        
       @_container.find('> canvas, > div').css
         width: @width
         height: @height
@@ -364,21 +394,7 @@ define [
       />""") @scope
       @_layers.fields.after @_zone
       
-      # adds a cursor
-      cursorWidget = $ @compile("""<cursor 
-        data-selected="selected" 
-        data-renderer="renderer"
-        data-zoom="zoom"
-        data-get-selected-widget="getSelectedWidget"
-        data-select-active-rule="selectActiveRule"
-        data-ask-to-execute-rule="askToExecuteRule"/>""") @scope
-      @_container.append cursorWidget
-        
-      # adds a menu
-      @_menu = $ @compile("""<ul class="menu">
-          <li ng-repeat="item in menuItems" data-value={{item}}>{{'names.'+item|i18n}}</li>
-        </ul>""") @scope
-      @_menu.on 'click', @_onMenuItemClick
+      @_container.append @_cursorWidget
       @_container.append @_menu
       
       # gets data
@@ -488,7 +504,7 @@ define [
       # end loading
       if @_pendingImages is 0
         _.defer =>
-          @$el.find('.loading').remove()
+          @$el.find('.loading,.temp').remove()
           @_progress = null
     
     # **private**

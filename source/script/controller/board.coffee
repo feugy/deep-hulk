@@ -80,6 +80,7 @@ define [
         @displayDamageZone(evt, details.field) if @scope.activeRule is 'shoot'
       @scope.getInstanceImage = getInstanceImage
       @scope.deployScope = null
+      @scope.sendMessage = @sendMessage
       
       # update zone on replay quit/enter
       rootScope.$on 'replay', (ev, details) =>
@@ -105,6 +106,11 @@ define [
         return @location.path "#{conf.basePath}end" if game.finished
         # keep game and player's squad
         @scope.game = game
+        try
+          @scope.log = JSON.parse @scope.game.warLog
+        catch e
+          console.error "Failed to parse warLog:",e
+          @scope.log = []
         @atlas.initReplay game
         @_updateReplayCommands()
         
@@ -147,6 +153,13 @@ define [
         result.kind = @scope.activeRule
         @scope.zone = result
         
+    # Send a new message into the game chat
+    #
+    # @param content the message sent
+    sendMessage: (content) =>
+      @atlas.ruleService.execute "sendMessage", @scope.game, @scope.squad, {content:content}, (err, result) => 
+        @scope.$apply =>  @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err? 
+        
     # **private**
     # Update action zone depending on new active rule
     #
@@ -176,10 +189,10 @@ define [
     _fetchSquad: (squad) =>
       # get squad and its members
       @atlas.Item.fetch [squad], (err, [squad]) => 
-        return @scope.$apply( => @scope.log.splice 0, 0, parseError err.message) if err?
+        return @scope.$apply( => @scope.log.splice 0, 0, kind:'error', content: parseError err.message) if err?
         # then get members
         @atlas.Item.fetch squad.members, (err) => @scope.$apply => 
-          return @scope.log.splice 0, 0, parseError err.message if err?
+          return @scope.log.splice 0, 0, kind:'error', content: parseError err.message if err?
           @scope.selected = null
           @scope.squad = squad
           # blips deployment, blip displayal
@@ -187,7 +200,7 @@ define [
             @_initBlipDeployement()
           if @scope.squad.actions < 0 
             @scope.canEndTurn = 'disabled' 
-            @scope.log.splice 0, 0, conf.msgs.waitForOther
+            @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.waitForOther
           else
             @scope.canEndTurn = ''
           # inhibit on replay (always) or turn end (if not alien and deploy) or deploy (and not alien)
@@ -205,11 +218,11 @@ define [
           @_currentZone = first
           @scope.deployScope = 'deployBlip'
           # add log
-          @scope.log.splice 0, 0, conf.msgs.deployBlips
+          @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.deployBlips
           # highligth deployable zone
           @atlas.ruleService.execute 'deployZone', @atlas.player, @scope.squad, {zone:@_currentZone}, (err, zone) => 
             @scope.$apply =>
-              @scope.log.splice 0, 0, parseError err.message if err?
+              @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err?
               if !zone? or zone.length is 0
                 return @scope.zone = null
               @scope.zone = 
@@ -219,10 +232,10 @@ define [
               @_inhibit = @atlas.replayPos?
         else
           # add log and inhibit
-          @scope.log.splice 0, 0, conf.msgs.deployInProgress
+          @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.deployInProgress
           @_inhibit = true
       else
-        @scope.log.splice 0, 0, conf.msgs.deployEnded unless @scope.squad.isAlien
+        @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.deployEnded unless @scope.squad.isAlien
         @_currentZone = null
         @scope.deployScope = null
         # inhibit on turn end or replay pos
@@ -265,9 +278,15 @@ define [
                 return @location.path "#{conf.basePath}end" if model.finished
               if 'turn' in changes
                 # if turn has change, add log
-                @scope.log.splice 0, 0, conf.msgs.newTurn
+                @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.newTurn
               if 'prevActions' in changes
                 @_updateReplayCommands()
+              if 'warLog' in changes
+                try 
+                  @scope.log = JSON.parse @scope.game.warLog
+                catch e
+                  console.error "Failed to parse warLog:",e
+                  @scope.log = []
             else if model is @scope.selected and model.dead
               @scope.selected = null
     
@@ -351,7 +370,7 @@ define [
             
       # trigger rule
       @atlas.ruleService.execute item, @scope.selected, @_applicableRules[item][0].target, {}, (err, result) =>
-        return @scope.$apply(=> @scope.log.splice 0, 0, parseError err.message) if err?   
+        return @scope.$apply(=> @scope.log.splice 0, 0, kind: 'error', content: parseError err.message) if err?   
         # refresh movable tiles
         @displayMovable()
                 
@@ -363,9 +382,9 @@ define [
       # rule triggering
       trigger = =>
         @atlas.ruleService.execute 'endOfTurn', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
-          return @scope.log.splice 0, 0, parseError err.message if err?
+          return @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err?
           # add log
-          @scope.log.splice 0, 0, conf.msgs.waitForOther
+          @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.waitForOther
       return trigger() if @scope.squad.actions is 0
       # still actions ? confirm end of turn
       confirm = @dialog.messageBox conf.titles.confirmEndOfTurn, conf.msgs.confirmEndOfTurn, [
@@ -382,7 +401,7 @@ define [
       # rule triggering
       trigger = =>
         @atlas.ruleService.execute 'endDeploy', @atlas.player, @scope.squad, {zone: @_currentZone}, (err) =>
-          return @scope.$apply(=> @scope.log.splice 0, 0, parseError err.message) if err?  
+          return @scope.$apply(=> @scope.log.splice 0, 0, kind: 'error', content: parseError err.message) if err?  
           # proceed with next deployement or quit mode
           @_initBlipDeployement()
       # still actions ? confirm end of turn
@@ -415,4 +434,4 @@ define [
       # trigger the relevant rule
       @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) => @scope.$apply =>
         # displays deployement errors
-        return @scope.log.splice 0, 0, parseError err.message if err?
+        return @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err?

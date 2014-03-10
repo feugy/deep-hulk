@@ -1,9 +1,10 @@
 'use strict'
 
 define [
+  'underscore'
   'app'
   'text!template/log.html'
-], (app, template) ->
+], (_, app, template) ->
   
   app.directive 'log', -> 
     # directive template
@@ -15,7 +16,9 @@ define [
     # parent scope binding.
     scope: 
       log: '=?src'
+      sendMessage: '=?'
       open: '@?'
+      currentSquad: '=?'
     # controller
     controller: Log
     
@@ -34,6 +37,10 @@ define [
     # To avoid opening on log initialization
     _initialized: false
     
+    # **private**
+    # Link to user's input control
+    _input: null
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] directive scope
@@ -41,6 +48,15 @@ define [
     constructor: (@scope, @element, attrs, @animate) ->
       @_initialized = false
       @scope.toggle = @_toggle
+      @_input = @element.find 'textarea'
+      
+      @scope._onMessage = (event) =>
+        return unless event.which is 13
+        content = @_input.val()
+        @element.find('textarea').val()
+        if content?.trim()?.length > 0
+          @_input.val ''
+          @scope.sendMessage content
       
       # parse into boolean
       attrs.$observe 'open', (val) => 
@@ -52,7 +68,8 @@ define [
       # on src change, force opening, but not immediately on directive creation
       @scope.$watchCollection 'log', => 
         return @_initialized = true unless @_initialized
-        @_toggle true
+        @element.removeClass 'new-log'
+        _.defer => @element.addClass 'new-log'
   
     # **private**
     # Opens or closes log widget, depending on the current state

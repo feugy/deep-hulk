@@ -178,8 +178,6 @@ define [
     
     # Read error value into labels, and return human readable error message.
     parseError: (err) ->
-      console.log err
-      err = err.substr err.indexOf('Error: ')+7
       # error may contain arguments
       args = []
       key = err

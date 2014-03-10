@@ -148,7 +148,9 @@ define [
       @_loadImage()
       @_toggleDraggable()
       @_unbind = rootScope.on 'modelChanged', @_onUpdate
-      @scope.$on '$destroy', => @_unbind()
+      @scope.$on '$destroy', => 
+        @_hideTip()
+        @_unbind()
       @scope.$watch 'deployScope', (value, old) =>
         return unless value isnt old
         @_toggleDraggable()

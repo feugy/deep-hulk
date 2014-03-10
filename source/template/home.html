@@ -39,18 +39,21 @@
   <div class="frame my-games">
     <h2>{{'titles.myGames'|i18n}}</h2>
     <ul>
-      <li data-ng-repeat="squad in player.characters">
-        <i class="fa fa-toggle-right"></i><a href="board?id={{squad.game.id}}">{{squad.game.name}} <img src="{{getInstanceImage(squad)}}"/></a>
-      </li>
+      <short-game data-ng-repeat="squad in player.characters" 
+        data-src="squad.game" 
+        data-current="current" 
+        data-ng-click="onPlay(squad.game)"/>
     </ul>
     <div data-ng-show="player.characters.length === 0" class="empty-list">{{'labels.noGames'|i18n}}</div>
   </div>
   <div class="frame free-games">
     <h2>{{'titles.freeGames'|i18n}}</h2>
     <ul>
-      <li data-ng-repeat="game in freeGames">
-        <i class="fa fa-toggle-right"></i>{{game.name}} <a href="" data-ng-click="onAskJoin(game)">{{'buttons.joinGame'|i18n}}</a>
-      </li>
+      <short-game data-ng-repeat="game in freeGames" 
+        data-src="game" 
+        data-current="current">
+        <a href="" data-ng-click="onAskJoin(game)">{{'buttons.joinGame'|i18n}}</a>
+      </short-game>
     </ul>
     <div data-ng-show="freeGames.length === 0" class="empty-list">{{'labels.noGames'|i18n}}</div>
   </div>

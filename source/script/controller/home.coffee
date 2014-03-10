@@ -3,7 +3,7 @@
 define [
   'underscore'
   'util/common'
-], (_, {getInstanceImage, parseError}) ->
+], (_, {parseError}) ->
   
   class HomeController
               
@@ -34,18 +34,18 @@ define [
       err = @location.search()?.err or null
       @scope.error = null
       @scope.missions = []
+      @scope.current = atlas.player
       @scope.error = decodeURIComponent err if err?
       @onHideRule()
       # bind methods
       @scope.closeError = @closeError
+      @scope.onPlay = @_onPlay
       @scope.onNewGame = @_onResolveRule
       @scope.onAskJoin = @_onResolveRule
       @scope.onCreateGame = @_onExecuteRule
       @scope.onJoinGame = @_onExecuteRule
       @scope.onHideRule = @onHideRule
       @scope.onMissionSelected = @_onMissionSelected
-      # compute squad image
-      @scope.getInstanceImage = getInstanceImage
       
       # update openable door when selected model changed
       rootScope.$on 'modelChanged', @_onModelChanged
@@ -66,6 +66,12 @@ define [
       @scope.currentRuleName = null
       @scope.ruleParams = null
       @scope.target = null
+      
+    # **private**
+    # Navigate to a given game for playing
+    _onPlay: (game) =>
+      # navigate to game if possible
+      @location.path("#{conf.basePath}board").search id:game.id if game?
       
     # **private**
     # When select a given mission, set the allowed squads in consequence
