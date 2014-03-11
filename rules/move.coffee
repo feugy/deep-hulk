@@ -23,6 +23,8 @@ class MoveRule extends Rule
     # check simple conditions before selecting items
     unless target.mapId? and not actor.dead and actor.moves >= 1 and 1 is distance actor, target
       return callback null, null 
+    # do not allows diagonals for dreadnought
+    return callback null, null if actor.type.id is 'dreadnought' and not (target.x is actor.x or target.y is actor.y)
     # now check wall rules: get all items at actor and target coordinates
     selectItemWithin actor.map.id, actor, target, (err, items) =>
       return callback err, null if err?

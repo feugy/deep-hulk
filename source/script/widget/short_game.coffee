@@ -31,7 +31,10 @@ define [
     constructor: (@scope) ->
       @scope.squadImage = @_squadImage
       # parse players from game string content
-      @scope.watch 'game.players', (value, old) =>
+      @scope.$watch 'game.players', (value, old) =>
+        return unless value? and value isnt old
+        @_parsePlayers()
+      @scope.$watch 'game', (value, old) =>
         return unless value? and value isnt old
         @_parsePlayers()
       @_parsePlayers()
