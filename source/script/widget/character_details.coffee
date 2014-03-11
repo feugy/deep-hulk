@@ -50,6 +50,7 @@ define [
       @$el = $(element)
       
       @scope.isAlien = @scope.src?.type?.id is 'alien'
+      @scope.title = if @scope.isAlien then @scope.src?.name else @filter('i18n') "names.#{@scope.src?.weapon?.id or @scope.src?.weapon}"
       @scope.onSelect = =>
         # toggle selection
         if @scope.selected is @scope.src

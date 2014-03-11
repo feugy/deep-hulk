@@ -36,7 +36,8 @@ define [
     # @returns the corresponding image source string
     getInstanceImage: (instance) -> 
       imageSpec = instance?.type?.images[instance.imageNum]?.file
-      return conf.imagesUrl + (imageSpec or instance?.type?.descImage or 'null')
+      img = imageSpec or instance?.type?.descImage
+      if img? then conf.imagesUrl + img else ''
     
     # mix two hex colors (3 or 6 length),
     #
@@ -179,8 +180,9 @@ define [
     # Read error value into labels, and return human readable error message.
     parseError: (err) ->
       # error may contain arguments
+      err = err.toString()[err.toString().indexOf('Error: ')+7..]
       args = []
-      key = err
+      key = err.toString()
       split = err.split ' '
       if split.length >= 2
         key = split[0]

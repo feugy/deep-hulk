@@ -75,18 +75,18 @@ module.exports = {
 
   # move capacities, depending on the equiped weapon
   moveCapacities:
+    assaultRifle: 4
+    autoCannon: 4
     blip: 5
     bolter: 6
-    gloveSword: 6
-    pistolAxe: 6
-    heavyBolter: 6
-    autoCannon: 4
-    missileLauncher: 4
+    claws: 8
     flamer: 4
+    gloveSword: 6
+    heavyBolter: 6
+    missileLauncher: 4
+    pistolAxe: 6
     slugga: 8
     shoota: 6
-	  assaultRifle: 4
-	  claws: 8
     
   # store moves, armor and weapon capacities for aliens
   # use the same names as alien properties to allow quick copy during creation

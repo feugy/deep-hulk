@@ -1,3 +1,4 @@
+_ = require 'underscore'
 async = require 'async'
 Rule = require 'hyperion/model/Rule'
 {moveCapacities} = require './constants'
@@ -33,13 +34,17 @@ class EndOfTurnRule extends Rule
       return callback err if err?
       # do not allow to pass if game is finished
       return callback "gameFinished" if game.finished
-      # set to -1 to avoid same squad triggering multiple times end of turn
-      squad.actions = -1
+
       for member in squad.members
+        # check that no team members share the same tile
+        return callback new Error "sharedPosition" if 2 is _.where(squad.members, x: member.x, y: member.y).length
         member.rcNum = 0
         member.ccNum = 0
         member.moves = 0
-        
+      
+      # set to -1 to avoid same squad triggering multiple times end of turn
+      squad.actions = -1
+      
       console.log "end of turn #{game.turn} for squad #{squad.name}"
       # quit a first squad with remaining actions
       for other in game.squads when other isnt squad

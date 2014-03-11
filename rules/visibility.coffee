@@ -210,7 +210,7 @@ module.exports = {
         blip.revealed = true
         blip.imageNum = alienCapacities[blip.kind].imageNum
         # subtract already done moves to possible moves
-        blip.moves = moveCapacities[blip.weapon?.id or blip.weapon] - blip.moves
+        blip.moves = moveCapacities[blip.weapon?.id or blip.weapon] - moveCapacities.blip + blip.moves
         blip.moves = 0 if blip.moves < 0
         blip.rcNum = 1
         blip.ccNum = 1

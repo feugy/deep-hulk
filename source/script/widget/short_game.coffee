@@ -55,5 +55,5 @@ define [
       try
         @scope.players = (involved for involved in JSON.parse(@scope.game?.players))
       catch exc
-        console.log "Failed to parse game #{@scope.game.id} players:", exc
+        console.log "Failed to parse game #{@scope.game.id} players '#{@scope.game?.players}':", exc
         @scope.players = []

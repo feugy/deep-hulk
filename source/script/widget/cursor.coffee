@@ -61,6 +61,8 @@ define [
       @$el = $(element)
       @scope.activeRule = null
       @scope.canOpenDoor = false
+      @scope.canShoot = false
+      @scope.canFight = false
       @scope._onActivate = @_onActivate
       @scope._onOpen = @_onOpen
       
@@ -73,6 +75,8 @@ define [
       @scope.$watch 'selected', (value, old) =>
         return unless value isnt old 
         @scope.canOpenDoor = value?.doorToOpen?
+        @scope.canShoot = value.revealed isnt false and value?.weapon?.rc?
+        @scope.canAssault = value.revealed isnt false and value?.weapon?.cc?
         if @scope.activeRule?
           @scope.activeRule = null
           @scope.selectActiveRule?(null, @scope.activeRule) 
@@ -97,6 +101,8 @@ define [
         when 'update'
           if model?.id is @scope.selected?.id
             @scope.$apply =>
+              @scope.canShoot = model.revealed isnt false and model?.weapon?.rc?
+              @scope.canAssault = model.revealed isnt false and model?.weapon?.cc?
               if 'doorToOpen' in changes
                 @scope.canOpenDoor = model.doorToOpen?
               if 'x' in changes or 'y' in changes
@@ -122,10 +128,10 @@ define [
           @scope.activeRule = if @scope.selected.moves > 0 then rule else null
           break
         when 'shoot' 
-          @scope.activeRule = if @scope.selected.rcNum > 0 then rule else null
+          @scope.activeRule = if @scope.canShoot and @scope.selected.rcNum > 0 then rule else null
           break
         when 'assault' 
-          @scope.activeRule = if @scope.selected.ccNum > 0 then rule else null
+          @scope.activeRule = if @scope.canAssault and @scope.selected.ccNum > 0 then rule else null
           break
         else 
           @scope.activeRule = null

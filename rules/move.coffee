@@ -3,7 +3,7 @@ Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 Field = require 'hyperion/model/Field'
 {distance, selectItemWithin, removeFromMap, addAction} = require './common'
-{isReachable, detectBlips, moveBlip, findNextDoor} = require './visibility'
+{isReachable, detectBlips, findNextDoor} = require './visibility'
 
 # Map movement
 # Allows to move on the next tile

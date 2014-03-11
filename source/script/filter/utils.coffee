@@ -9,7 +9,10 @@ define [
     sep = ''
     if options?.sep is true
       sep = parse('labels.fieldSeparator') conf
-    value = parse(input) conf
+    try
+      value = parse(input) conf
+    catch exc
+      console.error "Failed to parse i18n key '#{input}':", exc
     "#{if value? then value else input}#{sep}"
   ]
     
