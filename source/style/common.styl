@@ -3,12 +3,6 @@
 @import 'reset.css'
 @import 'font-awesome-4.0.3-min.css'
 
-@import 'mixin'  
-@import 'ui'
-@import 'directives'
-@import 'home'
-@import 'board'
-
 html
 body
 body > div
@@ -47,4 +41,9 @@ for i in(1..6)
     font-family headingFont
     font-size headingSize*(1+(i - 1)*-0.15)
     margin-bottom unit(20*(1+(i - 1)*-0.15) , 'px') 
-  
+
+@import 'mixin'  
+@import 'ui'
+@import 'directives'
+@import 'home'
+@import 'board'  
