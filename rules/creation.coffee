@@ -149,6 +149,7 @@ class CreationRule extends Rule
           imageNum: 0
           revealed: false
           moves: moveCapacities.blip
+          currentWeapon: 0
           squad: squad
         @saved.push alien
         squad.members.push alien
@@ -171,7 +172,8 @@ class CreationRule extends Rule
       life: 6
       armor: 2
       moves: moveCapacities.heavyBolter
-      weapon: 'pistolAxe'
+      currentWeapon: 0
+      weapons: ['pistolAxe']
     @saved.push sergent
     squad.members.push sergent
         
@@ -185,7 +187,8 @@ class CreationRule extends Rule
         life: 1
         armor: 2
         moves: moveCapacities.bolter
-        weapon: 'bolter'
+        currentWeapon: 0
+        weapons: ['bolter']
       @saved.push marine
       squad.members.push marine
     console.log "marines #{name} created"

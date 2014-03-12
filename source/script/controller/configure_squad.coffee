@@ -84,7 +84,7 @@ define [
         @atlas.Item.fetch squad.members, (err) => @scope.$apply => 
           return @scope.error = err?.message if err?
           for member in squad.members
-            @scope.configured[member.id] = weapon: member?.weapon?.id
+            @scope.configured[member.id] = weapon: member?.weapons[member.currentWeapon]?.id
           @scope.squad = squad
       
     # **private**

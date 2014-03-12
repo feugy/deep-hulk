@@ -94,33 +94,33 @@ module.exports = {
     gretchin:
       imageNum: 2
       armor: 0
-      weapon: 'slugga'
+      weapons: ['slugga']
       points: 2
     ork:
       imageNum: 1
       armor: 1
-      weapon: 'shoota'
+      weapons: ['shoota']
       points: 3
     chaosMarine:
       armor: 2
-      weapon: 'bolter'
+      weapons: ['bolter']
       points: 5
     chaosHeavyMarine:
       armor: 2
-      weapon: 'missileLauncher'
+      weapons: ['missileLauncher']
       points: 10
     chaosCommander:
       armor: 2
-      weapon: 'heavyBolter'
+      weapons: ['heavyBolter']
       points: 10
     android:
       imageNum: 3
       armor: 2
-      weapon: 'assaultRifle'
+      weapons: ['assaultRifle']
       points: 10
     genestealer:
       armor: 3
-      weapon: 'claws'
+      weapons: ['claws']
       points: 0
   
 }

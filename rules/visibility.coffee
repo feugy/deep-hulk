@@ -210,7 +210,8 @@ module.exports = {
         blip.revealed = true
         blip.imageNum = alienCapacities[blip.kind].imageNum
         # subtract already done moves to possible moves
-        blip.moves = moveCapacities[blip.weapon?.id or blip.weapon] - moveCapacities.blip + blip.moves
+        kind = blip.weapons[blip.currentWeapon]?.id or blip.weapons[blip.currentWeapon]
+        blip.moves = moveCapacities[kind] - moveCapacities.blip + blip.moves
         blip.moves = 0 if blip.moves < 0
         blip.rcNum = 1
         blip.ccNum = 1
@@ -292,9 +293,9 @@ module.exports = {
     proceed = (err, items) ->
       return callback err, false if err?
       # abort unless target visible to actor (character blocks visibility unless using flamer)
-      return callback null, false if module.exports.hasObstacle(actor, target, items, actor.weapon.id isnt 'flamer')?
+      return callback null, false if module.exports.hasObstacle(actor, target, items, actor.weapons[actor.currentWeapon].id isnt 'flamer')?
       # depending on the weapon
-      switch actor.weapon.id
+      switch actor.weapons[actor.currentWeapon].id
         when 'flamer'
           # flamer allowed on horizontal, vertical or diagonal lines
           callback null, actor.x is target.x or actor.y is target.y or Math.abs(actor.x-target.x) is Math.abs actor.y-target.y

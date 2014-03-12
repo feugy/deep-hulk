@@ -58,12 +58,13 @@ class EndOfTurnRule extends Rule
           squad.actions = if squad.members.length > 0 then 0 else -1
           # reset each member, unless not on map
           for member in squad.members when member.map? and not member.dead
+            weapon = member.weapons[member.currentWeapon]?.id or member.weapons[member.currentWeapon]
             squad.actions += 2
             # add an attack
             member.rcNum = 1
             member.ccNum = 1
             if squad.isAlien
-              member.moves = moveCapacities[if member.revealed then member.weapon?.id or member.weapon else 'blip']
+              member.moves = moveCapacities[if member.revealed then weapon else 'blip']
               # get alien moves from their kind if revealed, or 5 for blips
               unless member.revealed
                 # blip specific case: no attacks, just moves
@@ -72,7 +73,7 @@ class EndOfTurnRule extends Rule
                 member.ccNum = 0
             else
               # get marine moves from their weapon
-              member.moves = moveCapacities[member.weapon?.id or member.weapon]
+              member.moves = moveCapacities[weapon]
           next()
       , (err) =>
         return callback err if err?

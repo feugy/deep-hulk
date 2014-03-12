@@ -36,7 +36,7 @@ class AssaultRule extends Rule
     # inhibit if wanting for deployment
     return callback null, null if actor.squad?.deployZone?
     # deny if actor cannot attack anymore. 
-    return callback null, null unless not actor.dead and actor.ccNum >= 1 and actor.weapon.cc?
+    return callback null, null unless not actor.dead and actor.ccNum >= 1 and actor.weapons[actor.currentWeapon].cc?
     # deny unless target is an item
     return callback null, null unless target?.type?.id in ['alien', 'marine']
     # check visibility
@@ -78,13 +78,13 @@ class AssaultRule extends Rule
       actor.rcNum-- if actor.rcNum > 0 
       actor.squad.actions--
       # consume remaining moves if a move is in progress
-      unless actor.moves is moveCapacities[actor.weapon.id] or actor.moves is 0
+      unless actor.moves is moveCapacities[actor.weapons[actor.currentWeapon].id] or actor.moves is 0
         actor.moves = 0 
         actor.squad.actions--
       
       # roll dices for both actor and target
-      actorAttack = sum rollDices actor.weapon.cc
-      targetAttack = sum rollDices(target.weapon?.cc) or [0]
+      actorAttack = sum rollDices actor.weapons[actor.currentWeapon].cc
+      targetAttack = sum rollDices(target.weapons[target.currentWeapon]?.cc) or [0]
       console.log "#{actor.name or actor.kind} (#{actor.squad.name}) assault "+
         "#{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}: "+
         "#{actorAttack} vs #{targetAttack}"

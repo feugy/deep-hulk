@@ -37,7 +37,7 @@ class ShootRule extends Rule
     # inhibit if wanting for deployment
     return callback null, null if actor.squad?.deployZone?
     # deny if actor cannot attack anymore, or if target isnt a field
-    return callback null, false unless not actor.dead and actor.rcNum >= 1 and actor.weapon.rc? and target?.mapId?
+    return callback null, false unless not actor.dead and actor.rcNum >= 1 and actor.weapons[actor.currentWeapon].rc? and target?.mapId?
     isTargetable actor, target, (err, reachable) =>
       callback err, if reachable then [] else null
 
@@ -69,16 +69,18 @@ class ShootRule extends Rule
       actor.rcNum--
       actor.ccNum-- if actor.ccNum > 0 
       actor.squad.actions--
+      weapon = actor.weapons[actor.currentWeapon]
+      
       # consume remaining moves if a move is in progress
-      unless actor.moves is moveCapacities[actor.weapon.id] or actor.moves is 0
+      unless actor.moves is moveCapacities[weapon.id] or actor.moves is 0
         actor.moves = 0
         actor.squad.actions--
         
       # roll dices
-      dices = rollDices actor.weapon.rc
-      console.log "#{actor.name or actor.kind} (#{actor.squad.name or 'alien'}) shoot with #{actor.weapon.id} at #{target.x}:#{target.y}: #{dices.join ','}"
+      dices = rollDices weapon.rc
+      console.log "#{actor.name or actor.kind} (#{actor.squad.name or 'alien'}) shoot with #{weapon.id} at #{target.x}:#{target.y}: #{dices.join ','}"
       # depending on the weapon
-      switch actor.weapon.id
+      switch weapon.id
         when 'missileLauncher'
           # tiles near target are also hit
           selectItemWithin actor.map.id, {x:target.x-1, y:target.y-1}, {x:target.x+1, y:target.y+1}, (err, targets) =>

@@ -202,8 +202,9 @@ define [
           renderer.drawTile ctx, tile, grad for tile in tiles
             
         when 'shoot'
+          weapon = @scope.src.weapon.id or @scope.src.weapon
           # draw line if necessary: not for flamer if it hits
-          if @scope.src.weapon isnt 'flamer' or @scope.src.tiles.length is 0
+          if weapon isnt 'flamer' or @scope.src.tiles.length is 0
             {r, g, b, a} = hexToRgb conf.colors.visibilityLine or '#FFFF'
             c1 = "rgba(#{r}, #{g}, #{b}, #{a})"
             if @scope.src.obstacle
@@ -217,7 +218,7 @@ define [
               c2 = color
             drawVisibilityLine ctx, @scope.src.origin, end, renderer, c1, c2
           
-          switch @scope.src.weapon
+          switch weapon
             when 'missileLauncher'
               # shoot with missileLauncher affect a circular area: radial gradient
               grad = makeRadialGradient ctx, @scope.src.target, renderer, renderer.tileW*1.5, color

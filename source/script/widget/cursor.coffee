@@ -75,8 +75,9 @@ define [
       @scope.$watch 'selected', (value, old) =>
         return unless value isnt old 
         @scope.canOpenDoor = value?.doorToOpen?
-        @scope.canShoot = value.revealed isnt false and value?.weapon?.rc?
-        @scope.canAssault = value.revealed isnt false and value?.weapon?.cc?
+        weapon = value?.weapons[value?.currentWeapon]
+        @scope.canShoot = value?.revealed isnt false and weapon?.rc?
+        @scope.canAssault = value?.revealed isnt false and weapon?.cc?
         if @scope.activeRule?
           @scope.activeRule = null
           @scope.selectActiveRule?(null, @scope.activeRule) 
@@ -101,8 +102,9 @@ define [
         when 'update'
           if model?.id is @scope.selected?.id
             @scope.$apply =>
-              @scope.canShoot = model.revealed isnt false and model?.weapon?.rc?
-              @scope.canAssault = model.revealed isnt false and model?.weapon?.cc?
+              weapon = model?.weapons[model?.currentWeapon]
+              @scope.canShoot = model.revealed isnt false and weapon?.rc?
+              @scope.canAssault = model.revealed isnt false and weapon?.cc?
               if 'doorToOpen' in changes
                 @scope.canOpenDoor = model.doorToOpen?
               if 'x' in changes or 'y' in changes

@@ -62,12 +62,13 @@ class ConfigureSquadRule extends Rule
       Item.fetch squad.members, (err, members) =>
         return callback err if err?
         for member in members
+          weaponId = params["#{member.id}-weapon"]
           # reuse always the same weapon by their ids
-          member.weapon = params["#{member.id}-weapon"]
-          member.imageNum = weaponImages[squad.name][member.weapon]
+          member.weapons = [weaponId]
+          member.imageNum = weaponImages[squad.name][weaponId]
           member.points = if id in heavyWeapons or id in commanderWeapons then 10 else 5
           # adapt marine possible moves
-          member.moves = moveCapacities[member.weapon]
+          member.moves = moveCapacities[weaponId]
         # init first actions number
         squad.actions = squad.members.length * 2
         callback null

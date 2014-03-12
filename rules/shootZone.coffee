@@ -23,7 +23,7 @@ class ShootZoneRule extends Rule
     # inhibit if wanting for deployment
     return callback null, null if actor.squad?.deployZone?
     # deny if actor cannot attack anymore. 
-    return callback null, null unless actor.rcNum >= 1 and actor.weapon.rc? 
+    return callback null, null unless actor.rcNum >= 1 and actor.weapons[actor.currentWeapon].rc? 
     # deny unless on same map
     return callback null, null unless target?.mapId is actor.map?.id
     callback null, []
@@ -44,7 +44,7 @@ class ShootZoneRule extends Rule
     selectItemWithin actor.map.id, actor, target, (err, items) =>
       return callback err, null if err?
       result = 
-        weapon: actor.weapon.id
+        weapon: actor.weapons[actor.currentWeapon].id
         tiles: []
         obstacle: null
         
@@ -53,7 +53,7 @@ class ShootZoneRule extends Rule
         result.obstacle = hasObstacle actor, target, items, true
         return callback null, result
         
-      switch actor.weapon.id
+      switch result.weapon
         when 'missileLauncher'
           # tiles near target are also hit
           Field.where('mapId', actor.map.id).where('x').gte(target.x-1).where('x').lte(target.x+1)

@@ -15,7 +15,7 @@ class EndOfGameRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (player, game, context, callback) =>
-    callback null, if game?.finished and _.find(player.characters, (squad) -> squad.game is game?.id)? then [] else null
+    callback null, if game?.finished and _.find(player.characters, (squad) -> (squad.game?.id or squad.game) is game?.id)? then [] else null
 
   # removes the squad from player's characters, and destroy game and map if no other squad remains
   #
@@ -29,7 +29,7 @@ class EndOfGameRule extends Rule
   execute: (player, game, params, context, callback) =>
     console.log "player #{player.email} confirm finished game #{game.name}"
     # remove concerned squad from player's characters to avoid playing again
-    squad = _.find player.characters, (squad) -> squad.game is game?.id
+    squad = _.find player.characters, (squad) -> (squad.game?.id or squad.game) is game?.id
     player.characters.splice player.characters.indexOf(squad), 1
     # mark squad as finished
     squad.finished = true

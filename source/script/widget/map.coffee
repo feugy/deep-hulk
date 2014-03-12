@@ -194,7 +194,6 @@ define [
     # @param rootScope [Object] Angular root scope
     constructor: (@scope, element, @atlas, @compile, rootScope) ->
       @_menuOpened = false
-      @_isDroppable = false
       @$el = $(element)
       @scope.renderer = null
       @scope.fields = [] unless _.isArray @scope.fields
@@ -320,6 +319,7 @@ define [
       @_layers = {}
       @_hapticDelay = null
       @_progress = null
+      @_isDroppable = false
       
       previous = @scope.selected
       @scope.selected = null

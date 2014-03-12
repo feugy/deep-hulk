@@ -49,8 +49,10 @@ define [
     constructor: (@scope, element, rootScope, @filter) ->
       @$el = $(element)
       
+      weaponId = if @scope.src? then @scope.src.weapons[@scope.src.currentWeapon].id or@scope.src.weapons[@scope.src.currentWeapon] else 'bolter'
+        
       @scope.isAlien = @scope.src?.type?.id is 'alien'
-      @scope.title = if @scope.isAlien then @scope.src?.name else @filter('i18n') "names.#{@scope.src?.weapon?.id or @scope.src?.weapon}"
+      @scope.title = if @scope.isAlien then @scope.src?.name else @filter('i18n') "names.#{weaponId}"
       @scope.onSelect = =>
         # toggle selection
         if @scope.selected is @scope.src

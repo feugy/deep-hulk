@@ -17,9 +17,9 @@ class TargetRule extends Rule
     # inhibit if wanting for deployment
     return callback null, null if actor.squad?.deployZone?
     # deny if actor cannot attack anymore, or if target isnt a field
-    return callback null, null unless not actor.dead and actor.rcNum >= 1 and actor.weapon.rc? and target?.mapId?
+    return callback null, null unless not actor.dead and actor.rcNum >= 1 and target?.mapId?
     # deny unless if wearing auto cannon
-    return callback null, null unless actor.weapon.id is 'autoCannon'
+    return callback null, null unless actor.weapons[actor.currentWeapon].id is 'autoCannon'
     # now check visibility rules: get all items at actor and target coordinates
     isTargetable actor, target, (err, reachable) =>
       callback err, if reachable then [] else null

@@ -19,7 +19,7 @@ class AssaultZoneRule extends Rule
     # inhibit if wanting for deployment
     return callback null, null if actor.squad?.deployZone?
     # deny if actor cannot attack anymore. 
-    return callback null, if actor.ccNum >= 1 and actor.weapon.cc? then [] else null
+    return callback null, if actor.ccNum >= 1 and actor.weapons[actor.currentWeapon].cc? then [] else null
       
   # Returns tiles that are involved in the shoot, depending on the character weapon
   #
