@@ -3,7 +3,7 @@ Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 Field = require 'hyperion/model/Field'
 {distance, selectItemWithin, removeFromMap, addAction} = require './common'
-{isReachable, detectBlips, findNextDoor} = require './visibility'
+{isReachable, detectBlips, findNextDoor, isDreadnoughtUnderDoor} = require './visibility'
 
 # Map movement
 # Allows to move on the next tile
@@ -21,11 +21,18 @@ class MoveRule extends Rule
     # inhibit if wanting for deployment
     return callback null, null if actor.squad?.deployZone?
     # check simple conditions before selecting items
-    unless target.mapId? and not actor.dead and actor.moves >= 1 and 1 is distance actor, target
-      return callback null, null 
+    # Dreadnaughts can go up to 2 tiles
+    unless target.mapId? and not actor.dead and actor.moves >= 1 and 2 >= distance actor, target
+      return callback null, null
+    # for dreadnaught, select enought tiles to check that no part share tile with other aliens
+    coord = x: target.x, y: target.y
+    if actor.kind is 'dreadnought' and actor.revealed
+      coord.y++ if coord.y is actor.y
+      coord.x++ if coord.x is actor.x
     # now check wall rules: get all items at actor and target coordinates
-    selectItemWithin actor.map.id, actor, target, (err, items) =>
+    selectItemWithin actor.map.id, actor, coord, (err, items) =>
       return callback err, null if err?
+      # isReachable will check distance and obstacle conditions
       callback null, if isReachable actor, target, items then [] else null
 
   # Move marine to the next tile.
@@ -38,13 +45,29 @@ class MoveRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   execute: (actor, target, params, context, callback) =>
     # game action current state 
-    effects = [[actor, _.pick actor, 'id', 'moves', 'x', 'y', 'transition', 'doorToOpen']]
+    effects = [[actor, _.pick actor, 'id', 'moves', 'x', 'y', 'transition', 'doorToOpen', 'underDoor']]
       
+    targetType = target.typeId
+    x = target.x
+    y = target.y
+    isDreadnought = actor.kind is 'dreadnought' and actor.revealed
+    
+    if isDreadnought
+      # only move of one horizontally or vertically
+      if x is actor.x+2 or x is actor.x-1
+        # moving horizontally
+        y = actor.y
+        x-- if x is actor.x+2
+      else
+        # moving vertially
+        x = actor.x
+        y-- if y is actor.y+2
+    
     # evaluate move direction
-    if target.y is actor.y
-      direction = if target.x < actor.x then '-l' else '-r'
+    if y is actor.y
+      direction = if x < actor.x then '-l' else '-r'
     else 
-      direction = if target.y < actor.y then '-b' else '-t'
+      direction = if y < actor.y then '-b' else '-t'
     actor.transition = "move#{direction}"
     
     # checks that a field exists where actor wants to move, or quit
@@ -53,29 +76,42 @@ class MoveRule extends Rule
       
       base = "base-#{actor.squad.name}"
       # consume a move unless in your base
-      actor.moves -= 1 unless target.typeId is base
+      actor.moves -= 1 unless targetType is base
       if actor.moves is 0
         actor.squad.actions--
         
-      console.log "#{actor.name or actor.kind} (#{actor.squad.name}) moves from #{actor.x}:#{actor.y} to #{target.x}:#{target.y} (remains #{actor.moves})"
       # update actor coordinates
-      actor.x = target.x
-      actor.y = target.y
+      actor.x = x
+      actor.y = y
+      console.log "#{actor.name or actor.kind} (#{actor.squad.name}) moves from #{actor.x}:#{actor.y} to #{x}:#{y} (remains #{actor.moves})"
       
+      if isDreadnought
+        # updates also dreadnought parts
+        for i in [0..2]
+          actor.parts[i].x = actor.x+(if i is 0 then 1 else i-1)
+          actor.parts[i].y = actor.y+(if i is 0 then 0 else 1)
+
       # return safe to base !
-      if previous.typeId isnt base and target.typeId is base
+      if previous.typeId isnt base and targetType is base
         effects[0][1].dead = false
         return removeFromMap actor, @, =>
           addAction 'move', actor, effects, @, callback
       
       # check if actor can now open a door
-      selectItemWithin actor.map.id, {x:actor.x-1, y:actor.y-1}, {x:actor.x+1, y:actor.y+1}, (err, items) =>
+      # dreadnought may open door at x+2 and y+2
+      range = if isDreadnought then 2 else 1
+      selectItemWithin actor.map.id, {x:actor.x-1, y:actor.y-1}, {x:actor.x+range, y:actor.y+range}, (err, items) =>
         return callback err if err?
-        actor.doorToOpen = findNextDoor actor, items
+        
+        # keep info if under door or not
+        actor.underDoor = isDreadnoughtUnderDoor items, actor if isDreadnought
+        
+        # search for next door
+        actor.doorToOpen = findNextDoor (if isDreadnought then actor.parts.concat [actor] else actor), items
         
         processReveal = =>
           # do not reveal blip if we are in your base
-          return callback null unless target.typeId isnt "base-#{actor.squad.name}"
+          return callback null unless targetType isnt "base-#{actor.squad.name}"
           detectBlips actor, @, effects, (err, revealed) =>
             return callback err if err?
             addAction 'move', actor, effects, @, callback
@@ -87,7 +123,8 @@ class MoveRule extends Rule
             # inhibit actor actions
             actor.squad.deployZone = deployable.zone
             # ask alien player to deploy this zone
-            return Item.where('type', 'squad').where('map', actor.map.id).where('isAlien', true).exec (err, [alien]) =>
+            id = actor.map.id.replace 'map-', ''
+            return Item.where('type', 'squad').where('isAlien', true).regex('_id', "squad-#{id}-").exec (err, [alien]) =>
               return callback err if err?
               return callback new Error "no alien squad found" unless alien?
               unless alien.deployZone?

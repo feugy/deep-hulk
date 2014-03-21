@@ -1,3 +1,4 @@
+_ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 {isTargetable} = require './visibility'
 
@@ -19,9 +20,10 @@ class TargetRule extends Rule
     # deny if actor cannot attack anymore, or if target isnt a field
     return callback null, null unless not actor.dead and actor.rcNum >= 1 and target?.mapId?
     # deny unless if wearing auto cannon
-    return callback null, null unless actor.weapons[actor.currentWeapon].id is 'autoCannon'
+    idx = actor.weapons.indexOf _.findWhere(actor.weapons, id: 'autoCannon')
+    return callback null, null if idx is -1
     # now check visibility rules: get all items at actor and target coordinates
-    isTargetable actor, target, (err, reachable) =>
+    isTargetable actor, target, idx, (err, reachable) =>
       callback err, if reachable then [] else null
 
   # Append target coordinates to actor current targets
@@ -33,12 +35,16 @@ class TargetRule extends Rule
   # @param callback [Function] called when the rule is applied, with one arguments:
   # @option callback err [String] error string. Null if no error occured
   execute: (actor, target, params, context, callback) =>
-    # add the target to list of current targets
+    # add the target to list of current targets, unless already present
+    added = "#{target.x}:#{target.y}"
+    if actor.currentTargets? and -1 isnt actor.currentTargets.indexOf added
+      return callback null
+      
     if actor.currentTargets?
       actor.currentTargets += ','
     else
       actor.currentTargets = ''
-    actor.currentTargets += "#{target.x}:#{target.y}"
+    actor.currentTargets += added
     callback null
   
 module.exports = new TargetRule 'shoot'

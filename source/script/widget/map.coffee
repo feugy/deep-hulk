@@ -337,7 +337,7 @@ define [
       switch @scope.src.kind
         when 'square' then @scope.renderer = new SquareRenderer()
         # no kind ? just wait src to be loaded
-        when undefined then return 
+        when undefined, null then return 
         else throw new Error "map kind #{@scope.src.kind} not supported"
       
       # expected map dimension

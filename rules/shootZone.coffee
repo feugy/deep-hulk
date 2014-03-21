@@ -23,10 +23,10 @@ class ShootZoneRule extends Rule
     # inhibit if wanting for deployment
     return callback null, null if actor.squad?.deployZone?
     # deny if actor cannot attack anymore. 
-    return callback null, null unless actor.rcNum >= 1 and actor.weapons[actor.currentWeapon].rc? 
+    return callback null, null unless actor.rcNum >= 1 
     # deny unless on same map
     return callback null, null unless target?.mapId is actor.map?.id
-    callback null, []
+    callback null, [name: 'weaponIdx', type:'integer', min: 0, max: actor.weapons.length-1]
       
   # Returns tiles that are involved in the shoot, depending on the character weapon
   #
@@ -43,12 +43,19 @@ class ShootZoneRule extends Rule
   execute: (actor, target, params, context, callback) =>
     selectItemWithin actor.map.id, actor, target, (err, items) =>
       return callback err, null if err?
+      # check that selected weapon as range combat
+      weapon = actor.weapons[params.weaponIdx]
+      return callback 'closeCombatWeapon', null unless weapon?.rc?
+      # check that this weapon was not already used
+      used = JSON.parse actor.usedWeapons
+      return callback null, null if params.weaponIdx in used
+      
       result = 
-        weapon: actor.weapons[actor.currentWeapon].id
+        weapon: weapon.id
         tiles: []
         obstacle: null
         
-      unless isTargetable actor, target, items
+      unless isTargetable actor, target, params.weaponIdx, items
         # target not reachable: returns obstacle (with character blocking visibility)
         result.obstacle = hasObstacle actor, target, items, true
         return callback null, result

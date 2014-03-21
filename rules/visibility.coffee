@@ -4,7 +4,7 @@ Item = require 'hyperion/model/Item'
 Ratio = require './ratio'
 {selectItemWithin, mergeChanges, distance} = require './common'
 {wallPositions, doorPositions, alienCapacities, moveCapacities} = require './constants'
-
+  
 # Anything related to visibility:
 # - tiles on line
 # - is tile visible from another
@@ -18,6 +18,7 @@ module.exports = {
   # Position are casted down into horizontal and vertical : 
   # horizontal[0][2] indicates a wall between the two first columns (y=0), at thrid row (x=2)
   # vertical[1][0] indicates a wall between rows 2 and 3 (x=1), at first column (y=0)
+  # TODO dreadnoughts part must be taken in account
   #
   # @param from [Object] from position, one of the rectangle corner
   # @param to [Object] to position, the other corner
@@ -70,6 +71,7 @@ module.exports = {
     walls
     
   # Compute tiles crossed by a straight from from to to.
+  # TODO dreadnoughts can target for any of their parts
   #
   # @param from [Object] from position
   # @param to [Object] to position
@@ -208,17 +210,41 @@ module.exports = {
         # store previous blip state
         effects.push [blip, _.pick blip, 'id', 'moves', 'rcNum', 'ccNum', 'imageNum', 'revealed']
         blip.revealed = true
-        blip.imageNum = alienCapacities[blip.kind].imageNum
-        # subtract already done moves to possible moves
-        kind = blip.weapons[blip.currentWeapon]?.id or blip.weapons[blip.currentWeapon]
-        blip.moves = moveCapacities[kind] - moveCapacities.blip + blip.moves
+        imageNum = alienCapacities[blip.kind].imageNum
+        # for dreadnought, choose the right image depending on the equiped weapons
+        if blip.kind is 'dreadnought'
+          weapons = (weapon.id or weapon for weapon in blip.weapons[1..])
+          console.log weapons.join '_'
+          imageNum = imageNum[weapons.join '_']
+        blip.imageNum = imageNum
+        # subtract already done moves to possible moves (use first weapon to get infos)
+        weapon = blip.weapons[0]?.id or blip.weapons[0]
+        blip.moves = moveCapacities[weapon] - moveCapacities.blip + blip.moves
         blip.moves = 0 if blip.moves < 0
         blip.rcNum = 1
         blip.ccNum = 1
+        parts = []
+        # for dreadnought, creates parts
+        if blip.kind is 'dreadnought'
+          for i in [0..2]
+            part = new Item
+              type: blip.type
+              kind: blip.kind
+              revealed: true
+              squad: blip.squad
+              main: blip
+              x: blip.x+(if i is 0 then 1 else i-1)
+              y: blip.y+(if i is 0 then 0 else 1)
+              map: blip.map
+              imageNum: null
+            rule.saved.push part
+            parts.push part
+        
         # add attack action
         blip.fetch (err, blip) =>
           return end err if err?
           blip.squad.actions++
+          blip.parts = parts
           console.log "reveal blip #{blip.kind} at #{blip.x}:#{blip.y}"
           # TODO : pas de detection automatique de la modification des actions de l'escouade !!!!
           # on est obligé de le déclarer nous même
@@ -240,26 +266,115 @@ module.exports = {
           return reveal actor , callback
       callback null
       
+  # Checks that a given position is free for a dreadnought to move on.
+  #
+  # @param items [Array<Model>] array containing items for the checked and dreadnought positions
+  # @param actor [Model] current dreadnought, before move
+  # @param direction [String] right, top, left or bottom direction in which the dreadnought is moving
+  # @return true if dreadnought can move in this direction, false otherwise
+  isFreeForDreadnought: (items, actor, direction) ->
+    # depending on the direction, store position and their respective contitions that may prevent move
+    conditions = {}
+    switch direction
+      when 'left'
+        # on left neighbors, vertical walls/doors or items or horizontal wall in the middle
+        conditions["#{actor.x-1}_#{actor.y}"] = walls: ['right', 'top'], door: 'right', character: true
+        conditions["#{actor.x-1}_#{actor.y+1}"] = walls: ['right', 'bottom'], door: 'right', character: true
+        # on same tiles, vertical walls/doors
+        conditions["#{actor.x}_#{actor.y}"] = walls: ['left'], door: 'left'
+        conditions["#{actor.x}_#{actor.y+1}"] = walls: ['left'], door: 'left'
+      when 'right'
+        # on right neighbors, vertical walls/dors or items or horizontal wall in the middle
+        conditions["#{actor.x+2}_#{actor.y}"] = walls: ['left', 'top'], door: 'left', character: true
+        conditions["#{actor.x+2}_#{actor.y+1}"] = walls: ['left', 'bottom'], door: 'left', character: true
+        # on same tiles, vertical walls/doors
+        conditions["#{actor.x+1}_#{actor.y}"] = walls: ['right'], door: 'right'
+        conditions["#{actor.x+1}_#{actor.y+1}"] = walls: ['right'], door: 'right'
+      when 'bottom'
+        # on bottom neighbors, horizontal walls/doors or items or vertical wall in the middle
+        conditions["#{actor.x}_#{actor.y-1}"] = walls: ['top', 'right'], door: 'top', character: true
+        conditions["#{actor.x+1}_#{actor.y-1}"] = walls: ['top', 'left'], door: 'top', character: true
+        # on same tiles, horizontal walls/doors
+        conditions["#{actor.x}_#{actor.y}"] = walls: ['bottom'], door: 'bottom'
+        conditions["#{actor.x+1}_#{actor.y}"] = walls: ['bottom'], door: 'bottom'
+      when 'top'
+        # on top neighbors, horizontal walls/doors or items or vertical wall in the middle
+        conditions["#{actor.x}_#{actor.y+2}"] = walls: ['bottom', 'right'], door: 'bottom', character: true
+        conditions["#{actor.x+1}_#{actor.y+2}"] = walls: ['bottom', 'left'], door: 'bottom', character: true
+        # on same tiles, horizontal walls/doors
+        conditions["#{actor.x}_#{actor.y+1}"] = walls: ['top'], door: 'top'
+        conditions["#{actor.x+1}_#{actor.y+1}"] = walls: ['top'], door: 'top'
+    for item in items
+      prevent = conditions["#{item.x}_#{item.y}"]
+      # item is at a position that may prevent move
+      if prevent?
+        switch item.type.id 
+          when 'wall'
+            # wall with matching side prevent moves
+            return false for side in prevent.walls when wallPositions[item.imageNum][side]
+          when 'door'
+            # closed door prevent moves, open door cannot be the last move
+            return false if doorPositions[item.imageNum][prevent.door] or (prevent.door of doorPositions[item.imageNum] and actor.moves is 1)
+          when 'alien', 'marine'
+            # undead alien or marine prevent move
+            return false if prevent.character and not item.dead
+    true
+    
+  # Checks that dreadnought is under a door or not
+  #
+  # @param items [Array<Model>] array containing map items at dreadnought and its parts positions
+  # @param actor [Model] current dreadnought, before move
+  # @return true if dreadnought is under an open door, false otherwise
+  isDreadnoughtUnderDoor: (items, actor) ->
+    # store position and their respective contitions that indicates an opened door above
+    conditions = {}
+    conditions["#{actor.x}_#{actor.y}"] = ['right', 'top']
+    conditions["#{actor.x+1}_#{actor.y}"] = ['left', 'top']
+    conditions["#{actor.x}_#{actor.y+1}"] = ['right', 'bottom']
+    conditions["#{actor.x+1}_#{actor.y+1}"] = ['left', 'bottom']
+    for item in items when item.type.id is 'door'
+      doors = conditions["#{item.x}_#{item.y}"]
+      if doors?
+        # if the door has one of the expected side, returns true
+        return true for side in doors when side of doorPositions[item.imageNum]
+    false
+    
   # Indicates wether a field is reachable from a given character, to move on it
+  # If actor is revealed dreadnought, take care or selecting x+2,y+2 rectangle
   # 
   # @param actor [Item] concerned character
   # @param field [Field] tested field
-  # @param items [Array<Item>] all existing items on the map inthe actor/field rectangle
+  # @param items [Array<Item>] all existing items on the map in the actor/field rectangle
   # @return true if this field is reachable
   isReachable: (actor, field, items) ->
-    # move possible if at distance 1, if field is marine own base and if field is visible
+    # move possible if field is marine own base
     return false unless field?.mapId is actor?.map?.id and 
-        actor.moves >= 1 and 
-        1 is distance(actor, field) and 
-        (field.typeId[0..5] isnt 'base-' or field.typeId is "base-#{actor.squad.name}") and
-        module.exports.hasObstacle(actor, field, items) is null
-    # check target occupant
-    occupant = _.find items, (item) -> item.x is field.x and 
-      item.y is field.y and 
-      item.type.id in ['marine', 'alien'] and
-      not item.dead
-    # can share tile with a squadmate, only if enought move to exit
-    return !occupant? or (actor.squad.id is (occupant.squad.id or occupant.squad) and actor.moves >= 2)
+        actor.moves >= 1 and (field.typeId[0..5] isnt 'base-' or field.typeId is "base-#{actor.squad.name}")
+        
+    if actor.kind is 'dreadnought' and actor.revealed
+      reachable = false
+      # dreadnought moves 1 step vertically or horizontally, no diagonals
+      switch field.x
+        when actor.x-1, actor.x+2 
+          # horizontal move
+          return false unless field.y in [actor.y, actor.y+1]
+          # check occupation on both horizontal lines, character not allowed
+          return module.exports.isFreeForDreadnought items, actor, if field.x < actor.x then 'left' else 'right'
+        when actor.x, actor.x+1 
+          # vertical move
+          return false unless field.y in [actor.y-1, actor.y+2]
+          # check occupation on both vertical lines, character not allowed
+          return module.exports.isFreeForDreadnought items, actor, if field.y < actor.y then 'bottom' else 'top'
+      return false
+    else
+      # move possible if at distance 1 and no obstacle
+      return false unless 1 is distance(actor, field) and module.exports.hasObstacle(actor, field, items) is null
+      # check target occupant
+      occupant = _.find items, (item) -> item.x is field.x and 
+        item.y is field.y and 
+        item.type.id in ['marine', 'alien'] and not item.dead
+      # can share tile with a squadmate, only if enought move to exit
+      return not occupant? or (actor.squad.id is (occupant.squad.id or occupant.squad) and actor.moves > 1)
   
   # Indicates wether a field/item target can be targeted with the given character weapon.
   # Common to range and close combat, thus you must check:
@@ -273,12 +388,13 @@ module.exports = {
   #
   # @param actor [Item] concerned character
   # @param target [Field|Item] tested target field
+  # @param weaponIdx [Number] index of selected weapon into the actor's weapons
   # @param itemsOrCallback [Array<Item>] items inside the rectangle defined by actor and target position. If a function, 
   # items are automatically retrieved, and the function invoked, with two arguments:
   # @option itemsOrCallback err [String] error string. Null if no error occured
   # @option itemsOrCallback reachable [Boolean] true if target is reachable
   # @returns Only if callback is an array, returns true is reachable, or false otherwise
-  isTargetable: (actor, target, itemsOrCallback) ->
+  isTargetable: (actor, target, weaponIdx, itemsOrCallback) ->
     if _.isArray itemsOrCallback
       callback = (err, result) ->
         throw new err if err?
@@ -293,12 +409,28 @@ module.exports = {
     proceed = (err, items) ->
       return callback err, false if err?
       # abort unless target visible to actor (character blocks visibility unless using flamer)
-      return callback null, false if module.exports.hasObstacle(actor, target, items, actor.weapons[actor.currentWeapon].id isnt 'flamer')?
+      candidates = [actor]
+      # if actor is dreadnought, all part must be testes
+      isDreadnought = actor.kind is 'dreadnought' and actor.revealed
+      candidates = candidates.concat actor.parts if isDreadnought
+        
+      visible = false
+      weapon = actor.weapons[weaponIdx]
+      # for each candidate, stop at first position that has a visibility line
+      for candidate in candidates when not module.exports.hasObstacle(candidate, target, items, weapon.id isnt 'flamer')?
+        visible = true
+        break
+      
+      return callback null, false unless visible
+        
       # depending on the weapon
-      switch actor.weapons[actor.currentWeapon].id
+      switch weapon.id
         when 'flamer'
           # flamer allowed on horizontal, vertical or diagonal lines
-          callback null, actor.x is target.x or actor.y is target.y or Math.abs(actor.x-target.x) is Math.abs actor.y-target.y
+          for candidate in candidates when candidate.x is target.x or candidate.y is target.y or Math.abs(candidate.x-target.x) is Math.abs candidate.y-target.y
+            return callback null, true
+          # no matching candidates
+          return callback null, false
         when 'gloveSword', 'claws'
           # close combat only: check alignment and distance
           callback null, 1 is distance(actor, target) and (target.x is actor.x or target.y is actor.y)
@@ -312,6 +444,7 @@ module.exports = {
     selectItemWithin actor.map.id, actor, target, proceed
                     
   # Search for the nearest wall on the line (horizontal, vertical or diagonal)
+  # TODO dreadnoughts can target for any of its part
   #
   # @param mapId [String] id of current map
   # @param from [Object] shooter position (x/y coordinates)
@@ -367,22 +500,25 @@ module.exports = {
         
   # Find within next items a door to open, and returns it
   #
-  # @param pos [Object] actor current position (with x and y coordinates)
+  # @param positions [Model|Array<Model>] positions (with x and y coordinates) from which door may be opened
   # @param items [Array<Model>] array of items within 1 range from actor
   # @return a door to open, or null.
-  findNextDoor: (pos, items) ->
-    openable = _.find items, (door) -> 
-      match = false
-      # returns closed door
-      if door.type.id is 'door' and door.closed
-        # but depending on the image, position must be check from both sides of the door
-        switch door.imageNum
-          # horizontal low doors
-          when 2, 3 then match = pos.x is door.x and pos.y in [door.y-1, door.y]
-          # horizontal up doors
-          when 10, 11 then match = pos.x is door.x and pos.y in [door.y+1, door.y]
-          # vertical doors
-          when 6, 7, 14, 15 then match = pos.y is door.y and pos.x in [door.x-1, door.x]
-      match
-    return openable or null
+  findNextDoor: (positions, items) ->
+    positions = [positions] unless _.isArray positions
+    
+    for pos in positions
+      # search for closed door:
+      for door in items when door.type.id is 'door' and door.closed
+        # sharing same position, whatever the side
+        return door if door.x is pos.x and door.y is pos.y
+        # at left with right side
+        return door if doorPositions[door.imageNum].right and door.x is pos.x-1 and door.y is pos.y
+        # at right with left side
+        return door if doorPositions[door.imageNum].left and door.x is pos.x+1 and door.y is pos.y
+        # at bottom with top side
+        return door if doorPositions[door.imageNum].top and door.x is pos.x and door.y is pos.y-1
+        # at top with bottom side
+        return door if doorPositions[door.imageNum].bottom and door.x is pos.x and door.y is pos.y+1
+    return null
+
 }

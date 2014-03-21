@@ -47,6 +47,12 @@ define [
         @scope.weapons = ['autoCannon', 'missileLauncher', 'flamer', 'bolter']
       # manually update and do not use ngModel because it insert en ampty option
       @$el = $(element)
-      @$el.find('.weapon').on 'change', (event) => 
-        @scope.$apply =>
-          @scope.target.weapon = $(event.target).val()
+      @$el.on 'change', '.weapon', (event) => 
+        @scope.$apply => @_updateModel event
+           
+    # **private**
+    # Update the model value according to selected weapons
+    #
+    # @param event [Event] Modification event
+    _updateModel: (event) =>
+      @scope.target.weapon = $(event.target).val()

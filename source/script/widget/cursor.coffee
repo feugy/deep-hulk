@@ -65,6 +65,8 @@ define [
       @scope.canFight = false
       @scope._onActivate = @_onActivate
       @scope._onOpen = @_onOpen
+      @scope.isBlip = false
+      @scope.rcNum = []
       
       @_rear = $('<div class="cursor rear"/>')
             
@@ -73,11 +75,20 @@ define [
       
       # redraw content when map or its dimension changes
       @scope.$watch 'selected', (value, old) =>
-        return unless value isnt old 
+        return unless value isnt old
+        @scope.isBlip = value?.revealed is false
         @scope.canOpenDoor = value?.doorToOpen?
-        weapon = value?.weapons[value?.currentWeapon]
-        @scope.canShoot = value?.revealed isnt false and weapon?.rc?
-        @scope.canAssault = value?.revealed isnt false and weapon?.cc?
+        if @scope.activeWeapon > value?.weapons?.length
+          @scope.activeWeapon = 0 
+        # evaluate weapons that can have been already used
+        @_updateUsed value
+        # shoot possible if at least one weapon have range capacity
+        @scope.canShoot = value?.revealed isnt false and _.any value?.weapons, (weapon) -> weapon.rc?
+        # use first weapon for close combat
+        @scope.canAssault = value?.revealed isnt false and value?.weapons[0]?.cc?
+        isBig = value?.revealed is true and value?.kind is 'dreadnought'
+        @_rear.toggleClass 'is-big', isBig
+        @$el.toggleClass 'is-big', isBig
         if @scope.activeRule?
           @scope.activeRule = null
           @scope.selectActiveRule?(null, @scope.activeRule) 
@@ -102,11 +113,18 @@ define [
         when 'update'
           if model?.id is @scope.selected?.id
             @scope.$apply =>
-              weapon = model?.weapons[model?.currentWeapon]
-              @scope.canShoot = model.revealed isnt false and weapon?.rc?
-              @scope.canAssault = model.revealed isnt false and weapon?.cc?
+              @scope.isBlip = model?.revealed is false
+              @scope.canShoot = model?.revealed isnt false and _.any model?.weapons, (weapon) -> weapon.rc?
+              # use first weapon for close combat
+              @scope.canAssault = model?.revealed isnt false and model?.weapons[0]?.cc?
               if 'doorToOpen' in changes
                 @scope.canOpenDoor = model.doorToOpen?
+              if 'revealed' in changes
+                isBig = model?.revealed is true and model?.kind is 'dreadnought'
+                @_rear.toggleClass 'is-big', isBig
+                @$el.toggleClass 'is-big', isBig
+              if ('usedWeapons' in changes or 'rcNum' in changes) and model?.usedWeapons?
+                @_updateUsed model
               if 'x' in changes or 'y' in changes
                 # positionnate
                 @$el.addClass 'movable'
@@ -115,16 +133,19 @@ define [
                 @$el.one 'transitionend', =>
                   @$el.removeClass 'movable'
                   @_rear.removeClass 'movable'
-              @_onActivate null, @scope.activeRule
+              @_onActivate null, @scope.activeRule, @scope.activeWeapon
         
     # **private**
     # Set given rule as active if allowed
     # 
     # @param evt [Event] click event
     # @param rule [String] expected rule to be active
-    _onActivate: (evt, rule) =>
+    # @param weapon [Numer] selected weapon rank (in weapons) to use in case of shoot
+    _onActivate: (evt, rule, weapon = 0) =>
       evt?.stopImmediatePropagation()
       old = @scope.activeRule
+      oldWeapon = @scope.activeWeapon
+      @scope.activeWeapon = weapon
       switch rule
         when 'move' 
           @scope.activeRule = if @scope.selected.moves > 0 then rule else null
@@ -137,7 +158,8 @@ define [
           break
         else 
           @scope.activeRule = null
-      @scope.selectActiveRule?(evt, @scope.activeRule) unless old is @scope.activeRule 
+      if old isnt @scope.activeRule or oldWeapon isnt @scope.activeWeapon
+        @scope.selectActiveRule?(evt, @scope.activeRule, @scope.activeWeapon)
       
     # **private**
     # Ask to opens a door, if is open is available
@@ -145,7 +167,25 @@ define [
       evt?.stopImmediatePropagation()
       if @scope.canOpenDoor
         @scope.askToExecuteRule?('open')
-      
+                
+    # **private**
+    # Update rcNum array in scope, that contains number of shoot per weapon 
+    # (same order that weapons array)
+    #
+    # @param model [Model] displayed item
+    _updateUsed: (model) =>
+      if model?.usedWeapons?
+        used = JSON.parse model.usedWeapons
+        @scope.rcNum = []
+        for weapon, i in model.weapons
+          @scope.rcNum[i] = model.rcNum
+          if i in used
+            @scope.rcNum[i]-- 
+            if @scope.activeWeapon is i
+              # current weapon is used: disabled current rule
+              @scope.activeWeapon = 0
+              @scope.activeRule = null
+    
     # **private**
     # Re-builds rendering, with optional animation
     # @param animate [Boolean] true to animate disapearance and appearance

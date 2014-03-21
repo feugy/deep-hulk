@@ -7,18 +7,23 @@
   </alert>
 </div>
 <aside>
-  <!-- for marine players only: squad configuration -->
-  <div class="frame">
+  <!-- for marine players: squad configuration -->
+  <div class="frame ng-class: isAlien ? 'alien' : 'marine';">
     <div>
       <h1>{{'labels.'+squad.name | i18n}}</h1> <img src="{{getInstanceImage(squad)}}"/>
     </div>
-    <div ng-bind-html="'texts.configureSquad' | i18n"></div>
+    <div ng-bind-html="'texts.configure' + (isAlien ? 'Aliens' : 'Marines') | i18n"></div>
     <form>
-      <configure-marine data-ng-repeat="member in squad.members" 
+      <configure-marine data-ng-hide="isAlien" data-ng-repeat="member in squad.members" 
         data-src="member" 
         data-target="$parent.configured[member.id]"
         data-hover-option="onHoverOption"
         class="row"></configure-marine>
+      <configure-dreadnought data-ng-show="isAlien" data-ng-repeat="member in squad.members | filter:{kind:'dreadnought'}" 
+        data-src="member" 
+        data-target="$parent.configured[member.id]"
+        data-hover-option="onHoverOption"
+        class="row"></configure-dreadnought>
     </form>
     <div class="buttons">
       <a href="" data-ng-click="onDeploy()" class="btn">{{'buttons.deploy'|i18n}}</a>

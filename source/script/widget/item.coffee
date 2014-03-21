@@ -240,7 +240,7 @@ define [
       
       # center horizontally with tile, and make tile bottom and widget bottom equal
       if @_imageSpec?
-        pos.left += map.renderer.tileW*(1-@_imageSpec.width)/2
+        pos.left += map.renderer.tileW*(1-@_imageSpec.width)/2 unless @scope.model.noHCenter
         pos.top += map.renderer.tileH*(1-@_imageSpec.height)
         
       # add z-index specific rules
@@ -367,7 +367,7 @@ define [
             # assault specific case: display results on map as indication
             @scope.displayIndications _.map model.log[@_logLength...model.log.length], (log) ->
               return  {
-                text: log.damages
+                text: log.loss
                 x: log.x
                 y: log.y
                 fx: log.fx

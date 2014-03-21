@@ -59,6 +59,7 @@ define [
       @scope.hasPrevAction = ''
       @scope.canStopReplay = ''
       @scope.activeRule = null
+      @scope.activeWeapon = 0
       @scope.log = []
       @scope._onSelectActiveRule = @_onSelectActiveRule
       @scope._onNextAction = =>
@@ -115,8 +116,8 @@ define [
         @_updateReplayCommands()
         
         squad = _.find game.squads, (squad) => squad.player is @atlas.player.email
-        # redirect to configuration if marine and not on map
-        return @location.path "#{conf.basePath}configure-squad" unless squad.map? or squad.isAlien
+        # redirect to configuration if not on map
+        return @location.path "#{conf.basePath}configure" unless squad.map?
         # fetch squand and all of its members
         @_fetchSquad squad
           
@@ -144,9 +145,9 @@ define [
       # do NOT ignore assault resolution if service is busy
       if @atlas.ruleService.isBusy() and @scope.activeRule isnt 'assault'
         return
-      @atlas.ruleService.execute "#{@scope.activeRule}Zone", @scope.selected, details, {}, (err, result) => @scope.$apply =>
+      @atlas.ruleService.execute "#{@scope.activeRule}Zone", @scope.selected, details, {weaponIdx:@scope.activeWeapon}, (err, result) => @scope.$apply =>
         # silent error: no zone
-        if err? or @scope.selected is null
+        if err? or @scope.selected is null or not result?
           return @scope.zone = null
         result.origin = @scope.selected
         result.target = details
@@ -165,14 +166,16 @@ define [
     #
     # @param event [Event] triggering event
     # @param rule [String] new value for active rule
-    _onSelectActiveRule: (event, rule) =>
-        @scope.activeRule = rule
-        if rule is 'move'
-          @displayMovable()
-        else if rule is 'assault'
-          @displayDamageZone event, @scope.selected
-        else 
-          @scope.zone = null
+    # @param weapon [Numer] selected weapon rank (in weapons) to use in case of shoot
+    _onSelectActiveRule: (event, rule, weapon = 0) =>
+      @scope.activeRule = rule
+      @scope.activeWeapon = weapon
+      if rule is 'move'
+        @displayMovable()
+      else if rule is 'assault'
+        @displayDamageZone event, @scope.selected
+      else 
+        @scope.zone = null
           
     # **private**
     # Update replay commands after a replay action
@@ -241,7 +244,7 @@ define [
         # inhibit on turn end or replay pos
         @_inhibit = @scope.squad.actions < 0 or @atlas.replayPos?
         # Redraw previously highlighted zone
-        @_onSelectActiveRule null, @scope.activeRule
+        @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
       
     # **private**
     # Multiple behaviour when model update is received:
@@ -302,7 +305,13 @@ define [
     # @option details field [Field] field model at this coordinates (may be null)
     _onSelect: (event, details) =>
       # find selectable item inside clicked items
-      item = _.find details.items, (item) => item in @scope.squad.members
+      item = _.find details.items, (item) => 
+        # takes in acccount possible parts (for dreadnought)
+        return true for member in @scope.squad.members when member is item or (member.parts? and item in member.parts)
+        false
+      # if part is returned, use its main object
+      item = item?.main or item
+      
       @scope.$apply =>
         if @scope.selected is item
           @scope.selected = null
@@ -342,7 +351,10 @@ define [
           
       if @scope.selected?
         # for shoot, restrict to category. Otherwise, restrict to rule id
-        restriction = if @scope.activeRule is 'shoot' then [@scope.activeRule] else @scope.activeRule
+        if @scope.activeRule is 'shoot' and @scope.selected.weapons[@scope.activeWeapon]?.id is 'autoCannon'
+          restriction = [@scope.activeRule] 
+        else
+          restriction = @scope.activeRule
         # resolve board rules for the selected item at this coord
         @atlas.ruleService.resolve @scope.selected, details.x, details.y, restriction, proceed
       else 
@@ -366,10 +378,11 @@ define [
     _onSelectMenuItem: (event, item) =>
       # do not support yet multiple targets nor parameters
       return console.error "multiple targets not supported yet for rule #{item}" if @_applicableRules[item].length > 1
-      return console.error "parameters not supported yet for rule #{item}" if @_applicableRules[item][0].params?.length > 0
+      return console.error "parameters not supported yet for rule #{item}" if item isnt 'shoot' and @_applicableRules[item][0].params?.length > 0
             
       # trigger rule
-      @atlas.ruleService.execute item, @scope.selected, @_applicableRules[item][0].target, {}, (err, result) =>
+      params = if item is 'shoot' then weaponIdx: @scope.activeWeapon else {}
+      @atlas.ruleService.execute item, @scope.selected, @_applicableRules[item][0].target, params, (err, result) =>
         return @scope.$apply(=> @scope.log.splice 0, 0, kind: 'error', content: parseError err.message) if err?   
         # refresh movable tiles
         @displayMovable()

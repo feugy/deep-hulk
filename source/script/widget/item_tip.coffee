@@ -45,29 +45,34 @@ define [
       @scope.isAlien = @scope.src?.type?.id is 'alien'
       @scope.squadImage = "#{conf.imagesUrl}squad-#{@scope.src.squad.imageNum}.png"
       @scope.ccDamages = ""
-      @scope.rcDamages = ""
+      @scope.rcDamages = []
       
       getDamages = =>
-        weapon = @scope.src.weapons[@scope.src.currentWeapon]
-        @scope.ccDamages = "labels.#{weapon?.cc or 'noCc'}"
-        @scope.rcDamages = "labels.#{weapon?.rc or 'noRc'}"
+        # use first weapon for close combat
+        @scope.ccDamages = "labels.#{@scope.src.weapons[0]?.cc or 'noCc'}"
+        @scope.rcDamages = []
+        for weapon in @scope.src.weapons
+          @scope.rcDamages.push "labels.#{weapon?.rc or 'noRc'}"
         
       # Weapon resolution if needed
-      return @_resolveWeapon(=> @scope.$apply getDamages) unless @scope.src.weapons[@scope.src.currentWeapon]?.id?
+      return @_resolveWeapon(=> @scope.$apply getDamages) unless @scope.src.weapons[0]?.id?
       getDamages()
       
     # **private**
     # Resolve weapons to get details. Replace source own weapons
     # @param end [Function] callback invoked when weapons are resolved
     _resolveWeapon: (end) =>
+      console.log ">> resolve weapons for", @scope.src.kind
       # first, lool into the cache
       @atlas.Item.findCached @scope.src.weapons, (err, weapons) =>
         console.error "Failed to find weapons by id for tip:", err if err?
-        if weapons?
+        if weapons.length is @scope.src.weapons.length
+          console.log '>1', weapons
           @scope.src.weapons = weapons
           return end()
         # or ask to server
-        @atlas.Item.fetch @scope.src.weapons, (err, [weapon]) => 
+        @atlas.Item.fetch @scope.src.weapons, (err, weapons) => 
           console.error "Failed to fetch weapons for tip:", err if err?
+          console.log '>2', weapons
           @scope.src.weapons = weapons
           end()

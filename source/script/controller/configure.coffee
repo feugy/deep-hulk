@@ -39,7 +39,7 @@ define [
       @scope.onHoverOption = @_displayHelp
       
       # bind configuration change
-      @scope.$watch 'configured', @_onConfigureMarine, true
+      @scope.$watch 'configured', @_onConfigure, true
               
       gId = @location.search()?.id
       return @location.path("#{conf.basePath}home").search({}) unless gId? 
@@ -54,7 +54,7 @@ define [
         @scope.game = game
         squad = _.find game.squads, (squad) => squad.player is @atlas.player.email
         # redirect to game if alien or already configured
-        return @location.path "#{conf.basePath}board" if squad.isAlien or squad.map?
+        return @location.path "#{conf.basePath}board" if squad.map?
         # fetch squand and all of its members
         @_fetchSquad squad
        
@@ -83,8 +83,14 @@ define [
         # then get members
         @atlas.Item.fetch squad.members, (err) => @scope.$apply => 
           return @scope.error = err?.message if err?
+          @scope.isAlien = squad.name is 'alien'
           for member in squad.members
-            @scope.configured[member.id] = weapon: member?.weapons[member.currentWeapon]?.id
+            if @scope.isAlien
+              # only dreadnought are configurable
+              @scope.configured[member.id] = weapons: [] if member.kind is 'dreadnought'
+            else
+              # marines can just configure first weapon (they usually wear only one weapon)
+              @scope.configured[member.id] = weapon: member?.weapons[0]?.id
           @scope.squad = squad
       
     # **private**
@@ -93,16 +99,24 @@ define [
     # 
     # @param current [Object] new configured options for squad members
     # @param previous [Object] previous configured options for squad members
-    _onConfigureMarine: (current, previous) =>
+    _onConfigure: (current, previous) =>
       return if _.isEqual {}, previous
-      # configure marines equipment
       params = {}
-      for id, spec of current
-        params["#{id}-weapon"] = spec.weapon
       @scope.error = null
-      @atlas.ruleService.execute 'configureSquad', @atlas.player, @scope.squad, params, (err) => @scope.$apply =>
-        if err?
-          return @scope.error = parseError err?.message
+      if @scope.isAlien
+        rule = 'configureAliens'
+        # configure dreadnought
+        for id, spec of current
+          for weapon, i in spec.weapons
+            params["#{id}-weapon-#{i}"] = weapon
+      else
+        rule = 'configureSquad'
+        # configure marines equipment
+        for id, spec of current
+          params["#{id}-weapon"] = spec.weapon
+      
+      @atlas.ruleService.execute rule, @atlas.player, @scope.squad, params, (err) => @scope.$apply =>
+        @scope.error = parseError err?.message if err?
            
     # **private**
     # Handler invoked when the squad is deployed.

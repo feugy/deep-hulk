@@ -1,9 +1,10 @@
 'use strict'
 
 define [
+  'jquery'
   'underscore'
   'underscore.string'
-], (_) ->
+], ($, _) ->
   
   _.mixin _.str.exports()
   

@@ -130,8 +130,18 @@ assaultRotation = 60deg
 //------------------------------------------------------------------------------
 // Item cursor
 
+@keyframes showCommands
+  0%
+    transform scale(1, 0)
+  100%
+    transform scale(1, 1)
+
 .cursor
 .cursor.rear
+
+  innerActionSize = 60px
+  actionSize = 75px
+
   position absolute
   width 200px
   height 200px
@@ -140,16 +150,39 @@ assaultRotation = 60deg
   transform-origin 0 0 0
   z-index 1000000
   pointer-events none
-
-  > a
-    pointer-events auto
+  
+  > .right
+  > .left
     position absolute
-    width cursorActionSize
-    height 0
+    bottom actionSize*0.5
+    width actionSize
+    transform-origin 50% 50%
+    // use a transition to allow cursor JS detect the animation end
+    opacity 0.8
+    transition opacity 250ms
+
+  > .right
+    right (actionSize*-0.7)
+
+  > .left
+    left (actionSize*-0.7)
+
+  a
+    position relative
+    display block
+    height innerActionSize
+    pointer-events auto
     background-repeat no-repeat
     background-image url(../image/commands.png)
-    transition height 250ms, bottom 250ms
-    bottom cursorActionSize + cursorActionOffset
+    background-position -2*actionSize -3*innerActionSize
+    
+    > span
+      position absolute
+      display block
+      width 100%
+      height innerActionSize
+      background-image url(../image/commands.png)
+      background-repeat no-repeat
 
     i 
       position absolute
@@ -159,60 +192,53 @@ assaultRotation = 60deg
       bottom 3px
       right 12px
 
-  > a:hover
+  a:first-child
+    border-top actionSize - innerActionSize solid transparent
+    background-position 0 -3*innerActionSize - (actionSize - innerActionSize)
+
+  a:last-child
+    border-bottom actionSize - innerActionSize solid transparent
+    background-position - actionSize -3*innerActionSize
+
+  a:hover
     text-decoration none
     cursor pointer
 
-  > .open:not(.active):hover
+  .open:not(.active):hover
     cursor default
-  
-  .move
-  .open
-    left (cursorActionSize*-0.7)
-  .shoot
-  .assault
-    right (cursorActionSize*-0.7)
 
-  .move
-    background-position -2*cursorActionSize 0
-  .move.active
-    background-position 0 0
-  .move:hover
-    background-position -4*cursorActionSize 0
-  
-  .open
-    background-position -2*cursorActionSize -1*cursorActionSize
-  .open.active
-    background-position 0 -1*cursorActionSize
+   
+  // by default, display shoot icon for unspecified weapons
+  a > span
+    background-position (-6)*actionSize -1*innerActionSize
+  a.active > span
+    background-position (-6)*actionSize 0
+  a:hover > span
+    background-position (-6)*actionSize -2*innerActionSize
 
-  .shoot
-    background-position -3*cursorActionSize 0
-  .shoot.active
-    background-position -1*cursorActionSize 0
-  .shoot:hover
-    background-position -5*cursorActionSize 0
- 
-  .assault
-    background-position -3*cursorActionSize -1*cursorActionSize
-  .assault.active
-    background-position -1*cursorActionSize -1*cursorActionSize
-  .assault:hover
-    background-position -5*cursorActionSize -1*cursorActionSize
-  .assault  i
-    bottom 15px
+  // or use specific icons for other actions
+  actions = move, open, assault, missileLauncher, autoCannon, flamer
+
+  for action, i in actions
+    .{action} > span
+      background-position (- i)*actionSize -1*innerActionSize
+    .{action}.active > span
+      background-position (- i)*actionSize 0 
+    .{action}:hover > span
+      background-position (- i)*actionSize -2*innerActionSize
 
 .cursor.rear
   background-image url(../image/cursor.png)
+  background-size 100% auto
+  background-position 50% 100%
   z-index 0
   opacity 0
   transition opacity 150ms
 
 .cursor.animated
-  a
-    height cursorActionSize
-  .open
-  .assault
-    bottom cursorActionOffset
+  > div
+    opacity 1
+    animation showCommands 250ms ease-out
 
 .cursor.movable
   transition top moveDuration, left moveDuration
@@ -223,6 +249,12 @@ assaultRotation = 60deg
 .cursor.rear.movable
   transition opacity 150ms, top moveDuration, left moveDuration
 
+.cursor.is-big
+  width 400px
+
+.cursor.blip .right
+  display none
+  
 //------------------------------------------------------------------------------
 // Item tooltip
 
@@ -281,8 +313,13 @@ assaultRotation = 60deg
   h1
     top 5px
     right 5px
+    left 5px
+    text-align right
+    text-shadow 0 0 1px black
+    overflow hidden
+    text-overflow ellipsis
     margin 0
-    font-size textSize*0.8
+    font-size textSize*0.7
     line-height textSize*1
 
   .weapon
@@ -394,10 +431,16 @@ for selector, size in alienSizes
   sum += size
 
 //------------------------------------------------------------------------------
-// Marine configuration
+// Marine & Dreadnought configuration
 
 .configure-marine
+.configure-dreadnought
   margin 0.5em 0
+
+  > div label
+  > div select
+    margin 0.5em 0
+    
 
 //------------------------------------------------------------------------------
 // Deployable blips directive

@@ -49,20 +49,20 @@ module.exports = {
   # door position from their image index
   # **CAUTION** don't forget to update position when door ItemType images are modified !
   doorPositions: [
-    {}
-    {}
+    {bottom: false}
+    {bottom: false}
     {bottom: true}
     {bottom: true}
-    {}
-    {}
+    {left: false}
+    {left: false}
     {left: true}
     {left: true}
-    {}
-    {}
+    {top: false}
+    {top: false}
     {top: true}
     {top: true}
-    {}
-    {}
+    {left: false}
+    {left: false}
     {left: true}
     {left: true}
   ]
@@ -87,40 +87,56 @@ module.exports = {
     pistolAxe: 6
     slugga: 8
     shoota: 6
+    dreadnoughtBolter: 4
     
   # store moves, armor and weapon capacities for aliens
   # use the same names as alien properties to allow quick copy during creation
   alienCapacities:
-    gretchin:
-      imageNum: 2
-      armor: 0
-      weapons: ['slugga']
-      points: 2
     ork:
-      imageNum: 1
       armor: 1
       weapons: ['shoota']
       points: 3
-    chaosMarine:
+      imageNum: 1
+    gretchin:
+      armor: 0
+      weapons: ['slugga']
+      points: 2
+      imageNum: 2
+    android:
       armor: 2
-      weapons: ['bolter']
-      points: 5
-    chaosHeavyMarine:
-      armor: 2
-      weapons: ['missileLauncher']
+      weapons: ['assaultRifle']
       points: 10
+      imageNum: 3
     chaosCommander:
       armor: 2
       weapons: ['heavyBolter']
       points: 10
-    android:
-      imageNum: 3
+      imageNum: 4
+    chaosMarine:
       armor: 2
-      weapons: ['assaultRifle']
+      weapons: ['bolter']
+      points: 5
+      imageNum: 5
+    chaosHeavyMarine:
+      armor: 2
+      weapons: ['missileLauncher']
       points: 10
+      imageNum: 6
+    dreadnought:
+      armor: 4
+      life: 3
+      noHCenter: true
+      weapons: ['dreadnoughtBolter']
+      points: 25
+      imageNum: 
+        missileLauncher_autoCannon: 7
+        missileLauncher_flamer: 8
+        autoCannon_missileLauncher: 7
+        autoCannon_flamer: 9
+        flamer_autoCannon: 9
+        flamer_missileLauncher: 8
     genestealer:
       armor: 3
       weapons: ['claws']
       points: 0
-  
 }

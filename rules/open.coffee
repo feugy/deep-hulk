@@ -1,7 +1,7 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
-{selectItemWithin, addAction} = require './common'
-{detectBlips} = require './visibility'
+{selectItemWithin, addAction, mergeChanges} = require './common'
+{detectBlips, findNextDoor} = require './visibility'
 
 # Door opening rule
 class OpenRule extends Rule
@@ -51,11 +51,21 @@ class OpenRule extends Rule
         door.imageNum -= 2
         door.transition = 'open'
         @saved.push door
-      # no more door to open (normally)
+      
       console.log "#{actor.name or actor.kind} (#{actor.squad.name}) opens door at #{door.x}:#{door.y}"
-      actor.doorToOpen = null
-      detectBlips actor, @, effects, (err) =>
+      # search for other door to open (only possible for dreadnoughts)
+      candidates = [actor]
+      isDreadnought = actor.kind is 'dreadnought' and actor.revealed
+      # dreadnought have 2 range, because they can open with any of their parts
+      range = if isDreadnought then 2 else 1
+      selectItemWithin actor.map.id, {x:actor.x-1, y:actor.y-1}, {x:actor.x+range, y:actor.y+range}, (err, items) =>
         return callback err if err?
-        addAction 'open', actor, effects, @, callback
+        # don't forget to take in account modified doors
+        mergeChanges items, @
+        
+        actor.doorToOpen = findNextDoor (if isDreadnought then actor.parts.concat [actor] else actor), items
+        detectBlips actor, @, effects, (err) =>
+          return callback err if err?
+          addAction 'open', actor, effects, @, callback
       
 module.exports = new OpenRule()

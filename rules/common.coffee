@@ -12,7 +12,7 @@ EventType.findCached ['action'], (err, [type]) =>
 
 dices =
   w: [0, 0, 0, 0, 1, 2]
-  r: [0, 0, 0, 1, 1, 3]
+  r: [0, 0, 0, 1, 2, 3]
   
 # Removes types from stored action values
 #
@@ -87,6 +87,18 @@ module.exports = {
       err = new Error "no game with id #{gameId} found" if !err and !game?
       return callback err if err?
       callback null, game
+      
+  # Apply damages on a target, randomly removing enought weapon if target is a dreadnought
+  # No effect if target isn't a dreadnought, or if target is dead
+  #
+  # @param target [Model] damaged target
+  # @param loss [Number] lost life points.
+  damageDreadnought: (target, loss) ->
+    if target.kind is 'dreadnought' and target.life > 0
+      for i in [0...loss]
+        idx = 1 + Math.floor Math.random()*(target.weapons.length-1)
+        console.log "#{target.kind} (#{target.squad.name}) lost its #{target.weapons[idx].id} !"
+        target.weapons.splice idx, 1
     
   # Roll dices
   #
@@ -99,7 +111,8 @@ module.exports = {
       times = parseInt spec[0]
       for t in [1..times]
         # role a 6-face dice
-        result.push dices[spec[1]][Math.floor Math.random()*6]
+        idx = Math.floor Math.random()*6
+        result.push dices[spec[1]][idx]
     result
     
   # Distance function: number of tiles between two point on a map
@@ -248,4 +261,16 @@ module.exports = {
         
       rule.saved.push prev, next, game
       callback null
+    
+  # Indicates wether two items have the same position.
+  # You need to select the right range of models
+  #
+  # @param items [Array<Model>] checked models.
+  # @return true if two models have the same position
+  hasSharedPosition: (items) ->
+    for model in items when model?.type?.id in ['marine', 'alien']
+      items = _.any items, (item) -> 
+        item?.type?.id is model.type.id and not model.dead and not item?.dead
+      return true if items.length >= 2
+    return false
 }

@@ -195,10 +195,22 @@ define [
           renderer.drawTile ctx, tile, color for tile in @scope.src.tiles
             
         when 'move', 'assault'
-          # mive and assault will display a gradient centered on origin (character position)
-          grad = makeRadialGradient ctx, @scope.src.origin, renderer, renderer.tileW*1.5, color
-          tiles = @scope.src.tiles or []
-          tiles.push @scope.src.origin unless @scope.src.origin in tiles
+          tiles = @scope.src.tiles?.concat() or []
+          # move and assault will display a gradient centered on origin (character position)
+          coord = _.pick @scope.src.origin, 'x', 'y'
+          if @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
+            # add dreadnought position cause it's not included
+            for i in [0..1]
+              tiles.push x: coord.x+i, y:coord.y+j for j in [0..1]
+            # dreadnought specific case: center right ahead current position
+            coord.x += 0.5
+            coord.y += 0.5
+            range = renderer.tileW*2.1
+          else
+            range = renderer.tileW*1.5
+            # add character pos if not already included
+            tiles.push coord unless coord in tiles
+          grad = makeRadialGradient ctx, coord, renderer, range, color
           renderer.drawTile ctx, tile, grad for tile in tiles
             
         when 'shoot'
@@ -216,7 +228,13 @@ define [
               end = @scope.src.target
               # use same color as highlight
               c2 = color
-            drawVisibilityLine ctx, @scope.src.origin, end, renderer, c1, c2
+            
+            coord = _.pick @scope.src.origin, 'x', 'y'
+            if @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
+              # dreadnought specific case: center right ahead current position
+             coord.x += 0.5
+             coord.y += 0.5
+            drawVisibilityLine ctx, coord, end, renderer, c1, c2
           
           switch weapon
             when 'missileLauncher'

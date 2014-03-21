@@ -52,6 +52,7 @@ require [
   './filter/utils'
   './widget/alert'
   './widget/character_details'
+  './widget/configure_dreadnought'
   './widget/configure_marine'
   './widget/cursor'
   './widget/deployable_blips' 

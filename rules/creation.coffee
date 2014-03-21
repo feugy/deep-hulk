@@ -23,7 +23,7 @@ class CreationRule extends Rule
     return callback null, null unless actor?._className is 'Player' and actor is target
     callback null, [
       {name: 'gameName', type: 'string'}
-      {name: 'mission', type: 'string', within: ['mission-3']}
+      {name: 'mission', type: 'string', within: ['mission-0', 'mission-3']}
       {name: 'squad', type: 'string'}
     ]
 
@@ -75,8 +75,6 @@ class CreationRule extends Rule
             # appart the alien squad
             if name is 'alien'
               @_createAliens squad, Alien, JSON.parse mission.aliens
-              # immediateky deploy alien on map
-              squad.map = map
             else
               @_createMarines squad, Marine, name
                   
@@ -149,7 +147,6 @@ class CreationRule extends Rule
           imageNum: 0
           revealed: false
           moves: moveCapacities.blip
-          currentWeapon: 0
           squad: squad
         @saved.push alien
         squad.members.push alien
@@ -172,7 +169,6 @@ class CreationRule extends Rule
       life: 6
       armor: 2
       moves: moveCapacities.heavyBolter
-      currentWeapon: 0
       weapons: ['pistolAxe']
     @saved.push sergent
     squad.members.push sergent
@@ -187,7 +183,6 @@ class CreationRule extends Rule
         life: 1
         armor: 2
         moves: moveCapacities.bolter
-        currentWeapon: 0
         weapons: ['bolter']
       @saved.push marine
       squad.members.push marine

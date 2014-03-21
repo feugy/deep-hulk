@@ -1,0 +1,13 @@
+<div class="configure-dreadnought">
+  <label>{{'labels.'+src.kind|i18n:{sep:true} }}</label>
+  <div>
+    <div data-ng-repeat="i in nbWeapons" class="row">
+      <label>{{'labels.weaponNumber'|i18n}}{{i}}{{'labels.fieldSeparator'|i18n}}</label>
+      <select class="weapon">
+        <option data-ng-repeat="weapon in weapons"
+                data-ng-mouseover="hoverOption($event, weapon)"
+                value="{{weapon}}">{{'names.'+weapon|i18n}}</option>
+      </select>
+    </div>
+  </div>
+</div>
