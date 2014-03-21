@@ -32,15 +32,15 @@ assaultRotation = 60deg
 
 .map
   box-sizing border-box
-  overflow hidden
   z-index 0
 
   .loading
+    pad = -50px
     position absolute
-    top 0
-    left 0
-    bottom 0
-    right 0
+    top pad
+    left pad
+    bottom pad
+    right pad
     background mapLoadingBackground
     z-index 10
 
@@ -405,14 +405,15 @@ for selector, size in weaponSizes
     width 50px
     height 50px
     background-image url(../image/alien-wireframes.png)
-    background-size 100px 400px
+    background-size 100px 450px
 
 alienSizes = {
   dreadnought: 50,
   genestealer: 50,
   android: 50,
-  'chaos-commander': 50,
-  'chaos-marine': 50,
+  chaosCommander: 50,
+  chaosHeavyMarine: 50,
+  chaosMarine: 50,
   gretchin: 50,
   ork: 50,
   blip: 50

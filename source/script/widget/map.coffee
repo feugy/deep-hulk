@@ -286,9 +286,13 @@ define [
       # center map on position
       pos = @scope.renderer.coordToPos coord
       # do not go beyond left (0) and right (@_dims.width-@width) borders
-      left = Math.max @_dims.width-@width, Math.min @_dims.width/2-pos.left, 0
+      rBorder = if @_dims.width > @width then (@_dims.width-@width)/2 else @_dims.width-@width
+      lBorder = if @_dims.width > @width then (@_dims.width-@width)/2 else 0
+      left = Math.max rBorder, Math.min @_dims.width/2-pos.left, lBorder
       # do not go beyond top (0) and bottom (@_dims.height-@height) borders
-      top = Math.max @_dims.height-@height, Math.min @_dims.height/2-pos.top, 0
+      tBorder = if @_dims.height > @height then (@_dims.height-@height)/2 else @_dims.height-@height
+      bBorder = if @_dims.height > @height then (@_dims.height-@height)/2 else 0
+      top = Math.max tBorder, Math.min @_dims.height/2-pos.top, 0
       @_container.animate {left:left, top:top}, 250
       
     # Indicates wether a coordinate is visible or not inside the map
@@ -307,6 +311,9 @@ define [
     #
     # @param reload [Boolean] if true, reloads fields and items
     _create: (reload = true)=>
+      # removes previous items
+      @_removeData @scope.items if @scope.items?
+        
       # Initialize internal state
       @_fields = []
       @_items = {}
@@ -355,11 +362,12 @@ define [
       @width = 1+(@scope.renderer.upper.x-@scope.renderer.lower.x+1)*@scope.renderer.tileW
 
       # creates the layer container
+      # center it if dimension is smaller than viewport
       @_container = $('<div class="map-container"></div>').css(
         height: @height
         width: @width
-        left: 0
-        top: @_dims.height-@height
+        left: if @_dims.width > @width then (@_dims.width-@width)/2 else 0
+        top: (@_dims.height-@height)/2
       ).on('mousemove', @_onMouseMove
       ).on('mouseleave', (event) => 
         # stop looping on haptic edges
@@ -410,8 +418,9 @@ define [
         # or reuse existing ones
         @_addData @scope.fields
         @_addData @scope.items
-        # reselect previously selected
-        _.defer => @scope.selected = previous
+      # reselect previously selected
+      if previous?
+        _.defer => @scope.$apply => @scope.selected = previous
 
     # **private**
     # When deploy drag'n drop scope is toggle, create or removes droppable on items
@@ -646,7 +655,7 @@ define [
       else
         details = @_getInfos event
         @_hoverPos = x: details.x, y:details.y
-        allowHaptic = true
+        allowHaptic = @_progress is null
         
       @_drawHover()
       # evaluate haptic edges unless already dragging

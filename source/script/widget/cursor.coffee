@@ -76,28 +76,35 @@ define [
       # redraw content when map or its dimension changes
       @scope.$watch 'selected', (value, old) =>
         return unless value isnt old
-        @scope.isBlip = value?.revealed is false
-        @scope.canOpenDoor = value?.doorToOpen?
-        if @scope.activeWeapon > value?.weapons?.length
-          @scope.activeWeapon = 0 
-        # evaluate weapons that can have been already used
-        @_updateUsed value
-        # shoot possible if at least one weapon have range capacity
-        @scope.canShoot = value?.revealed isnt false and _.any value?.weapons, (weapon) -> weapon.rc?
-        # use first weapon for close combat
-        @scope.canAssault = value?.revealed isnt false and value?.weapons[0]?.cc?
-        isBig = value?.revealed is true and value?.kind is 'dreadnought'
-        @_rear.toggleClass 'is-big', isBig
-        @$el.toggleClass 'is-big', isBig
-        if @scope.activeRule?
-          @scope.activeRule = null
-          @scope.selectActiveRule?(null, @scope.activeRule) 
-        @_render true
+        @redraw()
         
       # update openable door when selected model changed
       rootScope.$on 'modelChanged', @_onModelChanged
       @_render()
           
+    # Redraw current cursor:
+    # - updates comands states
+    # - positionnate into map
+    redraw: =>
+      value = @scope.selected
+      @scope.isBlip = value?.revealed is false
+      @scope.canOpenDoor = value?.doorToOpen?
+      if @scope.activeWeapon > value?.weapons?.length
+        @scope.activeWeapon = 0 
+      # evaluate weapons that can have been already used
+      @_updateUsed value
+      # shoot possible if at least one weapon have range capacity
+      @scope.canShoot = value?.revealed isnt false and _.any value?.weapons, (weapon) -> weapon.rc?
+      # use first weapon for close combat
+      @scope.canAssault = value?.revealed isnt false and value?.weapons[0]?.cc?
+      isBig = value?.revealed is true and value?.kind is 'dreadnought'
+      @_rear.toggleClass 'is-big', isBig
+      @$el.toggleClass 'is-big', isBig
+      if @scope.activeRule?
+        @scope.activeRule = null
+        @scope.selectActiveRule?(null, @scope.activeRule) 
+      @_render true
+      
     # **private**
     # If selected character is updated:
     # - update open door action
