@@ -192,16 +192,20 @@ module.exports = {
     null
     
   # Reveals all blips visible by a given marine, or check if the actor blip revealed himself
+  # If no actor is given, check all combinations
   #
-  # @param actor [Item] concerned marine or blip
+  # @param actor [Item|String] concerned marine or blip. To check all blips, give a map id (string)
   # @param rule [Rule] caller rule, to save modified objects
   # @param effects [Array<Array>] for each modified model, an array with the modified object at first index
   # and an object containin modified attributes and their previous values at second index (must at least contain id).
   # @param callback [Function] end callback, invoked with 
   # @option callback error [Error] an error object, or null if no error occured
   detectBlips: (actor, rule, effects, callback) ->
+    # early return if actor is an Item but not marine and already revealed
+    if actor?.type? and actor.type.id isnt 'marine' and actor.revealed isnt false
+      return callback null
     # select all items within map
-    Item.where('map', actor.map.id).exec (err, items) =>
+    Item.where('map', actor?.map?.id or actor).exec (err, items) =>
       return callback err if err?
       # merge items with saved/removed object
       mergeChanges items, rule
@@ -252,19 +256,31 @@ module.exports = {
           end null
         
       # for a marine, check all other blips visibility
-      if actor.type.id is 'marine'
+      if actor?.type?.id is 'marine'
         return async.each items, (blip, next) =>
           if blip.type.id is 'alien' and !blip.revealed and not module.exports.hasObstacle(actor, blip, items)?
-            reveal blip, next
-          else
-            next()
-        , (err) =>
-          callback err
-      else if actor.revealed is false
+            return reveal blip, next
+          next()
+        , callback
+      else if actor?.revealed is false
         # for an unrevealed blip, check if he revealed himself to other marines
         for marine in items when marine.type.id is 'marine' and not module.exports.hasObstacle(marine, actor, items)?
-          return reveal actor , callback
-      callback null
+          return reveal actor, callback
+      else 
+        # check all possible blips against all existing marines
+        marines = []
+        blips = []
+        for candidate in items 
+          marines.push candidate if candidate.type.id is 'marine'
+          blips.push candidate if candidate.revealed is false
+        async.each marines, (marine, endMarine) =>
+          async.each blips, (blip, endBlip) =>
+            if blip.revealed or module.exports.hasObstacle(marine, blip, items)?
+              endBlip()
+            else
+              reveal blip, endBlip
+          , endMarine
+        , callback
       
   # Checks that a given position is free for a dreadnought to move on.
   #

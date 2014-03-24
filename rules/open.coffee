@@ -30,6 +30,11 @@ class OpenRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback result [Object] an arbitrary result of this rule.
   execute: (actor, door, params, context, callback) =>
+    # avoid reopening already opened door
+    unless door.closed
+      actor.doorToOpen = null
+      return callback null
+      
     effects = []
     # get next door, depending on image num
     switch door.imageNum%8
@@ -64,7 +69,7 @@ class OpenRule extends Rule
         mergeChanges items, @
         
         actor.doorToOpen = findNextDoor (if isDreadnought then actor.parts.concat [actor] else actor), items
-        detectBlips actor, @, effects, (err) =>
+        detectBlips actor.map.id, @, effects, (err) =>
           return callback err if err?
           addAction 'open', actor, effects, @, callback
       

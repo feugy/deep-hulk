@@ -15,7 +15,7 @@ requirejs.config
     'hamster': 'vendor/hamster-1.0.4'
     'jquery': 'vendor/jquery-2.0.0-min'
     'jquery-ui': 'vendor/jquery-ui-1.10.3-min'
-    'socket.io': 'vendor/socket.io-0.9.10'
+    'socket.io': 'vendor/socket.io-1.0.0-pre'
     'text': 'vendor/require-text-2.0.10'
     'template': '../template'
     'underscore': 'vendor/underscore-1.4.4-min'
@@ -32,7 +32,7 @@ requirejs.config
     'angular-sanitize': deps: ['angular']
     'async': exports: 'async'
     'atlas':
-      deps: ['async', 'jquery', 'socket.io', 'underscore']
+      deps: ['jquery', 'underscore']
       exports: 'factory'
     'jquery': exports: '$'
     'jquery-ui': deps: ['jquery']
@@ -45,6 +45,7 @@ require [
   'jquery'
   'async'
   'angular'
+  'socket.io'
   # unwired dependencies
   './app'
   './service/atlas'
@@ -61,10 +62,11 @@ require [
   './widget/rule_params'
   './widget/short_game' 
   './widget/zone_display' 
-], ($, async, angular) ->
+], ($, async, angular, io) ->
   
-  # dunno why, async is not set as dependency for Atlas.
+  # make them available for Atlas library.
   window.async = async
+  window.io = io
   
   # starts the application !
   angular.bootstrap $('body'), ['app']
