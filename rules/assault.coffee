@@ -79,13 +79,15 @@ class AssaultRule extends Rule
 
       # action history
       effects = [
-        [actor, _.pick actor, 'id', 'ccNum', 'rcNum', 'moves', 'life', 'dead', 'weapons']
-        [target, _.pick target, 'id', 'life', 'dead', 'weapons']
+        [actor, _.pick actor, 'id', 'ccNum', 'rcNum', 'moves', 'life', 'dead', 'usedWeapons']
+        [target, _.pick target, 'id', 'life', 'dead']
       ]
 
       # consume an attack
       actor.ccNum--
-      actor.rcNum -= actor.weapons.length if actor.rcNum > 0 
+      # consume an attack if all weapons were used
+      actor.rcNum--
+      actor.usedWeapons = '[]'
       actor.squad.actions--
       # consume remaining moves if a move is in progress
       unless actor.moves is moveCapacities[actor.weapons[0].id] or actor.moves is 0

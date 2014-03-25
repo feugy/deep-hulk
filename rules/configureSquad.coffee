@@ -66,7 +66,7 @@ class ConfigureSquadRule extends Rule
           # reuse always the same weapon by their ids
           member.weapons = [weaponId]
           member.imageNum = weaponImages[squad.name][weaponId]
-          member.points = if id in heavyWeapons or id in commanderWeapons then 10 else 5
+          member.points = if weaponId in heavyWeapons or weaponId in commanderWeapons then 10 else 5
           # adapt marine possible moves
           member.moves = moveCapacities[weaponId]
         # init first actions number

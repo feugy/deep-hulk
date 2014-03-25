@@ -64,7 +64,7 @@ class EndOfTurnRule extends Rule
           for member in squad.members when member.map? and not member.dead
             # use first weapon to get allowed moves
             weapon = member.weapons[0]?.id or member.weapons[0]
-            squad.actions++
+            squad.actions += 2
             # add an attack
             member.rcNum = 1
             member.ccNum = 1

@@ -212,7 +212,7 @@ module.exports = {
       
       reveal = (blip, end) =>
         # store previous blip state
-        effects.push [blip, _.pick blip, 'id', 'moves', 'rcNum', 'ccNum', 'imageNum', 'revealed']
+        effects.push [blip, _.pick blip, 'id', 'moves', 'rcNum', 'ccNum', 'imageNum', 'revealed', 'x', 'y']
         blip.revealed = true
         imageNum = alienCapacities[blip.kind].imageNum
         # for dreadnought, choose the right image depending on the equiped weapons
@@ -230,6 +230,33 @@ module.exports = {
         parts = []
         # for dreadnought, creates parts
         if blip.kind is 'dreadnought'
+        
+          # get dreadnought nearest walls and doors
+          blocks = (
+            for item in items when (item.type.id is 'wall' or item.type.id is 'door' and item.closed) and 
+                blip.x-1 <= item.x <= blip.x+1 and 
+                blip.y-1 <= item.y <= blip.y+1
+              item
+          )
+          # candidates position to reveal dreadnought
+          candidates = [
+            {x: blip.x, y: blip.y, moves: 0}
+            {x: blip.x-1, y: blip.y, moves: 0}
+            {x: blip.x, y: blip.y-1, moves: 0}
+            {x: blip.x-1, y: blip.y-1, moves: 0}
+          ]
+          
+          # check that no block is sharing position with dreadnought part
+          for pos in candidates
+            # if no block is on the same tile than a part
+            if module.exports.isFreeForDreadnought blocks, pos, 'current'
+              # update position and quit
+              blip.x = pos.x
+              blip.y = pos.y
+              break
+            # if no position is legal, we'll keep the same position.
+
+     # now creates the dreadnought parts
           for i in [0..2]
             part = new Item
               type: blip.type
@@ -243,6 +270,7 @@ module.exports = {
               imageNum: null
             rule.saved.push part
             parts.push part
+            
         
         # add attack action
         blip.fetch (err, blip) =>
@@ -283,43 +311,50 @@ module.exports = {
         , callback
       
   # Checks that a given position is free for a dreadnought to move on.
+  # Can also check current position for blip revealing.
   #
   # @param items [Array<Model>] array containing items for the checked and dreadnought positions
   # @param actor [Model] current dreadnought, before move
-  # @param direction [String] right, top, left or bottom direction in which the dreadnought is moving
+  # @param direction [String] current, right, top, left or bottom direction in which the dreadnought is moving
   # @return true if dreadnought can move in this direction, false otherwise
   isFreeForDreadnought: (items, actor, direction) ->
     # depending on the direction, store position and their respective contitions that may prevent move
     conditions = {}
     switch direction
+      when 'current'
+        # to check current position, no wall in the inner crux, nor door
+        conditions["#{actor.x}_#{actor.y}"] = walls: ['top', 'right'], doors: ['top', 'right']
+        conditions["#{actor.x+1}_#{actor.y}"] = walls: ['top', 'left'], doors: ['top', 'left']
+        conditions["#{actor.x}_#{actor.y+1}"] = walls: ['bottom', 'right'], doors: ['bottom', 'right']
+        conditions["#{actor.x+1}_#{actor.y+1}"] = walls: ['bottom', 'left'], doors: ['bottom', 'left']
       when 'left'
         # on left neighbors, vertical walls/doors or items or horizontal wall in the middle
-        conditions["#{actor.x-1}_#{actor.y}"] = walls: ['right', 'top'], door: 'right', character: true
-        conditions["#{actor.x-1}_#{actor.y+1}"] = walls: ['right', 'bottom'], door: 'right', character: true
+        conditions["#{actor.x-1}_#{actor.y}"] = walls: ['right', 'top'], doors: ['right'], character: true
+        conditions["#{actor.x-1}_#{actor.y+1}"] = walls: ['right', 'bottom'], doors: ['right'], character: true
         # on same tiles, vertical walls/doors
-        conditions["#{actor.x}_#{actor.y}"] = walls: ['left'], door: 'left'
-        conditions["#{actor.x}_#{actor.y+1}"] = walls: ['left'], door: 'left'
+        conditions["#{actor.x}_#{actor.y}"] = walls: ['left'], doors: ['left']
+        conditions["#{actor.x}_#{actor.y+1}"] = walls: ['left'], doors: ['left']
       when 'right'
         # on right neighbors, vertical walls/dors or items or horizontal wall in the middle
-        conditions["#{actor.x+2}_#{actor.y}"] = walls: ['left', 'top'], door: 'left', character: true
-        conditions["#{actor.x+2}_#{actor.y+1}"] = walls: ['left', 'bottom'], door: 'left', character: true
+        conditions["#{actor.x+2}_#{actor.y}"] = walls: ['left', 'top'], doors: ['left'], character: true
+        conditions["#{actor.x+2}_#{actor.y+1}"] = walls: ['left', 'bottom'], doors: ['left'], character: true
         # on same tiles, vertical walls/doors
-        conditions["#{actor.x+1}_#{actor.y}"] = walls: ['right'], door: 'right'
-        conditions["#{actor.x+1}_#{actor.y+1}"] = walls: ['right'], door: 'right'
+        conditions["#{actor.x+1}_#{actor.y}"] = walls: ['right'], doors: ['right']
+        conditions["#{actor.x+1}_#{actor.y+1}"] = walls: ['right'], doors: ['right']
       when 'bottom'
         # on bottom neighbors, horizontal walls/doors or items or vertical wall in the middle
-        conditions["#{actor.x}_#{actor.y-1}"] = walls: ['top', 'right'], door: 'top', character: true
-        conditions["#{actor.x+1}_#{actor.y-1}"] = walls: ['top', 'left'], door: 'top', character: true
+        conditions["#{actor.x}_#{actor.y-1}"] = walls: ['top', 'right'], doors: ['top'], character: true
+        conditions["#{actor.x+1}_#{actor.y-1}"] = walls: ['top', 'left'], doors: ['top'], character: true
         # on same tiles, horizontal walls/doors
-        conditions["#{actor.x}_#{actor.y}"] = walls: ['bottom'], door: 'bottom'
-        conditions["#{actor.x+1}_#{actor.y}"] = walls: ['bottom'], door: 'bottom'
+        conditions["#{actor.x}_#{actor.y}"] = walls: ['bottom'], doors: ['bottom']
+        conditions["#{actor.x+1}_#{actor.y}"] = walls: ['bottom'], doors: ['bottom']
       when 'top'
         # on top neighbors, horizontal walls/doors or items or vertical wall in the middle
-        conditions["#{actor.x}_#{actor.y+2}"] = walls: ['bottom', 'right'], door: 'bottom', character: true
-        conditions["#{actor.x+1}_#{actor.y+2}"] = walls: ['bottom', 'left'], door: 'bottom', character: true
+        conditions["#{actor.x}_#{actor.y+2}"] = walls: ['bottom', 'right'], doors: ['bottom'], character: true
+        conditions["#{actor.x+1}_#{actor.y+2}"] = walls: ['bottom', 'left'], doors: ['bottom'], character: true
         # on same tiles, horizontal walls/doors
-        conditions["#{actor.x}_#{actor.y+1}"] = walls: ['top'], door: 'top'
-        conditions["#{actor.x+1}_#{actor.y+1}"] = walls: ['top'], door: 'top'
+        conditions["#{actor.x}_#{actor.y+1}"] = walls: ['top'], doors: ['top']
+        conditions["#{actor.x+1}_#{actor.y+1}"] = walls: ['top'], doors: ['top']
     for item in items
       prevent = conditions["#{item.x}_#{item.y}"]
       # item is at a position that may prevent move
@@ -330,7 +365,7 @@ module.exports = {
             return false for side in prevent.walls when wallPositions[item.imageNum][side]
           when 'door'
             # closed door prevent moves, open door cannot be the last move
-            return false if doorPositions[item.imageNum][prevent.door] or (prevent.door of doorPositions[item.imageNum] and actor.moves is 1)
+            return false for side in prevent.doors when doorPositions[item.imageNum][side] or (side of doorPositions[item.imageNum] and actor.moves <= 1)
           when 'alien', 'marine'
             # undead alien or marine prevent move
             return false if prevent.character and not item.dead

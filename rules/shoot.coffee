@@ -82,8 +82,8 @@ class ShootRule extends Rule
         if used.length is actor.weapons.length
           actor.rcNum--
           used = []
+          actor.squad.actions--
         actor.ccNum-- if actor.ccNum > 0 
-        actor.squad.actions--
         actor.usedWeapons = JSON.stringify used
         
         # consume remaining moves if a move is in progress
