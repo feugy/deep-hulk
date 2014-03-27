@@ -1,5 +1,15 @@
 'use strict'
 
+# browser detection: show disclaimer and quit
+showDisclaimer = ->
+  document.getElementById('disclaimer').style.display=""
+  document.getElementById('view').remove()
+
+for prop in ["audio", "canvas", "canvastext", "history", "hsla", "inlinesvg", 
+    "localstorage", "multiplebgs", "postmessage", "rgba", "svg", "svgclippaths", 
+    "textshadow", "video", "webworkers"] when not Modernizr[prop]
+  return showDisclaimer()
+  
 # configure requireJS
 requirejs.config  
 
@@ -63,6 +73,8 @@ require [
   './widget/short_game' 
   './widget/zone_display' 
 ], ($, async, angular, io) ->
+  # removes disclaimer
+  $('#disclaimer').remove()
   
   # make them available for Atlas library.
   window.async = async

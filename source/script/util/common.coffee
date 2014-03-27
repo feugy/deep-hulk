@@ -9,7 +9,10 @@ define [
   _.mixin _.str.exports()
   
   # getter for document visibility
-  prefix = if navigator.userAgent.match(/chrome/i) then 'webkit' else 'moz'
+  prefix = ""
+  for pre in ['webkit', 'moz', 'ms', 'o'] when document["#{pre}Hidden"]?
+    prefix = pre
+    break
 
   # define a getter for page visibility
   Object.defineProperty document, 'hidden', 

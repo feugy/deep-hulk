@@ -97,7 +97,6 @@ class AssaultRule extends Rule
           actor.squad.actions--
         
         # roll dices for both actor and target, always take first weapon for close combat
-        console.log "actor", actor.weapons[0].cc, "target", target.weapons
         actorAttack = sum rollDices actor.weapons[0].cc
         targetAttack = sum rollDices(target.weapons[0]?.cc) or [0]
         console.log "#{actor.name or actor.kind} (#{actor.squad.name}) assault "+
