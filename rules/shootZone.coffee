@@ -55,7 +55,8 @@ class ShootZoneRule extends Rule
         tiles: []
         obstacle: null
         
-      unless isTargetable actor, target, params.weaponIdx, items
+      reachable = isTargetable actor, target, params.weaponIdx, items
+      unless reachable?
         # target not reachable: returns obstacle (with character blocking visibility)
         result.obstacle = hasObstacle actor, target, items, true
         return callback null, result
@@ -73,9 +74,9 @@ class ShootZoneRule extends Rule
               
         when 'flamer' 
           # all tiles on the line are hit.
-          untilWall actor.map.id, actor, target, (err, target, items) =>
+          untilWall actor.map.id, reachable, target, (err, target, items) =>
             return callback err if err?
-            result.tiles = tilesOnLine actor, target
+            result.tiles = tilesOnLine reachable, target
             callback null, result
           
         else 

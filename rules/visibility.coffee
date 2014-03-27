@@ -18,7 +18,6 @@ module.exports = {
   # Position are casted down into horizontal and vertical : 
   # horizontal[0][2] indicates a wall between the two first columns (y=0), at thrid row (x=2)
   # vertical[1][0] indicates a wall between rows 2 and 3 (x=1), at first column (y=0)
-  # TODO dreadnoughts part must be taken in account
   #
   # @param from [Object] from position, one of the rectangle corner
   # @param to [Object] to position, the other corner
@@ -71,7 +70,6 @@ module.exports = {
     walls
     
   # Compute tiles crossed by a straight from from to to.
-  # TODO dreadnoughts can target for any of their parts
   #
   # @param from [Object] from position
   # @param to [Object] to position
@@ -256,7 +254,7 @@ module.exports = {
               break
             # if no position is legal, we'll keep the same position.
 
-     # now creates the dreadnought parts
+         # now creates the dreadnought parts
           for i in [0..2]
             part = new Item
               type: blip.type
@@ -294,6 +292,8 @@ module.exports = {
         # for an unrevealed blip, check if he revealed himself to other marines
         for marine in items when marine.type.id is 'marine' and not module.exports.hasObstacle(marine, actor, items)?
           return reveal actor, callback
+        # not visible to anyone
+        callback null
       else 
         # check all possible blips against all existing marines
         marines = []
@@ -443,8 +443,8 @@ module.exports = {
   # @param itemsOrCallback [Array<Item>] items inside the rectangle defined by actor and target position. If a function, 
   # items are automatically retrieved, and the function invoked, with two arguments:
   # @option itemsOrCallback err [String] error string. Null if no error occured
-  # @option itemsOrCallback reachable [Boolean] true if target is reachable
-  # @returns Only if callback is an array, returns true is reachable, or false otherwise
+  # @option itemsOrCallback from [Item] actor (or part for dreadnought) that can reach the target, null otherwise
+  # @returns Only if callback is an array, returns the actor/part that can reach target, or null otherwise
   isTargetable: (actor, target, weaponIdx, itemsOrCallback) ->
     if _.isArray itemsOrCallback
       callback = (err, result) ->
@@ -453,12 +453,12 @@ module.exports = {
     else
       callback = itemsOrCallback
       
-    return callback null, false unless target? and actor?
+    return callback null, null unless target? and actor?
     # deny unless on same map and targeting a field (mapId)
-    return callback null, false unless actor.map?.id and (actor.map.id is target.mapId or actor.map.id is target.map?.id)
+    return callback null, null unless actor.map?.id and (actor.map.id is target.mapId or actor.map.id is target.map?.id)
     
     proceed = (err, items) ->
-      return callback err, false if err?
+      return callback err, null if err?
       # abort unless target visible to actor (character blocks visibility unless using flamer)
       candidates = [actor]
       # if actor is dreadnought, all part must be testes
@@ -472,21 +472,21 @@ module.exports = {
         visible = true
         break
       
-      return callback null, false unless visible
+      return callback null, null unless visible
         
       # depending on the weapon
       switch weapon.id
         when 'flamer'
           # flamer allowed on horizontal, vertical or diagonal lines
           for candidate in candidates when candidate.x is target.x or candidate.y is target.y or Math.abs(candidate.x-target.x) is Math.abs candidate.y-target.y
-            return callback null, true
+            return callback null, candidate
           # no matching candidates
-          return callback null, false
+          return callback null, null
         when 'gloveSword', 'claws'
           # close combat only: check alignment and distance
-          callback null, 1 is distance(actor, target) and (target.x is actor.x or target.y is actor.y)
+          callback null, if 1 is distance(actor, target) and (target.x is actor.x or target.y is actor.y) then actor else null
         else
-          callback null, true
+          callback null, actor
           
     # synchronous behaviour
     if _.isArray itemsOrCallback
@@ -495,7 +495,6 @@ module.exports = {
     selectItemWithin actor.map.id, actor, target, proceed
                     
   # Search for the nearest wall on the line (horizontal, vertical or diagonal)
-  # TODO dreadnoughts can target for any of its part
   #
   # @param mapId [String] id of current map
   # @param from [Object] shooter position (x/y coordinates)

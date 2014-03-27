@@ -37,14 +37,14 @@ class OpenRule extends Rule
       
     effects = []
     # get next door, depending on image num
-    switch door.imageNum%8
-      when 2
+    switch door.imageNum
+      when 2, 10
         to = x:door.x+1, y:door.y
-      when 3
+      when 3, 11
         to = x:door.x-1, y:door.y
-      when 6
+      when 6, 14, 18
         to = x:door.x, y:door.y-1
-      when 7
+      when 7, 15, 19
         to = x:door.x, y:door.y+1
         
     selectItemWithin actor.map.id, door, to, (err, doors) =>

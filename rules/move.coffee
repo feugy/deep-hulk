@@ -81,9 +81,9 @@ class MoveRule extends Rule
         actor.squad.actions--
         
       # update actor coordinates
+      console.log "#{actor.name or actor.kind} (#{actor.squad.name}) moves from #{actor.x}:#{actor.y} to #{x}:#{y} (remains #{actor.moves})"
       actor.x = x
       actor.y = y
-      console.log "#{actor.name or actor.kind} (#{actor.squad.name}) moves from #{actor.x}:#{actor.y} to #{x}:#{y} (remains #{actor.moves})"
       
       if isDreadnought
         # updates also dreadnought parts

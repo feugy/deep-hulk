@@ -41,7 +41,7 @@ class AssaultRule extends Rule
     return callback null, null unless target?.type?.id in ['alien', 'marine']
     # check visibility
     isTargetable actor, target, 0, (err, reachable) =>
-      return callback err, null if err? or not reachable
+      return callback err, null if err? or reachable is null
       isDreadnought = actor.kind is 'dreadnought' and actor.revealed
       # if actor is dreadnought, all part must be tested
       candidates = [actor]

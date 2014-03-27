@@ -23,7 +23,7 @@ class CreationRule extends Rule
     return callback null, null unless actor?._className is 'Player' and actor is target
     callback null, [
       {name: 'gameName', type: 'string'}
-      {name: 'mission', type: 'string', within: ['mission-0', 'mission-3']}
+      {name: 'mission', type: 'string', within: ['mission-2', 'mission-3']}
       {name: 'squad', type: 'string'}
     ]
 

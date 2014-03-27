@@ -24,7 +24,7 @@ class TargetRule extends Rule
     return callback null, null if idx is -1
     # now check visibility rules: get all items at actor and target coordinates
     isTargetable actor, target, idx, (err, reachable) =>
-      callback err, if reachable then [] else null
+      callback err, if reachable? then [] else null
 
   # Append target coordinates to actor current targets
   #

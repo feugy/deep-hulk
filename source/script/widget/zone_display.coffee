@@ -176,10 +176,10 @@ define [
     
     # **private**
     # Highlight selected tiles
-    _highlight: =>
+    _highlight: (value, old) =>
+      return unless value? and not _.isEqual value, old
       # clear previous highligts
       @$el[0].width = @$el[0].width
-      return unless @scope.src?
       ctx = @$el[0].getContext '2d'
       # get renderer from parent
       renderer = @scope.$parent.renderer
@@ -232,8 +232,8 @@ define [
             coord = _.pick @scope.src.origin, 'x', 'y'
             if @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
               # dreadnought specific case: center right ahead current position
-             coord.x += 0.5
-             coord.y += 0.5
+              coord.x += 0.5
+              coord.y += 0.5
             drawVisibilityLine ctx, coord, end, renderer, c1, c2
           
           switch weapon
@@ -244,7 +244,8 @@ define [
             when 'flamer'
               # shoot with flamer affect a line
               if @scope.src.tiles.length > 0
-                [s1, s2, s3, s4] = flamerZone @scope.src.tiles, renderer
+                console.log @scope.src.tiles.concat()
+                [s1, s2, s3, s4] = flamerZone @scope.src.tiles.concat(), renderer
                 # draw a rectangle covering tiles
                 ctx.beginPath()
                 ctx.moveTo s1.left, s1.top

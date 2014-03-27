@@ -48,7 +48,7 @@ class AssaultZoneRule extends Rule
         candidates = candidates.concat actor.parts if isDreadnought
         tiles = []
         # checks one possible candidate on the same line to exclude diagonals
-        for tile in fields when isTargetable(actor, tile, 0, items)
+        for tile in fields when isTargetable(actor, tile, 0, items)?
           tiles.push tile if _.find(candidates, (candidate) -> tile.x is candidate.x or tile.y is candidate.y)?
         callback null, tiles:tiles
   

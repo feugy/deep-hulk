@@ -65,6 +65,10 @@ module.exports = {
     {left: false}
     {left: true}
     {left: true}
+    {right: false}
+    {right: false}
+    {right: true}
+    {right: true}
   ]
   
   # image indexes for a given weapon

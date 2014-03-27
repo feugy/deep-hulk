@@ -47,9 +47,12 @@ class EndDeployRule extends Rule
           other.deployZone = null
           @saved.push other
       
-        # and at last the alien squad
-        squad.deployZone = squad.deployZone.replace(params.zone, '')
-        squad.deployZone = null if squad.deployZone.trim().length is 0
+        # and at last removes the remaining zone from the alien squad
+        zones = squad.deployZone.split ','
+        zones.splice zones.indexOf(params.zone), 1
+        squad.deployZone = zones.join ','
+        # if no other zones, set to null
+        squad.deployZone = null if zones.length is 0
         callback null
   
 module.exports = new EndDeployRule 'blips'

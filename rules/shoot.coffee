@@ -65,7 +65,7 @@ class ShootRule extends Rule
       isTargetable actor, target, params.weaponIdx, (err, reachable) =>
         return callback err, null if err?
         # silentely stop if not reachable with this weapon
-        return callback null, null unless reachable
+        return callback null, null unless reachable?
        
         # action history
         effects = [[actor, _.pick actor, 'id', 'ccNum', 'rcNum', 'moves', 'usedWeapons']]
@@ -119,16 +119,16 @@ class ShootRule extends Rule
                 
           when 'flamer' 
             # all tiles on the line are hit.
-            untilWall actor.map.id, actor, target, (err, target, items) =>
+            untilWall actor.map.id, reachable, target, (err, target, items) =>
               return end err if err?
               # get the hit positions
-              positions = tilesOnLine actor, target
+              positions = tilesOnLine reachable, target
               damages = sum dices
               results = []
               async.each positions, (pos, next) =>
                 # and find potential target at position
                 target = _.find items, (item) -> item.x is pos.x and item.y is pos.y and hasTargetType item
-                return next() unless target? and !actor.equals target
+                return next() unless target? and not reachable.equals target
                 target.fetch (err, target) =>
                   return next err if err?
                   console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}: #{damages}"
