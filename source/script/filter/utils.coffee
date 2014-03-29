@@ -23,6 +23,8 @@ define [
     input
   ]
   
+  app.filter 'reverseArray', -> (arr) => arr.slice().reverse()
+
   # Fix select bug regarding keyboard selection:
   # https://github.com/angular/angular.js/issues/4216
   app.directive 'select', ->

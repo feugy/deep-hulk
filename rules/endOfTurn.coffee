@@ -59,7 +59,7 @@ class EndOfTurnRule extends Rule
         s.fetch (err, squad) =>
           # fetch squad to get members
           return next err if err?
-          squad.actions = if squad.members.length > 0 then 0 else -1
+          squad.actions = 0
           # reset each member, unless not on map
           for member in squad.members when member.map? and not member.dead
             # use first weapon to get allowed moves
@@ -80,6 +80,8 @@ class EndOfTurnRule extends Rule
             else
               # get marine moves from their weapon
               member.moves = moveCapacities[weapon]
+          # no alive squad members ? set to -1 to prevent player hitting next turn
+          squad.actions = 0 if squad.actions = -1
           next()
       , (err) =>
         return callback err if err?

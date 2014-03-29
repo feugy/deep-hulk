@@ -365,17 +365,20 @@ define [
         if 'log' in changes
           if @_logLength < model.log.length
             # assault specific case: display results on map as indication
-            @scope.displayIndications _.map model.log[@_logLength...model.log.length], (log) ->
-              return  {
-                text: log.loss
-                x: log.x
-                y: log.y
-                fx: log.fx
-                fy: log.fy
-                duration: 3000
-                className: "damages"
-                kind: log.kind
-              }
+            # defer rendering because linked log Item may be loading at very first shoot during session
+            length = @_logLength
+            _.defer => @scope.$apply =>
+              @scope.displayIndications _.map model.log[length...model.log.length], (log) ->
+                return  {
+                  text: log.loss
+                  x: log.x
+                  y: log.y
+                  fx: log.fx
+                  fy: log.fy
+                  duration: 3000
+                  className: "damages"
+                  kind: log.kind
+                }
               
           # update inner value
           @_logLength = model.log.length

@@ -536,12 +536,6 @@ blipSize = 50px
         color bloodangelColor
       .owner.imperialfist
         color imperialfistColor
-
-    .info .owner
-      color infoColor
-
-    .error .owner
-      color errorColor
     
     .input
       display flex
@@ -584,3 +578,82 @@ blipSize = 50px
     display inline-block
     margin-right 1.5em
     margin-bottom 0.5em
+
+//------------------------------------------------------------------------------
+// Alerts
+
+.alert
+  applyAlertSkin()
+  display flex
+  width 100%
+  box-sizing border-box
+  align-items flex-start
+  margin-bottom 1em
+  
+  > div
+    flex 1    
+  .close
+    margin -1px 0 -1px 1em
+    order 2
+
+.alert.ng-hide
+  opacity 0
+
+.alert.ng-hide-add
+.alert.ng-hide-remove
+  transition opacity moveDuration
+  display flex  !important
+
+.alert-error
+  color errorColor
+
+//------------------------------------------------------------------------------
+// Notifications
+
+.notify
+  display flex
+  align-items flex-start
+
+  .close-all
+    margin-right 0.5em
+    padding 2px 5px
+    border-radius 5px
+    color textColor
+    background textBackground
+    box-shadow 0 0 3px 3px textBackground
+    cursor pointer
+    opacity 1
+    transition all linear 500ms
+
+  .close-all.ng-hide
+    opacity 0
+
+  .close-all.ng-hide-add
+  .close-all.ng-hide-remove
+    display block!important
+
+  .content
+    padding 0 0.5em
+    overflow-y auto
+    overflow-x hidden
+    flex 1
+
+  .notification
+    position relative
+
+  .notification.ng-move
+  .notification.ng-enter
+  .notification.ng-leave
+    transition all cubic-bezier(1,0,1,.75) 500ms
+   
+  .notification.ng-leave.ng-leave-active
+  .notification.ng-move
+  .notification.ng-enter
+    opacity 0
+    bottom -100px    
+   
+  .notification.ng-leave
+  .notification.ng-move.ng-move-active
+  .notification.ng-enter.ng-enter-active
+    opacity 1
+    bottom 0

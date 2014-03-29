@@ -69,6 +69,7 @@ require [
   './widget/deployable_blips' 
   './widget/log'
   './widget/map'
+  './widget/notify'
   './widget/rule_params'
   './widget/short_game' 
   './widget/zone_display' 

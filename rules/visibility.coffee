@@ -400,7 +400,7 @@ module.exports = {
   isReachable: (actor, field, items) ->
     # move possible if field is marine own base
     return false unless field?.mapId is actor?.map?.id and 
-        actor.moves >= 1 and (field.typeId[0..5] isnt 'base-' or field.typeId is "base-#{actor.squad.name}")
+        actor.moves >= 1 and (field.typeId[0..4] isnt 'base-' or field.typeId is "base-#{actor.squad.name}")
         
     if actor.kind is 'dreadnought' and actor.revealed
       reachable = false

@@ -61,6 +61,7 @@ define [
       @scope.activeRule = null
       @scope.activeWeapon = 0
       @scope.log = []
+      @scope.notifs = []
       @scope._onSelectActiveRule = @_onSelectActiveRule
       @scope._onNextAction = =>
         @atlas.nextAction => @scope.$apply => @_updateReplayCommands()
@@ -128,9 +129,10 @@ define [
       unless not @_inhibit and @scope.selected? and @scope.activeRule is 'move' and !@atlas.ruleService.isBusy()
         return
       @atlas.ruleService.execute 'movable', @scope.selected, @scope.selected, {}, (err, reachable) => @scope.$apply =>
+        # TODO
+        return console.error err if err?
         # silent error, no moves, no more selected: clear zone
-        if err? or !reachable? or reachable.length is 0 or @scope.selected is null
-          return @scope.zone = null 
+        return @scope.zone = null if err? or !reachable? or reachable.length is 0 or @scope.selected is null
         @scope.zone =
           tiles: reachable
           origin: @scope.selected
@@ -146,9 +148,10 @@ define [
       if @atlas.ruleService.isBusy() and @scope.activeRule isnt 'assault'
         return
       @atlas.ruleService.execute "#{@scope.activeRule}Zone", @scope.selected, details, {weaponIdx:@scope.activeWeapon}, (err, result) => @scope.$apply =>
-        # silent error: no zone
-        if err? or @scope.selected is null or not result?
-          return @scope.zone = null
+        # TODO
+        return console.error err if err?
+        # silent error
+        return @scope.zone = null if err? or @scope.selected is null or not result?
         result.origin = @scope.selected
         result.target = details
         result.kind = @scope.activeRule
@@ -159,7 +162,7 @@ define [
     # @param content the message sent
     sendMessage: (content) =>
       @atlas.ruleService.execute "sendMessage", @scope.game, @scope.squad, {content:content}, (err, result) => 
-        @scope.$apply =>  @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err? 
+        @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
         
     # **private**
     # Update action zone depending on new active rule
@@ -192,10 +195,10 @@ define [
     _fetchSquad: (squad) =>
       # get squad and its members
       @atlas.Item.fetch [squad], (err, [squad]) => 
-        return @scope.$apply( => @scope.log.splice 0, 0, kind:'error', content: parseError err.message) if err?
+        return @scope.$apply( => @scope.notifs.push kind:'error', content: parseError err) if err?
         # then get members
         @atlas.Item.fetch squad.members, (err) => @scope.$apply => 
-          return @scope.log.splice 0, 0, kind:'error', content: parseError err.message if err?
+          return @scope.notifs.push kind:'error', content: parseError err if err?
           @scope.selected = null
           @scope.squad = squad
           # blips deployment, blip displayal
@@ -203,7 +206,7 @@ define [
             @_initBlipDeployement()
           if @scope.squad.actions < 0 
             @scope.canEndTurn = 'disabled' 
-            @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.waitForOther
+            @scope.notifs.push kind: 'info', content: conf.msgs.waitForOther
           else
             @scope.canEndTurn = ''
           # inhibit on replay (always) or turn end (if not alien and deploy) or deploy (and not alien)
@@ -220,25 +223,24 @@ define [
           return if first is @_currentZone
           @_currentZone = first
           @scope.deployScope = 'deployBlip'
-          # add log
-          @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.deployBlips
+          # add notification
+          @scope.notifs.push kind: 'info', content: conf.msgs.deployBlips
           # highligth deployable zone
           @atlas.ruleService.execute 'deployZone', @atlas.player, @scope.squad, {zone:@_currentZone}, (err, zone) => 
             @scope.$apply =>
-              @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err?
-              if !zone? or zone.length is 0
-                return @scope.zone = null
+              @scope.notifs.push kind: 'error', content: parseError err if err?
+              return @scope.zone = null if err? or !zone? or zone.length is 0
               @scope.zone = 
                 tiles: zone
                 kind: 'deploy'
               # inhibit on replay
               @_inhibit = @atlas.replayPos?
         else
-          # add log and inhibit
-          @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.deployInProgress
+          # add notification and inhibit
+          @scope.notifs.push kind: 'info', content: conf.msgs.deployInProgress
           @_inhibit = true
       else
-        @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.deployEnded unless @scope.squad.isAlien
+        @scope.notifs.push kind: 'info', content: conf.msgs.deployEnded unless @scope.squad.isAlien
         @_currentZone = null
         @scope.deployScope = null
         # inhibit on turn end or replay pos
@@ -280,8 +282,8 @@ define [
               if 'finished' in changes
                 return @location.path "#{conf.basePath}end" if model.finished
               if 'turn' in changes
-                # if turn has change, add log
-                @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.newTurn
+                # if turn has change, notify
+                @scope.notifs.push kind: 'info', content: conf.msgs.newTurn
               if 'prevActions' in changes
                 @_updateReplayCommands()
               if 'warLog' in changes
@@ -337,7 +339,7 @@ define [
         @scope.path = []
       
       proceed = (err = null, applicables = {}) =>
-        console.error err if err?
+        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
         # keep for further use
         @_applicableRules = applicables
         keys = _.keys applicables
@@ -383,7 +385,7 @@ define [
       # trigger rule
       params = if item is 'shoot' then weaponIdx: @scope.activeWeapon else {}
       @atlas.ruleService.execute item, @scope.selected, @_applicableRules[item][0].target, params, (err, result) =>
-        return @scope.$apply(=> @scope.log.splice 0, 0, kind: 'error', content: parseError err.message) if err?   
+        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?   
         # refresh movable tiles
         @displayMovable()
                 
@@ -395,9 +397,9 @@ define [
       # rule triggering
       trigger = =>
         @atlas.ruleService.execute 'endOfTurn', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
-          return @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err?
-          # add log
-          @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.waitForOther
+          return @scope.notifs.push kind: 'error', content: parseError err if err?
+          # add a notification
+          @scope.notifs.push kind: 'info', content: conf.msgs.waitForOther
       return trigger() if @scope.squad.actions is 0
       # still actions ? confirm end of turn
       confirm = @dialog.messageBox conf.titles.confirmEndOfTurn, conf.msgs.confirmEndOfTurn, [
@@ -414,7 +416,7 @@ define [
       # rule triggering
       trigger = =>
         @atlas.ruleService.execute 'endDeploy', @atlas.player, @scope.squad, {zone: @_currentZone}, (err) =>
-          return @scope.$apply(=> @scope.log.splice 0, 0, kind: 'error', content: parseError err.message) if err?  
+          return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
           # proceed with next deployement or quit mode
           @_initBlipDeployement()
       # still actions ? confirm end of turn
@@ -445,6 +447,6 @@ define [
           zone: @_currentZone
           rank: blipIdx[_.random 0, blipIdx.length-1]
       # trigger the relevant rule
-      @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) => @scope.$apply =>
+      @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) =>
         # displays deployement errors
-        return @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err?
+        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
