@@ -125,7 +125,7 @@ class CreationRule extends Rule
                   type: item.type
                   imageNum: item.imageNum or 0
                 }, specific
-              console.log "map walls and doors copied"
+              console.log "#{items.length} walls and doors copied"
               console.log "game #{params.gameName} (#{game.id}) created by #{actor.email} (#{params.squad})"
               freeGames.games.push game
               @saved.push freeGames
