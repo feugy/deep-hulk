@@ -34,7 +34,8 @@ define ['jquery'], ($) ->
                 # for reconnection usage
                 localStorage.setItem 'game.token', player.token
                 # goes to home and reset query parameters
-                location.path("#{conf.basePath}home").search({}).replace()
+                if location.path()is "#{conf.basePath}login"
+                  location.path("#{conf.basePath}home").search({}).replace()
             
         dfd.promise
       ]

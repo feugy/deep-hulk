@@ -219,6 +219,7 @@ define [
     _toggleDeployMode: =>
       if @scope.squad.deployZone?
         if @scope.squad.isAlien
+          @scope.canEndTurn = 'disabled' 
           # Auto select the first zone to deploy
           first = @scope.squad.deployZone.split(',')[0]
           # but quit if first is still handled
@@ -243,6 +244,7 @@ define [
           @_inhibit = true
       else
         if @scope.squad.isAlien
+          @scope.canEndTurn = '' 
           # clean alien previous nitifications
           @scope.notifs.splice 0, @scope.notifs.length
         else
