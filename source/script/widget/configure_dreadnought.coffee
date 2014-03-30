@@ -34,13 +34,4 @@ define [
     # @param element [DOM] directive root element
     constructor: (scope, element) ->
       super scope, element
-      @scope.nbWeapons = (i for i in [1...@scope.src.life])
       @scope.weapons = ['autoCannon', 'missileLauncher', 'flamer']
-       
-    # **private**
-    # Update the model value according to selected weapons
-    #
-    # @param event [Event] Modification event
-    _updateModel: (event) =>
-      values = @$el.find 'select'
-      @scope.target.weapons = ($(value).val() for value in values)

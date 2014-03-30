@@ -27,32 +27,18 @@ define [
   class Configure
                       
     # Controller dependencies
-    @$inject: ['$scope', '$element']
+    @$inject: ['$scope']
     
     # Controller scope, injected within constructor
     scope: null
-    
-    # JQuery enriched element for directive root
-    $el: null
     
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] directive scope
     # @param element [DOM] directive root element
-    constructor: (@scope, element) ->
+    constructor: (@scope) ->
       # Fill possible weapons
       if @scope.src.isCommander
         @scope.weapons = ['pistolAxe', 'gloveSword', 'heavyBolter']
       else
         @scope.weapons = ['autoCannon', 'missileLauncher', 'flamer', 'bolter']
-      # manually update and do not use ngModel because it insert en ampty option
-      @$el = $(element)
-      @$el.on 'change', '.weapon', (event) => 
-        @scope.$apply => @_updateModel event
-           
-    # **private**
-    # Update the model value according to selected weapons
-    #
-    # @param event [Event] Modification event
-    _updateModel: (event) =>
-      @scope.target.weapon = $(event.target).val()

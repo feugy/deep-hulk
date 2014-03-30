@@ -87,7 +87,8 @@ define [
           for member in squad.members
             if @scope.isAlien
               # only dreadnought are configurable
-              @scope.configured[member.id] = weapons: [] if member.kind is 'dreadnought'
+              if member.kind is 'dreadnought'
+                @scope.configured[member.id] = weapons: ('autoCannon' for i in [0...member.life-1])
             else
               # marines can just configure first weapon (they usually wear only one weapon)
               @scope.configured[member.id] = weapon: member?.weapons[0]?.id
@@ -107,6 +108,7 @@ define [
         rule = 'configureAliens'
         # configure dreadnought
         for id, spec of current
+          console.log spec
           for weapon, i in spec.weapons
             params["#{id}-weapon-#{i}"] = weapon
       else

@@ -657,3 +657,67 @@ blipSize = 50px
   .notification.ng-enter.ng-enter-active
     opacity 1
     bottom 0
+
+//------------------------------------------------------------------------------
+// Configure marines and dreadnought
+
+.configure-marine
+.configure-dreadnought
+
+  .select
+    position relative
+    cursor pointer
+
+    .value
+      background rgba(white, 0.1)
+      display block
+      padding 0.25em
+
+    .selector
+      position absolute
+      top 0
+      bottom 0
+      right 0
+      margin 3px
+      background textBackground
+      padding 2px 4px 0
+
+    .menu
+      z-index 5000
+      display none
+      opacity 0
+      top 100%
+      width 93%
+      position absolute
+      transition opacity linear 200ms
+
+      color alertColor
+      padding 0.5em
+      background url(../image/alert-background.png) repeat
+      box-shadow 0 0 6px 1px alertColor inset
+      border 1px solid alertColor
+      border-radius 5px
+    
+      .selected
+        color hoverColor
+
+  .select:hover 
+
+    .value
+      color hoverColor
+
+    .menu
+      display block
+      opacity 1
+      
+      > *:hover
+      > .selected
+        box-shadow 0 0 0.5em 0.25em #112B00
+        background #112B00
+  
+      > *:hover
+        color textColor
+
+.configure-dreadnought .select
+  margin-top 0.5em
+  margin-bottom 1em
