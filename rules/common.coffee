@@ -168,6 +168,7 @@ module.exports = {
     callback null
     
   # When a marine or alien character is removed from map (by killing it or when quitting)
+  # Marine/alien squad actions count is update unless specified (for example, in case of suicide)
   # this method checks that game still goes on. 
   # A game may end if:
   # - no more marine is on the map
@@ -183,9 +184,14 @@ module.exports = {
     # Mak as dead  
     item.life = 0
     item.dead = true
+    
     # decreases actions
-    item.squad.actions-- unless item.moves is 0
-    item.squad.actions -= Math.max item.rcNum, item.ccNum
+    unless item.moves is 0
+      item.squad.actions-- 
+      
+    attacks = Math.max item.rcNum, item.ccNum
+    item.squad.actions -= attacks
+
     # removing last living marine on map
     Item.find {map: mapId, type: 'marine', dead:false}, (err, marines) ->
       return callback err if err?

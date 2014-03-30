@@ -94,7 +94,8 @@ class MoveRule extends Rule
       # return safe to base !
       if previous.typeId isnt base and targetType is base
         effects[0][1].dead = false
-        return removeFromMap actor, @, =>
+        return removeFromMap actor, @, (err) =>
+          return callback err if err?
           addAction 'move', actor, effects, @, callback
       
       # check if actor can now open a door

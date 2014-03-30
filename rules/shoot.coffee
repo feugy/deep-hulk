@@ -83,7 +83,8 @@ class ShootRule extends Rule
           actor.rcNum--
           used = []
           actor.squad.actions--
-        actor.ccNum-- if actor.ccNum > 0 
+        # consume close conbat unless already consumed during shoot with first weapon
+        actor.ccNum-- if actor.ccNum > 0 and used.length is 0
         actor.usedWeapons = JSON.stringify used
         
         # consume remaining moves if a move is in progress
@@ -109,6 +110,8 @@ class ShootRule extends Rule
                 t.fetch (err, t) =>
                   return next err if err?
                   return next() if not hasTargetType(t) or hasObstacle(target, t, targets)?
+                  # edge case: target is shooter. Use modified actor instead fetched value
+                  t = actor if t.id is actor.id
                   damages = if t.x is target.x and t.y is target.y then center else around 
                   console.log "hit on target #{t.name or t.kind} (#{t.squad.name or 'alien'}) at #{t.x}:#{t.y}: #{damages}"
                   @_applyDamage actor, t, damages, effects, (err, result) =>

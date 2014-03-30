@@ -130,7 +130,7 @@ define [
         return
       @atlas.ruleService.execute 'movable', @scope.selected, @scope.selected, {}, (err, reachable) => @scope.$apply =>
         # TODO
-        return console.error err if err?
+        console.error err if err?
         # silent error, no moves, no more selected: clear zone
         return @scope.zone = null if err? or !reachable? or reachable.length is 0 or @scope.selected is null
         @scope.zone =
@@ -149,7 +149,7 @@ define [
         return
       @atlas.ruleService.execute "#{@scope.activeRule}Zone", @scope.selected, details, {weaponIdx:@scope.activeWeapon}, (err, result) => @scope.$apply =>
         # TODO
-        return console.error err if err?
+        console.error err if err?
         # silent error
         return @scope.zone = null if err? or @scope.selected is null or not result?
         result.origin = @scope.selected
@@ -203,7 +203,7 @@ define [
           @scope.squad = squad
           # blips deployment, blip displayal
           if @scope.squad.deployZone?
-            @_initBlipDeployement()
+            @_toggleDeployMode()
           if @scope.squad.actions < 0 
             @scope.canEndTurn = 'disabled' 
             @scope.notifs.push kind: 'info', content: conf.msgs.waitForOther
@@ -213,8 +213,10 @@ define [
           @_inhibit = if @scope.squad.isAlien and @scope.squad.deployZone? then @atlas.replayPos? else @atlas.replayPos? or @scope.squad.actions < 0 or @scope.squad.deployZone?
           
     # ** private**
-    # If a deploy zone is added to alien squad, swith to blip deployement mode with a info dialog
-    _initBlipDeployement: =>
+    # Adapt UI to current deploy mode:
+    # - If a deploy zone is added to squad: put info on deploy start, and for alien drop deploy zone
+    # - If a deploy zone is removed: clean zone, and for marine, put info on deploy end
+    _toggleDeployMode: =>
       if @scope.squad.deployZone?
         if @scope.squad.isAlien
           # Auto select the first zone to deploy
@@ -240,7 +242,12 @@ define [
           @scope.notifs.push kind: 'info', content: conf.msgs.deployInProgress
           @_inhibit = true
       else
-        @scope.notifs.push kind: 'info', content: conf.msgs.deployEnded unless @scope.squad.isAlien
+        if @scope.squad.isAlien
+          # clean alien previous nitifications
+          @scope.notifs.splice 0, @scope.notifs.length
+        else
+          # indicates to marine that they can go on !
+          @scope.notifs.push kind: 'info', content: conf.msgs.deployEnded
         @_currentZone = null
         @scope.deployScope = null
         # inhibit on turn end or replay pos
@@ -277,7 +284,7 @@ define [
                   # auto trigger turn end
                   @_onEndTurn() if @scope.squad.actions is 0
               if 'deployZone' in changes
-                @_initBlipDeployement() 
+                @_toggleDeployMode() 
             else if model?.id is @scope.game?.id
               if 'finished' in changes
                 return @location.path "#{conf.basePath}end" if model.finished
@@ -418,7 +425,7 @@ define [
         @atlas.ruleService.execute 'endDeploy', @atlas.player, @scope.squad, {zone: @_currentZone}, (err) =>
           return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
           # proceed with next deployement or quit mode
-          @_initBlipDeployement()
+          @_toggleDeployMode()
       # still actions ? confirm end of turn
       confirm = @dialog.messageBox conf.titles.confirmDeploy, conf.msgs.confirmEndDeploy, [
         {label: conf.buttons.yes, result: true}

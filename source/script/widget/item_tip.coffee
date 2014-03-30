@@ -62,17 +62,14 @@ define [
     # Resolve weapons to get details. Replace source own weapons
     # @param end [Function] callback invoked when weapons are resolved
     _resolveWeapon: (end) =>
-      console.log ">> resolve weapons for", @scope.src.kind
       # first, lool into the cache
       @atlas.Item.findCached @scope.src.weapons, (err, weapons) =>
         console.error "Failed to find weapons by id for tip:", err if err?
         if weapons.length is @scope.src.weapons.length
-          console.log '>1', weapons
           @scope.src.weapons = weapons
           return end()
         # or ask to server
         @atlas.Item.fetch @scope.src.weapons, (err, weapons) => 
           console.error "Failed to fetch weapons for tip:", err if err?
-          console.log '>2', weapons
           @scope.src.weapons = weapons
           end()

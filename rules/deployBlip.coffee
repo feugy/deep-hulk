@@ -1,6 +1,7 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
+{moveCapacities} = require './constants'
 {selectItemWithin, addAction} = require './common'
 {hasObstacle, findNextDoor} = require './visibility'
 
@@ -81,6 +82,10 @@ class DeployBlipRule extends Rule
         blip.map = squad.map
         blip.x = params.x
         blip.y = params.y
+        blip.moves = moveCapacities.blip
+        blip.rcNum = 0
+        blip.ccNum = 0
+        blip.usedWeapons = '[]'
         
         # search for door to open
         blip.doorToOpen = findNextDoor params, items

@@ -177,10 +177,12 @@ define [
     # **private**
     # Highlight selected tiles
     _highlight: (value, old) =>
-      return unless value? and not _.isEqual value, old
+      return if _.isEqual value, old
       # clear previous highligts
       @$el[0].width = @$el[0].width
       ctx = @$el[0].getContext '2d'
+      
+      return unless value?
       # get renderer from parent
       renderer = @scope.$parent.renderer
       
