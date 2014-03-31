@@ -246,7 +246,6 @@ define [
             when 'flamer'
               # shoot with flamer affect a line
               if @scope.src.tiles.length > 0
-                console.log @scope.src.tiles.concat()
                 [s1, s2, s3, s4] = flamerZone @scope.src.tiles.concat(), renderer
                 # draw a rectangle covering tiles
                 ctx.beginPath()

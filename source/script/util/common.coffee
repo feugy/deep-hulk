@@ -184,9 +184,10 @@ define [
     # Read error value into labels, and return human readable error message.
     parseError: (err) ->
       # error may contain arguments
-      err = err.toString()[err.toString().indexOf('Error: ')+7..]
+      err = err.toString()
+      err = err[err.lastIndexOf('Error: ')+7..]
       args = []
-      key = err.toString()
+      key = err
       split = err.split ' '
       if split.length >= 2
         key = split[0]

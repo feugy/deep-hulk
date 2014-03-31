@@ -274,9 +274,7 @@ module.exports = {
   # @param items [Array<Model>] checked models.
   # @return true if two models have the same position
   hasSharedPosition: (items) ->
-    for model in items when model?.type?.id in ['marine', 'alien']
-      items = _.any items, (item) -> 
-        item?.type?.id is model.type.id and not model.dead and not item?.dead
-      return true if items.length >= 2
+    for model in items when model?.type?.id in ['marine', 'alien'] and not model?.dead
+      return true if _.any items, (item) -> item isnt model and item?.type?.id is model.type.id and item?.x is model.x and item?.y is model.y and not item?.dead
     return false
 }

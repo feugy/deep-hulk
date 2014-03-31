@@ -365,11 +365,9 @@ define [
         if 'log' in changes
           if @_logLength < model.log.length
             # assault specific case: display results on map as indication
-            # defer rendering because linked log Item may be loading at very first shoot during session
-            length = @_logLength
-            _.defer => @scope.$apply =>
-              @scope.displayIndications _.map model.log[length...model.log.length], (log) ->
-                return  {
+            @scope.displayIndications (
+              for log, i in model.log[@_logLength...model.log.length]
+                {
                   text: log.loss
                   x: log.x
                   y: log.y
@@ -379,6 +377,7 @@ define [
                   className: "damages"
                   kind: log.kind
                 }
+            )
               
           # update inner value
           @_logLength = model.log.length
@@ -392,13 +391,13 @@ define [
           @_loadImage()
           
       # if dirty, resolve model before processing.
-      if model.__dirty__
+      if model.__dirty__ or ('log' in changes and model.log.length > 0 and not model.log[model.log.length-1]?.kind?)
         console.log "fetch dirty item #{model.id} (#{model.type.id}) before update"
         return model.constructor.fetch [model.id], (err, [model]) ->
           return console.error err if err?
           next event, kind, model, changes
-      else
-        next event, kind, model, changes
+      
+      next event, kind, model, changes
         
     # **private**
     # Show information tooltip.

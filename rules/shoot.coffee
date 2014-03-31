@@ -106,6 +106,8 @@ class ShootRule extends Rule
               center = sum dices
               around = _.max dices
               results = []
+              # Store damaged target to avoid hitting same dreadnought multiple times in the same shoot
+              hitten = []
               async.each targets, (t, next) =>
                 t.fetch (err, t) =>
                   return next err if err?
@@ -113,9 +115,10 @@ class ShootRule extends Rule
                   # edge case: target is shooter. Use modified actor instead fetched value
                   t = actor if t.id is actor.id
                   damages = if t.x is target.x and t.y is target.y then center else around 
-                  console.log "hit on target #{t.name or t.kind} (#{t.squad.name or 'alien'}) at #{t.x}:#{t.y}: #{damages}"
-                  @_applyDamage actor, t, damages, effects, (err, result) =>
-                    results.push result
+                  @_applyDamage actor, t, damages, effects, hitten, (err, result) =>
+                    if result?
+                      results.push result
+                      console.log "hit on target #{t.name or t.kind} (#{t.squad.name or 'alien'}) at #{t.x}:#{t.y}: #{result.loss} (#{result.damages}), died ? #{result.dead}"
                     next err
               , (err) =>
                 end err, results 
@@ -128,15 +131,18 @@ class ShootRule extends Rule
               positions = tilesOnLine reachable, target
               damages = sum dices
               results = []
+              # Store damaged target to avoid hitting same dreadnought multiple times in the same shoot
+              hitten = []
               async.each positions, (pos, next) =>
                 # and find potential target at position
                 target = _.find items, (item) -> item.x is pos.x and item.y is pos.y and hasTargetType item
                 return next() unless target? and not reachable.equals target
                 target.fetch (err, target) =>
                   return next err if err?
-                  console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}: #{damages}"
-                  @_applyDamage actor, target, damages, effects, (err, result) =>
-                    results.push result
+                  @_applyDamage actor, target, damages, effects, hitten, (err, result) =>
+                    if result?
+                      results.push result 
+                      console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}: #{result.loss} (#{result.damages}), died ? #{result.dead}"
                     next err
               , (err) =>
                 end err, results 
@@ -150,7 +156,9 @@ class ShootRule extends Rule
             targets.push x:target.x, y:target.y if not actor.currentTargets? or -1 is actor.currentTargets.indexOf "#{target.x}:#{target.y}"
             actor.currentTargets = null
             results = []
-            
+            # Store damaged target to avoid hitting same dreadnought multiple times in the same shoot
+            hitten = []
+              
             # split damages on selected target, keeping the order
             damages = sum dices
             allocateDamages = () =>
@@ -164,24 +172,22 @@ class ShootRule extends Rule
                 return allocateDamages() unless target?
                 target.fetch (err, target) =>
                   return end err if err?
-                  @_applyDamage actor, target, damages, effects, (err, result) =>
+                  @_applyDamage actor, target, damages, effects, hitten, (err, result) =>
                     return end err if err?
+                    return allocateDamages() unless result?
                     if target.life is 0
                       # target terminated: allocate remaining damages to next
                       result.damages = target.armor+result.loss
-                      console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}: #{result.damages}"
                       damages -= result.damages
                     else if result.loss > 0
                       # target wounded: no more damages to allocate
-                      console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}: #{target.armor+result.loss}"
                       damages = 0
                     else if targets.length > 0
                       # no wound and remaining target: consider we never aim at this one
                       result.damages = 0
-                    else
-                      # no wond and last target
-                      console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}: #{damages}"
-                      
+                    # else no wound and last target
+                    
+                    console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}:  #{result.loss} (#{result.damages}), died ? #{result.dead}" 
                     # process next target
                     results.push result
                     allocateDamages()
@@ -197,8 +203,8 @@ class ShootRule extends Rule
               target.fetch (err, target) =>
                 return end err if err?
                 damages = sum dices
-                console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}: #{damages}"
-                @_applyDamage actor, target, damages, effects, (err, result) =>
+                @_applyDamage actor, target, damages, effects, [], (err, result) =>
+                  console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}:  #{result.loss} (#{result.damages}), died ? #{result.dead}" 
                   end err, [result]
       
   # Apply given damages on a target
@@ -209,16 +215,22 @@ class ShootRule extends Rule
   # @param damage [Number] damage performed by actor's weapon
   # @param effects [Array<Array>] for each modified model, an array with the modified object at first index
   # and an object containin modified attributes and their previous values at second index (must at least contain id).
+  # @param hitten [Array<Item>] store damaged target to avoid hitting same dreadnought multiple times in the same shoot
   # @param callback [Function] end callback, invoked with:
   # @option callback err [Error] an error object or null if no error occured
   # @option callback result [Object] a logEntry item
-  _applyDamage: (actor, target, damages, effects, callback) =>
+  _applyDamage: (actor, target, damages, effects, hitten, callback) =>
     # is a target is a part, apply damages on the main object
     if target.main?
       return target.main.fetch (err, target) =>
         return callback err if err?
-        @_applyDamage actor, target, damages, effects, callback
+        @_applyDamage actor, target, damages, effects, hitten, callback
         
+    # abort if target was already hitten in that shoot
+    if _.any(hitten, (hit) -> hit.equals target)
+      return callback null, null
+    hitten.push target
+      
     result = new Item
       id: utils.generateId()
       type: logEntry
@@ -241,7 +253,6 @@ class ShootRule extends Rule
       points = damages-target.armor
       result.loss = if target.life >= points then points else target.life
       target.life -= result.loss
-      console.log "#{target.name or target.kind} (#{target.squad.name}) hit by #{result.loss} !"
       
     # dreadnought specific case: arbitrary remove an heavy weapon
     damageDreadnought target, result.loss
@@ -253,7 +264,6 @@ class ShootRule extends Rule
     countPoints actor, target, @, (err) => 
       return callback err if err?
       removeFromMap target, @, (err) =>
-        console.log "#{target.name or target.kind} (#{target.squad.name}) died !!"
         callback err, result
       
 module.exports = new ShootRule 'shoot'

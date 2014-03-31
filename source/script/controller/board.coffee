@@ -218,8 +218,9 @@ define [
     # - If a deploy zone is removed: clean zone, and for marine, put info on deploy end
     _toggleDeployMode: =>
       if @scope.squad.deployZone?
+        @scope.canEndTurn = 'disabled' 
+        @_inhibit = true
         if @scope.squad.isAlien
-          @scope.canEndTurn = 'disabled' 
           # Auto select the first zone to deploy
           first = @scope.squad.deployZone.split(',')[0]
           # but quit if first is still handled
@@ -236,12 +237,9 @@ define [
               @scope.zone = 
                 tiles: zone
                 kind: 'deploy'
-              # inhibit on replay
-              @_inhibit = @atlas.replayPos?
         else
           # add notification and inhibit
           @scope.notifs.push kind: 'info', content: conf.msgs.deployInProgress
-          @_inhibit = true
       else
         if @scope.squad.isAlien
           @scope.canEndTurn = '' 
@@ -458,4 +456,5 @@ define [
       # trigger the relevant rule
       @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) =>
         # displays deployement errors
+        console.log err, parseError err if err?
         return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
