@@ -83,7 +83,7 @@ define [
         scope.hapticConf = JSON.parse val or JSON.stringify 
           duration: 80
           move: 40
-          size: 0.10
+          size: 0.15
       attrs.$observe 'displayGrid', (val) -> scope.displayGrid = 'true' is (val or 'true')
       attrs.$observe 'displayMarkers', (val) -> scope.displayMarkers = 'true' is (val or 'true')
       attrs.$observe 'colors', (val) -> scope.colors = JSON.parse val or JSON.stringify 
@@ -189,6 +189,10 @@ define [
     # Loading flag to inhibit unitary field/item redraw while loading whole map
     _loading = false
     
+    # **private**
+    # Flag to inhibit haptic edges while dragging
+    _dragging = false
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] directive scope
@@ -280,6 +284,13 @@ define [
           <li ng-repeat="item in menuItems" data-value={{item}}>{{'names.'+item|i18n}}</li>
         </ul>""") @scope
       @_menu.on 'click', @_onMenuItemClick
+      
+      @$el.on('mousemove', @_onMouseMove).on('mouseleave', (event) => 
+        # stop looping on haptic edges
+        clearTimeout @_hapticDelay if @_hapticDelay?
+        @_hoverPos = null
+        @_drawHover()
+      )
 
     # Center map on given coordinate 
     #
@@ -332,6 +343,7 @@ define [
       @_progress = null
       @_isDroppable = false
       @_loading = false
+      @_dragging = false
       
       previous = @scope.selected
       @scope.selected = null
@@ -366,19 +378,33 @@ define [
       @height = 1+(@scope.renderer.upper.y-@scope.renderer.lower.y+1)*@scope.renderer.tileH
       @width = 1+(@scope.renderer.upper.x-@scope.renderer.lower.x+1)*@scope.renderer.tileW
 
+      # containment bounds for drag'n drop TODO: get padding from rendering
+      axis = {}
+      containment = [0, 0, 30, 30]
+      if @_dims.width < @width 
+        containment[0] = @_dims.width-@width
+      else
+        axis.y = true
+      if @_dims.height < @height 
+        containment[1] = @_dims.height-@height
+      else
+        axis.x = true
+        
       # creates the layer container
       # center it if dimension is smaller than viewport
       @_container = $('<div class="map-container"></div>').css(
         height: @height
         width: @width
-        left: if @_dims.width > @width then (@_dims.width-@width)/2 else 0
+        left: (@_dims.width-@width)/2
         top: (@_dims.height-@height)/2
-      ).on('mousemove', @_onMouseMove
-      ).on('mouseleave', (event) => 
-        # stop looping on haptic edges
-        clearTimeout @_hapticDelay if @_hapticDelay?
-        @_hoverPos = null
-        @_drawHover()
+      ).draggable(
+        containment: containment
+        cursor: 'move'
+        axis: if 'x' of axis then 'x' else if 'y' of axis then 'y' else false
+        disabled: axis.x and axis.y
+        # return null to avoid cancelling stuff
+        start: => @_dragging = true; null
+        stop: => @_dragging = false; null
       ).appendTo @$el
 
       # creates the layer canvas
@@ -669,7 +695,7 @@ define [
         
       @_drawHover()
       # evaluate haptic edges unless already dragging
-      @_onHapticEdge event if allowHaptic
+      @_onHapticEdge event if allowHaptic and not @_dragging
       # at last, trigger hover
       @scope.hover?(event, details)
       
@@ -686,7 +712,7 @@ define [
       containerLeft = pos.left
       containerTop = pos.top
       # defer detection a bit to let animation complete and to avoid unecessary detection
-      @_hapticDelay =_.delay => 
+      @_hapticDelay = _.delay => 
         mouseLeft = (event.pageX-containerLeft)
         mouseTop = (event.pageY-containerTop)
         {left, top}  = @_container.position()
@@ -694,18 +720,20 @@ define [
         newTop = undefined
         
         # evaluate horizontal edges
-        if mouseLeft <= @_dims.width*size
-          newLeft = (if left > -step then 0 else left+step) unless left is 0
-        else if mouseLeft >= @_dims.width*(1-size)
-          max = @_dims.width-@width
-          newLeft = (if left < max+step then max else left-step) unless left is max
+        if @_dims.width < @width
+          if mouseLeft <= @_dims.width*size
+            newLeft = (if left > -step then 0 else left+step) unless left is 0
+          else if mouseLeft >= @_dims.width*(1-size)
+            max = @_dims.width-@width
+            newLeft = (if left < max+step then max else left-step) unless left is max
   
         # evaluate vertical edges
-        if mouseTop <= @_dims.height*size
-          newTop = (if top > -step then 0 else top+step) unless top is 0
-        else if mouseTop >= @_dims.height*(1-size)
-          max = @_dims.height-@height
-          newTop = (if top < max+step then max else top-step) unless top is max
+        if @_dims.height < @height
+          if mouseTop <= @_dims.height*size
+            newTop = (if top > -step then 0 else top+step) unless top is 0
+          else if mouseTop >= @_dims.height*(1-size)
+            max = @_dims.height-@height
+            newTop = (if top < max+step then max else top-step) unless top is max
         
         # move and recurse until mouse leave edges
         if newTop? or newLeft?
