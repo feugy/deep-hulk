@@ -154,6 +154,20 @@ define [
       @scope.$watch 'deployScope', (value, old) =>
         return unless value isnt old
         @_toggleDraggable()
+        
+    # Redraw current item rendering: update position and size
+    # @return the jQuery element for this widget, for chaining purposes
+    redraw: =>
+      map = @scope.$parent      
+      return unless map?.renderer?
+      
+      @$el.css
+        width: if @scope.model.dead then 0 else map.renderer.tileW*@_imageSpec?.width
+        height: if @scope.model.dead then 0 else map.renderer.tileH*@_imageSpec?.height
+        backgroundSize: "#{100*@_longestSprite}% #{100*@_numSprites}%"
+
+      @_positionnate()
+      @$el
       
     # **private**
     # On image spec changes, compute number of sprites and longest sprite
@@ -214,15 +228,8 @@ define [
           @$el.css 
             background: "url(#{@atlas.imageService.getImageString key})"
         
-        map = @scope.$parent
-        
-        @$el.css
-          width: if @scope.model.dead then 0 else map?.renderer?.tileW*@_imageSpec?.width
-          height: if @scope.model.dead then 0 else map?.renderer?.tileH*@_imageSpec?.height
-          backgroundSize: "#{100*@_longestSprite}% #{100*@_numSprites}%"
-        
         # now display correct sprite
-        @_positionnate()
+        @redraw()
         @_renderSprite()
           
     # **private**
@@ -234,7 +241,7 @@ define [
       map = @scope.$parent
       # only if parent is a map
       return unless map?.renderer?
-
+                  
       # get the widget cell coordinates
       pos = map.renderer.coordToPos x: @scope.model.x, y: @scope.model.y
       

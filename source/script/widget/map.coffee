@@ -185,6 +185,10 @@ define [
     # Mousewheel zoom increment.
     _zoomStep: 0.05
     
+    # **private**
+    # Loading flag to inhibit unitary field/item redraw while loading whole map
+    _loading = false
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] directive scope
@@ -203,15 +207,18 @@ define [
       @scope.onZoom = (evt, delta) =>
         @scope.zoom += delta*@_zoomStep
       
-      # redraw content when map or its dimension changes
+      # recreate and reload content when map or its dimension changes
       @scope.$watch 'src', (value, old) =>
         return unless value? and value isnt old
         @_create()
+      # recreate without reload when window size or zoom change
       $(window).on 'resize', _.throttle (value, old) =>
         return unless value? and value isnt old
         @_create false
-      , 300, leading: false
-        
+      , 1000, leading: false
+      @scope.$watch 'zoom', _.throttle (value) =>
+        @_create false
+      , 500, leading: false
       
       # clean and display new items and fields
       redraw = (value, old) =>
@@ -219,14 +226,11 @@ define [
         @_removeData old if old?
         @_addData value
         
-      # redraw on zoom
-      @scope.$watch 'zoom', =>
-        @_create false
-        
       # update displayed items and fields on changes
       @scope.$watch 'items', redraw
       @scope.$watch 'fields', redraw
       rootScope.$on 'modelChanged', (ev, operation, model, changes) =>
+        return if @_loading
         if operation is 'creation' or (operation is 'update' and 'map' in changes)
           @_addData [model]
           
@@ -311,12 +315,12 @@ define [
     #
     # @param reload [Boolean] if true, reloads fields and items
     _create: (reload = true)=>
-      # removes previous items
-      @_removeData @scope.items if @scope.items?
+      # do not re-create if creation in progress
+      return if @_progress
         
       # Initialize internal state
       @_fields = []
-      @_items = {}
+      @_items = {} if reload
       @_container = null
       @_moveJumper = 0
       @_pendingImages = 0
@@ -327,12 +331,12 @@ define [
       @_hapticDelay = null
       @_progress = null
       @_isDroppable = false
+      @_loading = false
       
       previous = @scope.selected
       @scope.selected = null
       
       @$el.wrapInner("<div class='temp'></div>").append '<div class="loading"><progress value="0"/></div>'
-      @_progress = @$el.find '.loading progress'
       
       # compute element dimensions and offset
       @_dims =
@@ -346,6 +350,7 @@ define [
         # no kind ? just wait src to be loaded
         when undefined, null then return 
         else throw new Error "map kind #{@scope.src.kind} not supported"
+      @_progress = @$el.find '.loading progress'
       
       # expected map dimension
       mapDim = 
@@ -409,15 +414,19 @@ define [
       
       # gets data
       if reload
+        @_loading = true
         console.log "new displayed coord: ", @scope.renderer.lower, ' to: ', @scope.renderer.upper
         @scope.src.consult @scope.renderer.lower, @scope.renderer.upper, (err, fields, items) => @scope.$apply =>
           return @scope.error = err.message if err?
           @scope.fields = fields
           @scope.items = items
+          @_loading = false
       else
-        # or reuse existing ones
+        # redraw existing fields
         @_addData @scope.fields
-        @_addData @scope.items
+        # append existing widget and positionnate
+        @_layers.items.append widget.redraw() for id, widget of @_items
+          
       # reselect previously selected
       if previous?
         _.defer => @scope.$apply => @scope.selected = previous
@@ -425,6 +434,7 @@ define [
     # **private**
     # When deploy drag'n drop scope is toggle, create or removes droppable on items
     _toggleDeployment: =>
+      return if @_progress?
       if @scope.deployScope?
         unless @_isDroppable
           @_layers.items.droppable
