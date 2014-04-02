@@ -40,6 +40,7 @@ requirejs.config
     'angular-mousewheel': deps: ['angular', 'hamster']
     'angular-route': deps: ['angular']
     'angular-sanitize': deps: ['angular']
+    'angular-ui-utils': deps: ['angular']
     'async': exports: 'async'
     'atlas':
       deps: ['jquery', 'underscore']
@@ -49,7 +50,6 @@ requirejs.config
     'socket.io': exports: 'io'
     'underscore': exports: '_'
     'underscore.string': deps: ['underscore']
-    'ui.bootstrap':deps: ['angular']
 
 require [
   'jquery'

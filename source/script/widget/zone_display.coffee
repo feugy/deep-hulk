@@ -173,6 +173,7 @@ define [
       @$el = $(element)                     
       # show menu, highlighted tiles
       @scope.$watch 'src', @_highlight
+      @_highlight @scope.src
     
     # **private**
     # Highlight selected tiles

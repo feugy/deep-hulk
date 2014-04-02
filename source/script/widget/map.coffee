@@ -11,7 +11,7 @@ define [
   'widget/cursor'
   'widget/zone_display'
   'jquery-ui'
-], ($, _, app, {mixColors, euclidianDistance}, SquareRenderer, DiamondRenderer, HexagonRenderer) ->
+], ($, _, app, {mixColors, euclidianDistance, parseShortcuts, isShortcuts}, SquareRenderer) ->
   
   # The map directive displays map with fields and items
   app.directive 'map', -> 
@@ -51,6 +51,8 @@ define [
       hover: '=?'
       # blip deployement handler
       blipDeployed: '=?'
+      # currently active rule
+      activeRule: '=?'
       # active rule selection handler
       selectActiveRule: '=?'
       # rule execution request handler
@@ -73,11 +75,18 @@ define [
       verticalTileNum: '=?'
       # number of tile displayed in horizontal. Depends on the available space
       horizontalTileNum: '=?'
+      # shortcuts used to move selected character
+      shortcuts: '@?'
     
     # controller
     controller: MapController
     # link to set default values
     link: (scope, element, attrs) ->
+      # set default values
+      attrs.$observe 'shortcuts', (val) -> 
+        scope.shortcuts  = JSON.parse val or {}
+        for direction, value of scope.shortcuts
+          scope.shortcuts[direction] = parseShortcuts value
       # set default values
       attrs.$observe 'hapticConf', (val) ->
         scope.hapticConf = JSON.parse val or JSON.stringify 
@@ -211,6 +220,11 @@ define [
       @scope.onZoom = (evt, delta) =>
         @scope.zoom += delta*@_zoomStep
       
+      # bind key listener
+      $(window).on 'keydown.map', @_onKey
+      @scope.$on '$destroy', => 
+        $(window).off 'keydown.map', @_onKey
+        
       # recreate and reload content when map or its dimension changes
       @scope.$watch 'src', (value, old) =>
         return unless value? and value isnt old
@@ -460,7 +474,6 @@ define [
     # **private**
     # When deploy drag'n drop scope is toggle, create or removes droppable on items
     _toggleDeployment: =>
-      return if @_progress?
       if @scope.deployScope?
         unless @_isDroppable
           @_layers.items.droppable
@@ -604,6 +617,7 @@ define [
     # @option return left the left offset relative to container
     # @option return top the top offset relative to container
     _mousePos: (event) =>
+      return {left:0, top:0} unless @_container?
       offset = @_container.offset()
       {
         left: (event.pageX-offset.left)
@@ -679,7 +693,7 @@ define [
     #
     # @param event [Event] mouse move event
     _onMouseMove: (event) => 
-      return unless @_moveJumper++ % 3 is 0 and not @_menuOpened
+      return unless @_moveJumper++ % 3 is 0 and not @_menuOpened and @_container?
       # stop looping on haptic edges
       clearTimeout @_hapticDelay if @_hapticDelay?
       
@@ -789,3 +803,29 @@ define [
       # get the map coordinates
       coord = @scope.renderer.posToCoord @_mousePos event
       @scope?.blipDeployed coord, ui.draggable.data('model') or null
+       
+    # **private**
+    # Key handler, to move selected character
+    #
+    # @param event [Event] key up event
+    _onKey: (event) =>
+      # disable if cursor currently in an editable element, or no selection
+      return if @scope.selected is null or @scope.activeRule isnt 'move' or event.target.nodeName in ['input', 'textarea', 'select']
+      # select current character if shortcut match
+      for direction, shortcut of @scope.shortcuts
+        if isShortcuts event, shortcut
+          # use selected coord
+          coord = _.pick @scope.selected, 'x', 'y'
+          if direction.indexOf('up') isnt -1
+            coord.y++ 
+          else if direction.indexOf('down') isnt -1
+            coord.y--
+          if direction.indexOf('right') isnt -1
+            coord.x++ 
+          else if direction.indexOf('left') isnt -1
+            coord.x--
+          @scope.click?(event, @_getInfos event, coord)
+          # stop key to avoid browser default behavior
+          event.preventDefault()
+          event.stopImmediatePropagation()
+          return false

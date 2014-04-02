@@ -4,8 +4,9 @@ define [
   'jquery'
   'underscore'
   'app'
+  'util/common'
   'text!template/character_details.html'
-], ($, _, app, template) ->
+], ($, _, app, {parseShortcuts, isShortcuts}, template) ->
   
   # The characterDetails directive displays character state::
   # For marines: name, weapon, currents moves and attacks
@@ -25,7 +26,14 @@ define [
       src: '='
       # link to selected character on map
       selected: '=?'
+      # shortcut used to select this character
+      shortcuts: '@?'
       
+    # link to set default values
+    link: (scope, element, attrs) ->
+      # set default values
+      attrs.$observe 'shortcuts', (val) -> scope.shortcuts = parseShortcuts val
+        
   class CharacterDetails
                   
     # Controller dependencies
@@ -64,6 +72,11 @@ define [
       @$el.toggle @scope.src?.map?
       rootScope.$on 'modelChanged', @_onModelChanged
       
+      # bind key listener
+      $(window).on 'keydown.character-details', @_onKey
+      @scope.$on '$destroy', => 
+        $(window).off 'keydown.character-details', @_onKey
+        
       # init name      
       if @scope.isAlien
         _.defer => @_onModelChanged null, 'update', @scope.src, ['revealed']
@@ -86,3 +99,18 @@ define [
       if 'revealed' in changes
         @scope.$apply => 
           @scope.name = if @scope.src.revealed then @filter('i18n') "labels.#{@scope.src.kind}" else @filter('i18n') 'labels.blip'
+
+    # **private**
+    # Key up handler, to select this character with shortcut
+    #
+    # @param event [Event] key up event
+    _onKey: (event) =>
+      # disable if cursor currently in an editable element
+      return if event.target.nodeName in ['input', 'textarea', 'select']
+      # select current character if shortcut match
+      if isShortcuts event, @scope.shortcuts
+        @scope.$apply => @scope.selected = @scope.src 
+        # stop key to avoid browser default behavior
+        event.preventDefault()
+        event.stopImmediatePropagation()
+        return false

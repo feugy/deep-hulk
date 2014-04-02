@@ -4,8 +4,9 @@ define [
   'jquery'
   'underscore'
   'app'
+  'util/common'
   'text!template/cursor.html'
-], ($, _, app, template) ->
+], ($, _, app, {parseShortcuts, isShortcuts}, template) ->
   
   # The map directive displays map with fields and items
   app.directive 'cursor', -> 
@@ -48,8 +49,17 @@ define [
     # JQuery enriched element for directive root
     $el: null
 
+    # **private**
     # rear part of the cursor, in a separate element to have different z-orders
     _rear: null
+    
+    # **private**
+    # different shortcuts used to switch commands
+    _shortcuts: 
+      move: parseShortcuts 'M'
+      shoot: parseShortcuts 'S'
+      open: parseShortcuts 'O'
+      assault: parseShortcuts 'A'
     
     # Controller constructor: bind methods and attributes to current scope
     #
@@ -69,6 +79,7 @@ define [
       @scope.rcNum = []
       
       @_rear = $('<div class="cursor rear"/>')
+      @_activeShortcuts = null
             
       # update on replay quit/enter
       rootScope.$on 'replay', (ev, details) => @_render true
@@ -77,6 +88,10 @@ define [
       @scope.$watch 'selected', (value, old) =>
         return unless value isnt old
         @redraw()
+        
+      # bind key listener
+      $(window).on 'keydown.cursor', @_onKey
+      @scope.$on '$destroy', => $(window).off '.cursor'
         
       # update openable door when selected model changed
       rootScope.$on 'modelChanged', @_onModelChanged
@@ -100,9 +115,10 @@ define [
       isBig = value?.revealed is true and value?.kind is 'dreadnought'
       @_rear.toggleClass 'is-big', isBig
       @$el.toggleClass 'is-big', isBig
-      if @scope.activeRule?
-        @scope.activeRule = null
-        @scope.selectActiveRule?(null, @scope.activeRule) 
+      
+      # deselect previous active rule, and set to move by default
+      @scope.activeRule = 'move'
+      @scope.selectActiveRule?(null, @scope.activeRule) 
       @_render true
       
     # **private**
@@ -154,7 +170,7 @@ define [
       oldWeapon = @scope.activeWeapon
       @scope.activeWeapon = weapon
       switch rule
-        when 'move' 
+        when 'move', null
           @scope.activeRule = if @scope.selected.moves > 0 then rule else null
           break
         when 'shoot' 
@@ -208,8 +224,13 @@ define [
         pos = @scope.renderer.coordToPos @scope.selected
         pos.transform = "scale(#{@scope.zoom})"
         pos['-webkit-transform'] = pos.transform
+        scale =
+          transform: "scale(#{0.45/@scope.zoom})"
+        scale['-webkit-transform'] = scale.transform
+        console.log scale
         
         @$el.css(pos).show()
+        @$el.children().css(scale)
         @_rear.css(pos).show()
         addClasses = =>
           @$el.addClass 'animated'
@@ -229,3 +250,29 @@ define [
         @$el.one 'transitionend', next
       else
         next()
+        
+    # **private**
+    # Key handler, to select mode if possible
+    # Open shortcut opens the nearest door
+    # Shoot shortcut toggle between available weapons
+    #
+    # @param event [Event] key up event
+    _onKey: (event) =>
+      # disable if cursor currently in an editable element, or no selection
+      return if @scope.selected is null or event.target.nodeName in ['input', 'textarea', 'select']
+      # select current character if shortcut match
+      for rule, shortcut of @_shortcuts
+        if isShortcuts event, shortcut
+          @scope.$apply =>
+            if rule is 'open'
+              @_onOpen event
+            else
+              if @scope.activeRule is 'shoot'
+                activeWeapon = (@scope.activeWeapon+1)%@scope.selected.weapons.length
+              else
+                activeWeapon = null
+              @_onActivate event, rule, activeWeapon
+          # stop key to avoid browser default behavior
+          event.preventDefault()
+          event.stopImmediatePropagation()
+          return false
