@@ -40,6 +40,10 @@ define [
     # During deployement phase, store current zone deployed
     _currentZone: null
     
+    # **private**
+    # Some weapons need to select multiple targets. Temporary store them
+    _multipleTargets: []
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] Angular current scope
@@ -60,6 +64,8 @@ define [
       @scope.canStopReplay = ''
       @scope.activeRule = null
       @scope.activeWeapon = 0
+      # If selected character is shooting with a weapon needing multiple targets, 
+      @scope.needMultipleTargets = false
       @scope.log = []
       @scope.notifs = []
       @scope._onSelectActiveRule = @_onSelectActiveRule
@@ -72,8 +78,7 @@ define [
         
       @scope._onMapClick = (event, details) => @_onClick event, details
       @scope._onMapRightclick = @_onSelect
-      @scope._askToExecuteRule = @_onOpen
-      @scope._onOpen = @_onOpen
+      @scope._askToExecuteRule = @_askToExecuteRule
       @scope._onEndTurn = @_onEndTurn
       @scope._onEndDeploy = @_onEndDeploy
       @scope._onBlipDeployed = @_onBlipDeployed
@@ -129,8 +134,6 @@ define [
       unless not @_inhibit and @scope.selected? and @scope.activeRule is 'move' and !@atlas.ruleService.isBusy()
         return
       @atlas.ruleService.execute 'movable', @scope.selected, @scope.selected, {}, (err, reachable) => @scope.$apply =>
-        # TODO
-        console.error err if err?
         # silent error, no moves, no more selected: clear zone
         return @scope.zone = null if err? or !reachable? or reachable.length is 0 or @scope.selected is null
         @scope.zone =
@@ -140,16 +143,18 @@ define [
                   
     # When hovering tiles, check on server damage zone and display it
     #
-    # @param target [Item|Field] targeted item or field
+    # @param evt [Event] event that add trigger zone displayal (unused)
+    # @param details [Item|Field] targeted item or field on which damage zone is evaluated
     displayDamageZone: (evt, details) =>
       unless details? and not @_inhibit and details? and @scope.selected? and @scope.activeRule in ['shoot', 'assault']
         return
       # do NOT ignore assault resolution if service is busy
       if @atlas.ruleService.isBusy() and @scope.activeRule isnt 'assault'
         return
-      @atlas.ruleService.execute "#{@scope.activeRule}Zone", @scope.selected, details, {weaponIdx:@scope.activeWeapon}, (err, result) => @scope.$apply =>
-        # TODO
-        console.error err if err?
+      params = 
+        weaponIdx: @scope.activeWeapon
+        multipleTargets: ("#{target.x}:#{target.y}" for target in @_multipleTargets)
+      @atlas.ruleService.execute "#{@scope.activeRule}Zone", @scope.selected, details, params, (err, result) => @scope.$apply =>
         # silent error
         return @scope.zone = null if err? or @scope.selected is null or not result?
         result.origin = @scope.selected
@@ -173,6 +178,9 @@ define [
     _onSelectActiveRule: (event, rule, weapon = 0) =>
       @scope.activeRule = rule
       @scope.activeWeapon = weapon
+      # reset targets
+      @scope.needMultipleTargets = false
+      @_multipleTargets = []
       if rule is 'move'
         @displayMovable()
       else if rule is 'assault'
@@ -326,6 +334,8 @@ define [
           @scope.selected = null
         else
           @scope.selected = item
+        # Redraw previously highlighted zone
+        @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
           
     # **private**
     # Handler invoked when clicking on map. Try to fire move rule, or to display
@@ -359,39 +369,55 @@ define [
             @scope.menuItems = keys
           
       if @scope.selected?
-        # for shoot, restrict to category. Otherwise, restrict to rule id
+        # for shoot with autocannon, need to select targets
         if @scope.activeRule is 'shoot' and @scope.selected.weapons[@scope.activeWeapon]?.id is 'autoCannon'
-          restriction = [@scope.activeRule] 
+          @scope.needMultipleTargets = true
+          # add to current targets
+          @_multipleTargets.push details.field if details.field?
         else
-          restriction = @scope.activeRule
-        # resolve board rules for the selected item at this coord
-        @atlas.ruleService.resolve @scope.selected, details.x, details.y, restriction, proceed
+          # resolve board rules for the selected item at this coord
+          @atlas.ruleService.resolve @scope.selected, details.x, details.y, @scope.activeRule, proceed
       else 
         # no selected item, just proceed.
         proceed()
         
     # **private**
-    # Trigger currently selected character to open next door.
-    _onOpen: =>
-      return if @_inhibit and not(@scope.selected?.doorToOpen?)
-      # fake resolution and trigger rule
-      @_applicableRules = 
-        open: [target: @scope.selected.doorToOpen]
-      @_onSelectMenuItem null, 'open'
+    # Trigger a given rule of currently selected character, as it it was selected on menu
+    #
+    # @param rule [String] rule to trigger
+    _askToExecuteRule: (rule) =>
+      return if @_inhibit and not @scope.selected?
+      switch rule
+        when "open"
+          return unless @scope.selected.doorToOpen?
+          @_applicableRules = open: [target: @scope.selected.doorToOpen]
+          break
+        when "shoot"
+          @_applicableRules = shoot: [target: @_multipleTargets[0]]
+      @_onSelectMenuItem null, rule
           
     # **private**
     # Handler of map menu selection. Trigger the corresponding rule
     #
     # @param event [Event] click event inside map menu
-    # @param item [String] name of the selected item inside menu
-    _onSelectMenuItem: (event, item) =>
+    # @param rule [String] name of the selected item inside menu
+    _onSelectMenuItem: (event, rule) =>
       # do not support yet multiple targets nor parameters
-      return console.error "multiple targets not supported yet for rule #{item}" if @_applicableRules[item].length > 1
-      return console.error "parameters not supported yet for rule #{item}" if item isnt 'shoot' and @_applicableRules[item][0].params?.length > 0
+      return console.error "multiple targets not supported yet for rule #{rule}" if @_applicableRules[rule].length > 1
+      return console.error "parameters not supported yet for rule #{rule}" if rule isnt 'shoot' and @_applicableRules[rule][0].params?.length > 0
             
       # trigger rule
-      params = if item is 'shoot' then weaponIdx: @scope.activeWeapon else {}
-      @atlas.ruleService.execute item, @scope.selected, @_applicableRules[item][0].target, params, (err, result) =>
+      if rule is 'shoot'
+        params = 
+          weaponIdx: @scope.activeWeapon 
+          multipleTargets: ("#{target.x}:#{target.y}" for target in @_multipleTargets)
+          
+        # reset mutliple targets
+        @scope.needMultipleTargets = false
+        @_multipleTargets = []
+      else 
+        params = {}
+      @atlas.ruleService.execute rule, @scope.selected, @_applicableRules[rule][0].target, params, (err, result) =>
         return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?   
         # refresh movable tiles
         @displayMovable()

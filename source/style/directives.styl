@@ -207,6 +207,12 @@ assaultRotation = 60deg
   .open:not(.active):hover
     cursor default
 
+  .open-fire
+    // for ng-hide animations
+    display block !important
+    transition height 200ms
+  .open-fire.ng-hide
+    height 0
    
   // by default, display shoot icon for unspecified weapons
   a > span
@@ -217,7 +223,7 @@ assaultRotation = 60deg
     background-position (-6)*actionSize -2*innerActionSize
 
   // or use specific icons for other actions
-  actions = move, open, assault, missileLauncher, autoCannon, flamer
+  actions = move, open, assault, missileLauncher, autoCannon, flamer, shoot, open-fire
 
   for action, i in actions
     .{action} > span
@@ -226,6 +232,8 @@ assaultRotation = 60deg
       background-position (- i)*actionSize 0 
     .{action}:hover > span
       background-position (- i)*actionSize -2*innerActionSize
+
+
 
 .cursor.rear
   background-image url(../image/cursor.png)

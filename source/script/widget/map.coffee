@@ -16,7 +16,7 @@ define [
   # The map directive displays map with fields and items
   app.directive 'map', -> 
     # directive template
-    template: '<div class="map" msd-wheel="onZoom($event, $delta)"></div>'
+    template: '<div class="map" data-msd-wheel="onZoom($event, $delta)"></div>'
     # will remplace hosting element
     replace: true
     # applicable as element and attribute
@@ -75,6 +75,8 @@ define [
       verticalTileNum: '=?'
       # number of tile displayed in horizontal. Depends on the available space
       horizontalTileNum: '=?'
+      # Relay to cursor the fact that current selected weapon needs multiple targets
+      needMultipleTargets: '=?'
       # shortcuts used to move selected character
       shortcuts: '@?'
     
@@ -291,6 +293,7 @@ define [
         data-zoom="zoom"
         data-get-selected-widget="getSelectedWidget"
         data-select-active-rule="selectActiveRule"
+        data-need-multiple-targets="needMultipleTargets"
         data-ask-to-execute-rule="askToExecuteRule"/>""") @scope
                 
       # adds a menu

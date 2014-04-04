@@ -38,7 +38,10 @@ class ShootRule extends Rule
     return callback null, null if actor.squad?.deployZone?
     # deny if actor cannot attack anymore, or if target isnt a field
     return callback null, false unless not actor.dead and actor.rcNum >= 1 and target?.mapId?
-    callback null, [name: 'weaponIdx', type:'integer', min: 0, max: actor.weapons.length-1]
+    callback null, [
+      {name: 'weaponIdx', type:'integer', min: 0, max: actor.weapons.length-1}
+      {name: 'multipleTargets', type:'string', numMin: 0, numMax:20}
+    ]
 
   # Resolve shoot damaged and apply them on targeted tiles
   #
@@ -148,13 +151,12 @@ class ShootRule extends Rule
                 end err, results 
                 
           when 'autoCannon'
-            # multiple target allowed: extract them from actor
-            targets = []
-            if actor.currentTargets?
-              targets = (x:parseInt(coord[0...coord.indexOf ':']), y:parseInt(coord[coord.indexOf(':')+1..]) for coord in actor.currentTargets.split ',')
+            # multiple target allowed: extract them from parmaeters
+            # OLD if actor.currentTargets?
+            targets = (x:+(coord[0...coord.indexOf ':']), y:+(coord[coord.indexOf(':')+1..]) for coord in params.multipleTargets)
             # add the target to list of current targets, unless already present
-            targets.push x:target.x, y:target.y if not actor.currentTargets? or -1 is actor.currentTargets.indexOf "#{target.x}:#{target.y}"
-            actor.currentTargets = null
+            # OLD targets.push x:target.x, y:target.y if not actor.currentTargets? or -1 is actor.currentTargets.indexOf "#{target.x}:#{target.y}"
+            # OLD actor.currentTargets = null
             results = []
             # Store damaged target to avoid hitting same dreadnought multiple times in the same shoot
             hitten = []
@@ -164,12 +166,13 @@ class ShootRule extends Rule
             allocateDamages = () =>
               # quit when no target remains
               return end null, results unless targets.length > 0
-              # select the first remaining target
-              selectItemWithin actor.map.id, targets.splice(0, 1)[0], (err, targets) =>
+              # select objects between actor and target to check visibility
+              target = targets.splice(0, 1)[0]
+              selectItemWithin actor.map.id, actor, target, (err, items) =>
                 return end err if err?
-                target = _.find targets, hasTargetType
-                # no character found: proceed next target
-                return allocateDamages() unless target?
+                target = _.find items, (item) -> hasTargetType(item) and item.x is target.x and item.y is target.y
+                # no character found, or not targetable: proceed next target
+                return allocateDamages() unless target? and isTargetable(actor, target, params.weaponIdx, items)?
                 target.fetch (err, target) =>
                   return end err if err?
                   @_applyDamage actor, target, damages, effects, hitten, (err, result) =>
@@ -266,4 +269,4 @@ class ShootRule extends Rule
       removeFromMap target, @, (err) =>
         callback err, result
       
-module.exports = new ShootRule 'shoot'
+module.exports = new ShootRule 'attack'

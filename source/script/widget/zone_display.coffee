@@ -218,31 +218,27 @@ define [
             
         when 'shoot'
           weapon = @scope.src.weapon.id or @scope.src.weapon
-          # draw line if necessary: not for flamer if it hits
-          if weapon isnt 'flamer' or @scope.src.tiles.length is 0
-            {r, g, b, a} = hexToRgb conf.colors.visibilityLine or '#FFFF'
-            c1 = "rgba(#{r}, #{g}, #{b}, #{a})"
-            if @scope.src.obstacle
-              end = @scope.src.obstacle
-              # use different end color
-              {r, g, b, a} = hexToRgb conf.colors.obstacle or '#FFFF'
-              c2 = "rgba(#{r}, #{g}, #{b}, #{a})"
-            else
-              end = @scope.src.target
-              # use same color as highlight
-              c2 = color
-            
-            coord = _.pick @scope.src.origin, 'x', 'y'
-            if @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
-              # dreadnought specific case: center right ahead current position
-              coord.x += 0.5
-              coord.y += 0.5
-            drawVisibilityLine ctx, coord, end, renderer, c1, c2
+          # colors for visibility lines
+          {r, g, b, a} = hexToRgb conf.colors.visibilityLine or '#FFFF'
+          c1 = "rgba(#{r}, #{g}, #{b}, #{a})"
+          c2 = color
           
+          start = _.pick @scope.src.origin, 'x', 'y'
+          if @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
+            # dreadnought specific case: center right ahead current position
+            start.x += 0.5
+            start.y += 0.5
+            
+          if @scope.src.obstacle
+            # use different end color for obstacle, and quit
+            {r, g, b, a} = hexToRgb conf.colors.obstacle or '#FFFF'
+            return drawVisibilityLine ctx, start, @scope.src.obstacle, renderer, c1, "rgba(#{r}, #{g}, #{b}, #{a})"
+            
           switch weapon
             when 'missileLauncher'
               # shoot with missileLauncher affect a circular area: radial gradient
               grad = makeRadialGradient ctx, @scope.src.target, renderer, renderer.tileW*1.5, color
+              drawVisibilityLine ctx, start, @scope.src.target, renderer, c1, c2
               renderer.drawTile ctx, tile, grad for tile in @scope.src.tiles
             when 'flamer'
               # shoot with flamer affect a line
@@ -263,4 +259,5 @@ define [
             else
               # other only affect a list of tiles
               for tile in @scope.src.tiles
+                drawVisibilityLine ctx, start, tile, renderer, c1, c2
                 renderer.drawTile ctx, tile, makeRadialGradient ctx, tile, renderer, renderer.tileW*0.5, color 

@@ -18,6 +18,11 @@
         title="{{'names.'+weapon.id|i18n:{sep:true} }}{{rcNum[$index]}}">
       <span><i>{{canShoot ? rcNum[$index] : ''}}</i></span>
     </a>
+    <a class="open-fire active"
+        data-ng-show="canOpenFire"
+        data-ng-click="_onOpenFire($event)" 
+        title="{{'names.shoot'|i18n}}">
+      <span></span></a>
     <a class="assault ng-class:activeRule == 'assault' ? 'active' : ''" 
         data-ng-click="_onActivate($event, 'assault')" 
         title="{{'names.assault'|i18n:{sep:true} }}{{selected.ccNum}}">

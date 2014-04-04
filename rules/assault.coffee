@@ -184,4 +184,4 @@ class AssaultRule extends Rule
     # no part: apply on initial target
     process target
 
-module.exports = new AssaultRule()
+module.exports = new AssaultRule 'attack'

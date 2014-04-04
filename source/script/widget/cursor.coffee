@@ -30,6 +30,8 @@ define [
       askToExecuteRule: '=?'
       # method to get widget corresponding to selected Item
       getSelectedWidget: '=?'
+      # open fire possible if multiple targets available
+      canOpenFire: '=?needMultipleTargets'
           
     # controller
     controller: CursorController
@@ -75,6 +77,7 @@ define [
       @scope.canFight = false
       @scope._onActivate = @_onActivate
       @scope._onOpen = @_onOpen
+      @scope._onOpenFire = @_onOpenFire
       @scope.isBlip = false
       @scope.rcNum = []
       
@@ -188,9 +191,14 @@ define [
     # Ask to opens a door, if is open is available
     _onOpen: (evt) =>
       evt?.stopImmediatePropagation()
-      if @scope.canOpenDoor
-        @scope.askToExecuteRule?('open')
-                
+      @scope.askToExecuteRule?('open') if @scope.canOpenDoor
+              
+    # **private**
+    # Ask to open fire with weapon that has multiple targets
+    _onOpenFire: (evt) =>
+      evt?.stopImmediatePropagation()
+      @scope.askToExecuteRule?('shoot') if @scope.canOpenFire
+        
     # **private**
     # Update rcNum array in scope, that contains number of shoot per weapon 
     # (same order that weapons array)
@@ -227,7 +235,6 @@ define [
         scale =
           transform: "scale(#{0.45/@scope.zoom})"
         scale['-webkit-transform'] = scale.transform
-        console.log scale
         
         @$el.css(pos).show()
         @$el.children().css(scale)
@@ -268,6 +275,8 @@ define [
               @_onOpen event
             else
               if @scope.activeRule is 'shoot'
+                # assault cannon specific case: open fire if possible
+                return @_onOpenFire() if @scope.canOpenFire
                 activeWeapon = (@scope.activeWeapon+1)%@scope.selected.weapons.length
               else
                 activeWeapon = null

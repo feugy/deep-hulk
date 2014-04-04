@@ -224,6 +224,7 @@ define [
                 when 'DEL' then result.key = '.'
                 when 'TAB' then result.key = '\t'
                 when 'PGUP' then result.key = '!'
+                when 'PGDOWN' then result.key = '"'
                 when 'UP' then result.key = '&'
                 when 'DOWN' then result.key = '('
                 when 'LEFT' then result.key = '%'
