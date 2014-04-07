@@ -4,7 +4,7 @@ utils = require 'hyperion/util/model'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 ItemType = require 'hyperion/model/ItemType'
-{rollDices, selectItemWithin, sum, countPoints, removeFromMap, addAction, hasSharedPosition, damageDreadnought} = require './common'
+{rollDices, selectItemWithin, sum, countPoints, removeFromMap, addAction, hasSharedPosition, damageDreadnought, logResult} = require './common'
 {isTargetable, hasObstacle, tilesOnLine, untilWall} = require './visibility'
 {moveCapacities} = require './constants'
 
@@ -14,12 +14,6 @@ ItemType = require 'hyperion/model/ItemType'
 # @return true if this target is an alien or a marine.
 hasTargetType = (target) ->
   target?.type?.id in ['marine', 'alien']
-  
-# loads log entry type
-logEntry = null
-ItemType.findCached ['logEntry'], (err, classes) => 
-  console.error "Failed to load logEntry type from shoot rule: #{err}" if err?
-  logEntry = classes[0]
         
 # Marine ranged attack
 # Effect depends on the equiped weapon
@@ -51,7 +45,7 @@ class ShootRule extends Rule
   # @param context [Object] extra information on execution context
   # @param callback [Function] called when the rule is applied, with one arguments:
   # @option callback err [String] error string. Null if no error occured
-  # @option callback results [Array] for each target hit: a logEntry item
+  # @option callback results [Array] for each object involved: a result object
   execute: (actor, target, params, context, callback) =>
     # get near items to check shared position
     selectItemWithin actor.map.id, actor, {x:actor.x+1, y:actor.y+1}, (err, items) =>
@@ -76,6 +70,7 @@ class ShootRule extends Rule
         
         end = (err, results) =>
           return callback err if err?
+          logResult actor, results
           addAction 'shoot', actor, effects, @, (err) =>
             callback err, results
    
@@ -221,7 +216,7 @@ class ShootRule extends Rule
   # @param hitten [Array<Item>] store damaged target to avoid hitting same dreadnought multiple times in the same shoot
   # @param callback [Function] end callback, invoked with:
   # @option callback err [Error] an error object or null if no error occured
-  # @option callback result [Object] a logEntry item
+  # @option callback result [Object] an object describe shoot result
   _applyDamage: (actor, target, damages, effects, hitten, callback) =>
     # is a target is a part, apply damages on the main object
     if target.main?
@@ -234,20 +229,14 @@ class ShootRule extends Rule
       return callback null, null
     hitten.push target
       
-    result = new Item
-      id: utils.generateId()
-      type: logEntry
-      x: target.x
-      y: target.y
-      fx: actor.x
-      fy: actor.y
+    result = {
+      at: {x: target.x, y: target.y}
+      from: {x: actor.x, y: actor.y}
       loss: 0
       dead: false
       damages: damages
-      map: actor.map
       kind: 'shoot'
-    @saved.push result
-    actor.log.push result
+    }
     
     # apply damages on target
     if damages > target.armor
@@ -261,6 +250,7 @@ class ShootRule extends Rule
     damageDreadnought target, result.loss
     
     return callback null, result unless target.life is 0
+      
     # target is dead !
     result.dead = true
     # add points to actor and removes points from target

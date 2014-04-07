@@ -144,7 +144,7 @@ define [
       @$el.addClass @scope.model.type.id
       @$el.attr 'id', @scope.model.id
       
-      @_logLength = @scope.model.log?.length or 0
+      @_logLength = @scope.model?.log?.length or 2 # empty, contains at least "[]"
       @_loadImage()
       @_toggleDraggable()
       @_unbind = rootScope.on 'modelChanged', @_onUpdate
@@ -358,7 +358,7 @@ define [
     # @param changes [Array<String] array of attributes that have been modified
     _onUpdate: (event, kind, model, changes) =>
       return unless model?.id is @scope.model?.id
-      # deletion received
+      # deletion received: delay removal to let animation be rendered
       if kind is 'deletion'
         @scope.$destroy()
         return @$el.remove()
@@ -372,19 +372,30 @@ define [
         if 'log' in changes
           if @_logLength < model.log.length
             # assault specific case: display results on map as indication
-            @scope.displayIndications (
-              for log, i in model.log[@_logLength...model.log.length]
-                {
-                  text: log.loss
-                  x: log.x
-                  y: log.y
-                  fx: log.fx
-                  fy: log.fy
+            indics = []
+            start = if @_logLength > 2 then @_logLength else 1
+            logs = JSON.parse "[" + model.log[start...model.log.length]
+            for log, i in logs
+              # split into two indication: damages and loss
+              indics.push 
+                kind: 'damages'
+                at: log.at
+                duration: 3000
+                delay: 300
+                text: log.damages
+              if log.loss > 0
+                indics.push
+                  kind: 'loss'
+                  at: log.at
                   duration: 3000
-                  className: "damages"
-                  kind: log.kind
-                }
-            )
+                  delay: 500
+                  text: "-#{log.loss}"
+              # display also animation
+              if log.kind is 'assault'
+                indics.push {at: log.at, duration: 500, kind: log.kind, anim: log.kind}
+              else if log.kind is 'shoot'
+                indics.push {dest: log.at, at: log.from, duration: 50, kind: log.kind}
+            @scope.displayIndications indics
               
           # update inner value
           @_logLength = model.log.length
@@ -393,12 +404,15 @@ define [
         if 'transition' in changes
           # render new animation if needed
           @_renderSprite needsReload 
+        else if 'dead' in changes
+          # defer reloading until animation will be triggered
+          _.delay @_loadImage, 500
         else if needsReload
           # renderSprite will reload if necessary
           @_loadImage()
           
       # if dirty, resolve model before processing.
-      if model.__dirty__ or ('log' in changes and model.log.length > 0 and not model.log[model.log.length-1]?.kind?)
+      if model.__dirty__
         console.log "fetch dirty item #{model.id} (#{model.type.id}) before update"
         return model.constructor.fetch [model.id], (err, [model]) ->
           return console.error err if err?

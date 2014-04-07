@@ -144,7 +144,6 @@ module.exports = {
       Item.find {map: mapId, x: from.x, y: from.y}, callback
     else
       Item.where('map', mapId)
-        .where('type').ne('logEntry')
         .where('x').gte(if from.x > to.x then to.x else from.x)
         .where('x').lte(if from.x > to.x then from.x else to.x)
         .where('y').gte(if from.y > to.y then to.y else from.y)
@@ -277,4 +276,17 @@ module.exports = {
     for model in items when model?.type?.id in ['marine', 'alien'] and not model?.dead
       return true if _.any items, (item) -> item isnt model and item?.type?.id is model.type.id and item?.x is model.x and item?.y is model.y and not item?.dead
     return false
+    
+  # Store into an actor's log a given result (or list of results).
+  # **Warning** Once added, results cannot be changed !!
+  #
+  # @param actor [Item] the concerned actor
+  # @param result [Object|Array<Object>] an arbitrary result or list of results
+  logResult: (actor, result) ->
+    log = JSON.parse actor.log
+    if _.isArray result
+      log = log.concat result
+    else
+      log.push result
+    actor.log = JSON.stringify log
 }

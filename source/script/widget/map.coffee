@@ -763,38 +763,39 @@ define [
     # **private**
     # Render indications above items
     _renderIndications: (indic) =>
+      if indic.delay
+        return _.delay => 
+          delete indic.delay
+          @_renderIndications indic
+        , indic.delay
+        
       # add the text into the layer
-      rendering = $("<div class='values'>#{indic.text}</div>").appendTo @_layers.indics
-      rendering.addClass indic.className if indic.className?
+      rendering = $("<div class='indic #{indic.kind}'>#{if indic.text? then indic.text else ""}</div>").appendTo @_layers.indics
       # positionnate on the relevant tile
-      target = @scope.renderer.coordToPos indic
-      target.left += (@scope.renderer.tileW-rendering.outerWidth())*0.5
-      target.top += (@scope.renderer.tileH-rendering.outerHeight())*0.5
-      rendering.css target
-      # and automatically removes it after a while
-      _.delay (-> rendering.remove()), indic.duration or 3000
+      position = @scope.renderer.coordToPos indic.at
+      position.left += (@scope.renderer.tileW-rendering.outerWidth())*0.5
+      position.top += (@scope.renderer.tileH-rendering.outerHeight())*0.5
+      rendering.css position
       
-      if indic.kind in ['shoot', 'assault']
-        from = x: indic.fx, y: indic.fy
-        shoot = $("<div class='#{indic.kind}'/>").appendTo @_layers.indics
-        shoot.addClass indic.className if indic.className?
-        switch indic.kind 
-          when 'shoot'
-            duration = 50*euclidianDistance from, indic
-            # move from origin to target (with delay to allow transition application)
-            origin = @scope.renderer.coordToPos from
-            origin.left += (@scope.renderer.tileW-shoot.outerWidth())*0.5
-            origin.top += (@scope.renderer.tileH-shoot.outerHeight())*0.5
-            # orient initial shoot which is horizontal left-right toward target
-            origin.transform = "rotate(#{Math.atan2 target.top - origin.top, target.left - origin.left}rad)"
-            shoot.css origin
-            _.defer -> shoot.css _.extend {transition: "all #{duration}ms linear"}, target, 
-          when 'assault'
-            duration = 500
-            # just positionnate and animate
-            _.defer -> shoot.css _.extend {animation: "assault #{duration}ms"}, target,
-        # remove at transition end
-        _.delay (-> shoot.remove()), duration
+      lifetime = indic.duration or 3000
+      # destination
+      if indic.dest
+        # animate along the path
+        lifetime = indic.duration*euclidianDistance indic.at, indic.dest
+        # evaluate target position
+        target = @scope.renderer.coordToPos indic.dest
+        target.left += (@scope.renderer.tileW-rendering.outerWidth())*0.5
+        target.top += (@scope.renderer.tileH-rendering.outerHeight())*0.5
+        # orient initial shoot which is horizontal left-right toward target
+        rendering.css transform: "rotate(#{Math.atan2 target.top - position.top, target.left - position.left}rad)"
+        # and trigger transition between position and target
+        _.defer -> rendering.css _.extend {transition: "all #{lifetime}ms linear"}, target
+        
+      # removes at end
+      _.delay (-> rendering.remove()), lifetime
+      # add also animation if rewuired
+      if indic.anim
+        _.defer -> rendering.css _.extend {animation: "#{indic.anim} #{lifetime}ms"}, position,
       
     # **private**
     # Invoked when dropping blips into the map
