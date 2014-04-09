@@ -1,9 +1,12 @@
 <div class="configure-marine">
   <label><span data-ng-show="src.isCommander">Sgt.</span> {{src.name}}{{'labels.fieldSeparator'|i18n}}</label>
-  <select class="weapon">
-    <option data-ng-repeat="weapon in weapons"
-            data-ng-selected="weapon === target.weapon"
-            data-ng-mouseover="hoverOption($event, weapon)"
-            value="{{weapon}}">{{'names.'+weapon|i18n}}</option>
-  </select>
+  <div class="select">
+    <span class="value">{{'names.'+(target.weapon || 'chooseWeapon')|i18n}}<span class="selector fa fa-caret-down"></span></span>
+    <ul class="menu">
+      <li data-ng-repeat="weapon in weapons"
+          data-ng-click="target.weapon = weapon"
+          data-ng-class="target.weapon === weapon ? 'selected' : ''"
+          data-ng-mouseover="hoverOption($event, weapon)">{{'names.'+weapon|i18n}}</li>
+    </ul>
+  </div>
 </div>

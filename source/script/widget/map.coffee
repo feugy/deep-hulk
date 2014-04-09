@@ -11,12 +11,12 @@ define [
   'widget/cursor'
   'widget/zone_display'
   'jquery-ui'
-], ($, _, app, {mixColors, euclidianDistance}, SquareRenderer, DiamondRenderer, HexagonRenderer) ->
+], ($, _, app, {mixColors, euclidianDistance, parseShortcuts, isShortcuts}, SquareRenderer) ->
   
   # The map directive displays map with fields and items
   app.directive 'map', -> 
     # directive template
-    template: '<div class="map" msd-wheel="onZoom($event, $delta)"></div>'
+    template: '<div class="map" data-msd-wheel="onZoom($event, $delta)"></div>'
     # will remplace hosting element
     replace: true
     # applicable as element and attribute
@@ -51,6 +51,8 @@ define [
       hover: '=?'
       # blip deployement handler
       blipDeployed: '=?'
+      # currently active rule
+      activeRule: '=?'
       # active rule selection handler
       selectActiveRule: '=?'
       # rule execution request handler
@@ -73,17 +75,26 @@ define [
       verticalTileNum: '=?'
       # number of tile displayed in horizontal. Depends on the available space
       horizontalTileNum: '=?'
+      # Relay to cursor the fact that current selected weapon needs multiple targets
+      needMultipleTargets: '=?'
+      # shortcuts used to move selected character
+      shortcuts: '@?'
     
     # controller
     controller: MapController
     # link to set default values
     link: (scope, element, attrs) ->
       # set default values
+      attrs.$observe 'shortcuts', (val) -> 
+        scope.shortcuts  = JSON.parse val or {}
+        for direction, value of scope.shortcuts
+          scope.shortcuts[direction] = parseShortcuts value
+      # set default values
       attrs.$observe 'hapticConf', (val) ->
         scope.hapticConf = JSON.parse val or JSON.stringify 
           duration: 80
           move: 40
-          size: 0.10
+          size: 0.15
       attrs.$observe 'displayGrid', (val) -> scope.displayGrid = 'true' is (val or 'true')
       attrs.$observe 'displayMarkers', (val) -> scope.displayMarkers = 'true' is (val or 'true')
       attrs.$observe 'colors', (val) -> scope.colors = JSON.parse val or JSON.stringify 
@@ -185,6 +196,14 @@ define [
     # Mousewheel zoom increment.
     _zoomStep: 0.05
     
+    # **private**
+    # Loading flag to inhibit unitary field/item redraw while loading whole map
+    _loading = false
+    
+    # **private**
+    # Flag to inhibit haptic edges while dragging
+    _dragging = false
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] directive scope
@@ -194,7 +213,6 @@ define [
     # @param rootScope [Object] Angular root scope
     constructor: (@scope, element, @atlas, @compile, rootScope) ->
       @_menuOpened = false
-      @_isDroppable = false
       @$el = $(element)
       @scope.renderer = null
       @scope.fields = [] unless _.isArray @scope.fields
@@ -204,15 +222,23 @@ define [
       @scope.onZoom = (evt, delta) =>
         @scope.zoom += delta*@_zoomStep
       
-      # redraw content when map or its dimension changes
+      # bind key listener
+      $(window).on 'keydown.map', @_onKey
+      @scope.$on '$destroy', => 
+        $(window).off 'keydown.map', @_onKey
+        
+      # recreate and reload content when map or its dimension changes
       @scope.$watch 'src', (value, old) =>
         return unless value? and value isnt old
         @_create()
+      # recreate without reload when window size or zoom change
       $(window).on 'resize', _.throttle (value, old) =>
         return unless value? and value isnt old
         @_create false
-      , 300, leading: false
-        
+      , 1000, leading: false
+      @scope.$watch 'zoom', _.throttle (value) =>
+        @_create false
+      , 500, leading: false
       
       # clean and display new items and fields
       redraw = (value, old) =>
@@ -220,14 +246,11 @@ define [
         @_removeData old if old?
         @_addData value
         
-      # redraw on zoom
-      @scope.$watch 'zoom', =>
-        @_create false
-        
       # update displayed items and fields on changes
       @scope.$watch 'items', redraw
       @scope.$watch 'fields', redraw
       rootScope.$on 'modelChanged', (ev, operation, model, changes) =>
+        return if @_loading
         if operation is 'creation' or (operation is 'update' and 'map' in changes)
           @_addData [model]
           
@@ -270,6 +293,7 @@ define [
         data-zoom="zoom"
         data-get-selected-widget="getSelectedWidget"
         data-select-active-rule="selectActiveRule"
+        data-need-multiple-targets="needMultipleTargets"
         data-ask-to-execute-rule="askToExecuteRule"/>""") @scope
                 
       # adds a menu
@@ -277,6 +301,13 @@ define [
           <li ng-repeat="item in menuItems" data-value={{item}}>{{'names.'+item|i18n}}</li>
         </ul>""") @scope
       @_menu.on 'click', @_onMenuItemClick
+      
+      @$el.on('mousemove', @_onMouseMove).on('mouseleave', (event) => 
+        # stop looping on haptic edges
+        clearTimeout @_hapticDelay if @_hapticDelay?
+        @_hoverPos = null
+        @_drawHover()
+      )
 
     # Center map on given coordinate 
     #
@@ -287,9 +318,13 @@ define [
       # center map on position
       pos = @scope.renderer.coordToPos coord
       # do not go beyond left (0) and right (@_dims.width-@width) borders
-      left = Math.max @_dims.width-@width, Math.min @_dims.width/2-pos.left, 0
+      rBorder = if @_dims.width > @width then (@_dims.width-@width)/2 else @_dims.width-@width
+      lBorder = if @_dims.width > @width then (@_dims.width-@width)/2 else 0
+      left = Math.max rBorder, Math.min @_dims.width/2-pos.left, lBorder
       # do not go beyond top (0) and bottom (@_dims.height-@height) borders
-      top = Math.max @_dims.height-@height, Math.min @_dims.height/2-pos.top, 0
+      tBorder = if @_dims.height > @height then (@_dims.height-@height)/2 else @_dims.height-@height
+      bBorder = if @_dims.height > @height then (@_dims.height-@height)/2 else 0
+      top = Math.max tBorder, Math.min @_dims.height/2-pos.top, 0
       @_container.animate {left:left, top:top}, 250
       
     # Indicates wether a coordinate is visible or not inside the map
@@ -308,9 +343,12 @@ define [
     #
     # @param reload [Boolean] if true, reloads fields and items
     _create: (reload = true)=>
+      # do not re-create if creation in progress
+      return if @_progress
+        
       # Initialize internal state
       @_fields = []
-      @_items = {}
+      @_items = {} if reload
       @_container = null
       @_moveJumper = 0
       @_pendingImages = 0
@@ -320,12 +358,14 @@ define [
       @_layers = {}
       @_hapticDelay = null
       @_progress = null
+      @_isDroppable = false
+      @_loading = false
+      @_dragging = false
       
       previous = @scope.selected
       @scope.selected = null
       
       @$el.wrapInner("<div class='temp'></div>").append '<div class="loading"><progress value="0"/></div>'
-      @_progress = @$el.find '.loading progress'
       
       # compute element dimensions and offset
       @_dims =
@@ -337,8 +377,9 @@ define [
       switch @scope.src.kind
         when 'square' then @scope.renderer = new SquareRenderer()
         # no kind ? just wait src to be loaded
-        when undefined then return 
+        when undefined, null then return 
         else throw new Error "map kind #{@scope.src.kind} not supported"
+      @_progress = @$el.find '.loading progress'
       
       # expected map dimension
       mapDim = 
@@ -354,18 +395,33 @@ define [
       @height = 1+(@scope.renderer.upper.y-@scope.renderer.lower.y+1)*@scope.renderer.tileH
       @width = 1+(@scope.renderer.upper.x-@scope.renderer.lower.x+1)*@scope.renderer.tileW
 
+      # containment bounds for drag'n drop TODO: get padding from rendering
+      axis = {}
+      containment = [0, 0, 30, 30]
+      if @_dims.width < @width 
+        containment[0] = @_dims.width-@width
+      else
+        axis.y = true
+      if @_dims.height < @height 
+        containment[1] = @_dims.height-@height
+      else
+        axis.x = true
+        
       # creates the layer container
+      # center it if dimension is smaller than viewport
       @_container = $('<div class="map-container"></div>').css(
         height: @height
         width: @width
-        left: 0
-        top: @_dims.height-@height
-      ).on('mousemove', @_onMouseMove
-      ).on('mouseleave', (event) => 
-        # stop looping on haptic edges
-        clearTimeout @_hapticDelay if @_hapticDelay?
-        @_hoverPos = null
-        @_drawHover()
+        left: (@_dims.width-@width)/2
+        top: (@_dims.height-@height)/2
+      ).draggable(
+        containment: containment
+        cursor: 'move'
+        axis: if 'x' of axis then 'x' else if 'y' of axis then 'y' else false
+        disabled: axis.x and axis.y
+        # return null to avoid cancelling stuff
+        start: => @_dragging = true; null
+        stop: => @_dragging = false; null
       ).appendTo @$el
 
       # creates the layer canvas
@@ -401,17 +457,22 @@ define [
       
       # gets data
       if reload
+        @_loading = true
         console.log "new displayed coord: ", @scope.renderer.lower, ' to: ', @scope.renderer.upper
         @scope.src.consult @scope.renderer.lower, @scope.renderer.upper, (err, fields, items) => @scope.$apply =>
           return @scope.error = err.message if err?
           @scope.fields = fields
           @scope.items = items
+          @_loading = false
       else
-        # or reuse existing ones
+        # redraw existing fields
         @_addData @scope.fields
-        @_addData @scope.items
-        # reselect previously selected
-        _.defer => @scope.selected = previous
+        # append existing widget and positionnate
+        @_layers.items.append widget.redraw() for id, widget of @_items
+          
+      # reselect previously selected
+      if previous?
+        _.defer => @scope.$apply => @scope.selected = previous
 
     # **private**
     # When deploy drag'n drop scope is toggle, create or removes droppable on items
@@ -559,6 +620,7 @@ define [
     # @option return left the left offset relative to container
     # @option return top the top offset relative to container
     _mousePos: (event) =>
+      return {left:0, top:0} unless @_container?
       offset = @_container.offset()
       {
         left: (event.pageX-offset.left)
@@ -634,7 +696,7 @@ define [
     #
     # @param event [Event] mouse move event
     _onMouseMove: (event) => 
-      return unless @_moveJumper++ % 3 is 0 and not @_menuOpened
+      return unless @_moveJumper++ % 3 is 0 and not @_menuOpened and @_container?
       # stop looping on haptic edges
       clearTimeout @_hapticDelay if @_hapticDelay?
       
@@ -646,11 +708,11 @@ define [
       else
         details = @_getInfos event
         @_hoverPos = x: details.x, y:details.y
-        allowHaptic = true
+        allowHaptic = @_progress is null
         
       @_drawHover()
       # evaluate haptic edges unless already dragging
-      @_onHapticEdge event if allowHaptic
+      @_onHapticEdge event if allowHaptic and not @_dragging
       # at last, trigger hover
       @scope.hover?(event, details)
       
@@ -667,7 +729,7 @@ define [
       containerLeft = pos.left
       containerTop = pos.top
       # defer detection a bit to let animation complete and to avoid unecessary detection
-      @_hapticDelay =_.delay => 
+      @_hapticDelay = _.delay => 
         mouseLeft = (event.pageX-containerLeft)
         mouseTop = (event.pageY-containerTop)
         {left, top}  = @_container.position()
@@ -675,18 +737,20 @@ define [
         newTop = undefined
         
         # evaluate horizontal edges
-        if mouseLeft <= @_dims.width*size
-          newLeft = (if left > -step then 0 else left+step) unless left is 0
-        else if mouseLeft >= @_dims.width*(1-size)
-          max = @_dims.width-@width
-          newLeft = (if left < max+step then max else left-step) unless left is max
+        if @_dims.width < @width
+          if mouseLeft <= @_dims.width*size
+            newLeft = (if left > -step then 0 else left+step) unless left is 0
+          else if mouseLeft >= @_dims.width*(1-size)
+            max = @_dims.width-@width
+            newLeft = (if left < max+step then max else left-step) unless left is max
   
         # evaluate vertical edges
-        if mouseTop <= @_dims.height*size
-          newTop = (if top > -step then 0 else top+step) unless top is 0
-        else if mouseTop >= @_dims.height*(1-size)
-          max = @_dims.height-@height
-          newTop = (if top < max+step then max else top-step) unless top is max
+        if @_dims.height < @height
+          if mouseTop <= @_dims.height*size
+            newTop = (if top > -step then 0 else top+step) unless top is 0
+          else if mouseTop >= @_dims.height*(1-size)
+            max = @_dims.height-@height
+            newTop = (if top < max+step then max else top-step) unless top is max
         
         # move and recurse until mouse leave edges
         if newTop? or newLeft?
@@ -699,38 +763,39 @@ define [
     # **private**
     # Render indications above items
     _renderIndications: (indic) =>
+      if indic.delay
+        return _.delay => 
+          delete indic.delay
+          @_renderIndications indic
+        , indic.delay
+        
       # add the text into the layer
-      rendering = $("<div class='values'>#{indic.text}</div>").appendTo @_layers.indics
-      rendering.addClass indic.className if indic.className?
+      rendering = $("<div class='indic #{indic.kind}'>#{if indic.text? then indic.text else ""}</div>").appendTo @_layers.indics
       # positionnate on the relevant tile
-      target = @scope.renderer.coordToPos indic
-      target.left += (@scope.renderer.tileW-rendering.outerWidth())*0.5
-      target.top += (@scope.renderer.tileH-rendering.outerHeight())*0.5
-      rendering.css target
-      # and automatically removes it after a while
-      _.delay (-> rendering.remove()), indic.duration or 3000
+      position = @scope.renderer.coordToPos indic.at
+      position.left += (@scope.renderer.tileW-rendering.outerWidth())*0.5
+      position.top += (@scope.renderer.tileH-rendering.outerHeight())*0.5
+      rendering.css position
       
-      if indic.kind in ['shoot', 'assault']
-        from = x: indic.fx, y: indic.fy
-        shoot = $("<div class='#{indic.kind}'/>").appendTo @_layers.indics
-        shoot.addClass indic.className if indic.className?
-        switch indic.kind 
-          when 'shoot'
-            duration = 50*euclidianDistance from, indic
-            # move from origin to target (with delay to allow transition application)
-            origin = @scope.renderer.coordToPos from
-            origin.left += (@scope.renderer.tileW-shoot.outerWidth())*0.5
-            origin.top += (@scope.renderer.tileH-shoot.outerHeight())*0.5
-            # orient initial shoot which is horizontal left-right toward target
-            origin.transform = "rotate(#{Math.atan2 target.top - origin.top, target.left - origin.left}rad)"
-            shoot.css origin
-            _.defer -> shoot.css _.extend {transition: "all #{duration}ms linear"}, target, 
-          when 'assault'
-            duration = 500
-            # just positionnate and animate
-            _.defer -> shoot.css _.extend {animation: "assault #{duration}ms"}, target,
-        # remove at transition end
-        _.delay (-> shoot.remove()), duration
+      lifetime = indic.duration or 3000
+      # destination
+      if indic.dest
+        # animate along the path
+        lifetime = indic.duration*euclidianDistance indic.at, indic.dest
+        # evaluate target position
+        target = @scope.renderer.coordToPos indic.dest
+        target.left += (@scope.renderer.tileW-rendering.outerWidth())*0.5
+        target.top += (@scope.renderer.tileH-rendering.outerHeight())*0.5
+        # orient initial shoot which is horizontal left-right toward target
+        rendering.css transform: "rotate(#{Math.atan2 target.top - position.top, target.left - position.left}rad)"
+        # and trigger transition between position and target
+        _.defer -> rendering.css _.extend {transition: "all #{lifetime}ms linear"}, target
+        
+      # removes at end
+      _.delay (-> rendering.remove()), lifetime
+      # add also animation if rewuired
+      if indic.anim
+        _.defer -> rendering.css _.extend {animation: "#{indic.anim} #{lifetime}ms"}, position,
       
     # **private**
     # Invoked when dropping blips into the map
@@ -742,3 +807,29 @@ define [
       # get the map coordinates
       coord = @scope.renderer.posToCoord @_mousePos event
       @scope?.blipDeployed coord, ui.draggable.data('model') or null
+       
+    # **private**
+    # Key handler, to move selected character
+    #
+    # @param event [Event] key up event
+    _onKey: (event) =>
+      # disable if cursor currently in an editable element, or no selection
+      return if @scope.selected is null or @scope.activeRule isnt 'move' or event.target.nodeName in ['input', 'textarea', 'select']
+      # select current character if shortcut match
+      for direction, shortcut of @scope.shortcuts
+        if isShortcuts event, shortcut
+          # use selected coord
+          coord = _.pick @scope.selected, 'x', 'y'
+          if direction.indexOf('up') isnt -1
+            coord.y++ 
+          else if direction.indexOf('down') isnt -1
+            coord.y--
+          if direction.indexOf('right') isnt -1
+            coord.x++ 
+          else if direction.indexOf('left') isnt -1
+            coord.x--
+          @scope.click?(event, @_getInfos event, coord)
+          # stop key to avoid browser default behavior
+          event.preventDefault()
+          event.stopImmediatePropagation()
+          return false

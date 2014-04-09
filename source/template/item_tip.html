@@ -6,8 +6,10 @@
     <li data-ng-hide="src.revealed === false"><label>{{'labels.armor'|i18n:{sep:true} }}</label><span class="value">{{src.armor}}</span></li>
     <li><label>{{'labels.moves'|i18n:{sep:true} }}</label><span class="value">{{src.moves}}</span></li>
     <li data-ng-hide="src.revealed === false"><label>{{'labels.attacks'|i18n:{sep:true} }}</label><span class="value">{{src.rcNum || src.ccNum}}</span></li>
-    <li data-ng-hide="src.revealed === false"><label>{{'labels.weapon'|i18n:{sep:true} }}</label><span class="value">{{'names.' + (src.weapon.id || src.weapon) | i18n}}</span></li>
-    <li data-ng-hide="src.revealed === false"><label>{{'labels.rangeDamages'|i18n:{sep:true} }}</label><span class="value">{{rcDamages | i18n}}</span></li>
     <li data-ng-hide="src.revealed === false"><label>{{'labels.closeDamages'|i18n:{sep:true} }}</label><span class="value">{{ccDamages | i18n}}</span></li>
+    <li data-ng-hide="src.revealed === false" 
+      data-ng-repeat-start="weapon in src.weapons"><label>{{'labels.weapon'|i18n:{sep:true} }}</label><span class="value">{{'names.' + (weapon.id || weapon) | i18n}}</span></li>
+    <li data-ng-hide="src.revealed === false"
+      data-ng-repeat-end><label>{{'labels.rangeDamages'|i18n:{sep:true} }}</label><span class="value">{{rcDamages[$index] | i18n}}</span></li>
   </ul>
 </article>

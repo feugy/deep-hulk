@@ -11,6 +11,7 @@
     data-click="_onMapClick"
     data-rightclick="_onMapRightclick"
     data-hover="_onHover"
+    data-active-rule="activeRule"
     data-select-active-rule="_onSelectActiveRule"
     data-ask-to-execute-rule="_askToExecuteRule"
     data-deploy-scope="deployScope"
@@ -18,8 +19,14 @@
     data-menu-items="menuItems"
     data-select-menu-item="_onSelectMenuItem"
     data-display-grid="false"
-    data-display-markers="false"></map>
+    data-display-markers="false"
+    data-need-multiple-targets="needMultipleTargets"
+    data-shortcuts='{"downleft":"end", "down":"down", "downright":"pgdown", "left":"left", "right":"right", "upleft":"home", "up":"up", "upright":"pgup"}'></map>
+    
+  <!-- persistent notifications -->
+  <notify data-src="notifs"></notify>
   
+  <!-- commands panel -->
   <aside class="ng-class: squad ? squad.isAlien ? 'alien' : 'marine': '';">
     <!-- blips and reinforcements -->
     <div class="blips" data-ng-show="squad.isAlien">
@@ -31,7 +38,11 @@
     </div>
     <!-- squad details -->
     <div class="squad">
-      <character-details data-ng-repeat="member in squad.members" data-src="member" data-selected="$parent.selected"></character-details>
+      <character-details
+        data-ng-repeat="member in squad.members" 
+        data-src="member"
+        data-shortcuts="ctrl+{{$index+1}}"
+        data-selected="$parent.selected"></character-details>
     </div>
     <img class="logo" src="{{getInstanceImage(squad)}}"/>
     <!-- messages -->

@@ -4,8 +4,8 @@ Item = require 'hyperion/model/Item'
 ItemType = require 'hyperion/model/ItemType'
 {heavyWeapons, marineWeapons, commanderWeapons, weapons, weaponImages, moveCapacities} = require './constants'
   
-# Squad configuration: set weapons and equipment
-class ConfigureSquadRule extends Rule
+# Aliens configuration: set weapons on dreadnoughts
+class ConfigureAliensRule extends Rule
 
   # Player can configure their squad while not deployed.
   # Weapon must be provided as squad member parameter
@@ -21,13 +21,15 @@ class ConfigureSquadRule extends Rule
       # check that target belongs to player
       for squad in actor.characters when squad.id is target.id
         return target.fetch (err, target) =>
-          return callback err if err?
-          callback null, (
-            for member in target.members
-              name: "#{member.id}-weapon"
-              type: "string"
-              within: if member.isCommander then commanderWeapons else marineWeapons
-          )
+          params = []
+          for member in target.members when member.kind is 'dreadnought'
+            # adds a parameter per weapon per dreadnought
+            for i in [0...member.life-1]
+              params.push
+                name: "#{member.id}-weapon-#{i}"
+                type: "string"
+                within: heavyWeapons
+          callback err, params
       callback null, null
     else 
       callback null, null
@@ -44,33 +46,23 @@ class ConfigureSquadRule extends Rule
   # @param callback [Function] called when the rule is applied, with one arguments:
   # @option callback err [String] error string. Null if no error occured
   execute: (player, squad, params, context, callback) =>
-    configured = (weapon for id, weapon of params when id.match /-weapon$/)
+    for member in squad.members when member.kind is 'dreadnought'
+      configured = (weapon for id, weapon of params when id.match member.id)
+      if configured[0] is configured[1]
+        return callback new Error "twoMany"+configured[0][0].toUpperCase()+configured[0][1..]
     
-    # checks at least one bolder
-    return callback new Error "bolterRequired" unless 'bolter' in configured
-    # checks at least one heavy weapon
-    return callback new Error "heavyWeaponRequired" if 0 is _.intersection(configured, heavyWeapons).length
-    # checks at most one heavy weapon of a kind
-    groups = _.groupBy configured
-    return callback new Error "twoManyMissileLauncher" if groups.missileLauncher?.length > 1
-    return callback new Error "twoManyFlamer" if groups.flamer?.length > 1
-    return callback new Error "twoManyAutoCannon" if groups.autoCannon?.length > 1
-
     # update members weapons
     squad.fetch (err, squad) =>
       return callback err if err?
       Item.fetch squad.members, (err, members) =>
         return callback err if err?
-        for member in members
-          weaponId = params["#{member.id}-weapon"]
-          # reuse always the same weapon by their ids
-          member.weapons = [weaponId]
-          member.imageNum = weaponImages[squad.name][weaponId]
-          member.points = if weaponId in heavyWeapons or weaponId in commanderWeapons then 10 else 5
-          # adapt marine possible moves
-          member.moves = moveCapacities[weaponId]
-        # init first actions number
-        squad.actions = squad.members.length * 2
+        # remove previous weapons
+        member.weapons = [member.weapons[0]]
+        # for each dreadnought, affect choosed weapons
+        for member in members when member.kind is 'dreadnought'
+          for i in [0...member.life-1]
+            weaponId = params["#{member.id}-weapon-#{i}"]
+            member.weapons.push weaponId
         callback null
   
-module.exports = new ConfigureSquadRule 'init'
+module.exports = new ConfigureAliensRule 'init'

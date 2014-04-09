@@ -13,7 +13,7 @@ form
   > .param
     width 100%
     display flex
-    align-items center
+    align-items baseline
     padding-bottom 0.5em
 
     > *
@@ -60,6 +60,8 @@ a.btn:hover
   color buttonColor
   box-sizing border-box
   border-radius 5px
+
+.btn
   // for pre-loading
   border-image-source url('../image/button-hover.png')
   border-image-width 0
@@ -125,31 +127,6 @@ button.close:hover
   > .buttons
     text-align center
     margin 8px 0
-
-//------------------------------------------------------------------------------
-// Alerts
-
-.alert
-  applyAlertSkin()
-  display flex
-  width 100%
-  box-sizing border-box
-  align-items flex-start
-  margin-bottom 1em
-  
-  > div
-    flex 1    
-  .close
-    order 2
-
-.alert.ng-hide
-  opacity 0
-
-.alert.ng-hide-add
-.alert.ng-hide-remove
-  transition opacity moveDuration
-  display flex  !important
-
 
 //------------------------------------------------------------------------------
 // Modals

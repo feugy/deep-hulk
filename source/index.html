@@ -2,10 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta version="{{version}}">
     <link href="style/common.css" rel="stylesheet">
+    <script src="script/vendor/modernizr-2.7.1-min.js"></script>
   </head>
   <body>
-    <div data-ng-view class="ng-class:routeName">
+    <div id="disclaimer" style="display:none" class="frame">
+      <h1>We're sorry: this browser is not supported...</h1>
+      <p>Your browser does not supports the required Web features.</p>
+      <p>We suggest you to download and use a modern Web browser like <a target="_blank" href="http://www.mozilla.org/products/firefox">Mozilla Firefox</a> or <a target="_blank" href="http://www.google.com/chrome/">Google Chrome</a>.</p>
+      <p>We hope to see you soon !</p>
+    </div>
+    <div id="view" data-ng-view class="ng-class:routeName">
       <progress></progress>
     </div>
     <script src="conf.js"></script>

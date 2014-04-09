@@ -29,6 +29,7 @@ define [
     constructor: (@scope, @location, @atlas) ->
       @scope._onBackHome = @_onBackHome
       @scope.getInstanceImage = getInstanceImage
+      @scope.current = @atlas.player.email
       
       # redirect to home if no id
       gId = @location.search()?.id
@@ -47,6 +48,11 @@ define [
     # Handler invoked when a clicking on the back button.
     # Navigate to home page.
     _onBackHome: =>
+      # if already confirmed, just quit
+      for squad in @scope.game.squads when squad.player is @atlas.player.email
+        console.log squad
+        return @location.path("#{conf.basePath}home").search {} if squad.finished
+  
       # confirm game end
       @atlas.ruleService.execute 'endOfGame', @atlas.player, @scope.game, {}, (err) =>
         # silent error

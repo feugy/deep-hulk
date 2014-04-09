@@ -45,28 +45,31 @@ define [
       @scope.isAlien = @scope.src?.type?.id is 'alien'
       @scope.squadImage = "#{conf.imagesUrl}squad-#{@scope.src.squad.imageNum}.png"
       @scope.ccDamages = ""
-      @scope.rcDamages = ""
+      @scope.rcDamages = []
       
       getDamages = =>
-        @scope.ccDamages = "labels.#{@scope.src.weapon.cc or 'noCc'}"
-        @scope.rcDamages = "labels.#{@scope.src.weapon.rc or 'noRc'}"
+        # use first weapon for close combat
+        @scope.ccDamages = "labels.#{@scope.src.weapons[0]?.cc or 'noCc'}"
+        @scope.rcDamages = []
+        for weapon in @scope.src.weapons
+          @scope.rcDamages.push "labels.#{weapon?.rc or 'noRc'}"
         
       # Weapon resolution if needed
-      return @_resolveWeapon(=> @scope.$apply getDamages) unless @scope.src.weapon?.id?
+      return @_resolveWeapon(=> @scope.$apply getDamages) unless @scope.src.weapons[0]?.id?
       getDamages()
       
     # **private**
-    # Resolve weapon to get details. Replace source own weapon
-    # @param end [Function] callback invoked when weapon is resolved
+    # Resolve weapons to get details. Replace source own weapons
+    # @param end [Function] callback invoked when weapons are resolved
     _resolveWeapon: (end) =>
       # first, lool into the cache
-      @atlas.Item.findById @scope.src.weapon, (err, weapon) =>
-        console.error "Failed to find weapon by id for tip:", err if err?
-        if weapon?
-          @scope.src.weapon = weapon
+      @atlas.Item.findCached @scope.src.weapons, (err, weapons) =>
+        console.error "Failed to find weapons by id for tip:", err if err?
+        if weapons.length is @scope.src.weapons.length
+          @scope.src.weapons = weapons
           return end()
         # or ask to server
-        @atlas.Item.fetch [@scope.src.weapon], (err, [weapon]) => 
-          console.error "Failed to fetch weapon for tip:", err if err?
-          @scope.src.weapon = weapon
+        @atlas.Item.fetch @scope.src.weapons, (err, weapons) => 
+          console.error "Failed to fetch weapons for tip:", err if err?
+          @scope.src.weapons = weapons
           end()

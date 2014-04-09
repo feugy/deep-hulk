@@ -17,16 +17,22 @@ asideHeight = 160px
   align-items center
   justify-content flex-end
 
-  > .alert
-    position absolute
+  > .notify
+    position relative
+    width 50%
     z-index 2
+    
+    .content
+      max-height 100px
 
   > .map
+    user-select none
     position absolute
-    top 0  
-    right 0
+    pad = 30px
+    top pad  
+    right pad
     bottom asideHeight
-    left 0
+    left pad
     z-index 0
 
   pad = 20px

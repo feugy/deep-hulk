@@ -23,10 +23,13 @@ class ShootZoneRule extends Rule
     # inhibit if wanting for deployment
     return callback null, null if actor.squad?.deployZone?
     # deny if actor cannot attack anymore. 
-    return callback null, null unless actor.rcNum >= 1 and actor.weapon.rc? 
+    return callback null, null unless actor.rcNum >= 1 
     # deny unless on same map
     return callback null, null unless target?.mapId is actor.map?.id
-    callback null, []
+    callback null, [
+      {name: 'weaponIdx', type:'integer', min: 0, max: actor.weapons.length-1}
+      {name: 'multipleTargets', type:'string', numMin: 0, numMax:20}
+    ]
       
   # Returns tiles that are involved in the shoot, depending on the character weapon
   #
@@ -43,20 +46,29 @@ class ShootZoneRule extends Rule
   execute: (actor, target, params, context, callback) =>
     selectItemWithin actor.map.id, actor, target, (err, items) =>
       return callback err, null if err?
+      # check that selected weapon as range combat
+      weapon = actor.weapons[params.weaponIdx]
+      return callback 'closeCombatWeapon', null unless weapon?.rc?
+      # check that this weapon was not already used
+      used = JSON.parse actor.usedWeapons
+      return callback null, null if params.weaponIdx in used
+      
       result = 
-        weapon: actor.weapon.id
+        weapon: weapon.id
         tiles: []
         obstacle: null
         
-      unless isTargetable actor, target, items
+      reachable = isTargetable actor, target, params.weaponIdx, items
+      unless reachable?
         # target not reachable: returns obstacle (with character blocking visibility)
         result.obstacle = hasObstacle actor, target, items, true
         return callback null, result
         
-      switch actor.weapon.id
+      tiles = [x:target.x, y:target.y]
+      switch result.weapon
         when 'missileLauncher'
           # tiles near target are also hit
-          Field.where('mapId', actor.map.id).where('x').gte(target.x-1).where('x').lte(target.x+1)
+          return Field.where('mapId', actor.map.id).where('x').gte(target.x-1).where('x').lte(target.x+1)
               .where('y').gte(target.y-1).where('y').lte(target.y+1).exec (err, fields) ->
             return callback err if err?
             selectItemWithin actor.map.id, {x:target.x-1, y:target.y-1}, {x:target.x+1, y:target.y+1}, (err, items) =>
@@ -66,14 +78,20 @@ class ShootZoneRule extends Rule
               
         when 'flamer' 
           # all tiles on the line are hit.
-          untilWall actor.map.id, actor, target, (err, target, items) =>
+          return untilWall actor.map.id, reachable, target, (err, target, items) =>
             return callback err if err?
-            result.tiles = tilesOnLine actor, target
+            result.tiles = tilesOnLine reachable, target
             callback null, result
           
-        else 
-          # just returns tile
-          result.tiles = [x:target.x, y:target.y]
-          callback null, result
+        when 'autoCannon'
+          # display also previous targets, stored as string in currentTargets
+          if params.multipleTargets?
+            # each target is comma separated, x and y coordinates separated by ':' themseves
+            for target in params.multipleTargets
+              coord = target.split ':'
+              tiles.push x: +coord[0], y: +coord[1]
+      
+      result.tiles = tiles
+      callback null, result
   
 module.exports = new ShootZoneRule 'hints'

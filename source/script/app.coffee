@@ -6,13 +6,13 @@ define [
   'controller/login'
   'controller/home'
   'controller/board'
-  'controller/configure_squad'
+  'controller/configure'
   'controller/end'
   'angular-route'
   'angular-sanitize'
   'angular-animate'
   'angular-mousewheel'
-], (angular, utils, LoginCtrl, HomeCtrl, BoardCtrl, ConfigureSquadCtrl, EndCtrl) ->
+], (angular, utils, LoginCtrl, HomeCtrl, BoardCtrl, ConfigureCtrl, EndCtrl) ->
   
   # declare main module that configures routing
   app = angular.module 'app', ['ngRoute', 'ngSanitize', 'ngAnimate', 'monospaced.mousewheel']
@@ -46,10 +46,10 @@ define [
       templateUrl: "#{base}template/board.html"
       controller: BoardCtrl
       resolve: common: utils.enforceConnected
-    route.when "#{conf.basePath}configure-squad",
-      name: 'configure-squad'
-      templateUrl: "#{base}template/configure_squad.html"
-      controller: ConfigureSquadCtrl
+    route.when "#{conf.basePath}configure",
+      name: 'configure'
+      templateUrl: "#{base}template/configure.html"
+      controller: ConfigureCtrl
       resolve: common: utils.enforceConnected
     route.when "#{conf.basePath}end",
       name: 'end'

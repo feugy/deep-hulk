@@ -2,6 +2,7 @@ _ = require 'underscore'
 async = require 'async'
 Rule = require 'hyperion/model/Rule'
 {moveCapacities} = require './constants'
+{hasSharedPosition} = require './common'
 
 # When player has finished its turn, may trigger another turn
 class EndOfTurnRule extends Rule
@@ -34,10 +35,13 @@ class EndOfTurnRule extends Rule
       return callback err if err?
       # do not allow to pass if game is finished
       return callback "gameFinished" if game.finished
-
+      # check that no team members share the same tile
+      return callback new Error 'sharedPosition' if hasSharedPosition squad.members
+        
       for member in squad.members
-        # check that no team members share the same tile
-        return callback new Error "sharedPosition" if 2 is _.where(squad.members, x: member.x, y: member.y).length
+        # check that dreadnought are not stuck under a door
+        if member.kind is 'dreadnought' and member.revealed and member.underDoor
+          return callback new Error 'underDoor'
         member.rcNum = 0
         member.ccNum = 0
         member.moves = 0
@@ -55,15 +59,18 @@ class EndOfTurnRule extends Rule
         s.fetch (err, squad) =>
           # fetch squad to get members
           return next err if err?
-          squad.actions = if squad.members.length > 0 then 0 else -1
+          squad.actions = 0
           # reset each member, unless not on map
           for member in squad.members when member.map? and not member.dead
+            # use first weapon to get allowed moves
+            weapon = member.weapons[0]?.id or member.weapons[0]
             squad.actions += 2
             # add an attack
             member.rcNum = 1
             member.ccNum = 1
+            member.usedWeapons = '[]'
             if squad.isAlien
-              member.moves = moveCapacities[if member.revealed then member.weapon?.id or member.weapon else 'blip']
+              member.moves = moveCapacities[if member.revealed then weapon else 'blip']
               # get alien moves from their kind if revealed, or 5 for blips
               unless member.revealed
                 # blip specific case: no attacks, just moves
@@ -72,7 +79,9 @@ class EndOfTurnRule extends Rule
                 member.ccNum = 0
             else
               # get marine moves from their weapon
-              member.moves = moveCapacities[member.weapon?.id or member.weapon]
+              member.moves = moveCapacities[weapon]
+          # no alive squad members ? set to -1 to prevent player hitting next turn
+          squad.actions = 0 if squad.actions = -1
           next()
       , (err) =>
         return callback err if err?

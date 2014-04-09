@@ -12,7 +12,7 @@ EventType.findCached ['action'], (err, [type]) =>
 
 dices =
   w: [0, 0, 0, 0, 1, 2]
-  r: [0, 0, 0, 1, 1, 3]
+  r: [0, 0, 0, 1, 2, 3]
   
 # Removes types from stored action values
 #
@@ -87,6 +87,18 @@ module.exports = {
       err = new Error "no game with id #{gameId} found" if !err and !game?
       return callback err if err?
       callback null, game
+      
+  # Apply damages on a target, randomly removing enought weapon if target is a dreadnought
+  # No effect if target isn't a dreadnought, or if target is dead
+  #
+  # @param target [Model] damaged target
+  # @param loss [Number] lost life points.
+  damageDreadnought: (target, loss) ->
+    if target.kind is 'dreadnought' and target.life > 0
+      for i in [0...loss]
+        idx = 1 + Math.floor Math.random()*(target.weapons.length-1)
+        console.log "#{target.kind} (#{target.squad.name}) lost its #{target.weapons[idx].id} !"
+        target.weapons.splice idx, 1
     
   # Roll dices
   #
@@ -99,7 +111,8 @@ module.exports = {
       times = parseInt spec[0]
       for t in [1..times]
         # role a 6-face dice
-        result.push dices[spec[1]][Math.floor Math.random()*6]
+        idx = Math.floor Math.random()*6
+        result.push dices[spec[1]][idx]
     result
     
   # Distance function: number of tiles between two point on a map
@@ -131,7 +144,6 @@ module.exports = {
       Item.find {map: mapId, x: from.x, y: from.y}, callback
     else
       Item.where('map', mapId)
-        .where('type').ne('logEntry')
         .where('x').gte(if from.x > to.x then to.x else from.x)
         .where('x').lte(if from.x > to.x then from.x else to.x)
         .where('y').gte(if from.y > to.y then to.y else from.y)
@@ -155,6 +167,7 @@ module.exports = {
     callback null
     
   # When a marine or alien character is removed from map (by killing it or when quitting)
+  # Marine/alien squad actions count is update unless specified (for example, in case of suicide)
   # this method checks that game still goes on. 
   # A game may end if:
   # - no more marine is on the map
@@ -170,9 +183,14 @@ module.exports = {
     # Mak as dead  
     item.life = 0
     item.dead = true
+    
     # decreases actions
-    item.squad.actions-- unless item.moves is 0
-    item.squad.actions -= Math.max item.rcNum, item.ccNum
+    unless item.moves is 0
+      item.squad.actions-- 
+      
+    attacks = Math.max item.rcNum, item.ccNum
+    item.squad.actions -= attacks
+
     # removing last living marine on map
     Item.find {map: mapId, type: 'marine', dead:false}, (err, marines) ->
       return callback err if err?
@@ -248,4 +266,27 @@ module.exports = {
         
       rule.saved.push prev, next, game
       callback null
+    
+  # Indicates wether two items have the same position.
+  # You need to select the right range of models
+  #
+  # @param items [Array<Model>] checked models.
+  # @return true if two models have the same position
+  hasSharedPosition: (items) ->
+    for model in items when model?.type?.id in ['marine', 'alien'] and not model?.dead
+      return true if _.any items, (item) -> item isnt model and item?.type?.id is model.type.id and item?.x is model.x and item?.y is model.y and not item?.dead
+    return false
+    
+  # Store into an actor's log a given result (or list of results).
+  # **Warning** Once added, results cannot be changed !!
+  #
+  # @param actor [Item] the concerned actor
+  # @param result [Object|Array<Object>] an arbitrary result or list of results
+  logResult: (actor, result) ->
+    log = JSON.parse actor.log
+    if _.isArray result
+      log = log.concat result
+    else
+      log.push result
+    actor.log = JSON.stringify log
 }

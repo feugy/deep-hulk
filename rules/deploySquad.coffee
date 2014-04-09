@@ -1,7 +1,10 @@
+_ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Map = require 'hyperion/model/Map'
 Field = require 'hyperion/model/Field'
 Item = require 'hyperion/model/Item'
+{selectItemWithin} = require './common'
+{findNextDoor} = require './visibility'
   
 # Squad deployement: goes on map
 class DeploySquadRule extends Rule
@@ -35,14 +38,23 @@ class DeploySquadRule extends Rule
     Map.findCached ["map-#{id}"], (err, [map]) =>
       return callback err if err?
       squad.map = map
+      # alien are not deployed at starts
+      return callback null if squad.name is 'alien'
       # set all marine into their base
       Field.find {mapId: "map-#{id}", typeId:"base-#{squad.name}"}, (err, tiles) =>
         return callback err if err?
-        # arbitrary affect marines to base tiles.
-        for member, i in squad.members
-          member.map = map
-          member.x = tiles[i].x
-          member.y = tiles[i].y
-        callback null
+        # get surrounding walls and doors
+        xs = _.pluck tiles, 'x'
+        ys = _.pluck tiles, 'y'
+        selectItemWithin map.id, {x:_.min(xs)-1, y:_.min(ys)-1}, {x:_.max(xs)+1, y:_.max(ys)+1}, (err, items) =>
+          return callback err if err?
+          # arbitrary affect marines to base tiles.
+          for member, i in squad.members
+            member.map = map
+            member.x = tiles[i].x
+            member.y = tiles[i].y
+            # check also openable doors
+            member.doorToOpen = findNextDoor member, items
+          callback null
   
 module.exports = new DeploySquadRule 'init'

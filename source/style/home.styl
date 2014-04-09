@@ -6,7 +6,7 @@
 
 .login
 .home
-.configure-squad
+.configure
 .end
   display flex
   align-items center
@@ -71,7 +71,7 @@
         width 50px
 
       tbody 
-        tr:first-child
+        tr.current
           color alertColor
         tr:nth-child(even) td
           background-color rgba(white, 0.1)
@@ -151,12 +151,13 @@
       line-height 0
 
 //------------------------------------------------------------------------------
-// Squad configuration specificities
+// Configuration specificities
 
-.configure-squad
+.configure
 
   .details
     margin-top 20%
+    position relative
   
   > aside
     width 45%
@@ -174,7 +175,7 @@
 movable = {
   '.login': '.login-frame', 
   '.home': 'aside > *'
-  '.configure-squad': 'aside > *'
+  '.configure': 'aside > *'
 }
 
 for selector, moved in movable

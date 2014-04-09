@@ -29,12 +29,14 @@ class MovableRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback tiles [Array] an array of reachable coordinates
   execute: (actor, target, params, context, callback) =>
+    # dreadnoughts can move up to x+2 and y+2
+    range = if actor.kind is 'dreadnought' and actor.revealed then 2 else 1
     # select all nearest tiles
-    selectItemWithin actor.map.id, {x:actor.x-1, y:actor.y-1}, {x:actor.x+1, y:actor.y+1}, (err, items) =>
+    selectItemWithin actor.map.id, {x:actor.x-1, y:actor.y-1}, {x:actor.x+range, y:actor.y+range}, (err, items) =>
       return callback err if err?
       # select all nearest fields
-      Field.where('mapId', actor.map.id).where('x').gte(actor.x-1).where('x').lte(actor.x+1)
-          .where('y').gte(actor.y-1).where('y').lte(actor.y+1).exec (err, fields) ->
+      Field.where('mapId', actor.map.id).where('x').gte(actor.x-1).where('x').lte(actor.x+range)
+          .where('y').gte(actor.y-1).where('y').lte(actor.y+range).exec (err, fields) ->
         return callback err if err?
         # return reachable tiles coordinates
         callback null, (x:tile.x, y:tile.y for tile in fields when isReachable actor, tile, items)

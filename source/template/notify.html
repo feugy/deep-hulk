@@ -1,0 +1,11 @@
+<div class="notify" >
+  <a class="close-all" 
+    data-ng-show="notifs.length > 1" 
+    data-ng-click='closeAll()'>{{'buttons.cleanNotifs'|i18n}}</a>
+  <ol class="content">
+    <li ng-repeat="notif in notifs | reverseArray" class="notification alert alert-{{notif.kind || 'warning'}}">
+      <button type='button' class='close' ng-click='close(notif)'>&times;</button>
+      <div>{{notif.content}}</div>
+    </li>
+  </ol>
+</div>

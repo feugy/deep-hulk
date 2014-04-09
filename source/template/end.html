@@ -5,7 +5,7 @@
       <tr><th>{{'names.squad'|i18n}}</th><th>{{'labels.player'|i18n}}</th><th>{{'labels.points'|i18n}}</th></tr>
     </thead>
     <tbody>
-      <tr data-ng-repeat="squad in game.squads|orderBy:'-points'">
+      <tr data-ng-repeat="squad in game.squads|orderBy:'-points'" data-ng-class="squad.player === current ? 'current' : ''">
         <td class="squad"><img src="{{getInstanceImage(squad)}}"/></td>
         <td class="player">{{squad.player}}</td>
         <td class="score">{{squad.points}}</td>

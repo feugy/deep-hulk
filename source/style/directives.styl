@@ -6,11 +6,11 @@
 
 @keyframes fadeDamages
   0%
-    margin-top 0
+    transform translate(0, 0)
   50%
     opacity 1
   100%
-    margin-top -75px
+    transform translate(0, -75px)
     opacity 0
 
 assaultShift = 40px
@@ -32,15 +32,15 @@ assaultRotation = 60deg
 
 .map
   box-sizing border-box
-  overflow hidden
   z-index 0
 
   .loading
+    pad = -50px
     position absolute
-    top 0
-    left 0
-    bottom 0
-    right 0
+    top pad
+    left pad
+    bottom pad
+    right pad
     background mapLoadingBackground
     z-index 10
 
@@ -58,26 +58,31 @@ assaultRotation = 60deg
     > .indications
       pointer-events none
 
-      .values
+      .indic
         position absolute
-        color cursorColor
+
+      .loss, .damages
         background indicColor
         box-shadow 0 0 5px 2px indicColor
-        font-size 20px
         padding 5px
-      
-      .damages
         animation fadeDamages 3200ms ease-in
 
-      .damages.shoot
-        position absolute
+      .loss
+        z-index 10
+        color errorColor
+        margin-top -30px
+        margin-left -7px
+      .damages
+        color cursorColor
+        margin-left 7px
+
+      .shoot
         width 60px
         height 13px
         background-image url(../image/shoot.png)
         background-size 100% 100%
 
-      .damages.assault
-        position absolute
+      .assault
         width 23px
         height 24px
         background-image url(../image/claws.png)
@@ -130,8 +135,18 @@ assaultRotation = 60deg
 //------------------------------------------------------------------------------
 // Item cursor
 
+@keyframes showCommands
+  0%
+    transform scale(1, 0)
+  100%
+    transform scale(1, 1)
+
 .cursor
 .cursor.rear
+
+  innerActionSize = 60px
+  actionSize = 75px
+
   position absolute
   width 200px
   height 200px
@@ -140,16 +155,39 @@ assaultRotation = 60deg
   transform-origin 0 0 0
   z-index 1000000
   pointer-events none
-
-  > a
-    pointer-events auto
+  
+  > .right
+  > .left
     position absolute
-    width cursorActionSize
-    height 0
+    bottom actionSize*0.5
+    width actionSize
+    transform-origin 50% 50%
+    // use a transition to allow cursor JS detect the animation end
+    opacity 0.8
+    transition opacity 250ms
+
+  > .right
+    right (actionSize*-0.7)
+
+  > .left
+    left (actionSize*-0.7)
+
+  a
+    position relative
+    display block
+    height innerActionSize
+    pointer-events auto
     background-repeat no-repeat
     background-image url(../image/commands.png)
-    transition height 250ms, bottom 250ms
-    bottom cursorActionSize + cursorActionOffset
+    background-position -2*actionSize -3*innerActionSize
+    
+    > span
+      position absolute
+      display block
+      width 100%
+      height innerActionSize
+      background-image url(../image/commands.png)
+      background-repeat no-repeat
 
     i 
       position absolute
@@ -159,60 +197,61 @@ assaultRotation = 60deg
       bottom 3px
       right 12px
 
-  > a:hover
+  a:first-child
+    border-top actionSize - innerActionSize solid transparent
+    background-position 0 -3*innerActionSize - (actionSize - innerActionSize)
+
+  a:last-child
+    border-bottom actionSize - innerActionSize solid transparent
+    background-position - actionSize -3*innerActionSize
+
+  a:hover
     text-decoration none
     cursor pointer
 
-  > .open:not(.active):hover
+  .open:not(.active):hover
     cursor default
-  
-  .move
-  .open
-    left (cursorActionSize*-0.7)
-  .shoot
-  .assault
-    right (cursorActionSize*-0.7)
 
-  .move
-    background-position -2*cursorActionSize 0
-  .move.active
-    background-position 0 0
-  .move:hover
-    background-position -4*cursorActionSize 0
-  
-  .open
-    background-position -2*cursorActionSize -1*cursorActionSize
-  .open.active
-    background-position 0 -1*cursorActionSize
+  .open-fire
+    // for ng-hide animations
+    display block !important
+    transition height 200ms
+  .open-fire.ng-hide
+    height 0
+   
+  // by default, display shoot icon for unspecified weapons
+  a > span
+    background-position (-6)*actionSize -1*innerActionSize
+  a.active > span
+    background-position (-6)*actionSize 0
+  a:hover > span
+    background-position (-6)*actionSize -2*innerActionSize
 
-  .shoot
-    background-position -3*cursorActionSize 0
-  .shoot.active
-    background-position -1*cursorActionSize 0
-  .shoot:hover
-    background-position -5*cursorActionSize 0
- 
-  .assault
-    background-position -3*cursorActionSize -1*cursorActionSize
-  .assault.active
-    background-position -1*cursorActionSize -1*cursorActionSize
-  .assault:hover
-    background-position -5*cursorActionSize -1*cursorActionSize
-  .assault  i
-    bottom 15px
+  // or use specific icons for other actions
+  actions = move, open, assault, missileLauncher, autoCannon, flamer, shoot, open-fire
+
+  for action, i in actions
+    .{action} > span
+      background-position (- i)*actionSize -1*innerActionSize
+    .{action}.active > span
+      background-position (- i)*actionSize 0 
+    .{action}:hover > span
+      background-position (- i)*actionSize -2*innerActionSize
+
+
 
 .cursor.rear
   background-image url(../image/cursor.png)
+  background-size 100% auto
+  background-position 50% 100%
   z-index 0
   opacity 0
   transition opacity 150ms
 
 .cursor.animated
-  a
-    height cursorActionSize
-  .open
-  .assault
-    bottom cursorActionOffset
+  > div
+    opacity 1
+    animation showCommands 250ms ease-out
 
 .cursor.movable
   transition top moveDuration, left moveDuration
@@ -223,6 +262,12 @@ assaultRotation = 60deg
 .cursor.rear.movable
   transition opacity 150ms, top moveDuration, left moveDuration
 
+.cursor.is-big
+  width 400px
+
+.cursor.blip .right
+  display none
+  
 //------------------------------------------------------------------------------
 // Item tooltip
 
@@ -281,8 +326,13 @@ assaultRotation = 60deg
   h1
     top 5px
     right 5px
+    left 5px
+    text-align right
+    text-shadow 0 0 1px black
+    overflow hidden
+    text-overflow ellipsis
     margin 0
-    font-size textSize*0.8
+    font-size textSize*0.7
     line-height textSize*1
 
   .weapon
@@ -368,14 +418,15 @@ for selector, size in weaponSizes
     width 50px
     height 50px
     background-image url(../image/alien-wireframes.png)
-    background-size 100px 400px
+    background-size 100px 450px
 
 alienSizes = {
   dreadnought: 50,
   genestealer: 50,
   android: 50,
-  'chaos-commander': 50,
-  'chaos-marine': 50,
+  chaosCommander: 50,
+  chaosHeavyMarine: 50,
+  chaosMarine: 50,
   gretchin: 50,
   ork: 50,
   blip: 50
@@ -394,10 +445,16 @@ for selector, size in alienSizes
   sum += size
 
 //------------------------------------------------------------------------------
-// Marine configuration
+// Marine & Dreadnought configuration
 
 .configure-marine
+.configure-dreadnought
   margin 0.5em 0
+
+  > div label
+  > div select
+    margin 0.5em 0
+    
 
 //------------------------------------------------------------------------------
 // Deployable blips directive
@@ -492,12 +549,6 @@ blipSize = 50px
         color bloodangelColor
       .owner.imperialfist
         color imperialfistColor
-
-    .info .owner
-      color infoColor
-
-    .error .owner
-      color errorColor
     
     .input
       display flex
@@ -540,3 +591,146 @@ blipSize = 50px
     display inline-block
     margin-right 1.5em
     margin-bottom 0.5em
+
+//------------------------------------------------------------------------------
+// Alerts
+
+.alert
+  applyAlertSkin()
+  display flex
+  width 100%
+  box-sizing border-box
+  align-items flex-start
+  margin-bottom 1em
+  
+  > div
+    flex 1    
+  .close
+    margin -1px 0 -1px 1em
+    order 2
+
+.alert.ng-hide
+  opacity 0
+
+.alert.ng-hide-add
+.alert.ng-hide-remove
+  transition opacity moveDuration
+  display flex  !important
+
+.alert-error
+  color errorColor
+
+//------------------------------------------------------------------------------
+// Notifications
+
+.notify
+  display flex
+  align-items flex-start
+
+  .close-all
+    margin-right 0.5em
+    padding 2px 5px
+    border-radius 5px
+    color textColor
+    background textBackground
+    box-shadow 0 0 3px 3px textBackground
+    cursor pointer
+    opacity 1
+    transition all linear 500ms
+
+  .close-all.ng-hide
+    opacity 0
+
+  .close-all.ng-hide-add
+  .close-all.ng-hide-remove
+    display block!important
+
+  .content
+    padding 0 0.5em
+    overflow-y auto
+    overflow-x hidden
+    flex 1
+
+  .notification
+    position relative
+
+  .notification.ng-move
+  .notification.ng-enter
+  .notification.ng-leave
+    transition all cubic-bezier(1,0,1,.75) 500ms
+   
+  .notification.ng-leave.ng-leave-active
+  .notification.ng-move
+  .notification.ng-enter
+    opacity 0
+    bottom -100px    
+   
+  .notification.ng-leave
+  .notification.ng-move.ng-move-active
+  .notification.ng-enter.ng-enter-active
+    opacity 1
+    bottom 0
+
+//------------------------------------------------------------------------------
+// Configure marines and dreadnought
+
+.configure-marine
+.configure-dreadnought
+
+  .select
+    position relative
+    cursor pointer
+
+    .value
+      background rgba(white, 0.1)
+      display block
+      padding 0.25em
+
+    .selector
+      position absolute
+      top 0
+      bottom 0
+      right 0
+      margin 3px
+      background textBackground
+      padding 2px 4px 0
+
+    .menu
+      z-index 5000
+      display none
+      opacity 0
+      top 100%
+      width 93%
+      position absolute
+      transition opacity linear 200ms
+
+      color alertColor
+      padding 0.5em
+      background url(../image/alert-background.png) repeat
+      box-shadow 0 0 6px 1px alertColor inset
+      border 1px solid alertColor
+      border-radius 5px
+    
+      .selected
+        color hoverColor
+
+  .select:hover 
+
+    .value
+      color hoverColor
+
+    .menu
+      display block
+      opacity 1
+      
+      > *:hover
+      > .selected
+        box-shadow 0 0 0.5em 0.25em #112B00
+        background #112B00
+  
+      > *:hover
+        color textColor
+
+.configure-dreadnought .select
+  margin-top 0.5em
+  margin-bottom 1em

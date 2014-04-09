@@ -1,14 +1,18 @@
 'use strict'
 
 define [
+  'jquery'
   'underscore'
   'underscore.string'
-], (_) ->
+], ($, _) ->
   
   _.mixin _.str.exports()
   
   # getter for document visibility
-  prefix = if navigator.userAgent.match(/chrome/i) then 'webkit' else 'moz'
+  prefix = ""
+  for pre in ['webkit', 'moz', 'ms', 'o'] when document["#{pre}Hidden"]?
+    prefix = pre
+    break
 
   # define a getter for page visibility
   Object.defineProperty document, 'hidden', 
@@ -180,9 +184,10 @@ define [
     # Read error value into labels, and return human readable error message.
     parseError: (err) ->
       # error may contain arguments
-      err = err.toString()[err.toString().indexOf('Error: ')+7..]
+      err = err.toString()
+      err = err[err.lastIndexOf('Error: ')+7..]
       args = []
-      key = err.toString()
+      key = err
       split = err.split ' '
       if split.length >= 2
         key = split[0]
@@ -190,4 +195,59 @@ define [
         args = split
       return if key of conf.errors then _.sprintf.apply _, [conf.errors[key]].concat(args) else err
     
+    # Parse a string shortcut into one or several descriptive object
+    # key pressed is expressed as a character, but special cases are possible:
+    #   home, end, insert, del, tab, pgUp, pgDown, up, down, left, right
+    #
+    # Shortcut may contain companion keys (control, shift, alt and meta)
+    # You may also give multiple possible values for the same sortcut
+    #
+    # @param shortcut [String] a case-insensitive shortcut. 
+    # Use '+' to split expected keys. 
+    # Use ',' to separated different possible case
+    # @return an array of descriptive objects
+    parseShortcuts: (shortcut) ->
+      return [] unless shortcut?
+      (for def in shortcut.toUpperCase().split ','
+        result = {}
+        for part in _.map(def.split('+'), (val) -> val.trim())
+          switch part 
+            when 'CTRL' then result.ctrl = true
+            when 'ALT' then result.alt = true
+            when 'SHIFT' then result.ctrl = true
+            when 'META' then result.meta = true
+            else 
+              switch part
+                when 'HOME' then result.key = '$'
+                when 'END' then result.key = '#'
+                when 'INSERT' then result.key = '-'
+                when 'DEL' then result.key = '.'
+                when 'TAB' then result.key = '\t'
+                when 'PGUP' then result.key = '!'
+                when 'PGDOWN' then result.key = '"'
+                when 'UP' then result.key = '&'
+                when 'DOWN' then result.key = '('
+                when 'LEFT' then result.key = '%'
+                when 'RIGHT' then result.key = "'"
+                else result.key = part
+        result
+      )
+      
+    # Check if a key event match a given shortcut
+    #
+    # @param event [Event] a key event
+    # @param shortcuts [Array<Object>] a list of parsed shortcuts (object with ctrl, alt, shift, meta and key properties)
+    # @return true if the event match, false otherwise
+    isShortcuts: (event, shortcuts) ->
+      return false unless _.isArray shortcuts
+      # check companion keys
+      for shortcut in shortcuts
+        continue if shortcut.ctrl and not event.ctrlKey
+        continue if shortcut.alt and not event.altKey
+        continue if shortcut.shift and not event.shiftKey
+        continue if shortcut.meta and not event.metaKey
+        # check key itself
+        return true if shortcut.key is String.fromCharCode event.which
+      false
+      
   return exports

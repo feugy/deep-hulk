@@ -1,0 +1,17 @@
+<div class="configure-dreadnought">
+  <label>{{'labels.'+src.kind|i18n:{sep:true} }}</label>
+  <div>
+    <div data-ng-repeat="_ in target.weapons track by $index" data-ng-init="i = $index" class="row">
+      <label>{{'labels.weaponNumber'|i18n}}{{i}}{{'labels.fieldSeparator'|i18n}}</label>
+      <div class="select">
+        <span class="value">{{'names.'+(target.weapons[i] || 'chooseWeapon')|i18n}}<span class="selector fa fa-caret-down"></span></span>
+        <ul class="menu">
+          <li data-ng-repeat="weapon in weapons"
+              data-ng-click="target.weapons[i] = weapon"
+              data-ng-class="target.weapons[i] === weapon ? 'selected' : ''"
+              data-ng-mouseover="hoverOption($event, weapon)">{{'names.'+weapon|i18n}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

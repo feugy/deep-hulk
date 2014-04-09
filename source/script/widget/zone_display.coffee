@@ -173,14 +173,17 @@ define [
       @$el = $(element)                     
       # show menu, highlighted tiles
       @scope.$watch 'src', @_highlight
+      @_highlight @scope.src
     
     # **private**
     # Highlight selected tiles
-    _highlight: =>
+    _highlight: (value, old) =>
+      return if _.isEqual value, old
       # clear previous highligts
       @$el[0].width = @$el[0].width
-      return unless @scope.src?
       ctx = @$el[0].getContext '2d'
+      
+      return unless value?
       # get renderer from parent
       renderer = @scope.$parent.renderer
       
@@ -195,37 +198,52 @@ define [
           renderer.drawTile ctx, tile, color for tile in @scope.src.tiles
             
         when 'move', 'assault'
-          # mive and assault will display a gradient centered on origin (character position)
-          grad = makeRadialGradient ctx, @scope.src.origin, renderer, renderer.tileW*1.5, color
-          tiles = @scope.src.tiles or []
-          tiles.push @scope.src.origin unless @scope.src.origin in tiles
+          tiles = @scope.src.tiles?.concat() or []
+          # move and assault will display a gradient centered on origin (character position)
+          coord = _.pick @scope.src.origin, 'x', 'y'
+          if @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
+            # add dreadnought position cause it's not included
+            for i in [0..1]
+              tiles.push x: coord.x+i, y:coord.y+j for j in [0..1]
+            # dreadnought specific case: center right ahead current position
+            coord.x += 0.5
+            coord.y += 0.5
+            range = renderer.tileW*2.1
+          else
+            range = renderer.tileW*1.5
+            # add character pos if not already included
+            tiles.push coord unless coord in tiles
+          grad = makeRadialGradient ctx, coord, renderer, range, color
           renderer.drawTile ctx, tile, grad for tile in tiles
             
         when 'shoot'
-          # draw line if necessary: not for flamer if it hits
-          if @scope.src.weapon isnt 'flamer' or @scope.src.tiles.length is 0
-            {r, g, b, a} = hexToRgb conf.colors.visibilityLine or '#FFFF'
-            c1 = "rgba(#{r}, #{g}, #{b}, #{a})"
-            if @scope.src.obstacle
-              end = @scope.src.obstacle
-              # use different end color
-              {r, g, b, a} = hexToRgb conf.colors.obstacle or '#FFFF'
-              c2 = "rgba(#{r}, #{g}, #{b}, #{a})"
-            else
-              end = @scope.src.target
-              # use same color as highlight
-              c2 = color
-            drawVisibilityLine ctx, @scope.src.origin, end, renderer, c1, c2
+          weapon = @scope.src.weapon.id or @scope.src.weapon
+          # colors for visibility lines
+          {r, g, b, a} = hexToRgb conf.colors.visibilityLine or '#FFFF'
+          c1 = "rgba(#{r}, #{g}, #{b}, #{a})"
+          c2 = color
           
-          switch @scope.src.weapon
+          start = _.pick @scope.src.origin, 'x', 'y'
+          if @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
+            # dreadnought specific case: center right ahead current position
+            start.x += 0.5
+            start.y += 0.5
+            
+          if @scope.src.obstacle
+            # use different end color for obstacle, and quit
+            {r, g, b, a} = hexToRgb conf.colors.obstacle or '#FFFF'
+            return drawVisibilityLine ctx, start, @scope.src.obstacle, renderer, c1, "rgba(#{r}, #{g}, #{b}, #{a})"
+            
+          switch weapon
             when 'missileLauncher'
               # shoot with missileLauncher affect a circular area: radial gradient
               grad = makeRadialGradient ctx, @scope.src.target, renderer, renderer.tileW*1.5, color
+              drawVisibilityLine ctx, start, @scope.src.target, renderer, c1, c2
               renderer.drawTile ctx, tile, grad for tile in @scope.src.tiles
             when 'flamer'
               # shoot with flamer affect a line
               if @scope.src.tiles.length > 0
-                [s1, s2, s3, s4] = flamerZone @scope.src.tiles, renderer
+                [s1, s2, s3, s4] = flamerZone @scope.src.tiles.concat(), renderer
                 # draw a rectangle covering tiles
                 ctx.beginPath()
                 ctx.moveTo s1.left, s1.top
@@ -241,4 +259,5 @@ define [
             else
               # other only affect a list of tiles
               for tile in @scope.src.tiles
+                drawVisibilityLine ctx, start, tile, renderer, c1, c2
                 renderer.drawTile ctx, tile, makeRadialGradient ctx, tile, renderer, renderer.tileW*0.5, color 

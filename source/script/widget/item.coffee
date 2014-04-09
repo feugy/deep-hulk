@@ -144,7 +144,7 @@ define [
       @$el.addClass @scope.model.type.id
       @$el.attr 'id', @scope.model.id
       
-      @_logLength = @scope.model.log?.length or 0
+      @_logLength = @scope.model?.log?.length or 2 # empty, contains at least "[]"
       @_loadImage()
       @_toggleDraggable()
       @_unbind = rootScope.on 'modelChanged', @_onUpdate
@@ -154,6 +154,20 @@ define [
       @scope.$watch 'deployScope', (value, old) =>
         return unless value isnt old
         @_toggleDraggable()
+        
+    # Redraw current item rendering: update position and size
+    # @return the jQuery element for this widget, for chaining purposes
+    redraw: =>
+      map = @scope.$parent      
+      return unless map?.renderer?
+      
+      @$el.css
+        width: if @scope.model.dead then 0 else map.renderer.tileW*@_imageSpec?.width
+        height: if @scope.model.dead then 0 else map.renderer.tileH*@_imageSpec?.height
+        backgroundSize: "#{100*@_longestSprite}% #{100*@_numSprites}%"
+
+      @_positionnate()
+      @$el
       
     # **private**
     # On image spec changes, compute number of sprites and longest sprite
@@ -214,15 +228,8 @@ define [
           @$el.css 
             background: "url(#{@atlas.imageService.getImageString key})"
         
-        map = @scope.$parent
-        
-        @$el.css
-          width: if @scope.model.dead then 0 else map?.renderer?.tileW*@_imageSpec?.width
-          height: if @scope.model.dead then 0 else map?.renderer?.tileH*@_imageSpec?.height
-          backgroundSize: "#{100*@_longestSprite}% #{100*@_numSprites}%"
-        
         # now display correct sprite
-        @_positionnate()
+        @redraw()
         @_renderSprite()
           
     # **private**
@@ -234,13 +241,13 @@ define [
       map = @scope.$parent
       # only if parent is a map
       return unless map?.renderer?
-
+                  
       # get the widget cell coordinates
       pos = map.renderer.coordToPos x: @scope.model.x, y: @scope.model.y
       
       # center horizontally with tile, and make tile bottom and widget bottom equal
       if @_imageSpec?
-        pos.left += map.renderer.tileW*(1-@_imageSpec.width)/2
+        pos.left += map.renderer.tileW*(1-@_imageSpec.width)/2 unless @scope.model.noHCenter
         pos.top += map.renderer.tileH*(1-@_imageSpec.height)
         
       # add z-index specific rules
@@ -351,7 +358,7 @@ define [
     # @param changes [Array<String] array of attributes that have been modified
     _onUpdate: (event, kind, model, changes) =>
       return unless model?.id is @scope.model?.id
-      # deletion received
+      # deletion received: delay removal to let animation be rendered
       if kind is 'deletion'
         @scope.$destroy()
         return @$el.remove()
@@ -365,17 +372,30 @@ define [
         if 'log' in changes
           if @_logLength < model.log.length
             # assault specific case: display results on map as indication
-            @scope.displayIndications _.map model.log[@_logLength...model.log.length], (log) ->
-              return  {
-                text: log.damages
-                x: log.x
-                y: log.y
-                fx: log.fx
-                fy: log.fy
+            indics = []
+            start = if @_logLength > 2 then @_logLength else 1
+            logs = JSON.parse "[" + model.log[start...model.log.length]
+            for log, i in logs
+              # split into two indication: damages and loss
+              indics.push 
+                kind: 'damages'
+                at: log.at
                 duration: 3000
-                className: "damages"
-                kind: log.kind
-              }
+                delay: 300
+                text: log.damages
+              if log.loss > 0
+                indics.push
+                  kind: 'loss'
+                  at: log.at
+                  duration: 3000
+                  delay: 500
+                  text: "-#{log.loss}"
+              # display also animation
+              if log.kind is 'assault'
+                indics.push {at: log.at, duration: 500, kind: log.kind, anim: log.kind}
+              else if log.kind is 'shoot'
+                indics.push {dest: log.at, at: log.from, duration: 50, kind: log.kind}
+            @scope.displayIndications indics
               
           # update inner value
           @_logLength = model.log.length
@@ -384,6 +404,9 @@ define [
         if 'transition' in changes
           # render new animation if needed
           @_renderSprite needsReload 
+        else if 'dead' in changes
+          # defer reloading until animation will be triggered
+          _.delay @_loadImage, 500
         else if needsReload
           # renderSprite will reload if necessary
           @_loadImage()
@@ -394,8 +417,8 @@ define [
         return model.constructor.fetch [model.id], (err, [model]) ->
           return console.error err if err?
           next event, kind, model, changes
-      else
-        next event, kind, model, changes
+      
+      next event, kind, model, changes
         
     # **private**
     # Show information tooltip.

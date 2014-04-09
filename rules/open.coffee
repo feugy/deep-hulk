@@ -1,7 +1,7 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
-{selectItemWithin, addAction} = require './common'
-{detectBlips} = require './visibility'
+{selectItemWithin, addAction, mergeChanges} = require './common'
+{detectBlips, findNextDoor} = require './visibility'
 
 # Door opening rule
 class OpenRule extends Rule
@@ -30,16 +30,21 @@ class OpenRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback result [Object] an arbitrary result of this rule.
   execute: (actor, door, params, context, callback) =>
+    # avoid reopening already opened door
+    unless door.closed
+      actor.doorToOpen = null
+      return callback null
+      
     effects = []
     # get next door, depending on image num
-    switch door.imageNum%8
-      when 2
+    switch door.imageNum
+      when 2, 10
         to = x:door.x+1, y:door.y
-      when 3
+      when 3, 11
         to = x:door.x-1, y:door.y
-      when 6
+      when 6, 14, 18
         to = x:door.x, y:door.y-1
-      when 7
+      when 7, 15, 19
         to = x:door.x, y:door.y+1
         
     selectItemWithin actor.map.id, door, to, (err, doors) =>
@@ -51,11 +56,21 @@ class OpenRule extends Rule
         door.imageNum -= 2
         door.transition = 'open'
         @saved.push door
-      # no more door to open (normally)
+      
       console.log "#{actor.name or actor.kind} (#{actor.squad.name}) opens door at #{door.x}:#{door.y}"
-      actor.doorToOpen = null
-      detectBlips actor, @, effects, (err) =>
+      # search for other door to open (only possible for dreadnoughts)
+      candidates = [actor]
+      isDreadnought = actor.kind is 'dreadnought' and actor.revealed
+      # dreadnought have 2 range, because they can open with any of their parts
+      range = if isDreadnought then 2 else 1
+      selectItemWithin actor.map.id, {x:actor.x-1, y:actor.y-1}, {x:actor.x+range, y:actor.y+range}, (err, items) =>
         return callback err if err?
-        addAction 'open', actor, effects, @, callback
+        # don't forget to take in account modified doors
+        mergeChanges items, @
+        
+        actor.doorToOpen = findNextDoor (if isDreadnought then actor.parts.concat [actor] else actor), items
+        detectBlips actor.map.id, @, effects, (err) =>
+          return callback err if err?
+          addAction 'open', actor, effects, @, callback
       
 module.exports = new OpenRule()

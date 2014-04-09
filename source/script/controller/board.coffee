@@ -40,6 +40,10 @@ define [
     # During deployement phase, store current zone deployed
     _currentZone: null
     
+    # **private**
+    # Some weapons need to select multiple targets. Temporary store them
+    _multipleTargets: []
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] Angular current scope
@@ -59,7 +63,11 @@ define [
       @scope.hasPrevAction = ''
       @scope.canStopReplay = ''
       @scope.activeRule = null
+      @scope.activeWeapon = 0
+      # If selected character is shooting with a weapon needing multiple targets, 
+      @scope.needMultipleTargets = false
       @scope.log = []
+      @scope.notifs = []
       @scope._onSelectActiveRule = @_onSelectActiveRule
       @scope._onNextAction = =>
         @atlas.nextAction => @scope.$apply => @_updateReplayCommands()
@@ -70,8 +78,7 @@ define [
         
       @scope._onMapClick = (event, details) => @_onClick event, details
       @scope._onMapRightclick = @_onSelect
-      @scope._askToExecuteRule = @_onOpen
-      @scope._onOpen = @_onOpen
+      @scope._askToExecuteRule = @_askToExecuteRule
       @scope._onEndTurn = @_onEndTurn
       @scope._onEndDeploy = @_onEndDeploy
       @scope._onBlipDeployed = @_onBlipDeployed
@@ -115,8 +122,8 @@ define [
         @_updateReplayCommands()
         
         squad = _.find game.squads, (squad) => squad.player is @atlas.player.email
-        # redirect to configuration if marine and not on map
-        return @location.path "#{conf.basePath}configure-squad" unless squad.map? or squad.isAlien
+        # redirect to configuration if not on map
+        return @location.path "#{conf.basePath}configure" unless squad.map?
         # fetch squand and all of its members
         @_fetchSquad squad
           
@@ -128,8 +135,7 @@ define [
         return
       @atlas.ruleService.execute 'movable', @scope.selected, @scope.selected, {}, (err, reachable) => @scope.$apply =>
         # silent error, no moves, no more selected: clear zone
-        if err? or !reachable? or reachable.length is 0 or @scope.selected is null
-          return @scope.zone = null 
+        return @scope.zone = null if err? or !reachable? or reachable.length is 0 or @scope.selected is null
         @scope.zone =
           tiles: reachable
           origin: @scope.selected
@@ -137,17 +143,20 @@ define [
                   
     # When hovering tiles, check on server damage zone and display it
     #
-    # @param target [Item|Field] targeted item or field
+    # @param evt [Event] event that add trigger zone displayal (unused)
+    # @param details [Item|Field] targeted item or field on which damage zone is evaluated
     displayDamageZone: (evt, details) =>
       unless details? and not @_inhibit and details? and @scope.selected? and @scope.activeRule in ['shoot', 'assault']
         return
       # do NOT ignore assault resolution if service is busy
       if @atlas.ruleService.isBusy() and @scope.activeRule isnt 'assault'
         return
-      @atlas.ruleService.execute "#{@scope.activeRule}Zone", @scope.selected, details, {}, (err, result) => @scope.$apply =>
-        # silent error: no zone
-        if err? or @scope.selected is null
-          return @scope.zone = null
+      params = 
+        weaponIdx: @scope.activeWeapon
+        multipleTargets: ("#{target.x}:#{target.y}" for target in @_multipleTargets)
+      @atlas.ruleService.execute "#{@scope.activeRule}Zone", @scope.selected, details, params, (err, result) => @scope.$apply =>
+        # silent error
+        return @scope.zone = null if err? or @scope.selected is null or not result?
         result.origin = @scope.selected
         result.target = details
         result.kind = @scope.activeRule
@@ -158,21 +167,26 @@ define [
     # @param content the message sent
     sendMessage: (content) =>
       @atlas.ruleService.execute "sendMessage", @scope.game, @scope.squad, {content:content}, (err, result) => 
-        @scope.$apply =>  @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err? 
+        @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
         
     # **private**
     # Update action zone depending on new active rule
     #
     # @param event [Event] triggering event
     # @param rule [String] new value for active rule
-    _onSelectActiveRule: (event, rule) =>
-        @scope.activeRule = rule
-        if rule is 'move'
-          @displayMovable()
-        else if rule is 'assault'
-          @displayDamageZone event, @scope.selected
-        else 
-          @scope.zone = null
+    # @param weapon [Numer] selected weapon rank (in weapons) to use in case of shoot
+    _onSelectActiveRule: (event, rule, weapon = 0) =>
+      @scope.activeRule = rule
+      @scope.activeWeapon = weapon
+      # reset targets
+      @scope.needMultipleTargets = false
+      @_multipleTargets = []
+      if rule is 'move'
+        @displayMovable()
+      else if rule is 'assault'
+        @displayDamageZone event, @scope.selected
+      else 
+        @scope.zone = null
           
     # **private**
     # Update replay commands after a replay action
@@ -189,27 +203,31 @@ define [
     _fetchSquad: (squad) =>
       # get squad and its members
       @atlas.Item.fetch [squad], (err, [squad]) => 
-        return @scope.$apply( => @scope.log.splice 0, 0, kind:'error', content: parseError err.message) if err?
+        return @scope.$apply( => @scope.notifs.push kind:'error', content: parseError err) if err?
         # then get members
         @atlas.Item.fetch squad.members, (err) => @scope.$apply => 
-          return @scope.log.splice 0, 0, kind:'error', content: parseError err.message if err?
+          return @scope.notifs.push kind:'error', content: parseError err if err?
           @scope.selected = null
           @scope.squad = squad
           # blips deployment, blip displayal
           if @scope.squad.deployZone?
-            @_initBlipDeployement()
+            @_toggleDeployMode()
           if @scope.squad.actions < 0 
             @scope.canEndTurn = 'disabled' 
-            @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.waitForOther
+            @scope.notifs.push kind: 'info', content: conf.msgs.waitForOther
           else
             @scope.canEndTurn = ''
           # inhibit on replay (always) or turn end (if not alien and deploy) or deploy (and not alien)
           @_inhibit = if @scope.squad.isAlien and @scope.squad.deployZone? then @atlas.replayPos? else @atlas.replayPos? or @scope.squad.actions < 0 or @scope.squad.deployZone?
           
     # ** private**
-    # If a deploy zone is added to alien squad, swith to blip deployement mode with a info dialog
-    _initBlipDeployement: =>
+    # Adapt UI to current deploy mode:
+    # - If a deploy zone is added to squad: put info on deploy start, and for alien drop deploy zone
+    # - If a deploy zone is removed: clean zone, and for marine, put info on deploy end
+    _toggleDeployMode: =>
       if @scope.squad.deployZone?
+        @scope.canEndTurn = 'disabled' 
+        @_inhibit = true
         if @scope.squad.isAlien
           # Auto select the first zone to deploy
           first = @scope.squad.deployZone.split(',')[0]
@@ -217,31 +235,33 @@ define [
           return if first is @_currentZone
           @_currentZone = first
           @scope.deployScope = 'deployBlip'
-          # add log
-          @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.deployBlips
+          # add notification
+          @scope.notifs.push kind: 'info', content: conf.msgs.deployBlips
           # highligth deployable zone
           @atlas.ruleService.execute 'deployZone', @atlas.player, @scope.squad, {zone:@_currentZone}, (err, zone) => 
             @scope.$apply =>
-              @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err?
-              if !zone? or zone.length is 0
-                return @scope.zone = null
+              @scope.notifs.push kind: 'error', content: parseError err if err?
+              return @scope.zone = null if err? or !zone? or zone.length is 0
               @scope.zone = 
                 tiles: zone
                 kind: 'deploy'
-              # inhibit on replay
-              @_inhibit = @atlas.replayPos?
         else
-          # add log and inhibit
-          @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.deployInProgress
-          @_inhibit = true
+          # add notification and inhibit
+          @scope.notifs.push kind: 'info', content: conf.msgs.deployInProgress
       else
-        @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.deployEnded unless @scope.squad.isAlien
+        if @scope.squad.isAlien
+          @scope.canEndTurn = '' 
+          # clean alien previous nitifications
+          @scope.notifs.splice 0, @scope.notifs.length
+        else
+          # indicates to marine that they can go on !
+          @scope.notifs.push kind: 'info', content: conf.msgs.deployEnded
         @_currentZone = null
         @scope.deployScope = null
         # inhibit on turn end or replay pos
         @_inhibit = @scope.squad.actions < 0 or @atlas.replayPos?
         # Redraw previously highlighted zone
-        @_onSelectActiveRule null, @scope.activeRule
+        @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
       
     # **private**
     # Multiple behaviour when model update is received:
@@ -272,13 +292,13 @@ define [
                   # auto trigger turn end
                   @_onEndTurn() if @scope.squad.actions is 0
               if 'deployZone' in changes
-                @_initBlipDeployement() 
+                @_toggleDeployMode() 
             else if model?.id is @scope.game?.id
               if 'finished' in changes
                 return @location.path "#{conf.basePath}end" if model.finished
               if 'turn' in changes
-                # if turn has change, add log
-                @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.newTurn
+                # if turn has change, notify
+                @scope.notifs.push kind: 'info', content: conf.msgs.newTurn
               if 'prevActions' in changes
                 @_updateReplayCommands()
               if 'warLog' in changes
@@ -302,12 +322,20 @@ define [
     # @option details field [Field] field model at this coordinates (may be null)
     _onSelect: (event, details) =>
       # find selectable item inside clicked items
-      item = _.find details.items, (item) => item in @scope.squad.members
+      item = _.find details.items, (item) => 
+        # takes in acccount possible parts (for dreadnought)
+        return true for member in @scope.squad.members when member is item or (member.parts? and item in member.parts)
+        false
+      # if part is returned, use its main object
+      item = item?.main or item
+      
       @scope.$apply =>
         if @scope.selected is item
           @scope.selected = null
         else
           @scope.selected = item
+        # Redraw previously highlighted zone
+        @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
           
     # **private**
     # Handler invoked when clicking on map. Try to fire move rule, or to display
@@ -328,7 +356,7 @@ define [
         @scope.path = []
       
       proceed = (err = null, applicables = {}) =>
-        console.error err if err?
+        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
         # keep for further use
         @_applicableRules = applicables
         keys = _.keys applicables
@@ -341,36 +369,56 @@ define [
             @scope.menuItems = keys
           
       if @scope.selected?
-        # for shoot, restrict to category. Otherwise, restrict to rule id
-        restriction = if @scope.activeRule is 'shoot' then [@scope.activeRule] else @scope.activeRule
-        # resolve board rules for the selected item at this coord
-        @atlas.ruleService.resolve @scope.selected, details.x, details.y, restriction, proceed
+        # for shoot with autocannon, need to select targets
+        if @scope.activeRule is 'shoot' and @scope.selected.weapons[@scope.activeWeapon]?.id is 'autoCannon'
+          @scope.needMultipleTargets = true
+          # add to current targets
+          @_multipleTargets.push details.field if details.field?
+        else
+          # resolve board rules for the selected item at this coord
+          @atlas.ruleService.resolve @scope.selected, details.x, details.y, @scope.activeRule, proceed
       else 
         # no selected item, just proceed.
         proceed()
         
     # **private**
-    # Trigger currently selected character to open next door.
-    _onOpen: =>
-      return if @_inhibit and not(@scope.selected?.doorToOpen?)
-      # fake resolution and trigger rule
-      @_applicableRules = 
-        open: [target: @scope.selected.doorToOpen]
-      @_onSelectMenuItem null, 'open'
+    # Trigger a given rule of currently selected character, as it it was selected on menu
+    #
+    # @param rule [String] rule to trigger
+    _askToExecuteRule: (rule) =>
+      return if @_inhibit and not @scope.selected?
+      switch rule
+        when "open"
+          return unless @scope.selected.doorToOpen?
+          @_applicableRules = open: [target: @scope.selected.doorToOpen]
+          break
+        when "shoot"
+          @_applicableRules = shoot: [target: @_multipleTargets[0]]
+      @_onSelectMenuItem null, rule
           
     # **private**
     # Handler of map menu selection. Trigger the corresponding rule
     #
     # @param event [Event] click event inside map menu
-    # @param item [String] name of the selected item inside menu
-    _onSelectMenuItem: (event, item) =>
+    # @param rule [String] name of the selected item inside menu
+    _onSelectMenuItem: (event, rule) =>
       # do not support yet multiple targets nor parameters
-      return console.error "multiple targets not supported yet for rule #{item}" if @_applicableRules[item].length > 1
-      return console.error "parameters not supported yet for rule #{item}" if @_applicableRules[item][0].params?.length > 0
+      return console.error "multiple targets not supported yet for rule #{rule}" if @_applicableRules[rule].length > 1
+      return console.error "parameters not supported yet for rule #{rule}" if rule isnt 'shoot' and @_applicableRules[rule][0].params?.length > 0
             
       # trigger rule
-      @atlas.ruleService.execute item, @scope.selected, @_applicableRules[item][0].target, {}, (err, result) =>
-        return @scope.$apply(=> @scope.log.splice 0, 0, kind: 'error', content: parseError err.message) if err?   
+      if rule is 'shoot'
+        params = 
+          weaponIdx: @scope.activeWeapon 
+          multipleTargets: ("#{target.x}:#{target.y}" for target in @_multipleTargets)
+          
+        # reset mutliple targets
+        @scope.needMultipleTargets = false
+        @_multipleTargets = []
+      else 
+        params = {}
+      @atlas.ruleService.execute rule, @scope.selected, @_applicableRules[rule][0].target, params, (err, result) =>
+        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?   
         # refresh movable tiles
         @displayMovable()
                 
@@ -382,9 +430,9 @@ define [
       # rule triggering
       trigger = =>
         @atlas.ruleService.execute 'endOfTurn', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
-          return @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err?
-          # add log
-          @scope.log.splice 0, 0, kind: 'info', content: conf.msgs.waitForOther
+          return @scope.notifs.push kind: 'error', content: parseError err if err?
+          # add a notification
+          @scope.notifs.push kind: 'info', content: conf.msgs.waitForOther
       return trigger() if @scope.squad.actions is 0
       # still actions ? confirm end of turn
       confirm = @dialog.messageBox conf.titles.confirmEndOfTurn, conf.msgs.confirmEndOfTurn, [
@@ -401,9 +449,9 @@ define [
       # rule triggering
       trigger = =>
         @atlas.ruleService.execute 'endDeploy', @atlas.player, @scope.squad, {zone: @_currentZone}, (err) =>
-          return @scope.$apply(=> @scope.log.splice 0, 0, kind: 'error', content: parseError err.message) if err?  
+          return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
           # proceed with next deployement or quit mode
-          @_initBlipDeployement()
+          @_toggleDeployMode()
       # still actions ? confirm end of turn
       confirm = @dialog.messageBox conf.titles.confirmDeploy, conf.msgs.confirmEndDeploy, [
         {label: conf.buttons.yes, result: true}
@@ -432,6 +480,7 @@ define [
           zone: @_currentZone
           rank: blipIdx[_.random 0, blipIdx.length-1]
       # trigger the relevant rule
-      @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) => @scope.$apply =>
+      @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) =>
         # displays deployement errors
-        return @scope.log.splice 0, 0, kind: 'error', content: parseError err.message if err?
+        console.log err, parseError err if err?
+        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
