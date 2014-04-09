@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="60.219082"
+   height="12.845304"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 "
+   sodipodi:docname="shoot.svg"
+   inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\shoot.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3765">
+      <stop
+         style="stop-color:#f04d1d;stop-opacity:1;"
+         offset="0"
+         id="stop3767" />
+      <stop
+         style="stop-color:#996aca;stop-opacity:1;"
+         offset="1"
+         id="stop3769" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3755">
+      <stop
+         style="stop-color:#fff200;stop-opacity:1;"
+         offset="0"
+         id="stop3757" />
+      <stop
+         style="stop-color:#fc4006;stop-opacity:1;"
+         offset="1"
+         id="stop3759" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3755"
+       id="linearGradient3761"
+       x1="52.102741"
+       y1="1011.2533"
+       x2="91.501427"
+       y2="1011.2533"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3765"
+       id="linearGradient3771"
+       x1="68.998398"
+       y1="1011.0884"
+       x2="89.720688"
+       y2="1011.0884"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3765"
+       id="linearGradient3774"
+       gradientUnits="userSpaceOnUse"
+       x1="68.998398"
+       y1="1011.0884"
+       x2="89.720688"
+       y2="1011.0884"
+       gradientTransform="translate(0.04479179,0.06669691)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="9.7401176"
+     inkscape:cx="29.621345"
+     inkscape:cy="19.731289"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1280"
+     inkscape:window-height="1002"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="shoot"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-35.375,-1004.6249)"
+     style="display:none">
+    <path
+       style="fill:url(#linearGradient3761);fill-opacity:1;stroke:#ff6600;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 35.865504,1011.0315 c 1.655946,-1.9627 36.997376,-5.9429 49.870127,-5.9209 12.634294,0.022 12.267091,11.7705 0.08444,11.8461 -13.221311,0.082 -48.040561,-3.3575 -49.954567,-5.9251 z"
+       id="path2985"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csscc" />
+    <path
+       style="color:#000000;fill:url(#linearGradient3774);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 86.972302,1013.764 c -5.719969,-0.1634 -17.929113,-1.2569 -17.929113,-2.6089 0,-1.352 12.208496,-2.1481 17.929113,-2.287 5.004085,-0.1215 5.06084,5.0405 0,4.8959 z"
+       id="path3763"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ssss" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="claws"
+     style="display:inline">
+    <g
+       id="g3812">
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\claws.png"
+         sodipodi:nodetypes="cssc"
+         inkscape:connector-curvature="0"
+         id="path3770"
+         d="m 0.5,-5.1423601 c 0,0 3.5804754,8.5837422 5.9547538,15.7082291 1.1192731,3.358598 4.4153832,1.479497 2.77204,-1.6426905 C 5.8151039,2.4413102 0.5,-5.1423601 0.5,-5.1423601 z"
+         style="fill:#ffffff;stroke:#cccccc;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <use
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\claws.png"
+         height="12.845304"
+         width="60.219082"
+         transform="translate(12.422848,-5.3387446)"
+         id="use3808"
+         xlink:href="#path3770"
+         y="0"
+         x="0" />
+      <use
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\claws.png"
+         height="12.845304"
+         width="60.219082"
+         transform="translate(7.1867716,-1.2320179)"
+         id="use3810"
+         xlink:href="#path3770"
+         y="0"
+         x="0" />
+    </g>
+  </g>
+</svg>
