@@ -49,9 +49,12 @@ assaultRotation = 60deg
     display block
   
     > *
-    .zone-display
       position absolute
       z-index 1
+
+    .zone-display
+      pointer-events none
+
     > .fields
       padding-left 0
 
@@ -90,8 +93,8 @@ assaultRotation = 60deg
 
     .hover
       position absolute
-      box-shadow 0 0 8px 8px rgba(hoverColor, 0.5) inset
-      border-radius 3px
+      background-color rgba(hoverColor, 0.2)
+      border-radius 5px
 
     .menu
       display none

@@ -99,14 +99,14 @@ asideHeight = 160px
       background-size 162px 102px
       cursor default
 
-    .commands a:not(.disabled):hover
+    .commands a:hover
     .end-deploy:hover
       background-position 0 -34px
       color textDarkColor
       cursor pointer
 
-    .commands a.disabled
-    .end-deploy.disabled
+    .commands a:not(.enabled)
+    .end-deploy:not(.enabled)
       background-position 0 -68px
       color textDarkColor
 
@@ -114,10 +114,10 @@ asideHeight = 160px
       flex 1
       background-position -40px 0
 
-    .commands .end-turn:not(.disabled):hover
+    .commands .end-turn:hover
       background-position -40px -34px
 
-    .commands .end-turn.disabled
+    .commands .end-turn:not(.enabled)
       background-position -40px -68px
 
     .score
@@ -136,6 +136,31 @@ asideHeight = 160px
       flex-direction column
       align-items center
       justify-content center
+
+    .squad 
+      margin = 5px
+
+      .replay
+        display none
+
+      .replay.enabled
+        position absolute
+        display flex
+        align-items flex-end
+        top margin + 10px
+        left margin
+        bottom margin
+        right margin
+        border-radius 5px
+        z-index 1
+        background mapLoadingBackground
+        
+        > *
+          flex 1
+          text-align center
+          padding-bottom 1em
+          font-family headingFont
+          font-size headingSize
 
   aside.marine
     background url(../image/board-marine-commands.png)
@@ -164,10 +189,10 @@ asideHeight = 160px
         width 90px
         font-size 82%
 
-      .end-deploy:not(.disabled):hover
+      .end-deploy:hover
         background-position -29px -34px
   
-      .end-deploy.disabled
+      .end-deploy:not(.enabled)
         background-position -29px -68px
 
     .squad

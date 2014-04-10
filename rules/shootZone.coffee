@@ -3,6 +3,13 @@ Field = require 'hyperion/model/Field'
 {selectItemWithin} = require './common'
 {isTargetable, tilesOnLine, untilWall, hasObstacle} = require './visibility'
 
+parseTargetParams = (params, tiles) ->
+  if params.multipleTargets?
+    # each target is comma separated, x and y coordinates separated by ':' themseves
+    for target in params.multipleTargets
+      coord = target.split ':'
+      tiles.push x: +coord[0], y: +coord[1]
+      
 # The ShootZoneRule rule highlight damage zone of a given ranged weapon
 # it also give the visibility line, even if target is not reachable
 class ShootZoneRule extends Rule
@@ -60,6 +67,8 @@ class ShootZoneRule extends Rule
         
       reachable = isTargetable actor, target, params.weaponIdx, items
       unless reachable?
+        # add autoCannon already selected targets
+        parseTargetParams params, result.tiles
         # target not reachable: returns obstacle (with character blocking visibility)
         result.obstacle = hasObstacle actor, target, items, true
         return callback null, result
@@ -85,12 +94,8 @@ class ShootZoneRule extends Rule
           
         when 'autoCannon'
           # display also previous targets, stored as string in currentTargets
-          if params.multipleTargets?
-            # each target is comma separated, x and y coordinates separated by ':' themseves
-            for target in params.multipleTargets
-              coord = target.split ':'
-              tiles.push x: +coord[0], y: +coord[1]
-      
+          parseTargetParams params, tiles
+          
       result.tiles = tiles
       callback null, result
   

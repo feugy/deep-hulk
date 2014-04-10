@@ -38,10 +38,10 @@
     </div>
     <!-- squad details -->
     <div class="squad">
+      <div class="replay ng-class:hasNextAction"><span>{{'labels.replayInProgress'|i18n}}</span></div>
       <character-details
         data-ng-repeat="member in squad.members" 
         data-src="member"
-        data-shortcuts="ctrl+{{$index+1}}"
         data-selected="$parent.selected"></character-details>
     </div>
     <img class="logo" src="{{getInstanceImage(squad)}}"/>

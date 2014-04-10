@@ -2,8 +2,9 @@
 
 define [
   'underscore'
+  'jquery'
   'util/common'
-], (_, {getInstanceImage, parseError}) ->
+], (_, $, {getInstanceImage, parseError}) ->
   
   # two mode controller: displays squad configuration (for marines, before starting game)
   # or displays the game board (for marines and alien)
@@ -58,7 +59,7 @@ define [
       @scope.zoom = 1
       @scope.menuItems = null
       @scope.zone = null
-      @scope.canEndTurn = 'disabled'
+      @scope.canEndTurn = ''
       @scope.hasNextAction = ''
       @scope.hasPrevAction = ''
       @scope.canStopReplay = ''
@@ -126,6 +127,11 @@ define [
         return @location.path "#{conf.basePath}configure" unless squad.map?
         # fetch squand and all of its members
         @_fetchSquad squad
+      
+      # bind key listener
+      $(window).on 'keydown.board', @_onKey
+      @scope.$on '$destroy', => 
+        $(window).off 'keydown.board'
           
     # When toggeling move mode, changing selected character, or after a move, 
     # check on server reachable tiles and display them
@@ -181,19 +187,18 @@ define [
       # reset targets
       @scope.needMultipleTargets = false
       @_multipleTargets = []
+      @scope.zone = null
       if rule is 'move'
         @displayMovable()
       else if rule is 'assault'
         @displayDamageZone event, @scope.selected
-      else 
-        @scope.zone = null
           
     # **private**
     # Update replay commands after a replay action
     _updateReplayCommands: =>
-      @scope.canStopReplay = if @atlas.replayPos? then '' else 'disabled'
-      @scope.hasPrevAction = if @atlas.hasPreviousAction then '' else 'disabled'
-      @scope.hasNextAction = if @atlas.hasNextAction then '' else 'disabled'
+      @scope.canStopReplay = if @atlas.replayPos? then 'enabled' else ''
+      @scope.hasPrevAction = if @atlas.hasPreviousAction then 'enabled' else ''
+      @scope.hasNextAction = if @atlas.hasNextAction then 'enabled' else ''
       
     # **private**
     # Fetch the current squad and all its members.
@@ -213,10 +218,10 @@ define [
           if @scope.squad.deployZone?
             @_toggleDeployMode()
           if @scope.squad.actions < 0 
-            @scope.canEndTurn = 'disabled' 
+            @scope.canEndTurn = '' 
             @scope.notifs.push kind: 'info', content: conf.msgs.waitForOther
           else
-            @scope.canEndTurn = ''
+            @scope.canEndTurn = 'enabled'
           # inhibit on replay (always) or turn end (if not alien and deploy) or deploy (and not alien)
           @_inhibit = if @scope.squad.isAlien and @scope.squad.deployZone? then @atlas.replayPos? else @atlas.replayPos? or @scope.squad.actions < 0 or @scope.squad.deployZone?
           
@@ -226,7 +231,7 @@ define [
     # - If a deploy zone is removed: clean zone, and for marine, put info on deploy end
     _toggleDeployMode: =>
       if @scope.squad.deployZone?
-        @scope.canEndTurn = 'disabled' 
+        @scope.canEndTurn = '' 
         @_inhibit = true
         if @scope.squad.isAlien
           # Auto select the first zone to deploy
@@ -250,7 +255,7 @@ define [
           @scope.notifs.push kind: 'info', content: conf.msgs.deployInProgress
       else
         if @scope.squad.isAlien
-          @scope.canEndTurn = '' 
+          @scope.canEndTurn = 'enabled' 
           # clean alien previous nitifications
           @scope.notifs.splice 0, @scope.notifs.length
         else
@@ -286,9 +291,9 @@ define [
                 @_inhibit = if @scope.squad.isAlien and @scope.squad.deployZone? then @atlas.replayPos? else 
                   @atlas.replayPos? or @scope.squad.actions < 0 or @scope.squad.deployZone?
                 if @scope.squad.actions < 0
-                  @scope.canEndTurn = 'disabled'
-                else
                   @scope.canEndTurn = ''
+                else
+                  @scope.canEndTurn = 'enabled'
                   # auto trigger turn end
                   @_onEndTurn() if @scope.squad.actions is 0
               if 'deployZone' in changes
@@ -299,6 +304,8 @@ define [
               if 'turn' in changes
                 # if turn has change, notify
                 @scope.notifs.push kind: 'info', content: conf.msgs.newTurn
+                # quit replay
+                @atlas.stopReplay()
               if 'prevActions' in changes
                 @_updateReplayCommands()
               if 'warLog' in changes
@@ -484,3 +491,18 @@ define [
         # displays deployement errors
         console.log err, parseError err if err?
         return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
+
+    # **private**
+    # Key up handler, to select this character with shortcut
+    #
+    # @param event [Event] key up event
+    _onKey: (event) =>
+      # disable if cursor currently in an editable element
+      return if event.target.nodeName in ['input', 'textarea', 'select']
+      # select current character if shortcut match
+      if event.ctrlKey and event.keyCode in [49...57]
+        @scope.$apply => @scope.selected = _.where(@scope.squad.members, dead:false)[event.keyCode-49]
+        # stop key to avoid browser default behavior
+        event.preventDefault()
+        event.stopImmediatePropagation()
+        return false

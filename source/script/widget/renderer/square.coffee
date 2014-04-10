@@ -108,13 +108,3 @@ define [
             gameX = @lower.x + col++
             if gameX % 5 is 0
               ctx.fillText "#{gameX}:#{gameY}", x+@tileW*0.5, y-@tileH*0.5
-    
-    # Draw a single selected tile in selection or to highlight hover
-    #
-    # @param ctx [Canvas] the canvas context.
-    # @param pos [Object] coordinate of the drew tile
-    # @param color [String] the color used to fill the tile
-    drawTile: (ctx, coord, color) =>
-      {left, top} = @coordToPos coord
-      ctx.fillStyle = color
-      ctx.fillRect left, top, @tileW, @tileH

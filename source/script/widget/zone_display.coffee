@@ -5,7 +5,7 @@ define [
   'underscore'
   'util/common'
   'app'
-], ($, _, {hexToRgb}, app) ->
+], ($, _, {hexToRgb, computeOrientation}, app) ->
   
   # The zone directive displays action zone on map
   app.directive 'zoneDisplay', ->
@@ -73,91 +73,44 @@ define [
   drawVisibilityLine = (ctx, start, target, renderer, color, color2) ->
     color2 or= color
     # draw visibility line until target or obstacle
-    target = renderer.coordToPos target
     {left, top} = renderer.coordToPos start
-    
+    target = renderer.coordToPos target
+
     ctx.beginPath()
     # start at origin bottom
     x1 = left+renderer.tileW*.5
-    y1 = top+renderer.tileH
-    x2 = target.left+renderer.tileW*.5
-    y2 = target.top+renderer.tileH*0.5
+    y1 = top+renderer.tileH*0.8
+    x2 = target.left+renderer.tileW*0.5
+    y2 = target.top+renderer.tileH*0.8
     ctx.moveTo x1, y1
-    ctx.bezierCurveTo x1, y1-renderer.tileH, x2, y2, x2, y2 
-    ctx.strokeStyle = makeLinearGradient ctx, {top: y1, left: x1, color: color}, {top: y2, left: x2, color: color2}
+    ctx.lineTo x2, y2
     ctx.lineWidth = 3
+    ctx.strokeStyle = makeLinearGradient ctx, {left: x1, top:y1, color: color}, {left: x2, top:y2, color: color2}
     ctx.stroke()
-      
+    
   # **private**
-  # Evaluate corners of the flamer zone
-  # @param tiles [Array] ordered list of flamer covered tiles, first is shooter
-  # @param renderer [Object] map used renderer
-  # @return an array with the 4 corners positions
-  flamerZone = (tiles, renderer) ->
-    first = tiles.shift()
-    last = tiles.pop() or first
-    s1 = renderer.coordToPos first
-    s1.top += renderer.tileH
-    s2 = _.extend {}, s1
-    s3 = renderer.coordToPos last
-    s3.top += renderer.tileH
-    s4 = _.extend {}, s3
-    if first.y is last.y
-      # horizontal line
-      s2.top -= renderer.tileH
-      s4.top -= renderer.tileH
-      if first.x < last.x
-        s1.left += renderer.tileW
-        s2.left += renderer.tileW
-        s3.left += renderer.tileW
-        s4.left += renderer.tileW
-    else if first.x is last.x
-      # vertical line
-      s2.left += renderer.tileW
-      s4.left += renderer.tileW
-      if first.y < last.y
-        s1.top -= renderer.tileH
-        s2.top -= renderer.tileH
-        s3.top -= renderer.tileH
-        s4.top -= renderer.tileH
-    else if (first.x > last.x and first.y > last.y) or
-        (first.x < last.x and first.y < last.y)
-      # diagonal top right
-      s1.top -= renderer.tileH*0.7
-      s3.top -= renderer.tileH*0.7
-      s2.left += renderer.tileW*0.7
-      s4.left += renderer.tileW*0.7
-      if first.x < last.x
-        s1.top -= renderer.tileH*0.3
-        s2.top -= renderer.tileH*0.3
-        s3.top -= renderer.tileH*0.3
-        s4.top -= renderer.tileH*0.3
-        s1.left += renderer.tileW*0.3
-        s2.left += renderer.tileW*0.3
-        s3.left += renderer.tileW*0.3
-        s4.left += renderer.tileW*0.3
-    else
-      # diagonal top left
-      s2.top -= renderer.tileH*0.7
-      s4.top -= renderer.tileH*0.7
-      s2.left += renderer.tileW*0.7
-      s4.left += renderer.tileW*0.7
-      if first.x > last.x
-        s1.top -= renderer.tileH*0.3
-        s2.top -= renderer.tileH*0.3
-        s3.top -= renderer.tileH*0.3
-        s4.top -= renderer.tileH*0.3
-      else
-        s1.left += renderer.tileW*0.3
-        s2.left += renderer.tileW*0.3
-        s3.left += renderer.tileW*0.3
-        s4.left += renderer.tileW*0.3
-    [s1, s2, s3, s4]
+  # Draws an image at position, oriented against origin.
+  #
+  # @param ctx [Canvas] rendering context
+  # @param position [Object] map coordinate where image is drawn
+  # @param origin [Object] map coordinate against which image is oriented. Null to disabled orientation
+  # @param renderer [Object] map renderer used
+  # @param img [Object] image data
+  drawOrientedImage = (ctx, position, origin, renderer, img, size=null) ->
+    position = renderer.coordToPos position
+    origin = if origin? then renderer.coordToPos origin else position
+    margin = 0
+    size = size or {w:renderer.tileW, h:renderer.tileH}
+    ctx.save()
+    ctx.translate position.left+renderer.tileW/2, position.top+renderer.tileH/2
+    ctx.rotate computeOrientation position, origin
+    ctx.drawImage img, -margin-size.w/2, -margin-size.h/2, size.w+margin*2, size.h+margin*2
+    ctx.restore()
     
   class zoneDisplay
     
     # Controller dependencies
-    @$inject: ['$scope', '$element']
+    @$inject: ['$scope', '$element', 'atlas']
           
     # Controller scope, injected within constructor
     scope: null
@@ -165,11 +118,15 @@ define [
     # JQuery enriched element for directive root
     $el: null
     
+    # Link to Atlas service
+    atlas: null
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] directive scope
     # @param element [DOM] directive root element
-    constructor: (@scope, element) ->
+    # @param atlas [Object] Atlas service
+    constructor: (@scope, element, @atlas) ->
       @$el = $(element)                     
       # show menu, highlighted tiles
       @scope.$watch 'src', @_highlight
@@ -191,30 +148,33 @@ define [
       {r, g, b, a} = hexToRgb conf.colors[@scope.src?.kind] or '#FFFF'
       color = "rgba(#{r}, #{g}, #{b}, #{a})"
       
+      isDreadnought = @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
+      # make a copy to allow drawing manipulations without breacking changes detection
+      tiles = @scope.src.tiles?.concat() or []
       switch @scope.src?.kind
       
         when 'deploy'
           # for deploy, fill each tiles with same color
-          renderer.drawTile ctx, tile, color for tile in @scope.src.tiles
+          renderer.drawTile ctx, tile, color for tile in tiles
             
         when 'move', 'assault'
-          tiles = @scope.src.tiles?.concat() or []
           # move and assault will display a gradient centered on origin (character position)
           coord = _.pick @scope.src.origin, 'x', 'y'
-          if @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
-            # add dreadnought position cause it's not included
-            for i in [0..1]
-              tiles.push x: coord.x+i, y:coord.y+j for j in [0..1]
+          # removes character pos if not already included
+          tiles = _.reject tiles, (t) -> t.x is coord.x and t.y is coord.y
+          if isDreadnought
+            # removes dreadnought position if included
+            tiles = _.reject tiles, (t) -> t.x in [coord.x, coord.x+1] and t.y in [coord.y, coord.y+1]
             # dreadnought specific case: center right ahead current position
             coord.x += 0.5
             coord.y += 0.5
             range = renderer.tileW*2.1
           else
             range = renderer.tileW*1.5
-            # add character pos if not already included
-            tiles.push coord unless coord in tiles
-          grad = makeRadialGradient ctx, coord, renderer, range, color
-          renderer.drawTile ctx, tile, grad for tile in tiles
+            
+          @atlas.imageService.load "image/#{@scope.src.kind}.png", (err, key, img) =>
+            return if err?
+            drawOrientedImage ctx, tile, coord, renderer, img for tile in tiles
             
         when 'shoot'
           weapon = @scope.src.weapon.id or @scope.src.weapon
@@ -224,12 +184,12 @@ define [
           c2 = color
           
           start = _.pick @scope.src.origin, 'x', 'y'
-          if @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
+          if isDreadnought
             # dreadnought specific case: center right ahead current position
             start.x += 0.5
             start.y += 0.5
             
-          if @scope.src.obstacle
+          if @scope.src.obstacle and weapon isnt 'autoCannon'
             # use different end color for obstacle, and quit
             {r, g, b, a} = hexToRgb conf.colors.obstacle or '#FFFF'
             return drawVisibilityLine ctx, start, @scope.src.obstacle, renderer, c1, "rgba(#{r}, #{g}, #{b}, #{a})"
@@ -237,27 +197,55 @@ define [
           switch weapon
             when 'missileLauncher'
               # shoot with missileLauncher affect a circular area: radial gradient
-              grad = makeRadialGradient ctx, @scope.src.target, renderer, renderer.tileW*1.5, color
-              drawVisibilityLine ctx, start, @scope.src.target, renderer, c1, c2
-              renderer.drawTile ctx, tile, grad for tile in @scope.src.tiles
+              target = @scope.src.target
+              drawVisibilityLine ctx, start, target, renderer, c1, c2
+              tiles = _.reject tiles, (t) -> t.x is target.x and t.y is target.y
+              @atlas.imageService.load "image/explosion.png", (err, key, center) =>
+                return if err?
+                drawOrientedImage ctx, target, null, renderer, center
+                @atlas.imageService.load "image/explosion-side.png", (err, key, side) =>
+                  return if err?
+                  @atlas.imageService.load "image/explosion-corner.png", (err, key, corner) =>
+                    return if err?
+                    for tile in tiles
+                      if tile.x is target.x or tile.y is target.y
+                        # same line
+                        drawOrientedImage ctx, tile, target, renderer, side
+                      else
+                        # corners
+                        from = x:target.x, y:target.y
+                        if tile.y > target.y
+                          if tile.x < target.x
+                            from.x--
+                          else if tile.x > target.x
+                            from.y++
+                        else if tile.y < target.y
+                          if tile.x < target.x
+                            from.y--
+                          else
+                            from.x++
+                        drawOrientedImage ctx, tile, from, renderer, corner
+                      
             when 'flamer'
               # shoot with flamer affect a line
-              if @scope.src.tiles.length > 0
-                [s1, s2, s3, s4] = flamerZone @scope.src.tiles.concat(), renderer
-                # draw a rectangle covering tiles
-                ctx.beginPath()
-                ctx.moveTo s1.left, s1.top
-                ctx.lineTo s2.left, s2.top
-                ctx.lineTo s4.left, s4.top
-                ctx.lineTo s3.left, s3.top
-                ctx.closePath()
-                s1.color = color
-                s2.color = color
-                # use linear gradient orthogonal to tiles
-                ctx.fillStyle = makeLinearGradient ctx, s1, s2
-                ctx.fill()
+              @atlas.imageService.load "image/flames.png", (err, key, img) =>
+                return if err?
+                coord = tiles[0]
+                if isDreadnought
+                  tiles = _.reject tiles, (t) -> t.x in [coord.x, coord.x+1] and t.y in [coord.y, coord.y+1]
+                else
+                  tiles = _.reject tiles, (t) -> t.x is coord.x and t.y is coord.y
+                if tiles.length >= 2
+                  isDiag = tiles[0].x isnt tiles[1].x and tiles[0].y isnt tiles[1].y
+                else
+                  isDiag = false
+                # on diagonals, specify a larger image
+                size= w:renderer.tileW*(if isDiag then 1.42 else 1), h: renderer.tileH               
+                drawOrientedImage ctx, tile, coord, renderer, img, size for tile in tiles
             else
-              # other only affect a list of tiles
-              for tile in @scope.src.tiles
-                drawVisibilityLine ctx, start, tile, renderer, c1, c2
-                renderer.drawTile ctx, tile, makeRadialGradient ctx, tile, renderer, renderer.tileW*0.5, color 
+              @atlas.imageService.load "image/shoot.png", (err, key, img) =>
+                return if err?
+                # other only affect a list of tiles
+                for tile in tiles
+                  drawVisibilityLine ctx, start, tile, renderer, c1, c2
+                  drawOrientedImage ctx, tile, null, renderer, img 

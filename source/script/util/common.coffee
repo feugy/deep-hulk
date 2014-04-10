@@ -250,4 +250,12 @@ define [
         return true if shortcut.key is String.fromCharCode event.which
       false
       
+    # Compute the radian angle to orient an object at start position toward end position
+    #
+    # @param start [Object] start position containing top/left information
+    # @param ecd [Object] direction containing top/left positions
+    # @return the radian angle
+    computeOrientation: (start, end) ->
+      Math.atan2 end.top - start.top, end.left - start.left
+      
   return exports

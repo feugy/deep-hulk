@@ -11,7 +11,7 @@ define [
   'widget/cursor'
   'widget/zone_display'
   'jquery-ui'
-], ($, _, app, {mixColors, euclidianDistance, parseShortcuts, isShortcuts}, SquareRenderer) ->
+], ($, _, app, {mixColors, euclidianDistance, parseShortcuts, isShortcuts, computeOrientation}, SquareRenderer) ->
   
   # The map directive displays map with fields and items
   app.directive 'map', -> 
@@ -450,7 +450,7 @@ define [
         height="#{@height}"
         width="#{@width}"
       />""") @scope
-      @_layers.fields.after @_zone
+      @_layers.items.after @_zone
       
       @_container.append @_cursorWidget
       @_container.append @_menu
@@ -505,7 +505,7 @@ define [
             @_progress?.attr 'max', @_pendingImages
             
             # load image, and use a closure to keep added field
-            @atlas.imageService.load "/images/#{data.typeId}-#{data.num}.png", ((field) => (err, img, imgData) =>
+            @atlas.imageService.load "#{conf.imagesUrl}#{data.typeId}-#{data.num}.png", ((field) => (err, img, imgData) =>
               @_updateProgress()
               return if err?
           
@@ -787,7 +787,7 @@ define [
         target.left += (@scope.renderer.tileW-rendering.outerWidth())*0.5
         target.top += (@scope.renderer.tileH-rendering.outerHeight())*0.5
         # orient initial shoot which is horizontal left-right toward target
-        rendering.css transform: "rotate(#{Math.atan2 target.top - position.top, target.left - position.left}rad)"
+        rendering.css transform: "rotate(#{computeOrientation position, target}rad)"
         # and trigger transition between position and target
         _.defer -> rendering.css _.extend {transition: "all #{lifetime}ms linear"}, target
         
