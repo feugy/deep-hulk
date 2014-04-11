@@ -1,5 +1,5 @@
 Rule = require 'hyperion/model/Rule'
-Item = require 'hyperion/model/Item'
+{getDeployZone} = require './common'
 
 # Returns hint on tiles tha belongs to the current deploy zone
 class DeployZoneRule extends Rule
@@ -31,15 +31,12 @@ class DeployZoneRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback result [Object] an arbitrary result of this rule.
   execute: (player, squad, params, context, callback) =>
-    # get deployable zone dimensions
-    Item.findOne {map: squad.map.id, type:'deployable', zone:params.zone}, (err, deployable) =>
-      return callback err or new Error "no deployable zone #{params.zone} on map #{squad.map.id}" if err? or !deployable?
-      [unused, lowX, lowY, upX, upY] = deployable.dimensions.match /^(.*):(.*) (.*):(.*)$/
-      [lowX, lowY, upX, upY] = [+lowX, +lowY, +upX, +upY]
+    # get deployable zone dimensions in configuration
+    getDeployZone squad.mission?.id or squad.mission, params.zone, (err, zone) =>
+      return callback err if err?
       # returns tiles, but do not check visibility
       tiles = []
-      tiles.push x:x, y:y for y in [lowY..upY] for x in [lowX..upX] 
+      tiles.push x:x, y:y for y in [zone.lowY..zone.upY] for x in [zone.lowX..zone.upX] 
       callback null, tiles
-
   
 module.exports = new DeployZoneRule 'hints'

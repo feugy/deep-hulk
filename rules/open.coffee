@@ -1,5 +1,6 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
+Item = require 'hyperion/model/Item'
 {selectItemWithin, addAction, mergeChanges} = require './common'
 {detectBlips, findNextDoor} = require './visibility'
 
@@ -35,6 +36,10 @@ class OpenRule extends Rule
       actor.doorToOpen = null
       return callback null
       
+    # deny opening zone door to aliens
+    if (door.zone1? or door.zone2?) and actor.type.id isnt 'marine'
+      return callback new Error "cantLeaveZone"
+      
     effects = []
     # get next door, depending on image num
     switch door.imageNum
@@ -50,13 +55,13 @@ class OpenRule extends Rule
     selectItemWithin actor.map.id, door, to, (err, doors) =>
       return callback err if err?
       # opens all doors
-      for door in doors when door?.type?.id is 'door'
-        effects.push [door, _.pick door, 'id', 'closed', 'imageNum']
-        door.closed = false
-        door.imageNum -= 2
-        door.transition = 'open'
-        @saved.push door
-      
+      for candidate in doors when candidate?.type?.id is 'door'
+        effects.push [candidate, _.pick candidate, 'id', 'closed', 'imageNum']
+        candidate.closed = false
+        candidate.imageNum -= 2
+        candidate.transition = 'open'
+        @saved.push candidate
+        
       console.log "#{actor.name or actor.kind} (#{actor.squad.name}) opens door at #{door.x}:#{door.y}"
       # search for other door to open (only possible for dreadnoughts)
       candidates = [actor]
@@ -71,6 +76,37 @@ class OpenRule extends Rule
         actor.doorToOpen = findNextDoor (if isDreadnought then actor.parts.concat [actor] else actor), items
         detectBlips actor.map.id, @, effects, (err) =>
           return callback err if err?
-          addAction 'open', actor, effects, @, callback
+          addAction 'open', actor, effects, @, (err) =>
+            return callback err if err?
+            # toggle deployement if needed
+            return callback() unless door.zone1? or door.zone2?
+            # select relevant zone regarding actor position
+            switch door.imageNum 
+              # vertical door, zone1 is left, zone2 is right
+              when 6, 7, 14, 15
+                zone = if actor.x is door.x-1 then door.zone2 else door.zone1
+              when 18, 19 
+                zone = if actor.x is door.x then door.zone2 else door.zone1
+              # horizontal door, zone1 is top, zone2 is bottom
+              when 2, 3
+                zone = if actor.y is door.y-1 then door.zone1 else door.zone2
+              when 10, 11
+                zone = if actor.y is door.y then door.zone1 else door.zone2
+            # no zone found
+            return callback() unless zone?
+            # inhibit actor actions
+            actor.squad.deployZone = zone
+            console.log "#{actor.squad.name} enter deploy zone #{zone}"
+            # ask alien player to deploy this zone
+            id = actor.map.id.replace 'map-', ''
+            return Item.where('type', 'squad').where('isAlien', true).regex('_id', "squad-#{id}-").exec (err, [alien]) =>
+              return callback err if err?
+              return callback new Error "no alien squad found" unless alien?
+              unless alien.deployZone?
+                alien.deployZone = zone
+              else if -1 is alien.deployZone.indexOf zone
+                alien.deployZone += ",#{zone}"
+              @saved.push alien
+              callback()
       
 module.exports = new OpenRule()

@@ -65,7 +65,7 @@ class CreationRule extends Rule
           # creates squads
           for i in [0...squadIds.length]
             name = squadIds[i]
-            squad = new Item id: "squad-#{id}-#{i}", name: name, imageNum: squadImages[name], isAlien: name is 'alien', members:[], type: Squad
+            squad = new Item id: "squad-#{id}-#{i}", name: name, imageNum: squadImages[name], isAlien: name is 'alien', mission:mission, members:[], type: Squad
             if squadIds[i] is params.squad
               console.log "player #{actor.email} choose squad #{params.squad}"
               # save first squad into player's games
@@ -112,9 +112,7 @@ class CreationRule extends Rule
                 specific = {}
                 switch item.type.id
                   when 'door'
-                    specific = closed: item.closed
-                  when 'deployable'
-                    specific = _.pick item, 'zone', 'dimensions'
+                    specific = _.pick item, 'zone1', 'zone2', 'closed'
                   else
                     specific = {}
                 # adds an Item copy with common and specific fields

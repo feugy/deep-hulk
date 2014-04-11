@@ -2,7 +2,7 @@ _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 {moveCapacities} = require './constants'
-{selectItemWithin, addAction} = require './common'
+{selectItemWithin, addAction, getDeployZone} = require './common'
 {hasObstacle, findNextDoor} = require './visibility'
 
 # Blip deployement rule. Only possible for alien
@@ -62,10 +62,7 @@ class DeployBlipRule extends Rule
     ]
     
     # get deployable zone dimensions
-    Item.findOne {map: squad.map.id, type:'deployable', zone:params.zone}, (err, deployable) =>
-      return callback err or "no deployable zone #{params.zone} on map #{squad.map.id}" if err? or !deployable?
-      [unused, lowX, lowY, upX, upY] = deployable.dimensions.match /^(.*):(.*) (.*):(.*)$/
-      [lowX, lowY, upX, upY] = [+lowX, +lowY, +upX, +upY]
+    getDeployZone squad.mission?.id or squad.mission, params.zone, (err, {lowY, lowX, upX, upY}) =>
       # do not move one blip which is not already into the zone
       return callback new Error "alreadyDeployed" unless not blip.map? or lowX <= blip.x <= upX and lowY <= blip.y <= upY
       

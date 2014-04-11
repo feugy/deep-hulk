@@ -148,7 +148,7 @@ define [
       {r, g, b, a} = hexToRgb conf.colors[@scope.src?.kind] or '#FFFF'
       color = "rgba(#{r}, #{g}, #{b}, #{a})"
       
-      isDreadnought = @scope.src.origin.kind is 'dreadnought' and @scope.src.origin.revealed 
+      isDreadnought = @scope.src.origin?.kind is 'dreadnought' and @scope.src.origin?.revealed 
       # make a copy to allow drawing manipulations without breacking changes detection
       tiles = @scope.src.tiles?.concat() or []
       switch @scope.src?.kind

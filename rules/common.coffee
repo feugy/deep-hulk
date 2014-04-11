@@ -1,8 +1,10 @@
 _ = require 'underscore'
+yaml = require 'js-yaml'
 utils = require 'hyperion/util/model'
 Item = require 'hyperion/model/Item'
 Event = require 'hyperion/model/Event'
 EventType = require 'hyperion/model/EventType'
+ClientConf = require 'hyperion/model/ClientConf'
 
 actionType = null
 EventType.findCached ['action'], (err, [type]) =>
@@ -87,6 +89,22 @@ module.exports = {
       err = new Error "no game with id #{gameId} found" if !err and !game?
       return callback err if err?
       callback null, game
+     
+  # Get from configuration the bounding rect of a given deploy zone
+  #
+  # @param missionId [String] id of the current mission, read into configuration
+  # @param zone [String] id to identify consulted zone
+  # @param callback [Function] end callback, invoked with:
+  # @option callback err [Error] an error object or null if no error occured
+  # @option callback zone [Object] a JSON object containing lowY, lowX and upY upX
+  getDeployZone: (missionId, zone, callback) ->
+    # get deployable zone dimensions in configuration
+    ClientConf.findCached ['default'], (err, [conf]) =>
+      return callback err if err?
+      values = yaml.safeLoad conf.values # TODO use already parsed values
+      zones = values.maps[missionId]
+      return callback new Error "no deployable zone #{zone} on map #{squad.map.id}" unless zone of zones
+      callback null, zones[zone]
       
   # Apply damages on a target, randomly removing enought weapon if target is a dreadnought
   # No effect if target isn't a dreadnought, or if target is dead

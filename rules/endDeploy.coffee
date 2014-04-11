@@ -34,10 +34,15 @@ class EndDeployRule extends Rule
   execute: (player, squad, params, context, callback) =>
     # TODO last remaining zone: do not end if alien has remaining blips
     console.log "alien has finished to deploy into zone '#{params.zone}'"
-    # removes existing deployable items for this zone
-    Item.where('map', squad.map.id).where('type', 'deployable').where('zone', params.zone).exec (err, deployables) =>
+    # update other doors that may paoint at the same zone
+    Item.where('map', squad.map.id).where('type', 'door').or([{zone1: params.zone}, {zone2: params.zone}]).exec (err, doors) =>
       return callback err if err?
-      @removed = @removed.concat deployables
+      for door in doors
+        if door.zone1 is params.zone
+          door.zone1 = null
+        else
+          door.zone2 = null
+        @saved.push door
       
       # unblock concerned squads: marines
       squad.game.fetch (err, game) =>

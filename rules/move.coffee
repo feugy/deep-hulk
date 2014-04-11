@@ -116,25 +116,6 @@ class MoveRule extends Rule
           detectBlips actor, @, effects, (err, revealed) =>
             return callback err if err?
             addAction 'move', actor, effects, @, callback
-        
-        # if marine, check if enter a deployable zone
-        if actor.type.id is 'marine'
-          deployable = _.find items, (item) -> item.x is actor.x and item.y is actor.y and item.type.id is 'deployable'
-          if deployable?
-            # inhibit actor actions
-            actor.squad.deployZone = deployable.zone
-            # ask alien player to deploy this zone
-            id = actor.map.id.replace 'map-', ''
-            return Item.where('type', 'squad').where('isAlien', true).regex('_id', "squad-#{id}-").exec (err, [alien]) =>
-              return callback err if err?
-              return callback new Error "no alien squad found" unless alien?
-              unless alien.deployZone?
-                alien.deployZone = deployable.zone
-              else if -1 is alien.deployZone.indexOf deployable.zone
-                alien.deployZone += ",#{deployable.zone}"
-              @saved.push alien
-              # at last reveal new aliens
-              processReveal()
             
         # at last reveal new aliens
         processReveal()
