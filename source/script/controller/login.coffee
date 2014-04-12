@@ -1,6 +1,6 @@
 'use strict'
 
-define ['jquery'], ($) ->
+define ['jquery', 'util/common'], ($, {parseError}) ->
   
   class Login
   
@@ -52,7 +52,7 @@ define ['jquery'], ($) ->
     # @param err [Error] Controller own resolver result
     constructor: (@scope, err) -> 
       @scope.loginUrl = "#{conf.apiBaseUrl}/auth/login"
-      @scope.error = err?.message
+      @scope.error = parseError err if err?
       @scope.closeError = @closeError
       @scope._onSubmit = @_onSubmit
       

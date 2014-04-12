@@ -108,7 +108,6 @@ define [
         rule = 'configureAliens'
         # configure dreadnought
         for id, spec of current
-          console.log spec
           for weapon, i in spec.weapons
             params["#{id}-weapon-#{i}"] = weapon
       else

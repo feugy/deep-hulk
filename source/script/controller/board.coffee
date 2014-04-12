@@ -314,6 +314,12 @@ define [
                 catch e
                   console.error "Failed to parse warLog:",e
                   @scope.log = []
+              if 'mainWinner' in changes
+                if @scope.game.mainWinner is @scope.squad.name
+                  content = conf.msgs.mainMissionCompleted
+                else
+                  content = s_.sprintf conf.msgs.mainMissionCompletedBy, @scope.game.mainWinner
+                @scope.notifs.push kind: 'info', content: content
             else if model is @scope.selected and model.dead
               @scope.selected = null
     

@@ -39,7 +39,7 @@
   <div class="frame my-games">
     <h2>{{'titles.myGames'|i18n}}</h2>
     <ul>
-      <short-game data-ng-repeat="squad in player.characters" 
+      <short-game data-ng-repeat="squad in player.characters track by squad.id" 
         data-src="squad.game" 
         data-current="current" 
         data-ng-click="onPlay(squad.game)"/>

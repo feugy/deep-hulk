@@ -307,4 +307,40 @@ module.exports = {
     else
       log.push result
     actor.log = JSON.stringify log
+    
+  # Check if a given squad has completed main or secondary mission.
+  # Invoked when an action has been performed. Supported actions are:
+  # - shoot/assault: elimination/destruction missions can be completed
+  # - move: race missions can be completed
+  # - endOfGame: highScore/mostKills/leastLosses missions can be completed
+  #
+  # @param squad [Item] concerned squad
+  # @param rule [Rule] rule from which the mission is checked
+  # @param details [Object|Array] performed rule details (specific to rule)
+  # @param callback [Function] end callback, invoked with: 
+  # @option callback err [Error] an Error object, or null it no error occurs
+  checkMission: (squad, rule, details, callback) ->
+    # get mission details
+    squad.fetch (err, squad) =>
+      return callback err if err
+      # mission already completed
+      return callback null if squad.game.mainCompleted
+      
+      switch squad.mission.mainKind
+        when 'elimination'
+          # elimination can be completed if rule is assault or shoot
+          # details is an array of objects containing properties target and result
+          return callback null unless rule.id in ['shoot', 'assault']
+          # target is specified in mission.details
+          expectation = JSON.parse squad.mission.mainExpectation
+          for {target, result} in details 
+            if target.kind is expectation.kind and result.dead
+              # target eliminated !
+              console.log "#{squad.name} has completed main mission by killing #{target.kind}"
+              squad.game.mainCompleted = true
+              squad.game.mainWinner = squad.name
+              squad.points += 30
+              rule.saved.push squad
+              break
+      callback null
 }

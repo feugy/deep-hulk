@@ -3,7 +3,9 @@ utils = require 'hyperion/util/model'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 ItemType = require 'hyperion/model/ItemType'
-{rollDices, selectItemWithin, countPoints, sum, distance, removeFromMap, addAction, hasSharedPosition, damageDreadnought, logResult} = require './common'
+{rollDices, selectItemWithin, countPoints, sum, 
+distance, removeFromMap, addAction, hasSharedPosition, 
+damageDreadnought, logResult, checkMission} = require './common'
 {isTargetable} = require './visibility'
 {moveCapacities} = require './constants'
                   
@@ -150,8 +152,10 @@ class AssaultRule extends Rule
           
           countPoints winner, wounded, @, (err) => 
             return end err if err?
-            removeFromMap wounded, @, (err) =>
-              end err, [resultActor, resultTarget]
+            checkMission winner.squad, @, [target: wounded, result:result], (err) =>
+              return end err if err?
+              removeFromMap wounded, @, (err) =>
+                end err, [resultActor, resultTarget]
     
     # is a target is a part, apply damages on the main object
     if target.main?

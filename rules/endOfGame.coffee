@@ -41,7 +41,7 @@ class EndOfGameRule extends Rule
         console.log "remove game #{game.name} and map #{squad.map}", err
         console.error err if err?
         @saved = @saved.concat removeGame.saved
-        @removed = @saved.concat removeGame.removed
+        @removed = @removed.concat removeGame.removed
         callback err
     else
       callback null  

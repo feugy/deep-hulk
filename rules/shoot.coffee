@@ -4,7 +4,9 @@ utils = require 'hyperion/util/model'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 ItemType = require 'hyperion/model/ItemType'
-{rollDices, selectItemWithin, sum, countPoints, removeFromMap, addAction, hasSharedPosition, damageDreadnought, logResult} = require './common'
+{rollDices, selectItemWithin, sum, countPoints, 
+removeFromMap, addAction, hasSharedPosition, 
+damageDreadnought, logResult, checkMission} = require './common'
 {isTargetable, hasObstacle, tilesOnLine, untilWall} = require './visibility'
 {moveCapacities} = require './constants'
 
@@ -68,11 +70,14 @@ class ShootRule extends Rule
         effects = [[actor, _.pick actor, 'id', 'ccNum', 'rcNum', 'moves', 'usedWeapons']]
         effects[0][1].log = actor.log.concat()
         
-        end = (err, results) =>
+        end = (err, resultAndTargets) =>
           return callback err if err?
+          results = _.map resultAndTargets, (o) -> o.result
           logResult actor, results
           addAction 'shoot', actor, effects, @, (err) =>
-            callback err, results
+            return callback err if err?
+            checkMission actor.squad, @, resultAndTargets, (err) =>
+              callback err, results
    
         # get used weapons to store this new one
         used.push params.weaponIdx
@@ -115,11 +120,11 @@ class ShootRule extends Rule
                   damages = if t.x is target.x and t.y is target.y then center else around 
                   @_applyDamage actor, t, damages, effects, hitten, (err, result) =>
                     if result?
-                      results.push result
+                      results.push target: t, result: result
                       console.log "hit on target #{t.name or t.kind} (#{t.squad.name or 'alien'}) at #{t.x}:#{t.y}: #{result.loss} (#{result.damages}), died ? #{result.dead}"
                     next err
               , (err) =>
-                end err, results 
+                end err, results
                 
           when 'flamer' 
             # all tiles on the line are hit.
@@ -139,19 +144,16 @@ class ShootRule extends Rule
                   return next err if err?
                   @_applyDamage actor, target, damages, effects, hitten, (err, result) =>
                     if result?
-                      results.push result 
+                      results.push target: target, result: result
                       console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}: #{result.loss} (#{result.damages}), died ? #{result.dead}"
                     next err
               , (err) =>
-                end err, results 
+                end err, results
                 
           when 'autoCannon'
             # multiple target allowed: extract them from parmaeters
-            # OLD if actor.currentTargets?
             targets = (x:+(coord[0...coord.indexOf ':']), y:+(coord[coord.indexOf(':')+1..]) for coord in params.multipleTargets)
             # add the target to list of current targets, unless already present
-            # OLD targets.push x:target.x, y:target.y if not actor.currentTargets? or -1 is actor.currentTargets.indexOf "#{target.x}:#{target.y}"
-            # OLD actor.currentTargets = null
             results = []
             # Store damaged target to avoid hitting same dreadnought multiple times in the same shoot
             hitten = []
@@ -187,7 +189,7 @@ class ShootRule extends Rule
                     
                     console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}:  #{result.loss} (#{result.damages}), died ? #{result.dead}" 
                     # process next target
-                    results.push result
+                    results.push target: target, result: result
                     allocateDamages()
                 
             allocateDamages()
@@ -203,7 +205,7 @@ class ShootRule extends Rule
                 damages = sum dices
                 @_applyDamage actor, target, damages, effects, [], (err, result) =>
                   console.log "hit on target #{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}:  #{result.loss} (#{result.damages}), died ? #{result.dead}" 
-                  end err, [result]
+                  end err, [target: target, result: result]
       
   # Apply given damages on a target
   # Will remove target if dead, and make points computations
