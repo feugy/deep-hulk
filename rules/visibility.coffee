@@ -265,8 +265,7 @@ module.exports = {
             rule.saved.push part
             parts.push part
           # if we can't avoid being under a door, unless we know it
-          blip.underDoor = isDreadnoughtUnderDoor items, blip
-            
+          blip.underDoor = module.exports.isDreadnoughtUnderDoor items, blip
         
         # add attack action
         blip.fetch (err, blip) =>
