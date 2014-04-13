@@ -94,7 +94,7 @@ define [
         scope.hapticConf = JSON.parse val or JSON.stringify 
           duration: 80
           move: 40
-          size: 0.15
+          size: 0.10
       attrs.$observe 'displayGrid', (val) -> scope.displayGrid = 'true' is (val or 'true')
       attrs.$observe 'displayMarkers', (val) -> scope.displayMarkers = 'true' is (val or 'true')
       attrs.$observe 'colors', (val) -> scope.colors = JSON.parse val or JSON.stringify 

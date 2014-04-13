@@ -152,7 +152,7 @@ class AssaultRule extends Rule
           
           countPoints winner, wounded, @, (err) => 
             return end err if err?
-            checkMission winner.squad, @, [target: wounded, result:result], (err) =>
+            checkMission winner.squad, 'attack', @, [target: wounded, result:result], (err) =>
               return end err if err?
               removeFromMap wounded, @, (err) =>
                 end err, [resultActor, resultTarget]

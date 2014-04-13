@@ -81,7 +81,7 @@ class EndOfTurnRule extends Rule
               # get marine moves from their weapon
               member.moves = moveCapacities[weapon]
           # no alive squad members ? set to -1 to prevent player hitting next turn
-          squad.actions = 0 if squad.actions = -1
+          squad.actions = 0 if squad.actions is -1
           next()
       , (err) =>
         return callback err if err?

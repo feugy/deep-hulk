@@ -53,7 +53,7 @@ define [
   class Item
   
     # delay before opening tooltip
-    @tooltipDelay = 500
+    @tooltipDelay = 1000
     
     # Controller dependencies
     @$inject: ['$scope', '$element', 'atlas', '$compile', '$rootScope']
@@ -425,10 +425,25 @@ define [
     _showTip: =>
       @scope.$apply =>
         @_tip = @compile("<item-tip data-src='model'/>") @scope
+        pad = 20
+        # item position and dimensions
         pos = @$el[0].getBoundingClientRect()
-        @_tip.css
-          right: $('body').width()-pos.right+(pos.right-pos.left)
-          top: pos.top
+        # screen dimensions
+        screen = width: $('body').width(), height: $('body').height()
+        # first attempt: tip at left
+        result = 
+          right: screen.width-pos.right+pos.width+pad
+          top: pos.top+pad
+        # too close to screen left: goes right
+        if pos.left < 200
+          delete result.right
+          result.left = pos.left+pos.width+pad
+        # too close to screen bottom: goes up
+        if pos.top > screen.height-500
+          delete result.top
+          result.bottom = screen.height-pos.bottom+pad
+        # positionnate into body
+        @_tip.css result
         $('body').append @_tip
       
     # **private**

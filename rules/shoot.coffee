@@ -15,7 +15,7 @@ damageDreadnought, logResult, checkMission} = require './common'
 # @param target [Item] the tested item
 # @return true if this target is an alien or a marine.
 hasTargetType = (target) ->
-  target?.type?.id in ['marine', 'alien']
+  target?.type?.id in ['marine', 'alien'] and not target?.dead
         
 # Marine ranged attack
 # Effect depends on the equiped weapon
@@ -76,7 +76,7 @@ class ShootRule extends Rule
           logResult actor, results
           addAction 'shoot', actor, effects, @, (err) =>
             return callback err if err?
-            checkMission actor.squad, @, resultAndTargets, (err) =>
+            checkMission actor.squad, 'attack', @, resultAndTargets, (err) =>
               callback err, results
    
         # get used weapons to store this new one

@@ -212,15 +212,15 @@ module.exports = {
     # removing last living marine on map
     Item.find {map: mapId, type: 'marine', dead:false}, (err, marines) ->
       return callback err if err?
-      if marines.length is 1 and marines[0]?.id is item?.id
-        # select the game object and modifies it
-        module.exports.getGame item, (err, game) ->
-          return callback err if err?
-          game.finished = true
-          console.log "game #{game.name} is finished"
-          rule.saved.push game
-      # end
-      callback null
+      return callback null unless marines.length is 1 and marines[0]?.id is item?.id
+      # select the game object and modifies it
+      module.exports.getGame item, (err, game) ->
+        return callback err if err?
+        game.finished = true
+        console.log "game #{game.name} is finished"
+        rule.saved.push game
+        # check mission end
+        module.exports.checkMission item.squad, 'end', rule, null, callback         
      
   # It's possible for a rule to modify or remove items and then to select them
   # from db with their unmodified values, leading to unconsitant results.
@@ -291,8 +291,11 @@ module.exports = {
   # @param items [Array<Model>] checked models.
   # @return true if two models have the same position
   hasSharedPosition: (items) ->
-    for model in items when model?.type?.id in ['marine', 'alien'] and not model?.dead
-      return true if _.any items, (item) -> item isnt model and item?.type?.id is model.type.id and item?.x is model.x and item?.y is model.y and not item?.dead
+    for model in items when model?.type?.id in ['marine', 'alien'] and not model?.dead and model?.map?
+      item = _.find items, (item) -> item isnt model and item?.type?.id is model.type.id and item?.x is model.x and item?.y is model.y and not item?.dead and item?.map?
+      if item?
+        console.log "has same position (#{model.x}:#{model.y}): #{model.kind or model.name} and #{item.kind or item.name}"
+        return true
     return false
     
   # Store into an actor's log a given result (or list of results).
@@ -310,37 +313,66 @@ module.exports = {
     
   # Check if a given squad has completed main or secondary mission.
   # Invoked when an action has been performed. Supported actions are:
-  # - shoot/assault: elimination/destruction missions can be completed
+  # - attack: elimination/destruction missions can be completed
   # - move: race missions can be completed
   # - endOfGame: highScore/mostKills/leastLosses missions can be completed
   #
   # @param squad [Item] concerned squad
+  # @param action [String] performed action that determine how to interpret details
   # @param rule [Rule] rule from which the mission is checked
   # @param details [Object|Array] performed rule details (specific to rule)
   # @param callback [Function] end callback, invoked with: 
   # @option callback err [Error] an Error object, or null it no error occurs
-  checkMission: (squad, rule, details, callback) ->
+  checkMission: (squad, action, rule, details, callback) ->
+    winMain = (squad) =>
+      squad.game.mainCompleted = true
+      squad.game.mainWinner = squad.name
+      squad.points += 30
+      rule.saved.push squad
+                  
+    end = (game) =>
+      # specific case: at end of game, uncompleted mission goes to alien
+      return callback null unless action is 'end' and not game.mainCompleted
+      game.fetch (err, game) ->
+        for squad in game.squads when squad.isAlien
+          console.log "#{squad.name} has completed main mission be default !"
+          winMain squad
+          return callback null
+            
     # get mission details
     squad.fetch (err, squad) =>
       return callback err if err
       # mission already completed
-      return callback null if squad.game.mainCompleted
+      return end squad.game if squad.game.mainCompleted
       
       switch squad.mission.mainKind
         when 'elimination'
           # elimination can be completed if rule is assault or shoot
           # details is an array of objects containing properties target and result
-          return callback null unless rule.id in ['shoot', 'assault']
+          return end squad.game unless action is 'attack'
           # target is specified in mission.details
           expectation = JSON.parse squad.mission.mainExpectation
           for {target, result} in details 
             if target.kind is expectation.kind and result.dead
               # target eliminated !
               console.log "#{squad.name} has completed main mission by killing #{target.kind}"
-              squad.game.mainCompleted = true
-              squad.game.mainWinner = squad.name
-              squad.points += 30
-              rule.saved.push squad
+              winMain squad
               break
-      callback null
+          end squad.game
+          
+        when 'highScore'
+          # highScore is determined at end. No details needed
+          return end squad.game unless action is 'end'
+          return squad.game.fetch (err, game) ->
+            return callback err if err?
+            max = -Infinity
+            winner = null
+            # only marines can win highscore
+            for candidate in game.squads when candidate.points > max and not candidate.isAlien
+              max = candidate.points
+              winner = candidate
+            # and the mission is always won
+            console.log "#{winner.name} has completed main mission by highscore #{max}"
+            winMain winner
+            end winner.game
 }
