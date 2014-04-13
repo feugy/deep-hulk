@@ -1,11 +1,12 @@
 'use strict'
 
 define [
+  'require'
   'jquery'
   'underscore'
   'util/common'
   'app'
-], ($, _, {hexToRgb, computeOrientation}, app) ->
+], (require, $, _, {hexToRgb, computeOrientation}, app) ->
   
   # The zone directive displays action zone on map
   app.directive 'zoneDisplay', ->
@@ -107,6 +108,8 @@ define [
     ctx.drawImage img, -margin-size.w/2, -margin-size.h/2, size.w+margin*2, size.h+margin*2
     ctx.restore()
     
+  base = require.toUrl('').replace('script/.js', '') or '.'
+  
   class zoneDisplay
     
     # Controller dependencies
@@ -172,7 +175,7 @@ define [
           else
             range = renderer.tileW*1.5
             
-          @atlas.imageService.load "image/#{@scope.src.kind}.png", (err, key, img) =>
+          @atlas.imageService.load "#{base}/image/#{@scope.src.kind}.png", (err, key, img) =>
             return if err?
             drawOrientedImage ctx, tile, coord, renderer, img for tile in tiles
             
@@ -200,12 +203,12 @@ define [
               target = @scope.src.target
               drawVisibilityLine ctx, start, target, renderer, c1, c2
               tiles = _.reject tiles, (t) -> t.x is target.x and t.y is target.y
-              @atlas.imageService.load "image/explosion.png", (err, key, center) =>
+              @atlas.imageService.load "#{base}/image/explosion.png", (err, key, center) =>
                 return if err?
                 drawOrientedImage ctx, target, null, renderer, center
-                @atlas.imageService.load "image/explosion-side.png", (err, key, side) =>
+                @atlas.imageService.load "#{base}/image/explosion-side.png", (err, key, side) =>
                   return if err?
-                  @atlas.imageService.load "image/explosion-corner.png", (err, key, corner) =>
+                  @atlas.imageService.load "#{base}/image/explosion-corner.png", (err, key, corner) =>
                     return if err?
                     for tile in tiles
                       if tile.x is target.x or tile.y is target.y
@@ -228,7 +231,7 @@ define [
                       
             when 'flamer'
               # shoot with flamer affect a line
-              @atlas.imageService.load "image/flames.png", (err, key, img) =>
+              @atlas.imageService.load "#{base}/image/flames.png", (err, key, img) =>
                 return if err?
                 coord = tiles[0]
                 if isDreadnought
@@ -243,7 +246,7 @@ define [
                 size= w:renderer.tileW*(if isDiag then 1.42 else 1), h: renderer.tileH               
                 drawOrientedImage ctx, tile, coord, renderer, img, size for tile in tiles
             else
-              @atlas.imageService.load "image/shoot.png", (err, key, img) =>
+              @atlas.imageService.load "#{base}/image/shoot.png", (err, key, img) =>
                 return if err?
                 # other only affect a list of tiles
                 for tile in tiles
