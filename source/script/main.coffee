@@ -71,6 +71,7 @@ require [
   './widget/map'
   './widget/notify'
   './widget/rule_params'
+  './widget/scores' 
   './widget/short_game' 
   './widget/zone_display' 
 ], ($, async, angular, io) ->

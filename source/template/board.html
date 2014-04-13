@@ -26,6 +26,9 @@
   <!-- persistent notifications -->
   <notify data-src="notifs"></notify>
   
+  <!-- scores displayal -->
+  <scores data-src="game"></scores>
+  
   <!-- commands panel -->
   <aside class="ng-class: squad ? squad.isAlien ? 'alien' : 'marine': '';">
     <!-- blips and reinforcements -->
@@ -54,8 +57,5 @@
       <a href="" class="ng-class:canStopReplay;" data-ng-click="_onStopReplay()"><i class="fa fa-stop"></i></a>
       <a href="" class="end-turn ng-class:canEndTurn;" data-ng-click="_onEndTurn()">{{'names.endOfTurn'|i18n}}</i></a>
     </div>
-    <!-- score and turn number -->
-    <div class="score"><h4>{{'labels.score'|i18n}}</h4><span class="value">{{squad.points}}</span></div>
-    <div class="turn"><h4>{{'labels.turn'|i18n}}</h4><span class="value">{{game.turn}}</span></div>
   </aside>
 </div>

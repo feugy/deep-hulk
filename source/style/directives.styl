@@ -737,3 +737,26 @@ blipSize = 50px
 .configure-dreadnought .select
   margin-top 0.5em
   margin-bottom 1em
+
+//------------------------------------------------------------------------------
+// Scores
+
+.scores
+  .content
+    border 2px solid transparent
+    border-image-source url('../image/scores.png')
+    border-image-slice 50% 50%
+    border-image-width 100%
+    border-image-repeat repeat
+    padding 0px 20px 
+    
+    > *
+      display inline-flex
+      align-items center
+      margin 5px 5px
+      vertical-align middle
+      
+      img
+        width 25px      
+      .value
+        margin-left 5px
