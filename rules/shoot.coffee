@@ -83,11 +83,11 @@ class ShootRule extends Rule
         actor.ccNum-- if actor.ccNum > 0 and used.length is 0
         # get used weapons to store this new one
         used.push params.weaponIdx
-        actor.rcNum-- if used.length is 0
         # consume an attack if all weapons were used
         if used.length is actor.weapons.length
           used = []
           actor.squad.actions--
+        actor.rcNum-- if used.length is 0
         actor.usedWeapons = JSON.stringify used
         
         # consume remaining moves if a move is in progress
