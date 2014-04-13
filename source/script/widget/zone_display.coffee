@@ -234,10 +234,10 @@ define [
               @atlas.imageService.load "#{base}/image/flames.png", (err, key, img) =>
                 return if err?
                 coord = tiles[0]
-                if isDreadnought
-                  tiles = _.reject tiles, (t) -> t.x in [coord.x, coord.x+1] and t.y in [coord.y, coord.y+1]
-                else
-                  tiles = _.reject tiles, (t) -> t.x is coord.x and t.y is coord.y
+                #if isDreadnought
+                #  tiles = _.reject tiles, (t) -> t.x in [coord.x, coord.x+1] and t.y in [coord.y, coord.y+1]
+                #else
+                tiles = _.reject tiles, (t) -> t.x is coord.x and t.y is coord.y
                 if tiles.length >= 2
                   isDiag = tiles[0].x isnt tiles[1].x and tiles[0].y isnt tiles[1].y
                 else

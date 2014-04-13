@@ -216,7 +216,6 @@ module.exports = {
         # for dreadnought, choose the right image depending on the equiped weapons
         if blip.kind is 'dreadnought'
           weapons = (weapon.id or weapon for weapon in blip.weapons[1..])
-          console.log weapons.join '_'
           imageNum = imageNum[weapons.join '_']
         blip.imageNum = imageNum
         # subtract already done moves to possible moves (use first weapon to get infos)
@@ -228,12 +227,11 @@ module.exports = {
         parts = []
         # for dreadnought, creates parts
         if blip.kind is 'dreadnought'
-        
           # get dreadnought nearest walls and doors
           blocks = (
-            for item in items when (item.type.id is 'wall' or item.type.id is 'door' and item.closed) and 
-                blip.x-1 <= item.x <= blip.x+1 and 
-                blip.y-1 <= item.y <= blip.y+1
+            for item in items when (item.type.id is 'wall' or item.type.id is 'door') and 
+                blip.x-2 <= item.x <= blip.x+2 and 
+                blip.y-2 <= item.y <= blip.y+2
               item
           )
           # candidates position to reveal dreadnought
@@ -243,18 +241,16 @@ module.exports = {
             {x: blip.x, y: blip.y-1, moves: 0}
             {x: blip.x-1, y: blip.y-1, moves: 0}
           ]
-          
           # check that no block is sharing position with dreadnought part
           for pos in candidates
             # if no block is on the same tile than a part
-            if module.exports.isFreeForDreadnought blocks, pos, 'current'
+            if module.exports.isFreeForDreadnought blocks, pos, 'current', true
               # update position and quit
               blip.x = pos.x
               blip.y = pos.y
               break
             # if no position is legal, we'll keep the same position.
-
-         # now creates the dreadnought parts
+          # now creates the dreadnought parts
           for i in [0..2]
             part = new Item
               type: blip.type
@@ -268,6 +264,8 @@ module.exports = {
               imageNum: null
             rule.saved.push part
             parts.push part
+          # if we can't avoid being under a door, unless we know it
+          blip.underDoor = isDreadnoughtUnderDoor items, blip
             
         
         # add attack action
@@ -316,8 +314,9 @@ module.exports = {
   # @param items [Array<Model>] array containing items for the checked and dreadnought positions
   # @param actor [Model] current dreadnought, before move
   # @param direction [String] current, right, top, left or bottom direction in which the dreadnought is moving
+  # @param openDoors [Boolean] when set to true, openDoors are considered as bloquant
   # @return true if dreadnought can move in this direction, false otherwise
-  isFreeForDreadnought: (items, actor, direction) ->
+  isFreeForDreadnought: (items, actor, direction, openDoors = false) ->
     # depending on the direction, store position and their respective contitions that may prevent move
     conditions = {}
     switch direction
@@ -364,8 +363,11 @@ module.exports = {
             # wall with matching side prevent moves
             return false for side in prevent.walls when wallPositions[item.imageNum][side]
           when 'door'
+            imageNum = item.imageNum
+            # if specified, openDoor may be considered as closed
+            imageNum += 2 if not item.closed and openDoors
             # closed door prevent moves, open door cannot be the last move
-            return false for side in prevent.doors when doorPositions[item.imageNum][side] or (side of doorPositions[item.imageNum] and actor.moves <= 1)
+            return false for side in prevent.doors when doorPositions[imageNum][side] or (side of doorPositions[imageNum] and actor.moves <= 1)
           when 'alien', 'marine'
             # undead alien or marine prevent move
             return false if prevent.character and not item.dead
@@ -478,8 +480,10 @@ module.exports = {
       switch weapon.id
         when 'flamer'
           # flamer allowed on horizontal, vertical or diagonal lines
-          for candidate in candidates when candidate.x is target.x or candidate.y is target.y or Math.abs(candidate.x-target.x) is Math.abs candidate.y-target.y
-            return callback null, candidate
+          possibles = (candidate for candidate in candidates when candidate.x is target.x or candidate.y is target.y or Math.abs(candidate.x-target.x) is Math.abs candidate.y-target.y)
+          # return the nearest possible candidate to avoid self wound on dreadnought !
+          if possibles.length > 0
+            return callback null, _.min possibles, (candidate) => distance(candidate, target)
           # no matching candidates
           return callback null, null
         when 'gloveSword', 'claws'
