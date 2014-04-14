@@ -25,6 +25,8 @@ define [
       src: '='
       # link to selected character on map
       selected: '=?'
+      # function to toggle selection on current character
+      onSelect: '=?'
         
   class CharacterDetails
                   
@@ -53,12 +55,6 @@ define [
       weaponId = if @scope.src? then @scope.src.weapons[0].id or@scope.src.weapons[0] else 'bolter'
       @scope.isAlien = @scope.src?.type?.id is 'alien'
       @scope.title = if @scope.isAlien then @scope.src?.name else @filter('i18n') "names.#{weaponId}"
-      @scope.onSelect = =>
-        # toggle selection
-        if @scope.selected is @scope.src
-          @scope.selected = null
-        else
-          @scope.selected = @scope.src
       
       # initial hide element unless it's on map
       @$el.toggle @scope.src?.map?

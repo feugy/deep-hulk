@@ -67,6 +67,7 @@ require [
   './widget/configure_marine'
   './widget/cursor'
   './widget/deployable_blips' 
+  './widget/help'
   './widget/log'
   './widget/map'
   './widget/notify'

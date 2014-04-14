@@ -58,6 +58,13 @@ cleanValues = (obj) ->
     
 module.exports = {
   
+  # Reset flags used during help displayal
+  #
+  # @param player [Player] player whose prefs are updated
+  resetHelpFlags: (player) ->
+    # reset help flags
+    player.prefs.help = {}
+  
   # Sum elements of an array
   #
   # @param arr [Array<Number>] numbers to sum

@@ -5,6 +5,7 @@ Item = require 'hyperion/model/Item'
 ItemType = require 'hyperion/model/ItemType'
 Field = require 'hyperion/model/Field'
 FieldType = require 'hyperion/model/FieldType'
+{resetHelpFlags} = require './common'
 {maxGames, squadImages, weaponImages, alienCapacities, moveCapacities, freeGamesId} = require './constants'
 
 # Game creation: initiate a game with its mission
@@ -38,6 +39,8 @@ class CreationRule extends Rule
   # @option callback result [String] a summary log string
   execute: (actor, target, params, context, callback) =>
     return callback new Error "maxGames #{maxGames}" if actor.characters.length >= maxGames
+    
+    resetHelpFlags actor
     
     # get selected mission details
     Item.findCached [params.mission, freeGamesId], (err, [mission, freeGames]) =>

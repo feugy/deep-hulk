@@ -745,7 +745,7 @@ blipSize = 50px
   .content
     border 2px solid transparent
     border-image-source url('../image/scores.png')
-    border-image-slice 50% 210
+    border-image-slice 50% 50%
     border-image-width 100%
     border-image-repeat repeat
     padding 0px 20px 
@@ -760,3 +760,44 @@ blipSize = 50px
         width 25px      
       .value
         margin-left 5px
+
+//------------------------------------------------------------------------------
+// Help displayal
+
+.help
+  position absolute
+  z-index 3
+  display inline-block
+  width 50%
+  text-align center
+
+  .content 
+    text-align left
+    > p
+      margin 0.5em 0
+    li
+      list-style-type square
+      margin-left 1em
+
+    .order
+      font-style italic
+      color hoverColor
+
+  .discard
+    padding 2px 5px
+    border-radius 5px
+    color textColor
+    background textBackground
+    box-shadow 0 0 3px 3px textBackground
+    float right
+    cursor pointer
+    font-size 80%
+
+.help-backdrop
+  z-index 2
+  position absolute
+  top 0
+  left 0
+  bottom 0
+  right 0
+  background rgba(#000, 0.3)

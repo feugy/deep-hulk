@@ -1,4 +1,7 @@
 <div class="board">
+  <!-- help displayal, first chils to be top-most -->
+  <help data-src="help"></help>
+  
   <!-- map displayal and interactive cursor -->
   <map
     data-src="squad.map" 
@@ -45,6 +48,7 @@
       <character-details
         data-ng-repeat="member in squad.members" 
         data-src="member"
+        data-on-select="_onSelectMember"
         data-selected="$parent.selected"></character-details>
     </div>
     <img class="logo" src="{{getInstanceImage(squad)}}"/>

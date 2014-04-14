@@ -1,5 +1,5 @@
 <div class="character-details ng-class:{selected:selected === src, marine:!isAlien, alien:isAlien}" 
-     data-ng-click="onSelect()"
+     data-ng-click="onSelect(src)"
      data-ng-hide="src.dead || src.map == null">
   <h1><span data-ng-show="src.isCommander">{{'labels.sergentPrefix'|i18n}}</span>{{name}}</h1>
   <div class="weapon {{isAlien ? src.revealed ? src.kind : 'blip' : src.weapons[0].id}}" title="{{title}}"></div>

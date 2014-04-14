@@ -2,6 +2,7 @@ _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 {freeGamesId} = require './constants'
+{resetHelpFlags} = require './common'
 
 # Rule used to join an existing game
 class JoinRule extends Rule
@@ -37,6 +38,9 @@ class JoinRule extends Rule
   # @option callback result [Object] an arbitrary result of this rule.
   execute: (player, game, params, context, callback) =>
     console.log "player #{player.email} join game #{game.name} as squad #{params.squad}"
+    
+    resetHelpFlags player
+    
     # get free games list
     Item.findCached [freeGamesId], (err, [freeGames]) =>
       return callback err if err?

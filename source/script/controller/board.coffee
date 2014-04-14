@@ -5,7 +5,7 @@ define [
   'jquery'
   'util/common'
 ], (_, $, {getInstanceImage, parseError}) ->
-  
+    
   # two mode controller: displays squad configuration (for marines, before starting game)
   # or displays the game board (for marines and alien)
   class BoardController
@@ -79,6 +79,7 @@ define [
         
       @scope._onMapClick = (event, details) => @_onClick event, details
       @scope._onMapRightclick = @_onSelect
+      @scope._onSelectMember = (member) => _.defer => @_onSelect null, items:[member]
       @scope._askToExecuteRule = @_askToExecuteRule
       @scope._onEndTurn = @_onEndTurn
       @scope._onEndDeploy = @_onEndDeploy
@@ -89,7 +90,17 @@ define [
       @scope.getInstanceImage = getInstanceImage
       @scope.deployScope = null
       @scope.sendMessage = @sendMessage
+      # show help unless specified
+      @scope.showHelp = false
+      @scope.help = null
       
+      # refresh zone on selection changes
+      @scope.$watch 'selected', (value, old) =>
+        return if value is old or @scope.squad?.deployZone?
+        # Redraw previously highlighted zone
+        @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
+        _.defer => @_askForHelp 'select'
+        
       # update zone on replay quit/enter
       rootScope.$on 'replay', (ev, details) =>
         if details.active
@@ -194,6 +205,17 @@ define [
         @displayDamageZone event, @scope.selected
           
     # **private**
+    # Require help from the server if available.
+    # Won't send any request if help is not wanted
+    #
+    # @param action [String] action for which help is needed
+    _askForHelp: (action) =>
+      return unless @scope.showHelp and @scope.squad?
+      @atlas.ruleService.execute 'getHelp', @atlas.player, @scope.squad, {action: action}, (err, result) => @scope.$apply =>
+        return @scope.notifs.push kind:'error', content: parseError err if err?
+        @scope.help = result
+      
+    # **private**
     # Update replay commands after a replay action
     _updateReplayCommands: =>
       @scope.canStopReplay = if @atlas.replayPos? then 'enabled' else ''
@@ -214,6 +236,10 @@ define [
           return @scope.notifs.push kind:'error', content: parseError err if err?
           @scope.selected = null
           @scope.squad = squad
+          
+          @scope.showHelp = not @atlas.player.prefs?.discardHelp
+          @_askForHelp 'start'
+
           # blips deployment, blip displayal
           if @scope.squad.deployZone?
             @_toggleDeployMode()
@@ -231,6 +257,7 @@ define [
     # - If a deploy zone is removed: clean zone, and for marine, put info on deploy end
     _toggleDeployMode: =>
       if @scope.squad.deployZone?
+        @_askForHelp 'startDeploy'
         @scope.canEndTurn = '' 
         @_inhibit = true
         if @scope.squad.isAlien
@@ -253,6 +280,7 @@ define [
         else
           # add notification and inhibit
           @scope.notifs.push kind: 'info', content: conf.msgs.deployInProgress
+          @scope.selected = null
       else
         if @scope.squad.isAlien
           @scope.canEndTurn = 'enabled' 
@@ -314,7 +342,7 @@ define [
                 catch e
                   console.error "Failed to parse warLog:",e
                   @scope.log = []
-              if 'mainWinner' in changes
+              if 'mainWinner' in changes and @scope.squad?
                 if @scope.game.mainWinner is @scope.squad.name
                   content = conf.msgs.mainMissionCompleted
                 else
@@ -322,6 +350,9 @@ define [
                 @scope.notifs.push kind: 'info', content: content
             else if model is @scope.selected and model.dead
               @scope.selected = null
+            else if model is @atlas.player and 'prefs' in changes
+              @scope.showHelp = not @atlas.player.prefs?.discardHelp
+            
     
     # **private**
     # Select a given item, or unselect it if previously selected
@@ -334,6 +365,7 @@ define [
     # @option details items [Array<Item>] item models at this coordinates (may be empty)
     # @option details field [Field] field model at this coordinates (may be null)
     _onSelect: (event, details) =>
+      return if @scope.squad?.deployZone?
       # find selectable item inside clicked items
       item = _.find details.items, (item) => 
         # takes in acccount possible parts (for dreadnought)
@@ -347,8 +379,6 @@ define [
           @scope.selected = null
         else
           @scope.selected = item
-        # Redraw previously highlighted zone
-        @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
           
     # **private**
     # Handler invoked when clicking on map. Try to fire move rule, or to display
@@ -363,7 +393,7 @@ define [
     # @option details items [Array<Item>] item models at this coordinates (may be empty)
     # @option details field [Field] field model at this coordinates (may be null)
     _onClick: (event, details) =>
-      return if @_inhibit or not @scope.activeRule?
+      return if @_inhibit or not @scope.activeRule? or @scope.squad?.deployZone?
       @scope.$apply =>
         @scope.menuItems = []
         @scope.path = []
@@ -430,10 +460,13 @@ define [
         @_multipleTargets = []
       else 
         params = {}
+        
       @atlas.ruleService.execute rule, @scope.selected, @_applicableRules[rule][0].target, params, (err, result) =>
         return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?   
         # refresh movable tiles
         @displayMovable()
+        
+      @_askForHelp rule
                 
     # **private**
     # After a modal confirmation, trigger the end of turn.
@@ -496,6 +529,7 @@ define [
       @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) =>
         # displays deployement errors
         console.log err, parseError err if err?
+        @_askForHelp 'deploy'
         return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
 
     # **private**
