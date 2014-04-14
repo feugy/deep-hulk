@@ -37,7 +37,10 @@ define [
       @scope.closeError = @_closeError
       @scope.lastSelected = null
       @scope.onHoverOption = @_displayHelp
-      
+      @scope.isAlien = false
+      @scope.getExplanationImage = (weapon) => "#{conf.rootPath}image/effects-#{weapon?.toLowerCase()+if @scope.isAlien then '-dreadnought' else ''}.png"
+      @scope.back = => @location.path("#{conf.basePath}home").search()
+        
       # bind configuration change
       @scope.$watch 'configured', @_onConfigure, true
               
@@ -57,6 +60,7 @@ define [
         return @location.path "#{conf.basePath}board" if squad.map?
         # fetch squand and all of its members
         @_fetchSquad squad
+
        
     # Remove the current error, which hides the alert
     _closeError: =>

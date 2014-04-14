@@ -26,34 +26,35 @@ define [
     authorized.push apiBaseUrl, apiBaseUrl.replace ':\/\/', ':\/\/www.'
     sce.resourceUrlWhitelist authorized
 
-    base = /^(.*\/)([^\/]*)\/\.$/g.exec(require.toUrl('.'))?[1] or ''
+    # dynamically set root from which client files (images, stylesheets...) are loaded
+    conf.rootPath = /^(.*\/)([^\/]*)\/\.$/g.exec(require.toUrl('.'))?[1] or ''
     
     # use push state
     location.html5Mode true
     # configure routing
     route.when "#{conf.basePath}login", 
       name: 'login'
-      templateUrl: "#{base}template/login.html"
+      templateUrl: "#{conf.rootPath}template/login.html"
       controller: LoginCtrl
       resolve: LoginCtrl.checkRedirect
     route.when "#{conf.basePath}home",
       name: 'home'
-      templateUrl: "#{base}template/home.html"
+      templateUrl: "#{conf.rootPath}template/home.html"
       controller: HomeCtrl
       resolve: common: utils.enforceConnected
     route.when "#{conf.basePath}board",
       name: 'board'
-      templateUrl: "#{base}template/board.html"
+      templateUrl: "#{conf.rootPath}template/board.html"
       controller: BoardCtrl
       resolve: common: utils.enforceConnected
     route.when "#{conf.basePath}configure",
       name: 'configure'
-      templateUrl: "#{base}template/configure.html"
+      templateUrl: "#{conf.rootPath}template/configure.html"
       controller: ConfigureCtrl
       resolve: common: utils.enforceConnected
     route.when "#{conf.basePath}end",
       name: 'end'
-      templateUrl: "#{base}template/end.html"
+      templateUrl: "#{conf.rootPath}template/end.html"
       controller: EndCtrl
       resolve: common: utils.enforceConnected
     route.otherwise 
