@@ -27,7 +27,7 @@ define [
   class Configure
                       
     # Controller dependencies
-    @$inject: ['$scope']
+    @$inject: ['$scope', '$filter']
     
     # Controller scope, injected within constructor
     scope: null
@@ -35,10 +35,13 @@ define [
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] directive scope
-    # @param element [DOM] directive root element
-    constructor: (@scope) ->
+    # @param filter [Object] Angular's filter factory
+    constructor: (@scope, filter) ->
       # Fill possible weapons
       if @scope.src.isCommander
         @scope.weapons = ['pistolAxe', 'gloveSword', 'heavyBolter']
       else
         @scope.weapons = ['autoCannon', 'missileLauncher', 'flamer', 'bolter']
+      # get label corresponding to weapon
+      @scope.getWeaponLabel = (weapon) => filter('i18n') 'names.'+(weapon || 'chooseWeapon')
+        

@@ -27,7 +27,7 @@ define [
 
   # Fix select bug regarding keyboard selection:
   # https://github.com/angular/angular.js/issues/4216
-  app.directive 'select', ->
+  ###app.directive 'select', ->
     return {
       restrict: "E"
       require: "?ngModel"
@@ -35,4 +35,4 @@ define [
       link: (scope, element, attrs, ngModel) ->
         return unless ngModel?
         element.bind "keyup", -> element.trigger "change"
-    }
+    }###

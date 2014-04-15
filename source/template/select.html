@@ -1,0 +1,9 @@
+<div class="select" tabindex="1">
+  <span class="value" data-ng-click="openMenu($event)">{{getText(value)}}<span class="selector fa fa-caret-down"></span></span>
+  <ul class="menu">
+    <li data-ng-repeat="item in items track by $index"
+        data-ng-click="select($event, item)"
+        data-ng-class="value === item ? 'selected' : ''"
+        data-ng-mouseover="onHover($event, item)">{{getText(item)}}</li>
+  </ul>
+</div>

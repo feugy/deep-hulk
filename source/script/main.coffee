@@ -20,6 +20,7 @@ requirejs.config
     'angular-mousewheel': 'vendor/angular-mousewheel-1.0.4'
     'angular-route': 'vendor/angular-route-1.2.7-min'
     'angular-sanitize': 'vendor/angular-sanitize-1.2.7-min'
+    'angular-ui-select': 'vendor/angular-ui-select2-0.5.0'
     'atlas': 'vendor/atlas'
     'async': 'vendor/async-0.2.7-min'
     'hamster': 'vendor/hamster-1.0.4'
@@ -40,7 +41,7 @@ requirejs.config
     'angular-mousewheel': deps: ['angular', 'hamster']
     'angular-route': deps: ['angular']
     'angular-sanitize': deps: ['angular']
-    'angular-ui-utils': deps: ['angular']
+    'angular-ui-select': deps: ['angular']
     'async': exports: 'async'
     'atlas':
       deps: ['jquery', 'underscore']
@@ -72,6 +73,7 @@ require [
   './widget/map'
   './widget/notify'
   './widget/rule_params'
+  './widget/select'
   './widget/scores' 
   './widget/short_game' 
   './widget/zone_display' 

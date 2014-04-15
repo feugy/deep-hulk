@@ -25,7 +25,7 @@ define [
   class Param
                   
     # Controller dependencies
-    @$inject: ['$scope', '$element']
+    @$inject: ['$scope', '$element', '$filter']
     
     # Controller scope, injected within constructor
     scope: null
@@ -37,10 +37,13 @@ define [
     #
     # @param scope [Object] directive scope
     # @param element [DOM] directive root element
-    constructor: (@scope, element) ->
+    # @param filter [Object] Angular's filter factory
+    constructor: (@scope, element, filter) ->
       @$el = $(element)
       @scope.$watch 'src', @_refresh
       @scope.$watch 'src.within', @_refresh
+      @scope.getLabel = (choice) => 
+        filter('i18n') "labels['#{choice or 'select'}']"
   
     # **private**
     # Refresh scop values (and rendering) to reflect param source changes

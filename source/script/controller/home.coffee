@@ -82,6 +82,8 @@ define [
       @_previousMission = @scope.ruleParams.mission
       param = _.findWhere @scope.currentRule.params, name:'squad'
       param.within = _.invoke _.findWhere(@scope.missions, id:@_previousMission)?.squads?.split(','), 'trim'
+      # reset squad to avoid unallowed squads
+      @scope.ruleParams.squad = null
       
     # **private**
     # Fetch free games. Once retrieved, model change is issued to refresh rendering
