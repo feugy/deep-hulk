@@ -20,7 +20,7 @@ class JoinRule extends Rule
     freeSquads = _.chain(game.squads).filter((squad) -> squad.player is null).pluck('name').value()
     if freeSquads.length > 0
       callback null, [
-        name: 'squad'
+        name: 'squadName'
         type: 'string'
         within: freeSquads
       ]
@@ -37,7 +37,7 @@ class JoinRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback result [Object] an arbitrary result of this rule.
   execute: (player, game, params, context, callback) =>
-    console.log "player #{player.email} join game #{game.name} as squad #{params.squad}"
+    console.log "player #{player.email} join game #{game.name} as squad #{params.squadName}"
     
     resetHelpFlags player
     
@@ -45,13 +45,13 @@ class JoinRule extends Rule
     Item.findCached [freeGamesId], (err, [freeGames]) =>
       return callback err if err?
       return callback new Error "notFree #{freeGamesId}" unless freeGames?
-      for squad in game.squads when squad.name is params.squad
+      for squad in game.squads when squad.name is params.squadName
         # affect player to chosen squad
         squad.player = player.email
         player.characters.push squad
         # update game players
         players = JSON.parse game.players
-        players.push player: player.email, squad: params.squad
+        players.push player: player.email, squad: params.squadName
         game.players = JSON.stringify players
         # removes from free games if it was the last free squad
         unless _.find(game.squads, (squad) -> squad.player is null)?

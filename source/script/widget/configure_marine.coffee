@@ -43,5 +43,5 @@ define [
       else
         @scope.weapons = ['autoCannon', 'missileLauncher', 'flamer', 'bolter']
       # get label corresponding to weapon
-      @scope.getWeaponLabel = (weapon) => filter('i18n') 'names.'+(weapon || 'chooseWeapon')
+      @scope.getWeaponLabel = (weapon) => filter('i18n') 'labels.'+(weapon || 'chooseWeapon')
         

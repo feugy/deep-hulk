@@ -52,6 +52,8 @@ define ['jquery', 'util/common'], ($, {parseError}) ->
     # @param err [Error] Controller own resolver result
     constructor: (@scope, err) -> 
       @scope.loginUrl = "#{conf.apiBaseUrl}/auth/login"
+      @scope.twitterUrl = "#{conf.apiBaseUrl}/auth/twitter"
+      @scope.googleUrl = "#{conf.apiBaseUrl}/auth/google"
       @scope.error = parseError err if err?
       @scope.closeError = @closeError
       @scope._onSubmit = @_onSubmit

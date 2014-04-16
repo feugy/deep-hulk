@@ -25,7 +25,7 @@ class CreationRule extends Rule
     callback null, [
       {name: 'gameName', type: 'string'}
       {name: 'mission', type: 'string', within: ['mission-0', 'mission-2', 'mission-3']}
-      {name: 'squad', type: 'string'}
+      {name: 'squadName', type: 'string'}
     ]
 
   # Effectively creates a game, and its squads
@@ -48,8 +48,8 @@ class CreationRule extends Rule
       
       # check allowed squads
       squadIds = _.invoke mission.squads.split(','), 'trim'
-      unless params.squad in squadIds
-        return callback "Unallowed squad #{params.squad} for mission #{mission.id}"
+      unless params.squadName in squadIds
+        return callback "Unallowed squad #{params.squadName} for mission #{mission.id}"
       
       # manually create ids: better lisibility and allow bidirectionnal relationship between game and squads
       id = Math.floor Math.random()*1000000
@@ -62,15 +62,15 @@ class CreationRule extends Rule
       # get items types
       ItemType.findCached ['squad', 'game', 'marine', 'wall', 'alien'], (err, [Squad, Game, Marine, Wall, Alien]) =>
         return callback err if err?
-        players = [player: actor.email, squad: params.squad]
+        players = [player: actor.email, squad: params.squadName]
         # creates the game
         game = new Item id: "game-#{id}", name: params.gameName, players: JSON.stringify(players), squads: (
           # creates squads
           for i in [0...squadIds.length]
             name = squadIds[i]
             squad = new Item id: "squad-#{id}-#{i}", name: name, imageNum: squadImages[name], isAlien: name is 'alien', mission:mission, members:[], type: Squad
-            if squadIds[i] is params.squad
-              console.log "player #{actor.email} choose squad #{params.squad}"
+            if squadIds[i] is params.squadName
+              console.log "player #{actor.email} choose squad #{params.squadName}"
               # save first squad into player's games
               squad.player = actor.email
               actor.characters.push squad
@@ -127,7 +127,7 @@ class CreationRule extends Rule
                   imageNum: item.imageNum or 0
                 }, specific
               console.log "#{items.length} walls and doors copied"
-              console.log "game #{params.gameName} (#{game.id}) created by #{actor.email} (#{params.squad})"
+              console.log "game #{params.gameName} (#{game.id}) created by #{actor.email} (#{params.squadName})"
               freeGames.games.push game
               @saved.push freeGames
               # returns game id for client redirection

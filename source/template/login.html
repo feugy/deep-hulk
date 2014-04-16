@@ -5,13 +5,15 @@
 <aside>
   <form class="login-frame frame" method="POST" action="{{loginUrl}}" data-ng-submit="_onSubmit()">
     <h1>{{'titles.welcome'|i18n}}</h1>
-    <div class="row">
-      <label for="username">{{'labels.username'|i18n:{sep:true} }}</label>
-      <input name="username" type="text"/>
+    <div>{{'labels.connectWith'|i18n:{sep:true} }}</div>
+    <div class="providers">
+      <a class="btn-social btn-google-plus" target="_self" data-ng-href="{{googleUrl}}"><i class="fa fa-google-plus"></i>{{'buttons.google'|i18n}}</a>
+      <a class="btn-social btn-twitter" target="_self" data-ng-href="{{twitterUrl}}"><i class="fa fa-twitter"></i>{{'buttons.twitter'|i18n}}</a>
     </div>
-    <div class="row">
-      <label for="password">{{'labels.password'|i18n:{sep:true} }}</label>
-      <input name="password" type="password"/>
+    <div>{{'labels.manualConnect'|i18n:{sep:true} }}</div>
+    <div class="manual">
+      <input name="username" placeholder="{{'labels.username'|i18n}}" type="text"/>
+      <input name="password" placeholder="{{'labels.password'|i18n}}" type="password"/>
     </div>
     <input type="submit" class="btn" value="{{'buttons.connect'|i18n}}"/>
   </form>

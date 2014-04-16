@@ -298,7 +298,7 @@ define [
                 
       # adds a menu
       @_menu = $ @compile("""<ul class="menu">
-          <li ng-repeat="item in menuItems" data-value={{item}}>{{'names.'+item|i18n}}</li>
+          <li ng-repeat="item in menuItems" data-value={{item}}>{{'labels.'+item|i18n}}</li>
         </ul>""") @scope
       @_menu.on 'click', @_onMenuItemClick
       

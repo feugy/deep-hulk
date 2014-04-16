@@ -245,7 +245,7 @@ define [
             @_toggleDeployMode()
           if @scope.squad.actions < 0 
             @scope.canEndTurn = '' 
-            @scope.notifs.push kind: 'info', content: conf.msgs.waitForOther
+            @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther
           else
             @scope.canEndTurn = 'enabled'
           # inhibit on replay (always) or turn end (if not alien and deploy) or deploy (and not alien)
@@ -268,7 +268,7 @@ define [
           @_currentZone = first
           @scope.deployScope = 'deployBlip'
           # add notification
-          @scope.notifs.push kind: 'info', content: conf.msgs.deployBlips
+          @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployBlips
           # highligth deployable zone
           @atlas.ruleService.execute 'deployZone', @atlas.player, @scope.squad, {zone:@_currentZone}, (err, zone) => 
             @scope.$apply =>
@@ -279,7 +279,7 @@ define [
                 kind: 'deploy'
         else
           # add notification and inhibit
-          @scope.notifs.push kind: 'info', content: conf.msgs.deployInProgress
+          @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployInProgress
           @scope.selected = null
       else
         if @scope.squad.isAlien
@@ -288,7 +288,7 @@ define [
           @scope.notifs.splice 0, @scope.notifs.length
         else
           # indicates to marine that they can go on !
-          @scope.notifs.push kind: 'info', content: conf.msgs.deployEnded
+          @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployEnded
         @_currentZone = null
         @scope.deployScope = null
         # inhibit on turn end or replay pos
@@ -331,7 +331,7 @@ define [
                 return @location.path "#{conf.basePath}end" if model.finished
               if 'turn' in changes
                 # if turn has change, notify
-                @scope.notifs.push kind: 'info', content: conf.msgs.newTurn
+                @scope.notifs.push kind: 'info', content: conf.texts.notifs.newTurn
                 # quit replay
                 @atlas.stopReplay()
               if 'prevActions' in changes
@@ -344,9 +344,9 @@ define [
                   @scope.log = []
               if 'mainWinner' in changes and @scope.squad?
                 if @scope.game.mainWinner is @scope.squad.name
-                  content = conf.msgs.mainMissionCompleted
+                  content = conf.texts.notifs.mainMissionCompleted
                 else
-                  content = _.sprintf conf.msgs.mainMissionCompletedBy, @scope.game.mainWinner
+                  content = _.sprintf conf.texts.notifs.mainMissionCompletedBy, @scope.game.mainWinner
                 @scope.notifs.push kind: 'info', content: content
             else if model is @scope.selected and model.dead
               @scope.selected = null
@@ -478,10 +478,10 @@ define [
         @atlas.ruleService.execute 'endOfTurn', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
           return @scope.notifs.push kind: 'error', content: parseError err if err?
           # add a notification
-          @scope.notifs.push kind: 'info', content: conf.msgs.waitForOther
+          @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther
       return trigger() if @scope.squad.actions is 0
       # still actions ? confirm end of turn
-      confirm = @dialog.messageBox conf.titles.confirmEndOfTurn, conf.msgs.confirmEndOfTurn, [
+      confirm = @dialog.messageBox conf.titles.confirmEndOfTurn, conf.texts.confirmEndOfTurn, [
         {label: conf.buttons.yes, result: true}
         {label: conf.buttons.no}
       ]
@@ -499,7 +499,7 @@ define [
           # proceed with next deployement or quit mode
           @_toggleDeployMode()
       # still actions ? confirm end of turn
-      confirm = @dialog.messageBox conf.titles.confirmDeploy, conf.msgs.confirmEndDeploy, [
+      confirm = @dialog.messageBox conf.titles.confirmDeploy, conf.texts.confirmEndDeploy, [
         {label: conf.buttons.yes, result: true}
         {label: conf.buttons.no}
       ]

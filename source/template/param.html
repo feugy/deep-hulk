@@ -1,5 +1,5 @@
 <div class="param">
-  <label>{{'params.'+src.name|i18n:{sep:true} }}</label>
+  <label>{{'labels.'+src.name|i18n:{sep:true} }}</label>
   <span data-ng-switch on="type">
     <ng-select data-ng-switch-when="select-string" data-value="target[src.name]" data-items="src.within" data-get-text="getLabel" data-on-select="change"></ng-select>
     <input data-ng-switch-when="number" data-ng-model="target[src.name]" type="number" min="{{src.min}}" max="{{src.max}}" required data-ng-change="change()">

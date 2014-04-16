@@ -54,7 +54,7 @@ define [
       # always use first weapon for displayal
       weaponId = if @scope.src? then @scope.src.weapons[0].id or@scope.src.weapons[0] else 'bolter'
       @scope.isAlien = @scope.src?.type?.id is 'alien'
-      @scope.title = if @scope.isAlien then @scope.src?.name else @filter('i18n') "names.#{weaponId}"
+      @scope.title = if @scope.isAlien then @scope.src?.name else @filter('i18n') "labels.#{weaponId}"
       
       # initial hide element unless it's on map
       @$el.toggle @scope.src?.map?

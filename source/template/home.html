@@ -9,12 +9,12 @@
       <!-- mission selection -->
       <param data-src="currentRule.params[1]" data-target="ruleParams" data-change="onMissionSelected()"></param>
       <article data-ng-show="ruleParams.mission != null" class="alert">
-        <div ng-bind-html="'texts[\''+ruleParams.mission+'\']'|i18n"></div>
+        <div ng-bind-html="'texts.missions[\''+ruleParams.mission+'\']'|i18n"></div>
       </article>
       <!-- squad selection -->
       <param data-src="currentRule.params[2]" data-target="ruleParams"></param>
-      <article data-ng-show="ruleParams.squad != null" class="alert">
-        <div ng-bind-html="'texts[\''+ruleParams.squad+'\']'|i18n"></div>
+      <article data-ng-show="ruleParams.squadName != null" class="alert">
+        <div ng-bind-html="'texts.indics[\''+ruleParams.squadName+'\']'|i18n"></div>
       </article>
     </form>
     <div class="buttons">
@@ -27,6 +27,9 @@
   <div data-ng-hide="currentRuleName !== 'join'" class="join-game frame">
     <h2>{{'titles.joinGame'|i18n}}{{target.name}}</h2>
     <rule-params data-rule="currentRule" data-values="ruleParams"></rule-params>
+    <article data-ng-show="ruleParams.squadName != null" class="alert">
+      <div ng-bind-html="'texts.indics[\''+ruleParams.squadName+'\']'|i18n"></div>
+    </article>
     <div class="buttons">
       <a href="" data-ng-click="onJoinGame()" class="btn">{{'buttons.joinGame'|i18n}}</a>
       <a href="" data-ng-click="onHideRule()" class="btn">{{'buttons.cancel'|i18n}}</a>

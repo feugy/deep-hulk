@@ -127,7 +127,7 @@ define [
     # Handler invoked when the squad is deployed.
     # Confirm deployement and proceed.
     _onDeploy: =>
-      confirm = @dialog.messageBox conf.titles.confirmDeploy, conf.msgs.confirmDeploy, [
+      confirm = @dialog.messageBox conf.titles.confirmDeploy, conf.texts.confirmDeploy, [
         {label: conf.buttons.yes, result: true}
         {label: conf.buttons.no}
       ]
