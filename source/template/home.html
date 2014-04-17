@@ -26,6 +26,9 @@
   <!-- Game join panel -->
   <div data-ng-hide="currentRuleName !== 'join'" class="join-game frame">
     <h2>{{'titles.joinGame'|i18n}}{{target.name}}</h2>
+    <article class="alert">
+      <div ng-bind-html="'texts.missions[\''+joinMission+'\']'|i18n"></div>
+    </article>
     <rule-params data-rule="currentRule" data-values="ruleParams"></rule-params>
     <article data-ng-show="ruleParams.squadName != null" class="alert">
       <div ng-bind-html="'texts.indics[\''+ruleParams.squadName+'\']'|i18n"></div>

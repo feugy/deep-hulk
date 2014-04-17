@@ -24,7 +24,7 @@ class CreationRule extends Rule
     return callback null, null unless actor?._className is 'Player' and actor is target
     callback null, [
       {name: 'gameName', type: 'string'}
-      {name: 'mission', type: 'string', within: ['mission-0', 'mission-2', 'mission-3']}
+      {name: 'mission', type: 'string', within: ['mission-2', 'mission-3']}
       {name: 'squadName', type: 'string'}
     ]
 
@@ -64,11 +64,19 @@ class CreationRule extends Rule
         return callback err if err?
         players = [player: actor.email, squad: params.squadName]
         # creates the game
-        game = new Item id: "game-#{id}", name: params.gameName, players: JSON.stringify(players), squads: (
+        game = new Item id: "game-#{id}", name: params.gameName, players: JSON.stringify(players), mission:mission, squads: (
           # creates squads
           for i in [0...squadIds.length]
             name = squadIds[i]
-            squad = new Item id: "squad-#{id}-#{i}", name: name, imageNum: squadImages[name], isAlien: name is 'alien', mission:mission, members:[], type: Squad
+            squad = new Item {
+              id: "squad-#{id}-#{i}"
+              name: name
+              type: Squad
+              imageNum: squadImages[name]
+              isAlien: name is 'alien'
+              mission: mission
+              members: []
+            }
             if squadIds[i] is params.squadName
               console.log "player #{actor.email} choose squad #{params.squadName}"
               # save first squad into player's games

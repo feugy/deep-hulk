@@ -1,4 +1,5 @@
 _ = require 'underscore'
+async = require 'async'
 yaml = require 'js-yaml'
 utils = require 'hyperion/util/model'
 Item = require 'hyperion/model/Item'
@@ -374,12 +375,17 @@ module.exports = {
             return callback err if err?
             max = -Infinity
             winner = null
-            # only marines can win highscore
-            for candidate in game.squads when candidate.points > max and not candidate.isAlien
-              max = candidate.points
-              winner = candidate
-            # and the mission is always won
-            console.log "#{winner.name} has completed main mission by highscore #{max}"
-            winMain winner
-            end winner.game
+            # get squad members
+            async.map game.squads, (candidate, next) =>
+              candidate.fetch next
+            , (err, squads) =>
+              # only living marines can win highscore
+              for candidate in squads when candidate.points > max and not candidate.isAlien
+                if _.any(candidate.members, (member) -> not member.dead)
+                  max = candidate.points
+                  winner = candidate
+              # and the mission is always won
+              console.log "#{winner.name} has completed main mission by highscore #{max}"
+              winMain winner
+              end winner.game
 }

@@ -35,13 +35,16 @@ define [
       @scope.error = null
       @scope.missions = []
       @scope.current = atlas.player
+      @scope.joinMission = null
       @scope.error = decodeURIComponent err if err?
       @onHideRule()
       # bind methods
       @scope.closeError = @closeError
       @scope.onPlay = @_onPlay
       @scope.onNewGame = @_onResolveRule
-      @scope.onAskJoin = @_onResolveRule
+      @scope.onAskJoin = (game) =>
+        @scope.joinMission = game.mission.id or game.mission
+        @_onResolveRule game
       @scope.onCreateGame = @_onExecuteRule
       @scope.onJoinGame = @_onExecuteRule
       @scope.onHideRule = @onHideRule
