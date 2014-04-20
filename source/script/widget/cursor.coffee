@@ -83,7 +83,7 @@ define [
       
       @_rear = $('<div class="cursor rear"/>')
       @_activeShortcuts = null
-            
+      
       # update on replay quit/enter
       rootScope.$on 'replay', (ev, details) => @_render true
       
@@ -135,31 +135,29 @@ define [
     # @param model [Model] concerned model
     # @param changes [Array<String>] name of changed property for an update
     _onModelChanged: (ev, operation, model, changes) => 
-      switch operation
-        when 'update'
-          if model?.id is @scope.selected?.id
-            @scope.$apply =>
-              @scope.isBlip = model?.revealed is false
-              @scope.canShoot = model?.revealed isnt false and _.any model?.weapons, (weapon) -> weapon.rc?
-              # use first weapon for close combat
-              @scope.canAssault = model?.revealed isnt false and model?.weapons[0]?.cc?
-              if 'doorToOpen' in changes
-                @scope.canOpenDoor = model.doorToOpen?
-              if 'revealed' in changes
-                isBig = model?.revealed is true and model?.kind is 'dreadnought'
-                @_rear.toggleClass 'is-big', isBig
-                @$el.toggleClass 'is-big', isBig
-              if ('usedWeapons' in changes or 'rcNum' in changes) and model?.usedWeapons?
-                @_updateUsed model
-              if 'x' in changes or 'y' in changes
-                # positionnate
-                @$el.addClass 'movable'
-                @_rear.addClass 'movable'
-                @_render()
-                @$el.one 'transitionend', =>
-                  @$el.removeClass 'movable'
-                  @_rear.removeClass 'movable'
-              @_onActivate null, @scope.activeRule, @scope.activeWeapon
+      return unless operation is 'update' and model?.id is @scope.selected?.id
+      @scope.$apply =>
+        @scope.isBlip = model?.revealed is false
+        @scope.canShoot = model?.revealed isnt false and _.any model?.weapons, (weapon) -> weapon.rc?
+        # use first weapon for close combat
+        @scope.canAssault = model?.revealed isnt false and model?.weapons[0]?.cc?
+        if 'doorToOpen' in changes
+          @scope.canOpenDoor = model.doorToOpen?
+        if 'revealed' in changes
+          isBig = model?.revealed is true and model?.kind is 'dreadnought'
+          @_rear.toggleClass 'is-big', isBig
+          @$el.toggleClass 'is-big', isBig
+        if ('usedWeapons' in changes or 'rcNum' in changes) and model?.usedWeapons?
+          @_updateUsed model
+        if 'x' in changes or 'y' in changes
+          # positionnate
+          @$el.addClass 'movable'
+          @_rear.addClass 'movable'
+          @_render()
+          @$el.one 'transitionend', =>
+            @$el.removeClass 'movable'
+            @_rear.removeClass 'movable'
+        @_onActivate null, @scope.activeRule, @scope.activeWeapon
         
     # **private**
     # Set given rule as active if allowed
@@ -232,8 +230,7 @@ define [
         pos = @scope.renderer.coordToPos @scope.selected
         pos.transform = "scale(#{@scope.zoom})"
         pos['-webkit-transform'] = pos.transform
-        scale =
-          transform: "scale(#{0.45/@scope.zoom})"
+        scale = transform: "scale(#{1.9-@scope.zoom*2})"
         scale['-webkit-transform'] = scale.transform
         
         @$el.css(pos).show()

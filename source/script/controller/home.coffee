@@ -129,6 +129,7 @@ define [
     # **private**
     # Execute the current rule with current parameters
     _onExecuteRule: =>
+      return if @atlas.ruleService.isBusy()
       end = (err, result) =>
         @scope.$apply =>
           return @scope.error = parseError err.message if err?

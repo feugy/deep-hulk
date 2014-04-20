@@ -1,5 +1,4 @@
 _ = require 'underscore'
-yaml = require 'js-yaml'
 Rule = require 'hyperion/model/Rule'
 ClientConf = require 'hyperion/model/ClientConf'
 
@@ -49,7 +48,6 @@ class HelpRule extends Rule
     # get labels
     ClientConf.findCached ['default'], (err, [conf]) =>
       return callback err if err?
-      values = yaml.safeLoad conf.values # TODO use already parsed values
       result = null
 
       prefix = if squad.isAlien then 'alien' else 'marine'
@@ -58,40 +56,40 @@ class HelpRule extends Rule
           # at start, show welcome if nothing was done yet
           if squad.isAlien
             unless player.prefs.help?.scanDisplayed
-              result = [msg: values.texts.help["#{prefix}Welcome"], hPos: 'center']
+              result = [msg: conf.values.texts.help["#{prefix}Welcome"], hPos: 'center']
           else
             unless player.prefs.help?.cursorDisplayed
               result = [
-                {msg: values.texts.help["#{prefix}Welcome"], hPos: 'center'}
-                {msg: values.texts.help.marinePanel, vPos: 'center'}
+                {msg: conf.values.texts.help["#{prefix}Welcome"], hPos: 'center'}
+                {msg: conf.values.texts.help.marinePanel, vPos: 'center'}
               ]
         when 'startDeploy'
           unless player.prefs.help?.scanDisplayed
-            result = [msg: values.texts.help["#{prefix}Deploy"], vPos: 'bottom', hPos:'right']
+            result = [msg: conf.values.texts.help["#{prefix}Deploy"], vPos: 'bottom', hPos:'right']
             updatePref player, 'scanDisplayed', true
         when 'deploy'
           unless player.prefs.help?.deployedDisplayed
-            result = [msg: values.texts.help.deployed, vPos: 'bottom', hPos:'right']
+            result = [msg: conf.values.texts.help.deployed, vPos: 'bottom', hPos:'right']
             updatePref player, 'deployedDisplayed', true
         when 'select'
           unless player.prefs.help?.cursorDisplayed
-            result = [msg: values.texts.help["#{prefix}Cursor"], vPos: 'bottom']
+            result = [msg: conf.values.texts.help["#{prefix}Cursor"], vPos: 'bottom']
             updatePref player, 'cursorDisplayed', true
         when 'move'
           unless player.prefs.help?.moveDisplayed
-            result = [msg: values.texts.help["#{prefix}Move"], vPos: 'bottom']
+            result = [msg: conf.values.texts.help["#{prefix}Move"], vPos: 'bottom']
             updatePref player, 'moveDisplayed', true
           else 
-            result = displayTurn player, squad, values
+            result = displayTurn player, squad, conf.values
         when 'shoot', 'assault'
           unless player.prefs.help?.attackDisplayed
-            result = [msg: values.texts.help["#{prefix}Attack"]]
+            result = [msg: conf.values.texts.help["#{prefix}Attack"]]
             updatePref player, 'attackDisplayed', true
           else 
-            result = displayTurn player, squad, values
+            result = displayTurn player, squad, conf.values
             
       if result is null and squad.points isnt 0 and not player.prefs.help?.missionDisplayed
-        result = [msg: values.texts.help["#{prefix}Mission"]]
+        result = [msg: conf.values.texts.help["#{prefix}Mission"]]
         updatePref player, 'missionDisplayed', true
             
       callback null, result

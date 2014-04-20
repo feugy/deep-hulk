@@ -101,7 +101,7 @@ class OpenRule extends Rule
             id = actor.map.id.replace 'map-', ''
             return Item.where('type', 'squad').where('isAlien', true).regex('_id', "squad-#{id}-").exec (err, [alien]) =>
               return callback err if err?
-              return callback new Error "no alien squad found" unless alien?
+              return callback() unless alien?
               unless alien.deployZone?
                 alien.deployZone = zone
               else if -1 is alien.deployZone.indexOf zone

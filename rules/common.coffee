@@ -1,6 +1,5 @@
 _ = require 'underscore'
 async = require 'async'
-yaml = require 'js-yaml'
 utils = require 'hyperion/util/model'
 Item = require 'hyperion/model/Item'
 Event = require 'hyperion/model/Event'
@@ -109,9 +108,8 @@ module.exports = {
     # get deployable zone dimensions in configuration
     ClientConf.findCached ['default'], (err, [conf]) =>
       return callback err if err?
-      values = yaml.safeLoad conf.values # TODO use already parsed values
-      zones = values.maps[missionId]
-      return callback new Error "no deployable zone #{zone} on map #{squad.map.id}" unless zone of zones
+      zones = conf.values.maps[missionId]
+      return callback new Error "no deployable zone #{zone} on mission #{missionId}" unless zone of zones
       callback null, zones[zone]
       
   # Apply damages on a target, randomly removing enought weapon if target is a dreadnought
@@ -210,9 +208,12 @@ module.exports = {
     item.life = 0
     item.dead = true
     
+    # mark parts for death also
+    if item.parts?
+      item.parts.dead = true for part in item.parts
+    
     # decreases actions
-    unless item.moves is 0
-      item.squad.actions-- 
+    item.squad.actions-- unless item.moves is 0
       
     attacks = Math.max item.rcNum, item.ccNum
     item.squad.actions -= attacks
@@ -300,7 +301,7 @@ module.exports = {
   # @return true if two models have the same position
   hasSharedPosition: (items) ->
     for model in items when model?.type?.id in ['marine', 'alien'] and not model?.dead and model?.map?
-      item = _.find items, (item) -> item isnt model and item?.type?.id is model.type.id and item?.x is model.x and item?.y is model.y and not item?.dead and item?.map?
+      item = _.find items, (item) -> item?.id isnt model.id and item?.type?.id is model.type.id and item?.x is model.x and item?.y is model.y and not item?.dead and item?.map?
       if item?
         console.log "has same position (#{model.x}:#{model.y}): #{model.kind or model.name} and #{item.kind or item.name}"
         return true

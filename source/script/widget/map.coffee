@@ -195,6 +195,14 @@ define [
     # **private**
     # Mousewheel zoom increment.
     _zoomStep: 0.05
+        
+    # **private**
+    # Minimum zoom allowed
+    _zoomMin: 0.1
+    
+    # **private**
+    # MAximum zoom allowed
+    _zoomMax: 1
     
     # **private**
     # Loading flag to inhibit unitary field/item redraw while loading whole map
@@ -221,6 +229,9 @@ define [
       @scope.getSelectedWidget = => @_items[@scope.selected?.id]
       @scope.onZoom = (evt, delta) =>
         @scope.zoom += delta*@_zoomStep
+        # keep some limits
+        @scope.zoom = if @scope.zoom < @_zoomMin then @_zoomMin else @scope.zoom
+        @scope.zoom = if @scope.zoom > @_zoomMax then @_zoomMax else @scope.zoom
       
       # bind key listener
       $(window).on 'keydown.map', @_onKey
@@ -254,9 +265,11 @@ define [
         if operation is 'creation' or (operation is 'update' and 'map' in changes)
           @_addData [model]
           
-        if operation is 'update' and @atlas.replayPos? and model?.type?.id in ['alien', 'marine']
-          # during replay, be sure to center near action
-          @center model if model.x? and model.y? and not @isVisible model
+        if operation is 'update' and model?.type?.id in ['alien', 'marine'] and 
+            (model.id is @scope.selected?.id or @atlas.replayPos?) and
+             model.x? and model.y? and not @isVisible model
+          # during replay or when moving selected member, be sure to center near action
+          @center model
         
       # redraw grid and markers when scope changes
       @scope.$watch 'displayGrid', (value, old) =>
@@ -416,7 +429,6 @@ define [
         top: (@_dims.height-@height)/2
       ).draggable(
         containment: containment
-        cursor: 'move'
         axis: if 'x' of axis then 'x' else if 'y' of axis then 'y' else false
         disabled: axis.x and axis.y
         # return null to avoid cancelling stuff
@@ -736,21 +748,30 @@ define [
         newLeft = undefined
         newTop = undefined
         
+        direction = null
         # evaluate horizontal edges
         if @_dims.width < @width
           if mouseLeft <= @_dims.width*size
-            newLeft = (if left > -step then 0 else left+step) unless left is 0
+            unless left is 0
+              newLeft = if left > -step then 0 else left+step
+              direction = "left"
           else if mouseLeft >= @_dims.width*(1-size)
             max = @_dims.width-@width
-            newLeft = (if left < max+step then max else left-step) unless left is max
+            if left >= max+0.5
+              newLeft = if left < max+step then max else left-step
+              direction = "right"
   
         # evaluate vertical edges
         if @_dims.height < @height
           if mouseTop <= @_dims.height*size
-            newTop = (if top > -step then 0 else top+step) unless top is 0
+            unless top is 0
+              newTop = if top > -step then 0 else top+step
+              direction = "top"
           else if mouseTop >= @_dims.height*(1-size)
             max = @_dims.height-@height
-            newTop = (if top < max+step then max else top-step) unless top is max
+            if top >= max+0.5
+              newTop = if top < max+step then max else top-step
+              direction = "bottom"
         
         # move and recurse until mouse leave edges
         if newTop? or newLeft?
@@ -758,6 +779,11 @@ define [
           @_drawHover()
           # loop again, while no other move is detected
           @_onHapticEdge event
+          # set cursor
+          @_container.addClass "haptic-#{direction}"
+        else
+          @_container.removeClass "haptic-top haptic-left haptic-bottom haptic-right"
+          
       , duration*1.1
       
     # **private**

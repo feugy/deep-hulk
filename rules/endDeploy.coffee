@@ -48,7 +48,7 @@ class EndDeployRule extends Rule
       squad.game.fetch (err, game) =>
         return callback err if err?
         # and the marines squad that may be waiting for deployment
-        for other in game.squads when other isnt squad and other.deployZone is params.zone
+        for other in game.squads when other.id isnt squad.id and other.deployZone is params.zone
           other.deployZone = null
           @saved.push other
       

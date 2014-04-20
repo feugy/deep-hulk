@@ -93,13 +93,6 @@ define [
       # show help unless specified
       @scope.showHelp = false
       @scope.help = null
-      
-      # refresh zone on selection changes
-      @scope.$watch 'selected', (value, old) =>
-        return if value is old or @scope.squad?.deployZone?
-        # Redraw previously highlighted zone
-        @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
-        _.defer => @_askForHelp 'select'
         
       # update zone on replay quit/enter
       rootScope.$on 'replay', (ev, details) =>
@@ -150,12 +143,14 @@ define [
       # defer because click on mode button is processed before changing the activeRule value
       unless not @_inhibit and @scope.selected? and @scope.activeRule is 'move' and !@atlas.ruleService.isBusy()
         return
-      @atlas.ruleService.execute 'movable', @scope.selected, @scope.selected, {}, (err, reachable) => @scope.$apply =>
+      # save variable locally to avoid changes while waiting for response
+      selected = @scope.selected
+      @atlas.ruleService.execute 'movable', selected, selected, {}, (err, reachable) => @scope.$apply =>
         # silent error, no moves, no more selected: clear zone
-        return @scope.zone = null if err? or !reachable? or reachable.length is 0 or @scope.selected is null
+        return @scope.zone = null if err? or !reachable? or reachable.length is 0 or @scope.selected isnt selected
         @scope.zone =
           tiles: reachable
-          origin: @scope.selected
+          origin: selected
           kind: 'move'
                   
     # When hovering tiles, check on server damage zone and display it
@@ -171,12 +166,15 @@ define [
       params = 
         weaponIdx: @scope.activeWeapon
         multipleTargets: ("#{target.x}:#{target.y}" for target in @_multipleTargets)
-      @atlas.ruleService.execute "#{@scope.activeRule}Zone", @scope.selected, details, params, (err, result) => @scope.$apply =>
+      # save variable locally to avoid changes while waiting for response
+      selected = @scope.selected
+      rule = @scope.activeRule
+      @atlas.ruleService.execute "#{rule}Zone", selected, details, params, (err, result) => @scope.$apply =>
         # silent error
-        return @scope.zone = null if err? or @scope.selected is null or not result?
-        result.origin = @scope.selected
+        return @scope.zone = null if err? or not result? or @scope.selected isnt selected
+        result.origin = selected
         result.target = details
-        result.kind = @scope.activeRule
+        result.kind = rule
         @scope.zone = result
         
     # Send a new message into the game chat
@@ -368,6 +366,7 @@ define [
       return if @scope.squad?.deployZone?
       # find selectable item inside clicked items
       item = _.find details.items, (item) => 
+        return false if item.dead
         # takes in acccount possible parts (for dreadnought)
         return true for member in @scope.squad.members when member is item or (member.parts? and item in member.parts)
         false

@@ -51,7 +51,7 @@ class EndOfTurnRule extends Rule
       
       console.log "end of turn #{game.turn} for squad #{squad.name}"
       # quit a first squad with remaining actions
-      for other in game.squads when other isnt squad
+      for other in game.squads when other.id isnt squad.id
         return callback null if other.actions >= 0
           
       # next turn ! Compute remaining actions for each squads

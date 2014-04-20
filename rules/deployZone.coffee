@@ -1,7 +1,7 @@
 Rule = require 'hyperion/model/Rule'
 {getDeployZone} = require './common'
 
-# Returns hint on tiles tha belongs to the current deploy zone
+# Returns hint on tiles that belongs to the current deploy zone
 class DeployZoneRule extends Rule
 
   # Apply on alien squads that has a deploy zone

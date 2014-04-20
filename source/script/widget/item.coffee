@@ -148,7 +148,8 @@ define [
       @_loadImage()
       @_toggleDraggable()
       @_unbind = rootScope.on 'modelChanged', @_onUpdate
-      @scope.$on '$destroy', => 
+
+      @scope.$on '$destroy', =>
         @_hideTip()
         @_unbind()
       @scope.$watch 'deployScope', (value, old) =>
@@ -160,6 +161,7 @@ define [
     redraw: =>
       map = @scope.$parent      
       return unless map?.renderer?
+      @_hideTip()
       
       @$el.css
         width: if @scope.model.dead then 0 else map.renderer.tileW*@_imageSpec?.width

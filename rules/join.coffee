@@ -45,7 +45,9 @@ class JoinRule extends Rule
     Item.findCached [freeGamesId], (err, [freeGames]) =>
       return callback err if err?
       return callback new Error "notFree #{freeGamesId}" unless freeGames?
+      joining = null
       for squad in game.squads when squad.name is params.squadName
+        joining = squad
         # affect player to chosen squad
         squad.player = player.email
         player.characters.push squad
@@ -53,12 +55,18 @@ class JoinRule extends Rule
         players = JSON.parse game.players
         players.push player: player.email, squad: params.squadName
         game.players = JSON.stringify players
+      
         # removes from free games if it was the last free squad
         unless _.find(game.squads, (squad) -> squad.player is null)?
           freeGames.games.splice freeGames.games.indexOf(game.id), 1
           console.log "game #{game.name} is full"
           @saved.push freeGames
-        return callback null
+          
+      # if joining squad id alien, add to him zone waiting for deployement
+      if joining.isAlien
+        zones = _.uniq(squad.deployZone for squad in game.squads when squad.deployZone? and not squad.isAlien)
+        joining.deployZone = if zones.length isnt 0 then null else zones.join ',' 
+      callback null
   
 # A rule object must be exported. You can set its category (constructor optionnal parameter)
 module.exports = new JoinRule 'init'

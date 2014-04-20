@@ -116,6 +116,13 @@ assaultRotation = 60deg
   .item
     position absolute
 
+  .map-container.ui-draggable-dragging
+    cursor move
+
+   for direction in top left bottom right
+    .map-container.haptic-{direction}
+      cursor direction
+
 //------------------------------------------------------------------------------
 // Item displayal
 
@@ -197,7 +204,7 @@ assaultRotation = 60deg
       color cursorColor
       font-size 150%
       font-style normal
-      bottom 3px
+      bottom 5px
       right 12px
 
   a:first-child
@@ -519,6 +526,7 @@ blipSize = 50px
   background-color #E9DDAF
   display flex
   flex-direction column
+  cursor pointer
   
   h1
     height 13px
@@ -526,7 +534,6 @@ blipSize = 50px
     padding-top 2px
     font-size 10px
     text-align center
-    cursor pointer
 
   .content
     flex 1

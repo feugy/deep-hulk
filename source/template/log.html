@@ -1,7 +1,7 @@
-<div class="logs">
-  <h1 data-ng-click="toggle()">{{'titles.logs'|i18n}}</h1>
+<div class="logs" data-ng-click="toggle()">
+  <h1>{{'titles.logs'|i18n}}</h1>
   <div class="content">
-    <div class="input">
+    <div class="input" data-ng-click="$event.stopPropagation()">
       <span class="owner {{currentSquad}}">{{'labels.speak'|i18n:{sep:true} }}</span><textarea data-ng-keyup="_onMessage($event)"></textarea>
     </div>
     <div data-ng-repeat="entry in log track by $index" class="{{entry.kind}}">
