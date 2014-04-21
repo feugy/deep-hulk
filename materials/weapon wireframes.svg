@@ -1,0 +1,2094 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="198.98279"
+   height="330"
+   id="svg3036"
+   version="1.1"
+   inkscape:version="0.48.1 "
+   style="display:inline"
+   sodipodi:docname="weapon wireframes.svg"
+   inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+   inkscape:export-xdpi="90.545456"
+   inkscape:export-ydpi="90.545456">
+  <defs
+     id="defs3038" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.0722586"
+     inkscape:cx="107.29684"
+     inkscape:cy="165.0322"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer6"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="1002"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata3041">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="frames"
+     style="opacity:0.95736431;display:inline"
+     transform="translate(0,-722.36212)">
+    <rect
+       style="color:#000000;fill:#646464;fill-opacity:0.68325794;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4076"
+       width="100"
+       height="40"
+       x="0"
+       y="1012.3621"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <rect
+       style="color:#000000;fill:#969696;fill-opacity:0.63348419;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4076-4"
+       width="100"
+       height="60"
+       x="0"
+       y="952.36218"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <rect
+       style="color:#000000;fill:#646464;fill-opacity:0.68325794;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4076-0"
+       width="100"
+       height="45"
+       x="0"
+       y="907.36218"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <rect
+       y="862.36218"
+       x="0"
+       height="45"
+       width="100"
+       id="rect4119"
+       style="color:#000000;fill:#969696;fill-opacity:0.63348419;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <rect
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       y="817.36218"
+       x="0"
+       height="45"
+       width="100"
+       id="rect4815"
+       style="color:#000000;fill:#646464;fill-opacity:0.68325794;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       y="767.36212"
+       x="0"
+       height="50"
+       width="100"
+       id="rect4905"
+       style="color:#000000;fill:#969696;fill-opacity:0.63348419;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       style="color:#000000;fill:#646464;fill-opacity:0.68325794;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect5126"
+       width="100"
+       height="45"
+       x="0"
+       y="722.36212"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+  </g>
+  <g
+     inkscape:label="assault cannon"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline"
+     transform="translate(0,-722.36212)">
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 6.2060606,1027.6263 0.44329,-1.5516 4.6545454,0 18.618182,-4.4329 0.221645,-7.7575 2.881385,1.1082 c 3.674712,1.824 4.765369,10.1957 4.765369,10.1957 4.211255,0.5541 5.651947,1.7731 5.651947,1.7731 4.654545,0 4.432901,1.5515 4.432901,1.5515 l 42.334199,0 0.44329,-1.1082 c 0,0 3.10303,0.2216 3.878788,1.4407 l 0.332467,1.4407 1.989236,0.1892 0,4.987 -1.878413,0.1433 0,3.7624 1.878414,0.084 -0.110823,4.4328 -1.989236,0.2541 -0.110823,1.3299 c -0.775758,0.7758 -4.211255,0.8865 -4.211255,0.8865 l -0.44329,-0.8866 -42.223377,-0.2216 -0.110822,3.1031 -4.211256,1.9948 -0.110822,-3.1031 c -3.119066,-0.5757 -5.651948,-2.2164 -5.651948,-2.2164 l -19.172295,-0.1108 -1.219047,3.8788 -15.1826843,-0.3325 0,-4.2113 1.6623377,-0.8866 c 0,0 0.7757575,-3.9896 -0.1108225,-8.9766 1.7731601,-1.9948 1.3298701,-2.9922 1.3298701,-2.9922 l -1.8839827,-0.1108 0.1108226,-3.5463 z"
+       id="path3829"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 37.927861,1025.1604 c 0,0 -3.604714,-0.3918 -6.033978,0 1.567267,5.172 2.037444,11.5978 2.037444,11.5978 l 3.447987,0.5485 0.235091,7.4445 c 2.037447,2.0374 5.642161,2.5077 5.642161,2.5077 l 0.156726,2.8994 4.388348,-2.0374 0.07836,-19.5125"
+       id="path3831"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 47.986147,1034.6081 42.3342,-10e-5"
+       id="path3833"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 48.207792,1040.1492 42.334196,-10e-5"
+       id="path3833-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 90.431169,1028.214 0,18.0304"
+       id="path3853"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 4.5450743,1031.3511 c 7.4445177,-0.5485 8.2281517,0.7836 8.2281517,0.7836 l -0.23509,11.5195 c 0,0 -1.802357,0.7053 -9.8737821,0.6269"
+       id="path3857"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 8.8550584,1031.3511 0.6269068,3.7615 c -2.6643539,1.3322 -1.0187235,9.0117 -1.0187235,9.0117"
+       id="path3859"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 12.381409,1040.4413 3.996531,0.078 c 0.23509,-2.4293 3.99653,-1.5672 3.918167,2.8995 l 3.761441,-1.4105 1.175451,-6.5043 8.541604,-0.078 -1.253813,-7.9147 -26.4084488,0.1567"
+       id="path3861"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 25.938269,1038.6389 6.504157,-0.079 -3e-6,-1.8807 -6.582521,0.078 z"
+       id="path3863"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:0.7501387;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3865"
+       sodipodi:cx="17.044029"
+       sodipodi:cy="1011.4174"
+       sodipodi:rx="1.5280854"
+       sodipodi:ry="1.5280854"
+       d="m 18.572115,1011.4174 c 0,0.844 -0.684148,1.5281 -1.528086,1.5281 -0.843938,0 -1.528085,-0.6841 -1.528085,-1.5281 0,-0.8439 0.684147,-1.5281 1.528085,-1.5281 0.843938,0 1.528086,0.6842 1.528086,1.5281 z"
+       transform="matrix(1.3589743,0,0,1.3076923,-8.7043598,-278.22407)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 19.904291,1027.8248 0.70527,-1.724 c 1.64563,-1.0188 7.366155,-1.3322 8.776695,0.078 l 0.313453,1.4105"
+       id="path3867"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1.23110354;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3865-9"
+       sodipodi:cx="17.044029"
+       sodipodi:cy="1011.4174"
+       sodipodi:rx="1.5280854"
+       sodipodi:ry="1.5280854"
+       d="m 18.572115,1011.4174 c 0,0.844 -0.684148,1.5281 -1.528086,1.5281 -0.843938,0 -1.528085,-0.6841 -1.528085,-1.5281 0,-0.8439 0.684147,-1.5281 1.528085,-1.5281 0.843938,0 1.528086,0.6842 1.528086,1.5281 z"
+       transform="matrix(0.83006812,0,0,0.7948718,19.994135,237.43444)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path3053"
+       d="m 106.20643,1027.6263 0.44329,-1.5516 4.65455,0 18.61818,-4.4329 0.22165,-7.7575 2.88138,1.1082 c 3.67471,1.824 4.76537,10.1957 4.76537,10.1957 4.21125,0.5541 5.65195,1.7731 5.65195,1.7731 4.65454,0 4.4329,1.5515 4.4329,1.5515 l 42.3342,0 0.44329,-1.1082 c 0,0 3.10303,0.2216 3.87878,1.4407 l 0.33247,1.4407 1.98924,0.1892 0,4.987 -1.87842,0.1433 0,3.7624 1.87842,0.084 -0.11082,4.4328 -1.98924,0.2541 -0.11082,1.3299 c -0.77576,0.7758 -4.21126,0.8865 -4.21126,0.8865 l -0.44329,-0.8866 -42.22338,-0.2216 -0.11082,3.1031 -4.21125,1.9948 -0.11083,-3.1031 c -3.11906,-0.5757 -5.65194,-2.2164 -5.65194,-2.2164 l -19.1723,-0.1108 -1.21905,3.8788 -15.18268,-0.3325 0,-4.2113 1.66234,-0.8866 c 0,0 0.77576,-3.9896 -0.11082,-8.9766 1.77316,-1.9948 1.32987,-2.9922 1.32987,-2.9922 l -1.88399,-0.1108 0.11083,-3.5463 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccccccc"
+       inkscape:connector-curvature="0"
+       id="path3055"
+       d="m 137.92823,1025.1604 c 0,0 -3.60471,-0.3918 -6.03397,0 1.56726,5.172 2.03744,11.5978 2.03744,11.5978 l 3.44799,0.5485 0.23509,7.4445 c 2.03744,2.0374 5.64216,2.5077 5.64216,2.5077 l 0.15672,2.8994 4.38835,-2.0374 0.0784,-19.5125"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3057"
+       d="m 147.98652,1034.6081 42.3342,-10e-5"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3059"
+       d="m 148.20816,1040.1492 42.3342,-10e-5"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3061"
+       d="m 190.43154,1028.214 0,18.0304"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3063"
+       d="m 104.54545,1031.3511 c 7.44451,-0.5485 8.22815,0.7836 8.22815,0.7836 l -0.23509,11.5195 c 0,0 -1.80236,0.7053 -9.87378,0.6269"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path3065"
+       d="m 108.85543,1031.3511 0.62691,3.7615 c -2.66436,1.3322 -1.01873,9.0117 -1.01873,9.0117"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:connector-curvature="0"
+       id="path3067"
+       d="m 112.38178,1040.4413 3.99653,0.078 c 0.23509,-2.4293 3.99653,-1.5672 3.91817,2.8995 l 3.76144,-1.4105 1.17545,-6.5043 8.54161,-0.078 -1.25382,-7.9147 -26.40845,0.1567"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path3069"
+       d="m 125.93864,1038.6389 6.50416,-0.079 0,-1.8807 -6.58253,0.078 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       transform="matrix(1.3589743,0,0,1.3076923,91.296012,-278.22407)"
+       d="m 18.572115,1011.4174 c 0,0.844 -0.684148,1.5281 -1.528086,1.5281 -0.843938,0 -1.528085,-0.6841 -1.528085,-1.5281 0,-0.8439 0.684147,-1.5281 1.528085,-1.5281 0.843938,0 1.528086,0.6842 1.528086,1.5281 z"
+       sodipodi:ry="1.5280854"
+       sodipodi:rx="1.5280854"
+       sodipodi:cy="1011.4174"
+       sodipodi:cx="17.044029"
+       id="path3071"
+       style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:0.7501387;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3073"
+       d="m 119.90466,1027.8248 0.70527,-1.724 c 1.64563,-1.0188 7.36616,-1.3322 8.7767,0.078 l 0.31345,1.4105"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       transform="matrix(0.83006812,0,0,0.7948718,119.99451,237.43444)"
+       d="m 18.572115,1011.4174 c 0,0.844 -0.684148,1.5281 -1.528086,1.5281 -0.843938,0 -1.528085,-0.6841 -1.528085,-1.5281 0,-0.8439 0.684147,-1.5281 1.528085,-1.5281 0.843938,0 1.528086,0.6842 1.528086,1.5281 z"
+       sodipodi:ry="1.5280854"
+       sodipodi:rx="1.5280854"
+       sodipodi:cy="1011.4174"
+       sodipodi:cx="17.044029"
+       id="path3075"
+       style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1.23110354;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="missile launcher"
+     transform="translate(0,-722.36212)">
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 8.1950341,984.59615 2.4363619,5.86942 2.879336,-10e-6 c 0.664462,1.99339 -0.553719,9.63454 -0.553719,9.63454 l -1.328924,0 -0.221488,1.6612 11.517346,2.4364 -0.221488,5.0942 3.654543,0.1107 c 0,0 6.423134,-7.3091 8.08429,-10.74204 l 14.9504,0.2214 0.110744,2.65784 8.08429,0 c 0,0 2.768593,2.2148 9.523959,2.1041 l -0.221488,-11.51718 -10.852883,-0.11074 -0.110744,-5.3157 5.204955,0 c 0,0 0.442975,-1.55041 2.214874,-1.88264 l 0,-1.21818 -2.768593,-1.10744 c -0.332231,-8.74875 4.761979,-14.28594 4.761979,-14.28594 l 2.768593,-0.66446 0.442975,-1.10743 -16.279325,-10.85289 -0.996693,0.77521 0,2.87933 c 0,0 -9.745446,9.52396 -9.413215,26.13552 l -6.312391,-0.11075 -0.553719,-1.55041 -8.195034,0.11074 -0.221487,1.55042 -3.543799,0.11074 -0.775206,-0.77521 z"
+       id="path3909"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 13.1785,990.46557 9.745447,0.22148 0.221487,10.18825 -10.852882,-0.7752"
+       id="path3911"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 18.272711,990.46557 c -0.996693,1.66116 -0.110743,3.65454 -0.110743,3.65454 l -1.439668,-0.33223 0.221487,6.64442"
+       id="path3913"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 63.456142,984.70689 10.631396,0.2215 c 9.080984,0.66446 13.732219,7.97354 13.732219,7.97354 0,0 -2.214874,4.98353 -13.178501,7.97347 l -7.641315,0.1107"
+       id="path3915"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 49.502436,999.43566 0.110743,-4.09737 3.87603,-3.21157 2.879336,0"
+       id="path3917"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 52.714003,961.22922 c -7.419828,9.63471 -7.641315,19.38016 -7.641315,19.38016 l 12.624782,0.11074 c 0.442975,-8.63801 5.204954,-13.28924 5.204954,-13.28924 z"
+       id="path3919"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 51.71731,963.00113 9.85619,5.86941"
+       id="path3921"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3923"
+       d="m 50.277641,964.99452 9.966934,5.42644"
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 48.948716,967.32014 10.74214,5.31569"
+       id="path3947"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3960"
+       d="m 47.841279,969.86724 10.74214,4.319"
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 46.733842,971.97138 11.295859,3.98676"
+       id="path3962"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3964"
+       d="m 45.515662,974.62923 12.181807,2.87933"
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 44.961943,977.50856 12.624783,1.7719"
+       id="path3966"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 23.256178,999.98938 6.201647,0 0.221488,-4.54035 -6.644623,0"
+       id="path3968"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 31.229724,992.01598 9.966934,-0.11074 0.664462,-0.66446 2.768593,0.22148 c 1.328924,0.7752 1.107437,2.87933 0,3.10082 l -2.768593,0.44298 -0.664463,-0.88595 -9.856189,0 c -1.328924,0.11075 -1.107437,-2.32562 -0.110744,-2.10413 z"
+       id="path3970"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3972"
+       sodipodi:cx="20.32147"
+       sodipodi:cy="988.62921"
+       sodipodi:rx="1.3842963"
+       sodipodi:ry="1.4950401"
+       d="m 21.705767,988.62921 c 0,0.82569 -0.619771,1.49504 -1.384297,1.49504 -0.764525,0 -1.384296,-0.66935 -1.384296,-1.49504 0,-0.82569 0.619771,-1.49504 1.384296,-1.49504 0.764526,0 1.384297,0.66935 1.384297,1.49504 z"
+       transform="translate(-0.22148741,-1.0983095)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 81.61811,991.35152 c 0,0 -2.547105,-1.10743 -4.651236,-1.43967 -0.664462,-0.55372 -1.661155,0.55371 10e-7,1.43966 z"
+       id="path3974"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="m 81.518929,994.43338 c 0,0 -2.768593,1.21818 -4.651236,1.43967 -0.664462,0.55372 -1.661155,-0.55371 10e-7,-1.43966 z"
+       id="path3974-5"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 86.490833,992.90193 -3.433055,-0.88595 c -1.328924,0 -1.328924,1.55041 0,1.55041 z"
+       id="path3994"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 81.839597,997.99616 -4.761979,0.4429 c -1.661155,0.7751 -0.664463,1.77184 -0.664463,1.77184"
+       id="path3996"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="m 81.711006,987.4755 -4.761979,-0.44298 c -1.661155,-0.7752 -0.664463,-1.77192 -0.664463,-1.77192"
+       id="path3996-4"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccccccccccccccccccccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path3077"
+       d="m 108.19541,984.59615 2.43636,5.86942 2.87933,-10e-6 c 0.66447,1.99339 -0.55371,9.63454 -0.55371,9.63454 l -1.32893,0 -0.22149,1.6612 11.51735,2.4364 -0.22149,5.0942 3.65454,0.1107 c 0,0 6.42314,-7.3091 8.08429,-10.74204 l 14.9504,0.2214 0.11075,2.65784 8.08429,0 c 0,0 2.76859,2.2148 9.52396,2.1041 l -0.22149,-11.51718 -10.85288,-0.11074 -0.11075,-5.3157 5.20496,0 c 0,0 0.44297,-1.55041 2.21487,-1.88264 l 0,-1.21818 -2.76859,-1.10744 c -0.33223,-8.74875 4.76198,-14.28594 4.76198,-14.28594 l 2.76859,-0.66446 0.44298,-1.10743 -16.27933,-10.85289 -0.99669,0.77521 0,2.87933 c 0,0 -9.74545,9.52396 -9.41322,26.13552 l -6.31239,-0.11075 -0.55372,-1.55041 -8.19503,0.11074 -0.22149,1.55042 -3.5438,0.11074 -0.7752,-0.77521 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3079"
+       d="m 113.17887,990.46557 9.74545,0.22148 0.22149,10.18825 -10.85289,-0.7752"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3081"
+       d="m 118.27308,990.46557 c -0.99669,1.66116 -0.11074,3.65454 -0.11074,3.65454 l -1.43967,-0.33223 0.22149,6.64442"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path3083"
+       d="m 163.45651,984.70689 10.6314,0.2215 c 9.08098,0.66446 13.73222,7.97354 13.73222,7.97354 0,0 -2.21487,4.98353 -13.1785,7.97347 l -7.64132,0.1107"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:connector-curvature="0"
+       id="path3085"
+       d="m 149.50281,999.43566 0.11074,-4.09737 3.87603,-3.21157 2.87934,0"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path3087"
+       d="m 152.71438,961.22922 c -7.41983,9.63471 -7.64132,19.38016 -7.64132,19.38016 l 12.62478,0.11074 c 0.44298,-8.63801 5.20496,-13.28924 5.20496,-13.28924 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:connector-curvature="0"
+       id="path3089"
+       d="m 151.71768,963.00113 9.85619,5.86941"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 150.27801,964.99452 9.96694,5.42644"
+       id="path3091"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3093"
+       d="m 148.94909,967.32014 10.74214,5.31569"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 147.84165,969.86724 10.74214,4.319"
+       id="path3095"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3097"
+       d="m 146.73421,971.97138 11.29586,3.98676"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 145.51603,974.62923 12.18181,2.87933"
+       id="path3099"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3101"
+       d="m 144.96232,977.50856 12.62478,1.7719"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:connector-curvature="0"
+       id="path3103"
+       d="m 123.25655,999.98938 6.20165,0 0.22149,-4.54035 -6.64463,0"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccccccc"
+       inkscape:connector-curvature="0"
+       id="path3105"
+       d="m 131.2301,992.01598 9.96693,-0.11074 0.66446,-0.66446 2.7686,0.22148 c 1.32892,0.7752 1.10743,2.87933 0,3.10082 l -2.7686,0.44298 -0.66446,-0.88595 -9.85619,0 c -1.32892,0.11075 -1.10744,-2.32562 -0.11074,-2.10413 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       transform="translate(99.778885,-1.0983095)"
+       d="m 21.705767,988.62921 c 0,0.82569 -0.619771,1.49504 -1.384297,1.49504 -0.764525,0 -1.384296,-0.66935 -1.384296,-1.49504 0,-0.82569 0.619771,-1.49504 1.384296,-1.49504 0.764526,0 1.384297,0.66935 1.384297,1.49504 z"
+       sodipodi:ry="1.4950401"
+       sodipodi:rx="1.3842963"
+       sodipodi:cy="988.62921"
+       sodipodi:cx="20.32147"
+       id="path3107"
+       style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3109"
+       d="m 181.61848,991.35152 c 0,0 -2.5471,-1.10743 -4.65123,-1.43967 -0.66447,-0.55372 -1.66116,0.55371 0,1.43966 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3111"
+       d="m 181.5193,994.43338 c 0,0 -2.76859,1.21818 -4.65123,1.43967 -0.66447,0.55372 -1.66116,-0.55371 0,-1.43966 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3113"
+       d="m 186.49121,992.90193 -3.43306,-0.88595 c -1.32892,0 -1.32892,1.55041 0,1.55041 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path3115"
+       d="m 181.83997,997.99616 -4.76198,0.4429 c -1.66115,0.7751 -0.66446,1.77184 -0.66446,1.77184"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path3117"
+       d="m 181.71138,987.4755 -4.76198,-0.44298 c -1.66116,-0.7752 -0.66446,-1.77192 -0.66446,-1.77192"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="flamer"
+     style="display:inline"
+     transform="translate(0,-722.36212)">
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 12.764142,927.14834 9.161993,-0.0783 0.156615,-14.4086 c 0,0 -7.360917,-0.15662 -9.396915,9.08368 z"
+       id="path4018"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 21.847827,927.07003 4.463535,0.0783 3.086434,1.2798 c 0,0 -0.423975,2.94881 -2.694896,3.57527 0.31323,2.036 -1.801076,7.04769 -1.801076,7.04769 l -0.861384,-0.46985 -1.644459,3.054 13.547218,7.67415 1.64446,-2.50584 -12.685835,-7.83076"
+       id="path4020"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 28.66059,941.00879 c 0,0 0.861384,-5.48154 4.385227,-7.36092 0,0 -0.391538,-2.58415 0.783076,-3.99369 l 3.602151,0.86139 7.674147,0.15661 2.349229,-4.46353 13.860449,0.15661 9.161993,5.55984 5.951379,0.15662 0.07831,-22.39598 -5.716457,-0.0783 -9.240299,5.09 -2.114307,-2.74077 -16.836139,-0.46986 -0.234922,1.018 -6.969379,-0.0783 -0.313231,-1.40954 -2.662459,-10e-6 -0.31323,1.40954 -2.66246,0 -0.156615,-1.56615 -2.740766,0 -0.234923,1.56614 -4.385227,0.31323"
+       id="path4022"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 76.741472,930.20234 7.987377,-4.30692 0,-10.41492 -8.065685,-3.99369"
+       id="path4024"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 77.602855,929.73249 5.324919,-0.62646 0.234922,-2.34923"
+       id="path4026"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 38.527351,930.51557 c 1.409537,10.10168 -6.029687,13.07737 -6.029687,13.07737 l 3.210613,1.95769 c 0,0 7.595839,-3.36722 6.264609,-15.03506"
+       id="path4028"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 28.738898,945.47232 -1.33123,2.74077 c -0.469846,1.17461 2.114306,3.1323 3.523844,2.74076 l 2.270921,-2.89738"
+       id="path4030"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1.28734505;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path4032"
+       sodipodi:cx="30.30505"
+       sodipodi:cy="923.07629"
+       sodipodi:rx="2.6624591"
+       sodipodi:ry="2.8190744"
+       d="m 32.967509,923.07629 c 0,1.55694 -1.192024,2.81908 -2.662459,2.81908 -1.470436,0 -2.662459,-1.26214 -2.662459,-2.81908 0,-1.55693 1.192023,-2.81907 2.662459,-2.81907 1.470435,0 2.662459,1.26214 2.662459,2.81907 z"
+       transform="matrix(0.77580856,0,0,0.77777777,7.2935388,206.38104)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 26.154746,927.22665 c 0,-8.69215 7.987378,-6.65615 7.987378,-6.65615 l 0.07831,-5.40323 -12.059374,-0.0783"
+       id="path4034"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 34.455355,916.96834 -0.07831,8.92708 12.764143,-2.19262 0.861384,-3.05399 4.541842,-0.46985 0.156615,-3.28891 z"
+       id="path4036"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 52.466108,919.39588 10.023376,0 0.07831,0.78308 3.28892,-0.0783 c 1.409537,-0.86138 1.096307,-3.05399 0,-3.44553 l -3.28892,0 -0.07831,0.93969 -9.710145,0.0783"
+       id="path4038"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 57.399488,925.81711 0,-1.80108 7.830763,0.46985 0,0.93969 z"
+       id="path4040"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 61.471485,914.69743 -0.391538,2.89738"
+       id="path4042"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 61.001639,919.70912 0,4.54184"
+       id="path4044"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path3119"
+       d="m 112.76451,927.14834 9.162,-0.0783 0.15661,-14.4086 c 0,0 -7.36091,-0.15662 -9.39691,9.08368 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:connector-curvature="0"
+       id="path3121"
+       d="m 121.8482,927.07003 4.46353,0.0783 3.08644,1.2798 c 0,0 -0.42398,2.94881 -2.6949,3.57527 0.31323,2.036 -1.80107,7.04769 -1.80107,7.04769 l -0.86139,-0.46985 -1.64446,3.054 13.54722,7.67415 1.64446,-2.50584 -12.68583,-7.83076"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccccccccccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path3123"
+       d="m 128.66096,941.00879 c 0,0 0.86139,-5.48154 4.38523,-7.36092 0,0 -0.39154,-2.58415 0.78308,-3.99369 l 3.60215,0.86139 7.67414,0.15661 2.34923,-4.46353 13.86045,0.15661 9.16199,5.55984 5.95138,0.15662 0.0783,-22.39598 -5.71645,-0.0783 -9.2403,5.09 -2.11431,-2.74077 -16.83614,-0.46986 -0.23492,1.018 -6.96938,-0.0783 -0.31323,-1.40954 -2.66246,-10e-6 -0.31323,1.40954 -2.66246,0 -0.15661,-1.56615 -2.74077,0 -0.23492,1.56614 -4.38523,0.31323"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:connector-curvature="0"
+       id="path3125"
+       d="m 176.74184,930.20234 7.98738,-4.30692 0,-10.41492 -8.06568,-3.99369"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path3127"
+       d="m 177.60323,929.73249 5.32492,-0.62646 0.23492,-2.34923"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3129"
+       d="m 138.52772,930.51557 c 1.40954,10.10168 -6.02968,13.07737 -6.02968,13.07737 l 3.21061,1.95769 c 0,0 7.59584,-3.36722 6.26461,-15.03506"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3131"
+       d="m 128.73927,945.47232 -1.33123,2.74077 c -0.46985,1.17461 2.11431,3.1323 3.52384,2.74076 l 2.27093,-2.89738"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       transform="matrix(0.77580856,0,0,0.77777777,107.29391,206.38104)"
+       d="m 32.967509,923.07629 c 0,1.55694 -1.192024,2.81908 -2.662459,2.81908 -1.470436,0 -2.662459,-1.26214 -2.662459,-2.81908 0,-1.55693 1.192023,-2.81907 2.662459,-2.81907 1.470435,0 2.662459,1.26214 2.662459,2.81907 z"
+       sodipodi:ry="2.8190744"
+       sodipodi:rx="2.6624591"
+       sodipodi:cy="923.07629"
+       sodipodi:cx="30.30505"
+       id="path3133"
+       style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1.28734505;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3135"
+       d="m 126.15512,927.22665 c 0,-8.69215 7.98738,-6.65615 7.98738,-6.65615 l 0.0783,-5.40323 -12.05938,-0.0783"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path3137"
+       d="m 134.45573,916.96834 -0.0783,8.92708 12.76414,-2.19262 0.86138,-3.05399 4.54185,-0.46985 0.15661,-3.28891 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:connector-curvature="0"
+       id="path3139"
+       d="m 152.46648,919.39588 10.02338,0 0.0783,0.78308 3.28892,-0.0783 c 1.40953,-0.86138 1.0963,-3.05399 0,-3.44553 l -3.28892,0 -0.0783,0.93969 -9.71015,0.0783"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path3141"
+       d="m 157.39986,925.81711 0,-1.80108 7.83076,0.46985 0,0.93969 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3143"
+       d="m 161.47186,914.69743 -0.39154,2.89738"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:connector-curvature="0"
+       id="path3145"
+       d="m 161.00201,919.70912 0,4.54184"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="bolter"
+     style="display:inline"
+     transform="translate(0,-722.36212)">
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 11.000146,878.88732 9.197457,0.0708 0.839422,-6.50335 7.75917,0.008 1.766292,-2.36125 -13.069767,-0.24056 z"
+       id="path4048"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 24.80659,879.33549 7.973547,-11.84958 21.484278,-0.33223 c 0,0 2.532424,-0.35086 2.643168,-2.89797 l 1.011374,0.0186 -0.221487,15.06114 z"
+       id="path4050"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 29.236338,879.55698 c -1.107437,14.28594 7.198341,23.80989 7.198341,23.80989 l -0.442975,0.77521 1.328925,1.7719 9.191727,-8.52726 -1.439669,-1.21819 -0.775205,0.44298 c 0,0 -5.094211,-4.65124 -4.540492,-17.27602"
+       id="path4052"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 58.029701,869.70079 c 0.553718,0 6.755366,0.22148 6.755366,0.22148 l 0.110743,6.09091 1.328925,0.33223 0.110744,2.21487 -8.305778,0.22149"
+       id="path4054"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:#00ff00;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 20.322796,878.63102 4.984808,0.0494"
+       id="path4056"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 18.507864,869.46172 0.616255,-1.41403 6.089907,0.15619 0.832679,-1.29368 5.315447,0.12222 0.586201,1.79931"
+       id="path4058"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 14.792816,873.28943 -1.067562,-0.93362 1.535314,-2.14968 1.41888,0.50562"
+       id="path4060"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1.21428108;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path4062"
+       sodipodi:cx="19.047916"
+       sodipodi:cy="870.07806"
+       sodipodi:rx="1.882643"
+       sodipodi:ry="1.882643"
+       d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+       transform="matrix(0.82274198,0.03607699,-0.03607699,0.82274198,32.257367,159.54237)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 15.752702,879.20657 -0.111583,2.54466 c 0,0 -1.953607,1.57709 -2.92307,8.51814 l -0.668675,0.0815 -0.264937,0.98603 6.680961,1.84486 0.818123,-0.96177 -0.855991,-0.70264 c 0,0 -0.816233,-4.13725 3.394729,-9.16255 l -0.51343,-3.45887"
+       id="path4064"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 32.226418,879.55698 c -1.218181,12.29255 5.204954,19.04791 5.204954,19.04791 1.882643,1.88265 4.429748,-0.66446 2.99008,-2.43636 0,0 -5.094211,-6.31239 -4.319005,-16.61155"
+       id="path4066"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 51.052847,879.22475 -0.221487,13.1785 c 2.325617,-3.21157 6.533879,-3.10083 6.533879,-3.10083 l 21.705766,-1.55041 c 9.302471,-1.21818 12.957013,-9.08099 12.957013,-9.08099 l -26.135514,10e-6"
+       id="path4068"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <rect
+       style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4070"
+       width="3.765286"
+       height="1.2181808"
+       x="59.358627"
+       y="872.58008"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <rect
+       style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4072"
+       width="8.416522"
+       height="2.214874"
+       x="30.676006"
+       y="874.01978"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 57.586726,875.95781 7.641315,0.16611"
+       id="path4074"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path3147"
+       d="m 111.00052,878.88732 9.19746,0.0708 0.83942,-6.50335 7.75917,0.008 1.76629,-2.36125 -13.06977,-0.24056 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path3149"
+       d="m 124.80696,879.33549 7.97355,-11.84958 21.48428,-0.33223 c 0,0 2.53242,-0.35086 2.64317,-2.89797 l 1.01137,0.0186 -0.22149,15.06114 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:connector-curvature="0"
+       id="path3151"
+       d="m 129.23671,879.55698 c -1.10744,14.28594 7.19834,23.80989 7.19834,23.80989 l -0.44297,0.77521 1.32892,1.7719 9.19173,-8.52726 -1.43967,-1.21819 -0.77521,0.44298 c 0,0 -5.09421,-4.65124 -4.54049,-17.27602"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:connector-curvature="0"
+       id="path3153"
+       d="m 158.03007,869.70079 c 0.55372,0 6.75537,0.22148 6.75537,0.22148 l 0.11074,6.09091 1.32893,0.33223 0.11074,2.21487 -8.30578,0.22149"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3155"
+       d="m 120.32317,878.63102 4.98481,0.0494"
+       style="fill:#00ff00;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:connector-curvature="0"
+       id="path3157"
+       d="m 118.50824,869.46172 0.61625,-1.41403 6.08991,0.15619 0.83268,-1.29368 5.31544,0.12222 0.58621,1.79931"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:connector-curvature="0"
+       id="path3159"
+       d="m 114.79319,873.28943 -1.06756,-0.93362 1.53531,-2.14968 1.41888,0.50562"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       transform="matrix(0.82274198,0.03607699,-0.03607699,0.82274198,132.25774,159.54237)"
+       d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+       sodipodi:ry="1.882643"
+       sodipodi:rx="1.882643"
+       sodipodi:cy="870.07806"
+       sodipodi:cx="19.047916"
+       id="path3161"
+       style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1.21428108;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccccccccc"
+       inkscape:connector-curvature="0"
+       id="path3163"
+       d="m 115.75307,879.20657 -0.11158,2.54466 c 0,0 -1.95361,1.57709 -2.92307,8.51814 l -0.66867,0.0815 -0.26494,0.98603 6.68096,1.84486 0.81812,-0.96177 -0.85599,-0.70264 c 0,0 -0.81623,-4.13725 3.39473,-9.16255 l -0.51343,-3.45887"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3165"
+       d="m 132.22679,879.55698 c -1.21818,12.29255 5.20495,19.04791 5.20495,19.04791 1.88265,1.88265 4.42975,-0.66446 2.99008,-2.43636 0,0 -5.09421,-6.31239 -4.319,-16.61155"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cccccc"
+       inkscape:connector-curvature="0"
+       id="path3167"
+       d="m 151.05322,879.22475 -0.22149,13.1785 c 2.32562,-3.21157 6.53388,-3.10083 6.53388,-3.10083 l 21.70577,-1.55041 c 9.30247,-1.21818 12.95701,-9.08099 12.95701,-9.08099 l -26.13551,10e-6"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       y="872.58008"
+       x="159.35899"
+       height="1.2181808"
+       width="3.765286"
+       id="rect3169"
+       style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       y="874.01978"
+       x="130.67638"
+       height="2.214874"
+       width="8.416522"
+       id="rect3171"
+       style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3173"
+       d="m 157.5871,875.95781 7.64131,0.16611"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer7"
+     inkscape:label="heavy bolter"
+     style="display:inline"
+     transform="translate(0,140.00006)">
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 7.8481787,-12.517194 c 1.9620447,-4.60654 2.5591883,-8.360017 2.5591883,-8.360017 1.194288,-0.767757 1.535514,-2.729801 1.535514,-2.729801 l -1.194288,-1.194288 -2.3885765,0 0,-8.274711 4.1800085,-0.170612 4.180008,-6.056746 8.27471,-0.08531 0.08531,1.108981 6.824504,-0.08531 0,-2.30327 10.407367,-0.08531 -0.08531,2.303269 6.312665,10e-7 0.08531,-1.108982 6.568585,-0.08531 0.08531,1.279594 4.947765,0 0.08531,1.023675 11.345737,-0.08531 0.767756,-1.023676 4.60654,-0.08531 0.08531,-1.108982 11.089819,-0.08531 0.42653,1.876739 7.080423,0.08531 0,0.511837 c 0,0 -4.777152,1.194289 -5.630215,5.118378 l -0.341225,6.65389 -5.715522,1e-6 0.08531,1.3649 -3.753476,1e-6 0,1.876738 -4.094703,-10e-7 -1.706125,-2.388576 -22.350248,0.341226 -0.08531,2.473882 -2.644496,0.08531 -0.255918,-1.194288 -17.573097,0.170613 -1.620819,2.900414 -4.777152,0.08531 -3.412252,-4.009396 -3.582864,0 c 0,0 -2.132657,1.364901 -1.023675,3.92409 -4.60654,4.350621 -2.729802,9.554304 -2.729802,9.554304 -4.265315,0.9383692 -6.6538903,-2.217963 -6.6538903,-2.217963 z"
+       id="path4818"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccc" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 21.497185,-23.777625 0.276614,10.95454 6.553948,-0.155972 4.173946,-6.362637 17.431756,-0.07067 4.918492,5.103741 3.753476,-2.559188 -4.521233,-7.336341"
+       id="path4820"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 56.131539,-14.820464 0.255919,2.30327 2.388576,2.132657 2.815108,-2.30327 -2.900414,-3.838783"
+       id="path4822"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 61.505836,-12.858419 6.227359,6.9098089 -1.194288,1.8767384 1.535513,1.9620447 13.478394,-13.137169 -1.791432,-1.620819 -1.791433,0.938369 -7.336341,-8.530629"
+       id="path4824"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccc" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 22.77678,-22.583337 -1.709507,-2.277264 -7.247654,0.144607 -0.08531,-2.644495 1.535513,-1.364901 8.95716,-0.255918 0,-6.312666 3.156333,0.08531 4.265315,5.886134 2.644495,-2.132657 17.487789,-0.255919 0.170613,1.450207 23.629842,-0.170613 c 1.194288,0.767757 1.108985,4.691847 0.08531,5.374297 l -1.108982,0.255919"
+       id="path4826"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccc" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 88.718542,-37.853163 c 0,0 -5.374296,2.644495 -4.691846,12.454718"
+       id="path4828"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 63.638493,-30.602128 3.071026,-3.753477 3.071027,-4e-6 2.644495,-3.838783"
+       id="path4830"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 32.075165,-29.834371 -0.08531,-8.701242"
+       id="path4832"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 42.382589,-38.535613 0,6.90981"
+       id="path4834"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 48.453973,-38.876838 0,6.995116"
+       id="path4836"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 55.278476,-38.450307 0.08531,8.189404"
+       id="path4838"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 12.540025,-33.246623 4.009395,4.009396"
+       id="path4840"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 15.611051,-37.511937 8.530629,7.848178"
+       id="path4842"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 57.922971,-24.460075 69.183402,-11.2376 c 2.217964,2.3032698 5.459602,-0.767757 3.326945,-3.071027 L 64.15033,-24.460075"
+       id="path4844"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:0.9543702;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path4062-0"
+       sodipodi:cx="19.047916"
+       sodipodi:cy="870.07806"
+       sodipodi:rx="1.882643"
+       sodipodi:ry="1.882643"
+       d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+       transform="matrix(1.0468056,0.04590211,-0.04590211,1.0468056,47.444853,-936.96135)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-ydpi="90.000031" />
+    <path
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path4864"
+       d="m 107.848,-12.517194 c 1.96204,-4.60654 2.55919,-8.360017 2.55919,-8.360017 1.19429,-0.767757 1.53551,-2.729801 1.53551,-2.729801 l -1.19429,-1.194288 -2.38857,0 0,-8.274711 4.18001,-0.170612 4.18,-6.056746 8.27471,-0.08531 0.0853,1.108981 6.82451,-0.08531 0,-2.30327 10.40737,-0.08531 -0.0853,2.303269 6.31266,10e-7 0.0853,-1.108982 6.56859,-0.08531 0.0853,1.279594 4.94776,0 0.0853,1.023675 11.34574,-0.08531 0.76775,-1.023676 4.60654,-0.08531 0.0853,-1.108982 11.08982,-0.08531 0.42653,1.876739 7.08043,0.08531 0,0.511837 c 0,0 -4.77716,1.194289 -5.63022,5.118378 l -0.34122,6.65389 -5.71553,1e-6 0.0853,1.3649 -3.75347,1e-6 0,1.876738 -4.09471,-10e-7 -1.70612,-2.388576 -22.35025,0.341226 -0.0853,2.473882 -2.64449,0.08531 -0.25592,-1.194288 -17.5731,0.170613 -1.62082,2.900414 -4.77715,0.08531 -3.41225,-4.009396 -3.58287,0 c 0,0 -2.13265,1.364901 -1.02367,3.92409 -4.60654,4.350621 -2.7298,9.554304 -2.7298,9.554304 -4.26532,0.9383692 -6.65389,-2.217963 -6.65389,-2.217963 z"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cccccccc"
+       inkscape:connector-curvature="0"
+       id="path4866"
+       d="m 121.49701,-23.777625 0.27661,10.95454 6.55395,-0.155972 4.17394,-6.362637 17.43176,-0.07067 4.91849,5.103741 3.75348,-2.559188 -4.52123,-7.336341"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4868"
+       d="m 156.13136,-14.820464 0.25592,2.30327 2.38858,2.132657 2.8151,-2.30327 -2.90041,-3.838783"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cccccccc"
+       inkscape:connector-curvature="0"
+       id="path4870"
+       d="m 161.50566,-12.858419 6.22736,6.9098089 -1.19429,1.8767384 1.53551,1.9620447 13.4784,-13.137169 -1.79144,-1.620819 -1.79143,0.938369 -7.33634,-8.530629"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="ccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path4872"
+       d="m 122.7766,-22.583337 -1.70951,-2.277264 -7.24765,0.144607 -0.0853,-2.644495 1.53551,-1.364901 8.95716,-0.255918 0,-6.312666 3.15634,0.08531 4.26531,5.886134 2.6445,-2.132657 17.48779,-0.255919 0.17061,1.450207 23.62984,-0.170613 c 1.19429,0.767757 1.10899,4.691847 0.0853,5.374297 l -1.10898,0.255919"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4874"
+       d="m 188.71836,-37.853163 c 0,0 -5.37429,2.644495 -4.69184,12.454718"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path4876"
+       d="m 163.63831,-30.602128 3.07103,-3.753477 3.07103,-4e-6 2.64449,-3.838783"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4878"
+       d="m 132.07499,-29.834371 -0.0853,-8.701242"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4880"
+       d="m 142.38241,-38.535613 0,6.90981"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4882"
+       d="m 148.45379,-38.876838 0,6.995116"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4884"
+       d="m 155.2783,-38.450307 0.0853,8.189404"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4886"
+       d="m 112.53985,-33.246623 4.00939,4.009396"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4888"
+       d="m 115.61087,-37.511937 8.53063,7.848178"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path4890"
+       d="m 157.92279,-24.460075 11.26043,13.222475 c 2.21797,2.3032698 5.45961,-0.767757 3.32695,-3.071027 l -8.36002,-10.151448"
+       style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="90.000031"
+       inkscape:export-xdpi="90.000031"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+       transform="matrix(1.0468056,0.04590211,-0.04590211,1.0468056,147.44467,-936.96135)"
+       d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+       sodipodi:ry="1.882643"
+       sodipodi:rx="1.882643"
+       sodipodi:cy="870.07806"
+       sodipodi:cx="19.047916"
+       id="path4892"
+       style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:0.9543702;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer8"
+     inkscape:label="energy glove and power sword"
+     transform="translate(0,140.00006)">
+    <g
+       id="g5048"
+       transform="matrix(-0.95100355,0.30917994,0.30917994,0.95100355,117.19655,-21.333162)">
+      <path
+         sodipodi:nodetypes="ccccccccccccccccccccccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path4908"
+         d="m 88.764649,-84.518024 -3.10134,-0.143851 c -5.706177,-3.701021 -7.811124,-2.830652 -15.171532,-2.574865 l -2.77475,-1.568337 c -0.597144,-1.706126 -5.072998,-5.640874 -5.072998,-5.640874 -4.009396,-0.85306 -7.835623,1.17714 -7.835623,1.17714 l 0,0.84449 c 0,0 3.654574,-0.16455 4.507637,0.68852 0,0 1.001506,3.464301 3.304776,7.047165 l -1.185714,1.085772 -11.743606,0.220583 c -2.559188,1.108982 -1.762159,4.284543 -0.311952,4.711074 l 8.444892,1.80962 -8.821452,0.355861 c -2.132657,0.597144 -1.535513,4.057896 0.255919,4.228509 l 8.806816,1.206413 -8.453466,1.221049 c -2.047351,0.767756 -0.299827,3.922618 0.809154,4.007925 l 8.856787,-0.659241 -6.824073,1.512304 c -2.388576,0.853062 -1.049396,3.937254 1.936324,4.193173 l 8.380285,-0.985829 1.568337,0.96513 c 0,0 8.827084,0.808114 17.613632,-2.77475 l 0.120641,1.568337 2.050902,0.241283 c 0.597144,4.777152 9.013804,6.198086 12.426055,0.482565 l 0.120641,-1.930261 c 0.767757,-7.506954 -2.021629,-7.644921 -2.533467,-18.820045 l -5.066935,-0.120641 z"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccccc"
+         inkscape:connector-curvature="0"
+         id="path4910"
+         d="m 89.082233,-82.127128 c 0,0 1.108982,8.530629 0.08531,11.686962 -2.217963,6.739197 -4.691845,8.360017 -4.691845,8.360017 l -2.388577,-0.170613 -0.08531,-1.535513 c 0,0 7.421647,-5.544909 3.838783,-20.814735"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccccccccc"
+         inkscape:connector-curvature="0"
+         id="path4912"
+         d="m 70.656074,-87.074893 -6.142053,4.009396 c 0,0 -2.217963,1.962045 -2.729801,4.521234 0,0 -0.938369,3.66817 0.426532,10.407367 0,0 1.535513,4.606539 5.715521,7.165728 l -4.094702,-0.08531 c 0,0 -3.241638,-1.791432 -4.947764,-5.203684 l -1.108983,-8.786547 c -0.170613,-3.241639 2.303271,-6.824504 3.92409,-8.530629 l 6.568584,-5.288991"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path4914"
+         d="m 55.471555,-83.577335 c -2.388576,0.767757 -2.644495,5.118378 -1.535514,6.142053"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path4916"
+         d="m 53.765429,-76.667525 c -1.62082,1.279594 -1.194288,4.180008 0.341225,5.033071"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path4918"
+         d="m 54.277267,-70.35486 c -0.68245,1.194288 -0.255919,3.66817 0.767756,3.838783"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path4920"
+         d="m 55.898086,-65.577707 c -0.255919,0.68245 -0.255919,3.924089 1.791432,4.521233"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4922"
+         d="m 96.418574,-62.677293 c 0.341225,-0.08531 -12.454718,0.853062 -12.454718,0.853062"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path4924"
+         d="m 93.859385,-62.591987 c -1.279594,2.729801 -6.056746,1.791431 -6.739196,0.767756"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90.000031"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         transform="matrix(-0.61676271,0.02704486,0.02704486,0.61676271,61.816047,-611.55377)"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         sodipodi:ry="1.882643"
+         sodipodi:rx="1.882643"
+         sodipodi:cy="870.07806"
+         sodipodi:cx="19.047916"
+         id="path4062-0-5"
+         style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc" />
+      <path
+         inkscape:export-ydpi="90.000031"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         transform="matrix(-0.61676271,0.02704486,0.02704486,0.61676271,60.323187,-620.55357)"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         sodipodi:ry="1.882643"
+         sodipodi:rx="1.882643"
+         sodipodi:cy="870.07806"
+         sodipodi:cx="19.047916"
+         id="path4062-0-5-7"
+         style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc" />
+      <path
+         inkscape:export-ydpi="90.000031"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         transform="matrix(-0.61676271,0.02704486,0.02704486,0.61676271,63.820744,-601.78619)"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         sodipodi:ry="1.882643"
+         sodipodi:rx="1.882643"
+         sodipodi:cy="870.07806"
+         sodipodi:cx="19.047916"
+         id="path4062-0-5-7-1"
+         style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc" />
+      <path
+         inkscape:export-ydpi="90.000031"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         transform="matrix(-0.61676271,0.02704486,0.02704486,0.61676271,81.147967,-602.30624)"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         sodipodi:ry="1.882643"
+         sodipodi:rx="1.882643"
+         sodipodi:cy="870.07806"
+         sodipodi:cx="19.047916"
+         id="path4062-0-5-7-1-3"
+         style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4998"
+         d="m 95.705811,-60.695651 -2.050902,-1.568337"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5000"
+         d="m 92.810419,-61.419499 1.80962,2.171543"
+         style="fill:#a7ef75;fill-opacity:1;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5002"
+         d="m 91.604006,-60.936934 1.206413,2.654109"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5004"
+         d="m 90.035669,-60.454369 0.361924,2.77475"
+         style="fill:#a7ef75;fill-opacity:1;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5006"
+         d="m 88.587974,-60.936934 -0.603207,3.377957"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5008"
+         d="m 87.381561,-61.540141 -1.568337,2.654109"
+         style="fill:#a7ef75;fill-opacity:1;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5010"
+         d="m 85.813224,-61.781423 -1.327055,1.206413"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <g
+       id="g5040"
+       transform="matrix(0.11195345,-0.99371345,-0.99371345,-0.11195345,-22.902944,8.4366027)">
+      <path
+         sodipodi:nodetypes="ccccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path5012"
+         d="m 62.854124,-60.330785 2.654109,3.016033 2.533467,-0.120642 1.930261,1.447696 0.361924,1.568337 1.568337,0.965131 -0.844489,2.171543 -3.377957,0.361924 -1.809619,1.80962 c -1.80962,0.361924 -3.619239,-0.603206 -3.860522,-3.136674 l 1.447696,-2.171544 -1.80962,-4.222446 z"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccccccccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path5014"
+         d="m 80.588397,-68.655036 -2.533468,2.050903 c -1.023675,0.426531 -3.321922,-0.841978 -3.407229,-2.804023 l 1.568337,-2.171544 3.648512,-0.09137 3.860522,-3.61924 3.257316,-0.120641 -0.361924,3.377957 -2.895392,4.343087 -2.895391,-0.844489 -3.498599,3.73988 -5.066935,-4.222446 -1.327054,0.241283 -1.206413,1.447696 -1.930261,-1.80962 2.412826,-3.257315 8.806816,-0.603207 1.206413,1.327055"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path5016"
+         d="m 63.407359,-59.904254 5.387461,-8.168274 0.723848,0.482565 -5.514165,8.315677"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path5018"
+         d="m 67.818501,-57.473609 c 1.706126,-0.426531 6.995116,-8.445323 6.824503,-9.554305 l 2.30327,2.217964 c -1.364901,-0.170613 -6.739197,6.65389 -6.995116,8.871854"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path5020"
+         d="m 78.823012,-72.743435 c 7.506954,-6.312665 18.426159,-27.212709 27.639238,-34.207825 2.6445,-1.70613 7.08042,-1.53551 7.08042,-1.53551 -9.5543,10.236755 -26.956785,33.184146 -26.956785,33.184146"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90.000031"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         transform="matrix(0.61676271,0.02704486,-0.02704486,0.61676271,89.205545,-606.36977)"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         sodipodi:ry="1.882643"
+         sodipodi:rx="1.882643"
+         sodipodi:cy="870.07806"
+         sodipodi:cx="19.047916"
+         id="path4062-0-5-4"
+         style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc" />
+    </g>
+    <g
+       transform="matrix(-0.95100355,0.30917994,0.30917994,0.95100355,217.19703,-21.333162)"
+       id="g5227"
+       style="stroke:#ffdd55;stroke-opacity:1">
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 88.764649,-84.518024 -3.10134,-0.143851 c -5.706177,-3.701021 -7.811124,-2.830652 -15.171532,-2.574865 l -2.77475,-1.568337 c -0.597144,-1.706126 -5.072998,-5.640874 -5.072998,-5.640874 -4.009396,-0.85306 -7.835623,1.17714 -7.835623,1.17714 l 0,0.84449 c 0,0 3.654574,-0.16455 4.507637,0.68852 0,0 1.001506,3.464301 3.304776,7.047165 l -1.185714,1.085772 -11.743606,0.220583 c -2.559188,1.108982 -1.762159,4.284543 -0.311952,4.711074 l 8.444892,1.80962 -8.821452,0.355861 c -2.132657,0.597144 -1.535513,4.057896 0.255919,4.228509 l 8.806816,1.206413 -8.453466,1.221049 c -2.047351,0.767756 -0.299827,3.922618 0.809154,4.007925 l 8.856787,-0.659241 -6.824073,1.512304 c -2.388576,0.853062 -1.049396,3.937254 1.936324,4.193173 l 8.380285,-0.985829 1.568337,0.96513 c 0,0 8.827084,0.808114 17.613632,-2.77475 l 0.120641,1.568337 2.050902,0.241283 c 0.597144,4.777152 9.013804,6.198086 12.426055,0.482565 l 0.120641,-1.930261 c 0.767757,-7.506954 -2.021629,-7.644921 -2.533467,-18.820045 l -5.066935,-0.120641 z"
+         id="path5229"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccccccccccccccccccccccccccccccc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 89.082233,-82.127128 c 0,0 1.108982,8.530629 0.08531,11.686962 -2.217963,6.739197 -4.691845,8.360017 -4.691845,8.360017 l -2.388577,-0.170613 -0.08531,-1.535513 c 0,0 7.421647,-5.544909 3.838783,-20.814735"
+         id="path5231"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccccc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 70.656074,-87.074893 -6.142053,4.009396 c 0,0 -2.217963,1.962045 -2.729801,4.521234 0,0 -0.938369,3.66817 0.426532,10.407367 0,0 1.535513,4.606539 5.715521,7.165728 l -4.094702,-0.08531 c 0,0 -3.241638,-1.791432 -4.947764,-5.203684 l -1.108983,-8.786547 c -0.170613,-3.241639 2.303271,-6.824504 3.92409,-8.530629 l 6.568584,-5.288991"
+         id="path5233"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccccccccc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 55.471555,-83.577335 c -2.388576,0.767757 -2.644495,5.118378 -1.535514,6.142053"
+         id="path5235"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 53.765429,-76.667525 c -1.62082,1.279594 -1.194288,4.180008 0.341225,5.033071"
+         id="path5237"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 54.277267,-70.35486 c -0.68245,1.194288 -0.255919,3.66817 0.767756,3.838783"
+         id="path5239"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 55.898086,-65.577707 c -0.255919,0.68245 -0.255919,3.924089 1.791432,4.521233"
+         id="path5241"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 96.418574,-62.677293 c 0.341225,-0.08531 -12.454718,0.853062 -12.454718,0.853062"
+         id="path5243"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 93.859385,-62.591987 c -1.279594,2.729801 -6.056746,1.791431 -6.739196,0.767756"
+         id="path5245"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+      <path
+         sodipodi:type="arc"
+         style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path5247"
+         sodipodi:cx="19.047916"
+         sodipodi:cy="870.07806"
+         sodipodi:rx="1.882643"
+         sodipodi:ry="1.882643"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         transform="matrix(-0.61676271,0.02704486,0.02704486,0.61676271,61.816047,-611.55377)"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-ydpi="90.000031" />
+      <path
+         sodipodi:type="arc"
+         style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path5249"
+         sodipodi:cx="19.047916"
+         sodipodi:cy="870.07806"
+         sodipodi:rx="1.882643"
+         sodipodi:ry="1.882643"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         transform="matrix(-0.61676271,0.02704486,0.02704486,0.61676271,60.323187,-620.55357)"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-ydpi="90.000031" />
+      <path
+         sodipodi:type="arc"
+         style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path5251"
+         sodipodi:cx="19.047916"
+         sodipodi:cy="870.07806"
+         sodipodi:rx="1.882643"
+         sodipodi:ry="1.882643"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         transform="matrix(-0.61676271,0.02704486,0.02704486,0.61676271,63.820744,-601.78619)"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-ydpi="90.000031" />
+      <path
+         sodipodi:type="arc"
+         style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path5253"
+         sodipodi:cx="19.047916"
+         sodipodi:cy="870.07806"
+         sodipodi:rx="1.882643"
+         sodipodi:ry="1.882643"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         transform="matrix(-0.61676271,0.02704486,0.02704486,0.61676271,81.147967,-602.30624)"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-ydpi="90.000031" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 95.705811,-60.695651 -2.050902,-1.568337"
+         id="path5255"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#a7ef75;fill-opacity:1;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 92.810419,-61.419499 1.80962,2.171543"
+         id="path5257"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 91.604006,-60.936934 1.206413,2.654109"
+         id="path5259"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#a7ef75;fill-opacity:1;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 90.035669,-60.454369 0.361924,2.77475"
+         id="path5261"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 88.587974,-60.936934 -0.603207,3.377957"
+         id="path5263"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:#a7ef75;fill-opacity:1;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 87.381561,-61.540141 -1.568337,2.654109"
+         id="path5265"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 85.813224,-61.781423 -1.327055,1.206413"
+         id="path5267"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       transform="matrix(0.11195345,-0.99371345,-0.99371345,-0.11195345,77.097534,8.4366027)"
+       id="g5269"
+       style="stroke:#ffdd55;stroke-opacity:1">
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 62.854124,-60.330785 2.654109,3.016033 2.533467,-0.120642 1.930261,1.447696 0.361924,1.568337 1.568337,0.965131 -0.844489,2.171543 -3.377957,0.361924 -1.809619,1.80962 c -1.80962,0.361924 -3.619239,-0.603206 -3.860522,-3.136674 l 1.447696,-2.171544 -1.80962,-4.222446 z"
+         id="path5271"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccccccccccccc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 80.588397,-68.655036 -2.533468,2.050903 c -1.023675,0.426531 -3.321922,-0.841978 -3.407229,-2.804023 l 1.568337,-2.171544 3.648512,-0.09137 3.860522,-3.61924 3.257316,-0.120641 -0.361924,3.377957 -2.895392,4.343087 -2.895391,-0.844489 -3.498599,3.73988 -5.066935,-4.222446 -1.327054,0.241283 -1.206413,1.447696 -1.930261,-1.80962 2.412826,-3.257315 8.806816,-0.603207 1.206413,1.327055"
+         id="path5273"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccccccccccccccccc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 63.407359,-59.904254 5.387461,-8.168274 0.723848,0.482565 -5.514165,8.315677"
+         id="path5275"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 67.818501,-57.473609 c 1.706126,-0.426531 6.995116,-8.445323 6.824503,-9.554305 l 2.30327,2.217964 c -1.364901,-0.170613 -6.739197,6.65389 -6.995116,8.871854"
+         id="path5277"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 78.823012,-72.743435 c 7.506954,-6.312665 18.426159,-27.212709 27.639238,-34.207825 2.6445,-1.70613 7.08042,-1.53551 7.08042,-1.53551 -9.5543,10.236755 -26.956785,33.184146 -26.956785,33.184146"
+         id="path5279"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+      <path
+         sodipodi:type="arc"
+         style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path5281"
+         sodipodi:cx="19.047916"
+         sodipodi:cy="870.07806"
+         sodipodi:rx="1.882643"
+         sodipodi:ry="1.882643"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         transform="matrix(0.61676271,0.02704486,-0.02704486,0.61676271,89.205545,-606.36977)"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-ydpi="90.000031" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer9"
+     inkscape:label="bolter pistol and power axe"
+     transform="translate(0,140.00006)">
+    <g
+       id="g5170"
+       transform="matrix(-1,0,0,1,101.51448,-1.0236755)">
+      <g
+         id="g5218"
+         transform="matrix(-1,0,0,1,100.35365,1.0236755)">
+        <path
+           style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 5.9714403,-116.67617 c 0,0 2.8151076,-3.15633 2.3032699,-6.48328 l 1.6208195,-3.07103 -4.1800082,0.0853 -0.8530629,-2.13266 2.0473509,-1.27959 0,-0.68246 -3.241639,-1.62081 5.0330711,-4.43593 14.6726824,-0.34123 0.255918,0.93837 7.762873,0.68245 0.682454,0.85307 2.047352,0.34123 0.426531,1.4502 4.947764,0.0853 0,5.28899 -11.431042,0.17062 -0.08531,2.30327 -9.810223,0 -0.767757,-2.13266 -2.559188,-0.17061 c 0,0 -1.194288,1.70612 -0.170613,3.41225 -0.170613,1.3649 -3.582864,5.20368 -0.511838,7.93348 l -0.08531,0.93837 c 0,0 -7.0804152,1.36492 -8.1040947,-2.13264 z"
+           id="path5129"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccccccccccccccccccccccccc" />
+        <path
+           style="fill:none;stroke:#a6ec75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 18.767384,-124.35374 c 0.08531,7.67757 6.65389,12.45472 6.65389,12.45472 l 5.288991,-5.80083 c 0,0 -3.753477,-3.07103 -3.753477,-6.7392"
+           id="path5131"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc" />
+        <path
+           style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 21.241266,-124.26843 c 0.170613,5.20368 3.412252,7.50695 3.412252,7.50695 1.023676,1.10898 2.98572,-0.76776 1.962044,-1.70613 0,0 -2.900413,-2.38857 -2.644494,-5.88613"
+           id="path5133"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccc" />
+        <rect
+           style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           id="rect5135"
+           width="6.1420531"
+           height="1.9620447"
+           x="19.705753"
+           y="-128.53375" />
+        <path
+           style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 33.951904,-126.87027 0,-2.00471 -5.971441,-0.68244 -0.08531,-5.03308 -14.9286,0.17062 -4.7771531,3.07102 0.1706126,4.52124 6.8245035,0"
+           id="path5137"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccccccc" />
+        <path
+           style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 34.378435,-132.45784 c -4.265315,0.25592 -5.544909,2.90042 -5.544909,2.90042"
+           id="path5139"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cc" />
+        <path
+           inkscape:export-ydpi="90.000031"
+           inkscape:export-xdpi="90.000031"
+           inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+           transform="matrix(0.36174633,0.50026719,-0.50026719,0.36174633,439.3002,-453.83402)"
+           d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+           sodipodi:ry="1.882643"
+           sodipodi:rx="1.882643"
+           sodipodi:cy="870.07806"
+           sodipodi:cx="19.047916"
+           id="path4062-0-5-4-0"
+           style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           sodipodi:type="arc" />
+      </g>
+    </g>
+    <g
+       id="g5209"
+       transform="matrix(0.93042735,0.36647639,-0.36647639,0.93042735,-58.354943,-20.429097)">
+      <path
+         sodipodi:nodetypes="cccccccccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path5179"
+         d="m 47.856829,-108.99861 4.435927,-4.77715 -0.255915,-2.04735 0.938369,-0.85306 7.59226,8.10409 c 5.118377,-3.07103 7.848179,-7.50695 7.848179,-7.50695 l -0.426532,-3.32695 -4.947764,-4.86245 -0.597144,-5.11838 5.28899,-5.11838 6.483277,6.22736 -0.08531,2.90041 -3.753476,3.66817 -0.08531,6.22736 c 0,0 -4.862458,6.14206 -9.980836,8.78655 l -4.350621,-3.15633 -5.374296,4.00939 c -0.938369,0.51184 -3.24164,-2.30327 -2.729802,-3.15633 z"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path5181"
+         d="m 54.084188,-115.48189 c 1.876738,0.85306 9.554305,-6.99511 9.298386,-8.36001 l 3.326945,3.41225 c -1.706126,-0.42653 -9.724917,6.73919 -8.95716,8.44532"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="90.000031"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         transform="matrix(0.36174633,0.50026719,-0.50026719,0.36174633,493.81092,-451.61605)"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         sodipodi:ry="1.882643"
+         sodipodi:rx="1.882643"
+         sodipodi:cy="870.07806"
+         sodipodi:cx="19.047916"
+         id="path4062-0-5-4-0-5"
+         style="color:#000000;fill:none;stroke:#a7ef75;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5201"
+         d="m 71.06014,-131.69008 9.980836,-9.63961 3.326945,3.32694 -10.322061,9.89553"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5203"
+         d="m 80.102607,-142.60929 4.862458,5.03307 1.279595,-1.27959 -0.170613,-1.79143 13.051862,-12.45472 1.450211,0.59714 0.0853,-1.4502 1.45021,-1.02368 0.68245,-3.92409 -4.180008,-0.25592 -2.815108,2.55919 -0.341225,3.15633 -10.066142,9.29839 -4.180009,0 z"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path5205"
+         d="m 86.329966,-139.11173 c 2.132657,4.0094 0.511838,7.50695 0.511838,7.50695 7.677566,0.0853 21.838406,-15.18452 21.923716,-20.21759 0,0 -6.31267,1.62082 -9.468998,-0.85306"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path5207"
+         d="m 81.894039,-144.40072 c 0,0 -0.938369,-1.45021 -2.900414,-1.87674 -0.341225,-3.24164 12.369412,-13.649 14.331457,-13.22247 0.255919,2.13266 2.217963,3.15633 2.217963,3.15633"
+         style="fill:none;stroke:#a7ef75;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <g
+       transform="matrix(-1,0,0,1,201.51448,-1.0236755)"
+       id="g5283"
+       style="stroke:#ffdd55;stroke-opacity:1">
+      <g
+         transform="matrix(-1,0,0,1,100.35365,1.0236755)"
+         id="g5285"
+         style="stroke:#ffdd55;stroke-opacity:1">
+        <path
+           sodipodi:nodetypes="cccccccccccccccccccccccccc"
+           inkscape:connector-curvature="0"
+           id="path5287"
+           d="m 5.9714403,-116.67617 c 0,0 2.8151076,-3.15633 2.3032699,-6.48328 l 1.6208195,-3.07103 -4.1800082,0.0853 -0.8530629,-2.13266 2.0473509,-1.27959 0,-0.68246 -3.241639,-1.62081 5.0330711,-4.43593 14.6726824,-0.34123 0.255918,0.93837 7.762873,0.68245 0.682454,0.85307 2.047352,0.34123 0.426531,1.4502 4.947764,0.0853 0,5.28899 -11.431042,0.17062 -0.08531,2.30327 -9.810223,0 -0.767757,-2.13266 -2.559188,-0.17061 c 0,0 -1.194288,1.70612 -0.170613,3.41225 -0.170613,1.3649 -3.582864,5.20368 -0.511838,7.93348 l -0.08531,0.93837 c 0,0 -7.0804152,1.36492 -8.1040947,-2.13264 z"
+           style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path5289"
+           d="m 18.767384,-124.35374 c 0.08531,7.67757 6.65389,12.45472 6.65389,12.45472 l 5.288991,-5.80083 c 0,0 -3.753477,-3.07103 -3.753477,-6.7392"
+           style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path5291"
+           d="m 21.241266,-124.26843 c 0.170613,5.20368 3.412252,7.50695 3.412252,7.50695 1.023676,1.10898 2.98572,-0.76776 1.962044,-1.70613 0,0 -2.900413,-2.38857 -2.644494,-5.88613"
+           style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <rect
+           y="-128.53375"
+           x="19.705753"
+           height="1.9620447"
+           width="6.1420531"
+           id="rect5293"
+           style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+        <path
+           sodipodi:nodetypes="cccccccc"
+           inkscape:connector-curvature="0"
+           id="path5295"
+           d="m 33.951904,-126.87027 0,-2.00471 -5.971441,-0.68244 -0.08531,-5.03308 -14.9286,0.17062 -4.7771531,3.07102 0.1706126,4.52124 6.8245035,0"
+           style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           sodipodi:nodetypes="cc"
+           inkscape:connector-curvature="0"
+           id="path5297"
+           d="m 34.378435,-132.45784 c -4.265315,0.25592 -5.544909,2.90042 -5.544909,2.90042"
+           style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           sodipodi:type="arc"
+           style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           id="path5299"
+           sodipodi:cx="19.047916"
+           sodipodi:cy="870.07806"
+           sodipodi:rx="1.882643"
+           sodipodi:ry="1.882643"
+           d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+           transform="matrix(0.36174633,0.50026719,-0.50026719,0.36174633,439.3002,-453.83402)"
+           inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+           inkscape:export-xdpi="90.000031"
+           inkscape:export-ydpi="90.000031" />
+      </g>
+    </g>
+    <g
+       transform="matrix(0.93042735,0.36647639,-0.36647639,0.93042735,41.645056,-20.429097)"
+       id="g5301"
+       style="stroke:#ffdd55;stroke-opacity:1">
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 47.856829,-108.99861 4.435927,-4.77715 -0.255915,-2.04735 0.938369,-0.85306 7.59226,8.10409 c 5.118377,-3.07103 7.848179,-7.50695 7.848179,-7.50695 l -0.426532,-3.32695 -4.947764,-4.86245 -0.597144,-5.11838 5.28899,-5.11838 6.483277,6.22736 -0.08531,2.90041 -3.753476,3.66817 -0.08531,6.22736 c 0,0 -4.862458,6.14206 -9.980836,8.78655 l -4.350621,-3.15633 -5.374296,4.00939 c -0.938369,0.51184 -3.24164,-2.30327 -2.729802,-3.15633 z"
+         id="path5303"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccccccccccccccccc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 54.084188,-115.48189 c 1.876738,0.85306 9.554305,-6.99511 9.298386,-8.36001 l 3.326945,3.41225 c -1.706126,-0.42653 -9.724917,6.73919 -8.95716,8.44532"
+         id="path5305"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+      <path
+         sodipodi:type="arc"
+         style="color:#000000;fill:none;stroke:#ffdd55;stroke-width:1.61981273;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path5307"
+         sodipodi:cx="19.047916"
+         sodipodi:cy="870.07806"
+         sodipodi:rx="1.882643"
+         sodipodi:ry="1.882643"
+         d="m 20.930559,870.07806 c 0,1.03976 -0.842888,1.88265 -1.882643,1.88265 -1.039755,0 -1.882643,-0.84289 -1.882643,-1.88265 0,-1.03975 0.842888,-1.88264 1.882643,-1.88264 1.039755,0 1.882643,0.84289 1.882643,1.88264 z"
+         transform="matrix(0.36174633,0.50026719,-0.50026719,0.36174633,493.81092,-451.61605)"
+         inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\weapon-wireframes.png"
+         inkscape:export-xdpi="90.000031"
+         inkscape:export-ydpi="90.000031" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 71.06014,-131.69008 9.980836,-9.63961 3.326945,3.32694 -10.322061,9.89553"
+         id="path5309"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 80.102607,-142.60929 4.862458,5.03307 1.279595,-1.27959 -0.170613,-1.79143 13.051862,-12.45472 1.450211,0.59714 0.0853,-1.4502 1.45021,-1.02368 0.68245,-3.92409 -4.180008,-0.25592 -2.815108,2.55919 -0.341225,3.15633 -10.066142,9.29839 -4.180009,0 z"
+         id="path5311"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 86.329966,-139.11173 c 2.132657,4.0094 0.511838,7.50695 0.511838,7.50695 7.677566,0.0853 21.838406,-15.18452 21.923716,-20.21759 0,0 -6.31267,1.62082 -9.468998,-0.85306"
+         id="path5313"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+      <path
+         style="fill:none;stroke:#ffdd55;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 81.894039,-144.40072 c 0,0 -0.938369,-1.45021 -2.900414,-1.87674 -0.341225,-3.24164 12.369412,-13.649 14.331457,-13.22247 0.255919,2.13266 2.217963,3.15633 2.217963,3.15633"
+         id="path5315"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+    </g>
+  </g>
+</svg>

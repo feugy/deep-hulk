@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="225"
+   height="250"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 "
+   sodipodi:docname="walls.svg"
+   inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom-left.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
+   style="display:inline">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient19328">
+      <stop
+         style="stop-color:#9d862b;stop-opacity:1;"
+         offset="0"
+         id="stop19330" />
+      <stop
+         id="stop19345"
+         offset="0.5"
+         style="stop-color:#9d862b;stop-opacity:1;" />
+      <stop
+         style="stop-color:#9d862b;stop-opacity:0;"
+         offset="1"
+         id="stop19332" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient19165">
+      <stop
+         style="stop-color:#e9ddaf;stop-opacity:1;"
+         offset="0"
+         id="stop19167" />
+      <stop
+         id="stop19173"
+         offset="0.5"
+         style="stop-color:#e9ddaf;stop-opacity:1;" />
+      <stop
+         style="stop-color:#e9ddaf;stop-opacity:0;"
+         offset="1"
+         id="stop19169" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient19328"
+       id="linearGradient19334"
+       x1="34.409939"
+       y1="74.177017"
+       x2="34.51553"
+       y2="50.077641"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.97257019,0,0,1.2050125,0.05629798,-235.31328)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient19165"
+       id="linearGradient19343"
+       x1="39.802486"
+       y1="4.3492422"
+       x2="39.802486"
+       y2="-24.995695"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0,-150)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient19165"
+       id="linearGradient19343-4"
+       x1="39.802486"
+       y1="4.3492422"
+       x2="39.802486"
+       y2="-24.995695"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-225.00025,-150)" />
+    <linearGradient
+       y2="50.077641"
+       x2="34.51553"
+       y1="74.177017"
+       x1="34.409939"
+       gradientTransform="matrix(-0.97257019,0,0,1.2050125,224.94395,-235.31328)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient19371"
+       xlink:href="#linearGradient19328"
+       inkscape:collect="always" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient19328"
+       id="linearGradient19464"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-0.97257019,0,0,1.2050125,224.94393,-15.31303)"
+       x1="34.409939"
+       y1="74.177017"
+       x2="34.51553"
+       y2="50.077641" />
+    <linearGradient
+       y2="-24.995695"
+       x2="39.802486"
+       y1="4.3492422"
+       x1="39.802486"
+       gradientTransform="translate(-225.00001,70)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient19482"
+       xlink:href="#linearGradient19165"
+       inkscape:collect="always" />
+    <linearGradient
+       y2="-24.995695"
+       x2="39.802486"
+       y1="4.3492422"
+       x1="39.802486"
+       gradientTransform="translate(-8.0317383e-6,70)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient19482-1"
+       xlink:href="#linearGradient19165"
+       inkscape:collect="always" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient19328"
+       id="linearGradient19464-9"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.97257019,0,0,1.2050125,0.05607197,-15.31303)"
+       x1="34.409939"
+       y1="74.177017"
+       x2="34.51553"
+       y2="50.077641" />
+    <linearGradient
+       y2="-24.995695"
+       x2="39.802486"
+       y1="4.3492422"
+       x1="39.802486"
+       gradientTransform="matrix(1.0135135,0,0,1,-151.01352,69.999998)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient19482-2"
+       xlink:href="#linearGradient19165"
+       inkscape:collect="always" />
+    <linearGradient
+       y2="-24.995695"
+       x2="39.802486"
+       y1="4.3492422"
+       x1="39.802486"
+       gradientTransform="matrix(1.0135135,0,0,1,-151.19974,-150)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient19482-2-9"
+       xlink:href="#linearGradient19165"
+       inkscape:collect="always" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient19165"
+       id="linearGradient4225"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-225.00001,70)"
+       x1="39.802486"
+       y1="4.3492422"
+       x2="39.802486"
+       y2="-24.995695" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient19328"
+       id="linearGradient4227"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.97257019,0,0,1.2050125,0.05607197,-15.31303)"
+       x1="34.409939"
+       y1="74.177017"
+       x2="34.51553"
+       y2="50.077641" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.3194978"
+     inkscape:cx="24.430877"
+     inkscape:cy="146.13332"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer5"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="1002"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:snap-grids="true"
+     showguides="true"
+     inkscape:guide-bbox="true" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="walls"
+     style="display:inline"
+     transform="translate(0,175)">
+    <rect
+       style="color:#000000;fill:none;fill-opacity:0.20361992000000001;fill-rule:nonzero;stroke:none;stroke-width:0.50000000000000000;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-14-7-8-7-2-5"
+       width="75"
+       height="75"
+       x="150"
+       y="-75"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-right.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120" />
+    <rect
+       style="color:#000000;fill:none;fill-opacity:0.20361992000000001;fill-rule:nonzero;stroke:none;stroke-width:0.50000000000000000;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-14-7-8-7-2"
+       width="75"
+       height="75"
+       x="0"
+       y="-75"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-left.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120" />
+    <rect
+       style="color:#000000;fill:none;fill-opacity:0.20361992000000001;fill-rule:nonzero;stroke:none;stroke-width:0.50000000000000000;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-14-7-8-7"
+       width="75"
+       height="75"
+       x="75"
+       y="0"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120" />
+    <rect
+       style="color:#000000;fill:none;fill-opacity:0.20361992000000001;fill-rule:nonzero;stroke:none;stroke-width:0.50000000000000000;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-14-7-8"
+       width="75"
+       height="75"
+       x="75"
+       y="-150"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7" />
+    <path
+       style="fill:none;stroke:url(#linearGradient19371);stroke-width:1.10752344;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       d="m 224.42476,-174.44599 0.0215,28.89198 -73.89248,-0.13358"
+       id="path19163-5-4"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       clip-path="none"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top-right.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7" />
+    <rect
+       y="-175"
+       x="-224.00024"
+       height="29"
+       width="74"
+       id="rect19193-2-5"
+       style="color:#000000;fill:url(#linearGradient19343-4);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       transform="scale(-1,1)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top-right.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7" />
+    <rect
+       style="color:#000000;fill:#e9ddaf;fill-opacity:1;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19195-9-3"
+       width="6"
+       height="71.5"
+       x="-225.00024"
+       y="75"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top-right.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7"
+       transform="scale(-1,-1)" />
+    <path
+       style="fill:none;stroke:#9d862b;stroke-width:1.00956117999999990px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="m 224.49547,-145.99522 -0.0333,70.490439 m -4.94727,-0.0394 -0.01,-70.451039"
+       id="path3851-0-0-6-8-1-1-2-5"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top-right.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7" />
+    <path
+       style="fill:none;stroke:url(#linearGradient19334);stroke-width:1.10752344;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       d="m 0.57549118,-174.44599 -0.0214792,28.89198 73.89247602,-0.13358"
+       id="path19163-5"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       clip-path="none"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top-left.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7" />
+    <rect
+       y="-175"
+       x="1"
+       height="29"
+       width="74"
+       id="rect19193-2"
+       style="color:#000000;fill:url(#linearGradient19343);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top-left.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7" />
+    <rect
+       style="color:#000000;fill:#e9ddaf;fill-opacity:1;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19195-9"
+       width="6"
+       height="71.5"
+       x="0"
+       y="75"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top-left.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7"
+       transform="scale(1,-1)" />
+    <path
+       style="fill:none;stroke:#9d862b;stroke-width:1.00956117999999990px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="m 0.50478057,-145.99522 0.0332904,70.490439 m 4.94726603,-0.0394 0.00988,-70.451039"
+       id="path3851-0-0-6-8-1-1-2"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top-left.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7" />
+    <rect
+       style="color:#000000;fill:#e9ddaf;fill-opacity:1;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19195-6"
+       width="6"
+       height="70"
+       x="-225"
+       y="-8.5021975e-007"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom-right.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120"
+       transform="scale(-1,1)" />
+    <path
+       style="fill:none;stroke:#9d862b;stroke-width:1px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="m 224.48944,0.5 0.0106,68.906831 -5,0.09317 -0.01,-69"
+       id="path3851-0-0-6-8-1-1-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom-right.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120" />
+    <path
+       style="fill:none;stroke:url(#linearGradient19464);stroke-width:1.10752344;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       d="m 224.42474,45.554259 0.0215,28.891979 -73.89248,-0.133578"
+       id="path19163-5-4-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       clip-path="none"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom-right.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120" />
+    <rect
+       y="45"
+       x="-224"
+       height="29"
+       width="74"
+       id="rect19193-2-5-1"
+       style="color:#000000;fill:url(#linearGradient4225);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       transform="scale(-1,1)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom-right.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120" />
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3753-1-4-0-5-7"
+       width="5"
+       height="75"
+       x="-5"
+       y="-1.9073486e-005"
+       transform="scale(-1,1)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom-left.png"
+       inkscape:export-xdpi="119.99998"
+       inkscape:export-ydpi="119.99998" />
+    <rect
+       style="color:#000000;fill:#e9ddaf;fill-opacity:1;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19195"
+       width="6"
+       height="70"
+       x="0"
+       y="2.3418767e-016"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom-left.png"
+       inkscape:export-xdpi="119.99998"
+       inkscape:export-ydpi="119.99998" />
+    <path
+       style="fill:none;stroke:#9d862b;stroke-width:1px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="M 0.51056989,0.49999988 0.49999999,69.406831 5.5,69.5 5.50986,0.5"
+       id="path3851-0-0-6-8-1-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom-left.png"
+       inkscape:export-xdpi="119.99998"
+       inkscape:export-ydpi="119.99998" />
+    <path
+       style="fill:none;stroke:url(#linearGradient4227);stroke-width:1.10752344;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       d="m 0.57526197,45.554259 -0.0215,28.891979 L 74.44624,74.31266"
+       id="path19163-5-4-1-5"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       clip-path="none"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom-left.png"
+       inkscape:export-xdpi="119.99998"
+       inkscape:export-ydpi="119.99998" />
+    <rect
+       y="45"
+       x="1"
+       height="29"
+       width="74"
+       id="rect19193-2-5-1-3"
+       style="color:#000000;fill:url(#linearGradient19482-1);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom-left.png"
+       inkscape:export-xdpi="119.99998"
+       inkscape:export-ydpi="119.99998" />
+    <rect
+       style="color:#000000;fill:#e9ddaf;fill-opacity:1;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19195-9-2"
+       width="6"
+       height="75"
+       x="0"
+       y="2.0802804e-006"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-left.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120"
+       transform="scale(1,-1)" />
+    <path
+       style="fill:none;stroke:#9d862b;stroke-width:1.00956117999999990px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="m 0.50478189,-74.495222 0.03329,73.99044139 m 4.94726601,-0.0413563 0.0099,-73.94908509"
+       id="path3851-0-0-6-8-1-1-2-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-left.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120" />
+    <rect
+       style="color:#000000;fill:#e9ddaf;fill-opacity:1;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19195-9-2-3"
+       width="6"
+       height="75"
+       x="219"
+       y="3.8692093e-007"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-right.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120"
+       transform="scale(1,-1)" />
+    <path
+       style="fill:none;stroke:#9d862b;stroke-width:1.00956117999999990px;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+       d="m 219.50478,-74.495221 0.0333,73.99044041 m 4.94726,-0.0414 0.01,-73.94908041"
+       id="path3851-0-0-6-8-1-1-2-6-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-right.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120" />
+    <path
+       style="fill:#000000;stroke:#9d862b;stroke-width:1.10752344000000000;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       d="M 149.44624,74.446238 75.553762,74.312658"
+       id="path19163-5-4-1-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       clip-path="none"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120" />
+    <rect
+       y="44.999996"
+       x="-150"
+       height="29"
+       width="75"
+       id="rect19193-2-5-1-7"
+       style="color:#000000;fill:url(#linearGradient19482-2);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       transform="scale(-1,1)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-bottom.png"
+       inkscape:export-xdpi="120"
+       inkscape:export-ydpi="120" />
+    <path
+       style="fill:#000000;stroke:#9d862b;stroke-width:1.10752344000000000;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;display:inline"
+       d="m 149.63246,-145.55376 -73.892475,-0.13358"
+       id="path19163-5-4-1-0-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       clip-path="none"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7" />
+    <rect
+       y="-175"
+       x="-150.18622"
+       height="29"
+       width="75"
+       id="rect19193-2-5-1-7-4"
+       style="color:#000000;fill:url(#linearGradient19482-2-9);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       transform="scale(-1,1)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\wall-top.png"
+       inkscape:export-xdpi="119.7"
+       inkscape:export-ydpi="119.7" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer9"
+     inkscape:label="repères"
+     style="display:none"
+     transform="translate(0,150)">
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.20361992;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143"
+       width="75"
+       height="75"
+       x="0"
+       y="25" />
+    <rect
+       style="color:#000000;fill:#0000ff;fill-opacity:0.20361992;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-1"
+       width="75"
+       height="75"
+       x="0"
+       y="-50" />
+    <rect
+       style="color:#000000;fill:#008080;fill-opacity:0.20361992;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-1-7"
+       width="75"
+       height="75"
+       x="0"
+       y="-125" />
+    <rect
+       style="color:#000000;fill:#0000ff;fill-opacity:0.20361992;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-14"
+       width="75"
+       height="75"
+       x="75"
+       y="25" />
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.20361992;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-01"
+       width="75"
+       height="75"
+       x="75"
+       y="-50" />
+    <rect
+       style="color:#000000;fill:#008080;fill-opacity:0.20361992;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-1-7-5"
+       width="75"
+       height="75"
+       x="150"
+       y="25" />
+    <rect
+       style="color:#000000;fill:#00ff00;fill-opacity:0.20361992;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-146"
+       width="75"
+       height="75"
+       x="150"
+       y="-125" />
+    <rect
+       style="color:#000000;fill:#0000ff;fill-opacity:0.20361992;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-1-8"
+       width="75"
+       height="75"
+       x="150"
+       y="-50" />
+    <rect
+       style="color:#000000;fill:#0000ff;fill-opacity:0.20361992;fill-rule:nonzero;stroke:none;stroke-width:0.5;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19143-14-7"
+       width="75"
+       height="75"
+       x="75"
+       y="-125" />
+  </g>
+</svg>
