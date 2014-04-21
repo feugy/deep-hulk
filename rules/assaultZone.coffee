@@ -42,6 +42,9 @@ class AssaultZoneRule extends Rule
       Field.where('mapId', actor.map.id).where('x').gte(actor.x-1).where('x').lte(actor.x+range)
           .where('y').gte(actor.y-1).where('y').lte(actor.y+range).exec (err, fields) ->
         return callback err if err?
+        # deny attacker if actor is in base
+        return callback null, null if _.findWhere(fields, x:actor.x, y:actor.y).typeId[0..4] is 'base-'
+      
         # if actor is dreadnought, all part must be testes
         isDreadnought = actor.kind is 'dreadnought' and actor.revealed
         candidates = [actor]

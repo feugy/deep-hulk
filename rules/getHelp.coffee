@@ -60,12 +60,12 @@ class HelpRule extends Rule
           else
             unless player.prefs.help?.cursorDisplayed
               result = [
-                {msg: conf.values.texts.help["#{prefix}Welcome"], hPos: 'center'}
+                {msg: conf.values.texts.help["#{prefix}Welcome"], hPos: 'center', button: 'next'}
                 {msg: conf.values.texts.help.marinePanel, vPos: 'center'}
               ]
         when 'startDeploy'
           unless player.prefs.help?.scanDisplayed
-            result = [msg: conf.values.texts.help["#{prefix}Deploy"], vPos: 'bottom', hPos:'right']
+            result = [msg: conf.values.texts.help["#{prefix}Deploy"], vPos: 'bottom', hPos:'right', button: 'close']
             updatePref player, 'scanDisplayed', true
         when 'deploy'
           unless player.prefs.help?.deployedDisplayed

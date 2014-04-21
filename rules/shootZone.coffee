@@ -51,52 +51,58 @@ class ShootZoneRule extends Rule
   # @option callback result obstacle [Object] if target isn't reachable, map coordinates of obstacle
   # @option callback result weapon [String] id of the used weapon
   execute: (actor, target, params, context, callback) =>
-    selectItemWithin actor.map.id, actor, target, (err, items) =>
-      return callback err, null if err?
-      # check that selected weapon as range combat
-      weapon = actor.weapons[params.weaponIdx]
-      return callback 'closeCombatWeapon', null unless weapon?.rc?
-      # check that this weapon was not already used
-      used = JSON.parse actor.usedWeapons
-      return callback null, null if params.weaponIdx in used
+    # get fields above attacker to check base
+    Field.where('mapId', actor.map.id).where('x', actor.x).where('y', actor.y).exec (err, [field]) ->
+      return callback err if err?
+      # deny shoot if actor is in base
+      return callback null, null if field.typeId[0..4] is 'base-'
       
-      result = 
-        weapon: weapon.id
-        tiles: []
-        obstacle: null
+      selectItemWithin actor.map.id, actor, target, (err, items) =>
+        return callback err, null if err?
+        # check that selected weapon as range combat
+        weapon = actor.weapons[params.weaponIdx]
+        return callback 'closeCombatWeapon', null unless weapon?.rc?
+        # check that this weapon was not already used
+        used = JSON.parse actor.usedWeapons
+        return callback null, null if params.weaponIdx in used
         
-      reachable = isTargetable actor, target, params.weaponIdx, items
-      unless reachable?
-        # add autoCannon already selected targets
-        parseTargetParams params, result.tiles
-        # target not reachable: returns obstacle (with character blocking visibility)
-        result.obstacle = hasObstacle actor, target, items, true
-        return callback null, result
-        
-      tiles = [x:target.x, y:target.y]
-      switch result.weapon
-        when 'missileLauncher'
-          # tiles near target are also hit
-          return Field.where('mapId', actor.map.id).where('x').gte(target.x-1).where('x').lte(target.x+1)
-              .where('y').gte(target.y-1).where('y').lte(target.y+1).exec (err, fields) ->
-            return callback err if err?
-            selectItemWithin actor.map.id, {x:target.x-1, y:target.y-1}, {x:target.x+1, y:target.y+1}, (err, items) =>
+        result = 
+          weapon: weapon.id
+          tiles: []
+          obstacle: null
+          
+        reachable = isTargetable actor, target, params.weaponIdx, items
+        unless reachable?
+          # add autoCannon already selected targets
+          parseTargetParams params, result.tiles
+          # target not reachable: returns obstacle (with character blocking visibility)
+          result.obstacle = hasObstacle actor, target, items, true
+          return callback null, result
+          
+        tiles = [x:target.x, y:target.y]
+        switch result.weapon
+          when 'missileLauncher'
+            # tiles near target are also hit
+            return Field.where('mapId', actor.map.id).where('x').gte(target.x-1).where('x').lte(target.x+1)
+                .where('y').gte(target.y-1).where('y').lte(target.y+1).exec (err, fields) ->
               return callback err if err?
-              result.tiles = (x:tile.x, y:tile.y for tile in fields when not hasObstacle(target, tile, items)?)
+              selectItemWithin actor.map.id, {x:target.x-1, y:target.y-1}, {x:target.x+1, y:target.y+1}, (err, items) =>
+                return callback err if err?
+                result.tiles = (x:tile.x, y:tile.y for tile in fields when not hasObstacle(target, tile, items)?)
+                callback null, result
+                
+          when 'flamer' 
+            # all tiles on the line are hit.
+            return untilWall actor.map.id, reachable, target, (err, target, items) =>
+              return callback err if err?
+              result.tiles = tilesOnLine reachable, target
               callback null, result
-              
-        when 'flamer' 
-          # all tiles on the line are hit.
-          return untilWall actor.map.id, reachable, target, (err, target, items) =>
-            return callback err if err?
-            result.tiles = tilesOnLine reachable, target
-            callback null, result
-          
-        when 'autoCannon'
-          # display also previous targets, stored as string in currentTargets
-          parseTargetParams params, tiles
-          
-      result.tiles = tiles
-      callback null, result
+            
+          when 'autoCannon'
+            # display also previous targets, stored as string in currentTargets
+            parseTargetParams params, tiles
+            
+        result.tiles = tiles
+        callback null, result
   
 module.exports = new ShootZoneRule 'hints'

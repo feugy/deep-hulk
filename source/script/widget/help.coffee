@@ -38,7 +38,6 @@ define [
     constructor: (@scope, @element, atlas) ->
       # to close, simply clear the help content
       @scope.close = => 
-        @_stack.shift()
         @_displayNext()
         
       @scope.discard = =>
@@ -53,25 +52,22 @@ define [
       @element.hide()
       @scope.$watch "help", (value, old) =>
         return unless value isnt old
-        empty = @_stack.length is 0
         if value?
           value = [value] unless angular.isArray value
-          @_stack = @_stack.concat value
+          @_stack = value
         else
           @_stack = []
-        @_displayNext() if empty
+        @_displayNext()
           
     # **private**
     # Display next help message, or hides if needed.
     _displayNext: =>
-      @element.parent().find('.help-backdrop').remove()
-      
       if @_stack.length is 0
         # hide help
         @element.hide()
       else
         # get next message to display
-        @scope.current = @_stack[0]
+        @scope.current = @_stack.shift()
         # positionnate
         pos = top: '5%', left: '5%', bottom: '', right: ''
         switch @scope.current.vPos
@@ -88,5 +84,4 @@ define [
             pos.left = '25%'
         # show help
         @element.css(pos).show()
-        @element.parent().append '<div class="help-backdrop"></div>'
       null

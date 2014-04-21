@@ -308,7 +308,7 @@ define [
       switch operation
         when 'deletion'
           if model?.id is @scope.game?.id
-            @location.path("#{conf.basePath}home").search err: 'game removed'
+            @location.path("#{conf.basePath}home").search err: 'gameRemoved'
         when 'update'
           @scope.$apply =>
             if model?.id is @scope.squad?.id 
@@ -378,6 +378,7 @@ define [
           @scope.selected = null
         else
           @scope.selected = item
+          _.defer => @_askForHelp 'select'
           
     # **private**
     # Handler invoked when clicking on map. Try to fire move rule, or to display

@@ -455,6 +455,8 @@ module.exports = {
       callback = itemsOrCallback
       
     return callback null, null unless target? and actor?
+    # deny if target is a base
+    return callback null, null if target.mapId? and target.typeId[0..4] is 'base-'
     # deny unless on same map and targeting a field (mapId)
     return callback null, null unless actor.map?.id and (actor.map.id is target.mapId or actor.map.id is target.map?.id)
     
