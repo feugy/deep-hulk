@@ -56,7 +56,7 @@ class ShootRule extends Rule
       # abort if sharing tile with a squadmate
       return callback new Error "sharedPosition" if hasSharedPosition items
       # get fields above attackers to check base
-      Field.where('mapId', actor.map.id).where('x', actor.x).where('y', actor.y).exec (err, [field]) ->
+      Field.where('mapId', actor.map.id).where('x', actor.x).where('y', actor.y).exec (err, [field]) =>
         return callback err if err?
         # deny shoot if actor is in base
         return callback null, null if field.typeId[0..4] is 'base-'

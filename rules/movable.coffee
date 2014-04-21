@@ -36,7 +36,7 @@ class MovableRule extends Rule
       return callback err if err?
       # select all nearest fields
       Field.where('mapId', actor.map.id).where('x').gte(actor.x-1).where('x').lte(actor.x+range)
-          .where('y').gte(actor.y-1).where('y').lte(actor.y+range).exec (err, fields) ->
+          .where('y').gte(actor.y-1).where('y').lte(actor.y+range).exec (err, fields) =>
         return callback err if err?
         # return reachable tiles coordinates
         callback null, (x:tile.x, y:tile.y for tile in fields when isReachable actor, tile, items)

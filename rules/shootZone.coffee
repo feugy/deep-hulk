@@ -52,7 +52,7 @@ class ShootZoneRule extends Rule
   # @option callback result weapon [String] id of the used weapon
   execute: (actor, target, params, context, callback) =>
     # get fields above attacker to check base
-    Field.where('mapId', actor.map.id).where('x', actor.x).where('y', actor.y).exec (err, [field]) ->
+    Field.where('mapId', actor.map.id).where('x', actor.x).where('y', actor.y).exec (err, [field]) =>
       return callback err if err?
       # deny shoot if actor is in base
       return callback null, null if field.typeId[0..4] is 'base-'
@@ -84,7 +84,7 @@ class ShootZoneRule extends Rule
           when 'missileLauncher'
             # tiles near target are also hit
             return Field.where('mapId', actor.map.id).where('x').gte(target.x-1).where('x').lte(target.x+1)
-                .where('y').gte(target.y-1).where('y').lte(target.y+1).exec (err, fields) ->
+                .where('y').gte(target.y-1).where('y').lte(target.y+1).exec (err, fields) =>
               return callback err if err?
               selectItemWithin actor.map.id, {x:target.x-1, y:target.y-1}, {x:target.x+1, y:target.y+1}, (err, items) =>
                 return callback err if err?

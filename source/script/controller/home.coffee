@@ -32,11 +32,10 @@ define [
     constructor: (@scope, @location, @atlas, rootScope) -> 
       @scope.player = atlas.player
       err = @location.search()?.err or null
-      @scope.error = null
+      @scope.error = if err? then parseError(new Error err) else null
       @scope.missions = []
       @scope.current = atlas.player
       @scope.joinMission = null
-      @scope.error = decodeURIComponent err if err?
       @onHideRule()
       # bind methods
       @scope.closeError = @closeError

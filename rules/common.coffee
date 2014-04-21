@@ -186,7 +186,7 @@ module.exports = {
     # subtract points to target team if it's a marine (alien can't loose points)
     looser.squad.points -= looser.points unless looser.squad.isAlien
     # add points to actor team unless target kind is same (do not count friendly fire)
-    winner.squad.points += looser.points if looser.squad.isAlien isnt winner.squad.isAlien
+    winner.squad.points += looser.points if winner.squad.isAlien or looser.squad.isAlien
     rule.saved.push looser.squad, winner.squad
     callback null
     

@@ -9,7 +9,7 @@ updatePref = (player, pref, value) ->
 displayTurn = (player, squad, values) ->
   if squad.actions < 4 and not player.prefs.help?.turnDisplayed
     updatePref player, 'turnDisplayed', true
-    [msg: values.texts.help.endTurn]
+    [msg: values.texts.help.endTurn, button: 'close']
   else
     null
     
@@ -56,7 +56,7 @@ class HelpRule extends Rule
           # at start, show welcome if nothing was done yet
           if squad.isAlien
             unless player.prefs.help?.scanDisplayed
-              result = [msg: conf.values.texts.help["#{prefix}Welcome"], hPos: 'center']
+              result = [msg: conf.values.texts.help["#{prefix}Welcome"], hPos: 'center', button: 'close']
           else
             unless player.prefs.help?.cursorDisplayed
               result = [
@@ -67,6 +67,10 @@ class HelpRule extends Rule
           unless player.prefs.help?.scanDisplayed
             result = [msg: conf.values.texts.help["#{prefix}Deploy"], vPos: 'bottom', hPos:'right', button: 'close']
             updatePref player, 'scanDisplayed', true
+        when 'endDeploy'
+          if not player.prefs.help?.panelDisplayed and squad.isAlien
+            result = [msg: conf.values.texts.help.alienPanel, vPos: 'center']
+            updatePref player, 'panelDisplayed', true
         when 'deploy'
           unless player.prefs.help?.deployedDisplayed
             result = [msg: conf.values.texts.help.deployed, vPos: 'bottom', hPos:'right']
@@ -77,19 +81,19 @@ class HelpRule extends Rule
             updatePref player, 'cursorDisplayed', true
         when 'move'
           unless player.prefs.help?.moveDisplayed
-            result = [msg: conf.values.texts.help["#{prefix}Move"], vPos: 'bottom']
+            result = [msg: conf.values.texts.help["#{prefix}Move"], vPos: 'bottom', button: if squad.isAlien then 'close' else undefined]
             updatePref player, 'moveDisplayed', true
           else 
             result = displayTurn player, squad, conf.values
         when 'shoot', 'assault'
           unless player.prefs.help?.attackDisplayed
-            result = [msg: conf.values.texts.help["#{prefix}Attack"]]
+            result = [msg: conf.values.texts.help["#{prefix}Attack"], button: 'close']
             updatePref player, 'attackDisplayed', true
           else 
             result = displayTurn player, squad, conf.values
             
       if result is null and squad.points isnt 0 and not player.prefs.help?.missionDisplayed
-        result = [msg: conf.values.texts.help["#{prefix}Mission"]]
+        result = [msg: conf.values.texts.help["#{prefix}Mission"], button: 'close']
         updatePref player, 'missionDisplayed', true
             
       callback null, result

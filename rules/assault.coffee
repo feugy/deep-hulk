@@ -70,7 +70,7 @@ class AssaultRule extends Rule
     # Process assault resolution on given target
     process = (target) =>
       # get fields above attackers to check base
-      Field.where('mapId', actor.map.id).where('x').in([actor.x, target.x]).where('y').in([actor.y, target.y]).exec (err, fields) ->
+      Field.where('mapId', actor.map.id).where('x').in([actor.x, target.x]).where('y').in([actor.y, target.y]).exec (err, fields) =>
         return callback err if err?
         # deny assault if target or actor is in base
         return callback null, null if _.find(fields, (f) -> f.x is actor.x and f.y is actor.y).typeId[0..4] is 'base-'

@@ -54,10 +54,8 @@ define [
         return unless value isnt old
         if value?
           value = [value] unless angular.isArray value
-          @_stack = value
-        else
-          @_stack = []
-        @_displayNext()
+          @_stack = @_stack.concat value
+        @_displayNext() unless @scope.current?.button?
           
     # **private**
     # Display next help message, or hides if needed.
@@ -65,6 +63,7 @@ define [
       if @_stack.length is 0
         # hide help
         @element.hide()
+        @scope.current = null
       else
         # get next message to display
         @scope.current = @_stack.shift()

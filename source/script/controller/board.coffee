@@ -280,9 +280,10 @@ define [
           @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployInProgress
           @scope.selected = null
       else
+        @_askForHelp 'endDeploy'
         if @scope.squad.isAlien
           @scope.canEndTurn = 'enabled' 
-          # clean alien previous nitifications
+          # clean alien previous notifications
           @scope.notifs.splice 0, @scope.notifs.length
         else
           # indicates to marine that they can go on !
@@ -465,7 +466,7 @@ define [
         return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?   
         # refresh movable tiles
         @displayMovable()
-        
+      
       @_askForHelp rule
                 
     # **private**

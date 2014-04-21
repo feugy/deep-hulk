@@ -61,11 +61,6 @@ class JoinRule extends Rule
           freeGames.games.splice freeGames.games.indexOf(game.id), 1
           console.log "game #{game.name} is full"
           @saved.push freeGames
-          
-      # if joining squad id alien, add to him zone waiting for deployement
-      if joining.isAlien
-        zones = _.uniq(squad.deployZone for squad in game.squads when squad.deployZone? and not squad.isAlien)
-        joining.deployZone = if zones.length isnt 0 then null else zones.join ',' 
       callback null
   
 # A rule object must be exported. You can set its category (constructor optionnal parameter)
