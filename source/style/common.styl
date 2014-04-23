@@ -165,6 +165,26 @@ for i in(1..6)
 
 .home
 
+  .player-details
+    position absolute
+    top 0
+    left 10%
+
+    .content
+      border 2px solid transparent
+      border-image-source url('../image/scores.png')
+      border-image-slice 50% 215
+      border-image-width 100%
+      border-image-repeat repeat
+      padding 5px 25px 
+    
+      > *
+        display inline-flex
+      
+      .btn
+        font-size 80%
+        margin-left 1em
+
   aside
     text-align center
     

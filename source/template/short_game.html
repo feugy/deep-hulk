@@ -1,4 +1,4 @@
 <li class="short-game">
   <h3><i class="fa fa-toggle-right"></i>{{game.name}}<span ng-transclude></span></h3>
-  <div><span class="player" data-ng-repeat="involved in players"><img src="{{squadImage(involved.squad)}}"/>{{involved.player}}</span></div>
+  <div><span class="player" data-ng-repeat="involved in players"><img src="{{squadImage(involved.squad)}}"/>{{getPlayerName(involved.player)}}</span></div>
 </li>

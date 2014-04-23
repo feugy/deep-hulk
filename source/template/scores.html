@@ -1,7 +1,7 @@
 <div class="scores">
   <div class="content">
     <div class="turn"><span>{{'labels.turn'|i18n}}</span><span class="value">{{game.turn}}</span></div>
-    <div data-ng-repeat="squad in game.squads track by $index" title="{{'labels.'+squad.name|i18n}}">
+    <div data-ng-repeat="squad in game.squads track by $index" title="{{'labels.'+squad.name|i18n:{sep:true} }}{{getPlayerName(squad.player)}}">
       <span class="squad"><img src="{{getInstanceImage(squad)}}"/></span>
       <span class="value">{{squad.points}}</span>
     </div>

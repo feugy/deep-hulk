@@ -1,16 +1,21 @@
 'use strict'
 
 define [
+  'underscore'
   'app'
-], (app) ->
+], (_, app) ->
   
   # add the i18n filter
   app.filter 'i18n', ['$parse', (parse) -> (input, options) -> 
     sep = ''
+    # optionnal field separator
     if options?.sep is true
       sep = parse('labels.fieldSeparator') conf
     try
       value = parse(input) conf
+      # performs replacements
+      if options?.args? and _.isArray options.args
+        value = _.sprintf.apply _, [value].concat options.args
     catch exc
       console.error "Failed to parse i18n key '#{input}':", exc
     "#{if value? then value else input}#{sep}"

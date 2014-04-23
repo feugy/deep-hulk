@@ -3,7 +3,7 @@
 define [
   'underscore'
   'util/common'
-], (_, {parseError}) ->
+], (_, {parseError, getPlayerName}) ->
   
   class HomeController
               
@@ -48,6 +48,8 @@ define [
       @scope.onJoinGame = @_onExecuteRule
       @scope.onHideRule = @onHideRule
       @scope.onMissionSelected = @_onMissionSelected
+      @scope.getPlayerName = getPlayerName
+      @scope.logout = @_onLogout
       
       # update openable door when selected model changed
       rootScope.$on 'modelChanged', @_onModelChanged
@@ -68,6 +70,12 @@ define [
       @scope.currentRuleName = null
       @scope.ruleParams = null
       @scope.target = null
+      
+    # **private**
+    # Logout player
+    _onLogout: =>
+      localStorage.removeItem 'game.token'
+      @atlas.disconnect => @location.path("#{conf.basePath}").search {}
       
     # **private**
     # Navigate to a given game for playing

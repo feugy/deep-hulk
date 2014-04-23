@@ -27,6 +27,8 @@ define [
       selected: '=?'
       # function to toggle selection on current character
       onSelect: '=?'
+      # mission for this game, to highlight important characters
+      mission: '=?'
         
   class CharacterDetails
                   
@@ -65,6 +67,22 @@ define [
         _.defer => @_onModelChanged null, 'update', @scope.src, ['revealed']
       else
         @scope.name = scope.src?.name
+      
+      # apply objective is needed
+      @scope.$watch 'mission', @_onMissionSet
+      @_onMissionSet @scope.mission
+    
+    # **private**
+    # When mission is available, highlights character if concerned
+    #
+    # @param value [Item] new value for the mission
+    # @param old [Item] old value for the mission
+    _onMissionSet: (value, old) =>
+      return unless value? and value isnt old
+      return unless @scope.isAlien and @scope.src.revealed
+      expectation = JSON.parse value.mainExpectation
+      switch @scope.mission.mainKind
+        when 'elimination' then @$el.toggleClass 'objective', @scope.src.kind is expectation.kind
       
     # **private**
     # Update displayed name, or toggle widget visibility regarding the map value

@@ -5,7 +5,7 @@
       <span class="owner {{currentSquad}}">{{'labels.speak'|i18n:{sep:true} }}</span><textarea data-ng-keyup="_onMessage($event)"></textarea>
     </div>
     <div data-ng-repeat="entry in log track by $index" class="{{entry.kind}}">
-      <span class="time">{{entry.time|date:'HH:mm:ss'}}</span><span class="owner {{entry.squad}}">{{entry.player || entry.kind}}{{'labels.fieldSeparator' |i18n}}</span><span class="text">{{entry.content}}</span>
+      <span class="time">{{entry.time|date:'HH:mm:ss'}}</span><span class="owner {{entry.squad}}">{{getPlayerName(entry.player)}}{{'labels.fieldSeparator' |i18n}}</span><span class="text">{{entry.content}}</span>
     </div>
   </div>
 </div>

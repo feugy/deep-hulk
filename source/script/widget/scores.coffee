@@ -4,7 +4,7 @@ define [
   'app'
   'util/common'
   'text!template/scores.html'
-], (app, {getInstanceImage}, template) ->
+], (app, {getInstanceImage, getPlayerName}, template) ->
   
   app.directive 'scores', -> 
     # directive template
@@ -37,5 +37,6 @@ define [
     # @param location [Object] Angular service for navigation
     constructor: (@scope, @element, @location) ->
       @scope.getInstanceImage = getInstanceImage
+      @scope.getPlayerName = getPlayerName
       @scope.back = =>
         @location.path("#{conf.basePath}home").search {}

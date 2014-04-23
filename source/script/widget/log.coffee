@@ -3,8 +3,9 @@
 define [
   'underscore'
   'app'
+  'util/common'
   'text!template/log.html'
-], (_, app, template) ->
+], (_, app, {getPlayerName}, template) ->
   
   app.directive 'log', -> 
     # directive template
@@ -48,6 +49,7 @@ define [
     constructor: (@scope, @element, attrs, @animate) ->
       @_initialized = false
       @scope.toggle = @_toggle
+      @scope.getPlayerName = getPlayerName
       @_input = @element.find 'textarea'
       
       @scope._onMessage = (event) =>

@@ -189,10 +189,11 @@ define [
             start.x += 0.5
             start.y += 0.5
             
-          if @scope.src.obstacle and weapon isnt 'autoCannon'
+          if @scope.src.obstacle and weapon isnt 'autoCannon' or @scope.src.tiles.length is 0
             # use different end color for obstacle, and quit
             {r, g, b, a} = hexToRgb conf.colors.obstacle or '#FFFF'
-            return drawVisibilityLine ctx, start, @scope.src.obstacle, renderer, c1, "rgba(#{r}, #{g}, #{b}, #{a})"
+            obstacle = @scope.src.obstacle or @scope.src.target
+            return drawVisibilityLine ctx, start, obstacle, renderer, c1, "rgba(#{r}, #{g}, #{b}, #{a})"
             
           switch weapon
             when 'missileLauncher'

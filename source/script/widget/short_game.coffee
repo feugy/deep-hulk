@@ -2,8 +2,9 @@
 
 define [
   'app'
+  'util/common'
   'text!template/short_game.html'
-], (app, template) ->
+], (app, {getPlayerName}, template) ->
       
   app.directive 'shortGame', -> 
     # directive template
@@ -30,6 +31,7 @@ define [
     # @param scope [Object] Angular current scope
     constructor: (@scope) ->
       @scope.squadImage = @_squadImage
+      @scope.getPlayerName = getPlayerName
       # parse players from game string content
       @scope.$watch 'game.players', (value, old) =>
         return unless value? and value isnt old
