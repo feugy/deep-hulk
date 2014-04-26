@@ -102,7 +102,9 @@ define [
         else
           # inhibit on turn end or deployment in progress unles is alien and needs deployement
           @_inhibit = if @scope.squad?.isAlien and @scope.squad?.deployZone? then false else @scope.squad?.actions < 0 or @scope.squad?.deployZone?
-          @_onSelectActiveRule ev, @scope.activeRule
+          console.log "coucou", @scope.squad?.isAlien, @scope.squad?.deployZone
+          @_currentZone = null
+          @_toggleDeployMode()
       
       # update on model changed
       rootScope.$on 'modelChanged', @_onModelChanged
@@ -234,7 +236,7 @@ define [
           @_askForHelp 'start'
 
           # blips deployment, blip displayal
-          if @scope.squad.deployZone?
+          if @scope.squad?.deployZone?
             @_toggleDeployMode()
           if @scope.squad.actions < 0 
             @scope.canEndTurn = '' 
@@ -249,6 +251,7 @@ define [
     # - If a deploy zone is added to squad: put info on deploy start, and for alien drop deploy zone
     # - If a deploy zone is removed: clean zone, and for marine, put info on deploy end
     _toggleDeployMode: =>
+      return unless @scope.squad?
       if @scope.squad.deployZone?
         @_askForHelp 'startDeploy'
         @scope.canEndTurn = '' 

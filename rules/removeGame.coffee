@@ -31,9 +31,6 @@ class RemoveGameRule extends Rule
     for squad in game.squads
       @removed.push squad
       @removed.push member for member in squad.members
-    # removes actions
-    @removed.push action for action in game.nextActions
-    @removed.push action for action in game.prevActions
     # then map
     mapId = game.id.replace 'game', 'map'
     Map.findCached [mapId], (err, [map]) =>

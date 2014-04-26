@@ -116,7 +116,7 @@ define [
         @hasPreviousAction = @replayPos > 0
             
         # always start from fresh item and apply all previous actions
-        async.each JSON.parse(action.effects), (effect, next) =>
+        async.each action.effects, (effect, next) =>
           @Item.findById effect.id, (err, item) =>
             return next err if err?
             @modelUpdate 'Item', effect, next

@@ -2,15 +2,7 @@ _ = require 'underscore'
 async = require 'async'
 utils = require 'hyperion/util/model'
 Item = require 'hyperion/model/Item'
-Event = require 'hyperion/model/Event'
-EventType = require 'hyperion/model/EventType'
 ClientConf = require 'hyperion/model/ClientConf'
-
-actionType = null
-EventType.findCached ['action'], (err, [type]) =>
-  err = "no type found" if !err and !type?
-  throw new Error "Failed to select action event type at start: #{err?.message or err}" if err?
-  actionType = type 
 
 dices =
   w: [0, 0, 0, 0, 1, 2]
@@ -266,32 +258,25 @@ module.exports = {
       return callback err if err?
       
       # creates an action for this movement: previous state
-      game.prevActions.push prev = new Event
-        id: utils.generateId()
-        type: actionType
+      game.prevActions.push
         kind: kind
         actorId: actor.id
         gameId: game.id
-        effects: JSON.stringify cleanValues _.pluck effects, 1
+        effects: cleanValues _.pluck effects, 1
         
       # and next state, computed from current models
-      newValues = (
-        for effect in effects
-          newEffect = {}
-          # get values directly from modified model
-          newEffect[attr] = effect[0][attr] for attr of effect[1]
-          newEffect
-      )
-      
-      game.nextActions.push next = new Event
-        id: utils.generateId()
-        type: actionType
+      game.nextActions.push
         kind: kind
         actorId: actor.id
         gameId: game.id
-        effects: JSON.stringify cleanValues newValues
-        
-      rule.saved.push prev, next, game
+        effects: cleanValues (
+          for effect in effects
+            newEffect = {}
+            # get values directly from modified model
+            newEffect[attr] = effect[0][attr] for attr of effect[1]
+            newEffect
+        )
+      rule.saved.push game
       callback null
     
   # Indicates wether two items have the same position.
