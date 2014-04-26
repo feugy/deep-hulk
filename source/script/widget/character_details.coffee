@@ -80,9 +80,8 @@ define [
     _onMissionSet: (value, old) =>
       return unless value? and value isnt old
       return unless @scope.isAlien and @scope.src.revealed
-      expectation = JSON.parse value.mainExpectation
       switch @scope.mission.mainKind
-        when 'elimination' then @$el.toggleClass 'objective', @scope.src.kind is expectation.kind
+        when 'elimination' then @$el.toggleClass 'objective', @scope.src.kind is value.mainExpectation?.kind
       
     # **private**
     # Update displayed name, or toggle widget visibility regarding the map value

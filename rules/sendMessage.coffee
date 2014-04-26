@@ -34,18 +34,15 @@ class SendMessageRule extends Rule
   execute: (game, squad, {content}, {player}, callback) =>
     # purge content to avoid injection
     content = sanitizer.sanitize content
-    # parse as array
-    warLog = JSON.parse game.warLog
     # add new entry at the begining.
-    warLog.splice 0, 0, 
+    game.warLog.splice 0, 0, 
       kind: 'chat'
       squad: squad.name
       player: player.email
       time: new Date().getTime()
       content: content
     # removes old entries
-    warLog = warLog[0..warLogMax] if warLog.length > warLogMax
-    game.warLog = JSON.stringify warLog
+    game.warLog = game.warLog[0..warLogMax] if game.warLog.length > warLogMax
     callback null
   
 module.exports = new SendMessageRule 'chat'

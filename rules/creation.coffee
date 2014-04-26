@@ -64,7 +64,7 @@ class CreationRule extends Rule
         return callback err if err?
         players = [player: actor.email, squad: params.squadName]
         # creates the game
-        game = new Item id: "game-#{id}", name: params.gameName, players: JSON.stringify(players), mission:mission, squads: (
+        game = new Item id: "game-#{id}", name: params.gameName, players: players, mission:mission, squads: (
           # creates squads
           for i in [0...squadIds.length]
             name = squadIds[i]
@@ -85,7 +85,7 @@ class CreationRule extends Rule
             
             # appart the alien squad
             if name is 'alien'
-              @_createAliens squad, Alien, JSON.parse mission.aliens
+              @_createAliens squad, Alien, mission.aliens
             else
               @_createMarines squad, Marine, name
                   

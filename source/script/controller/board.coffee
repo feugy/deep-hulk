@@ -118,11 +118,6 @@ define [
         return @location.path "#{conf.basePath}end" if game.finished
         # keep game and player's squad
         @scope.game = game
-        try
-          @scope.log = JSON.parse @scope.game.warLog
-        catch e
-          console.error "Failed to parse warLog:",e
-          @scope.log = []
         @atlas.initReplay game
         @_updateReplayCommands()
         
@@ -335,12 +330,6 @@ define [
                 @atlas.stopReplay()
               if 'prevActions' in changes
                 @_updateReplayCommands()
-              if 'warLog' in changes
-                try 
-                  @scope.log = JSON.parse @scope.game.warLog
-                catch e
-                  console.error "Failed to parse warLog:",e
-                  @scope.log = []
               if 'mainWinner' in changes and @scope.squad?
                 if @scope.game.mainWinner is @scope.squad.name
                   content = conf.texts.notifs.mainMissionCompleted
@@ -539,7 +528,7 @@ define [
     # @param event [Event] key up event
     _onKey: (event) =>
       # disable if cursor currently in an editable element
-      return if event.target.nodeName in ['input', 'textarea', 'select']
+      return if event.target.nodeName.toLowerCase() in ['input', 'textarea', 'select']
       # select current character if shortcut match
       if event.ctrlKey and event.keyCode in [49...57]
         @scope.$apply => @scope.selected = _.where(@scope.squad.members, dead:false)[event.keyCode-49]

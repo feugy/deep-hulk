@@ -65,8 +65,7 @@ class ShootRule extends Rule
         weapon = actor.weapons[params.weaponIdx]
         return callback 'closeCombatWeapon', null unless weapon?.rc?
         # check that this weapon was not already used
-        used = JSON.parse actor.usedWeapons
-        return callback 'alreadyUsed', null if params.weaponIdx in used
+        return callback 'alreadyUsed', null if params.weaponIdx in actor.usedWeapons
         # now check visibility 
         isTargetable actor, target, params.weaponIdx, (err, reachable) =>
           return callback err, null if err?
@@ -87,15 +86,14 @@ class ShootRule extends Rule
                 callback err, results
      
           # consume close conbat unless already consumed during shoot with first weapon
-          actor.ccNum-- if actor.ccNum > 0 and used.length is 0
+          actor.ccNum-- if actor.ccNum > 0 and actor.usedWeapons.length is 0
           # get used weapons to store this new one
-          used.push params.weaponIdx
+          actor.usedWeapons.push params.weaponIdx
           # consume an attack if all weapons were used
-          if used.length is actor.weapons.length
-            used = []
+          if actor.usedWeapons.length is actor.weapons.length
+            actor.usedWeapons = []
             actor.squad.actions--
-          actor.rcNum-- if used.length is 0
-          actor.usedWeapons = JSON.stringify used
+          actor.rcNum-- if actor.usedWeapons.length is 0
           
           # consume remaining moves if a move is in progress
           unless actor.moves is moveCapacities[weapon.id] or actor.moves is 0

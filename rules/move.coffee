@@ -90,7 +90,7 @@ class MoveRule extends Rule
         for i in [0..2]
           actor.parts[i].x = actor.x+(if i is 0 then 1 else i-1)
           actor.parts[i].y = actor.y+(if i is 0 then 0 else 1)
-
+  
       # return safe to base !
       if previous.typeId isnt base and targetType is base
         effects[0][1].dead = false
@@ -115,6 +115,7 @@ class MoveRule extends Rule
           return callback null unless targetType isnt "base-#{actor.squad.name}"
           detectBlips actor, @, effects, (err, revealed) =>
             return callback err if err?
+            return callback() if targetType is base
             addAction 'move', actor, effects, @, callback
             
         # at last reveal new aliens

@@ -32,14 +32,6 @@ define [
     constructor: (@scope) ->
       @scope.squadImage = @_squadImage
       @scope.getPlayerName = getPlayerName
-      # parse players from game string content
-      @scope.$watch 'game.players', (value, old) =>
-        return unless value? and value isnt old
-        @_parsePlayers()
-      @scope.$watch 'game', (value, old) =>
-        return unless value? and value isnt old
-        @_parsePlayers()
-      @_parsePlayers()
       
     # **private**
     # Compute squad image of a given squad
@@ -53,11 +45,3 @@ define [
         when 'bloodangel' then num = 3
         else num = 0
       "#{conf.imagesUrl}squad-#{num}.png"
-    
-    # **private**
-    # Refresh players from game string atribute
-    _parsePlayers: =>
-      try
-        @scope.players = (involved for involved in JSON.parse(@scope.game?.players))
-      catch exc
-        @scope.players = []

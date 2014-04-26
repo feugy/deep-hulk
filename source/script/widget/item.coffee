@@ -144,7 +144,7 @@ define [
       @$el.addClass @scope.model.type.id
       @$el.attr 'id', @scope.model.id
       
-      @_logLength = @scope.model?.log?.length or 2 # empty, contains at least "[]"
+      @_logLength = @scope.model?.log?.length
       @_loadImage()
       @_toggleDraggable()
       @_unbind = rootScope.on 'modelChanged', @_onUpdate
@@ -375,9 +375,7 @@ define [
           if @_logLength < model.log.length
             # assault specific case: display results on map as indication
             indics = []
-            start = if @_logLength > 2 then @_logLength else 1
-            logs = JSON.parse "[" + model.log[start...model.log.length]
-            for log, i in logs
+            for log, i in model.log[@_logLength..]
               # split into two indication: damages and loss
               indics.push 
                 kind: 'damages'

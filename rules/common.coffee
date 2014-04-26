@@ -210,7 +210,7 @@ module.exports = {
     
     # mark parts for death also
     if item.parts?
-      item.parts.dead = true for part in item.parts
+      part.dead = true for part in item.parts
     
     # decreases actions
     item.squad.actions-- unless item.moves is 0
@@ -308,17 +308,14 @@ module.exports = {
     return false
     
   # Store into an actor's log a given result (or list of results).
-  # **Warning** Once added, results cannot be changed !!
   #
   # @param actor [Item] the concerned actor
   # @param result [Object|Array<Object>] an arbitrary result or list of results
   logResult: (actor, result) ->
-    log = JSON.parse actor.log
     if _.isArray result
-      log = log.concat result
+      actor.log = actor.log.concat result
     else
-      log.push result
-    actor.log = JSON.stringify log
+      actor.log.push result
     
   # Check if a given squad has completed main or secondary mission.
   # Invoked when an action has been performed. Supported actions are:
@@ -360,7 +357,7 @@ module.exports = {
           # details is an array of objects containing properties target and result
           return end squad.game unless action is 'attack'
           # target is specified in mission.details
-          expectation = JSON.parse squad.mission.mainExpectation
+          expectation = squad.mission.mainExpectation
           for {target, result} in details 
             if target.kind is expectation.kind and result.dead
               # target eliminated !

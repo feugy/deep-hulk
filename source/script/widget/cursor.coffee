@@ -204,11 +204,10 @@ define [
     # @param model [Model] displayed item
     _updateUsed: (model) =>
       if model?.usedWeapons?
-        used = JSON.parse model.usedWeapons
         @scope.rcNum = []
         for weapon, i in model.weapons
           @scope.rcNum[i] = model.rcNum
-          if i in used
+          if i in model.usedWeapons
             @scope.rcNum[i]-- 
             if @scope.activeWeapon is i
               # current weapon is used: disabled current rule
@@ -263,7 +262,7 @@ define [
     # @param event [Event] key up event
     _onKey: (event) =>
       # disable if cursor currently in an editable element, or no selection
-      return if @scope.selected is null or event.target.nodeName in ['input', 'textarea', 'select']
+      return if @scope.selected is null or event.target.nodeName.toLowerCase() in ['input', 'textarea', 'select']
       # select current character if shortcut match
       for rule, shortcut of @_shortcuts
         if isShortcuts event, shortcut

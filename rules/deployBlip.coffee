@@ -82,7 +82,7 @@ class DeployBlipRule extends Rule
         blip.moves = moveCapacities.blip
         blip.rcNum = 0
         blip.ccNum = 0
-        blip.usedWeapons = '[]'
+        blip.usedWeapons = []
         
         # search for door to open
         blip.doorToOpen = findNextDoor params, items

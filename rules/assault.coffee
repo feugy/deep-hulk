@@ -93,7 +93,7 @@ class AssaultRule extends Rule
           actor.ccNum--
           # consume an attack if all weapons were used
           actor.rcNum--
-          actor.usedWeapons = '[]'
+          actor.usedWeapons = []
           actor.squad.actions--
           # consume remaining moves if a move is in progress
           unless actor.moves is moveCapacities[actor.weapons[0].id] or actor.moves is 0

@@ -68,7 +68,7 @@ class EndOfTurnRule extends Rule
             # add an attack
             member.rcNum = 1
             member.ccNum = 1
-            member.usedWeapons = '[]'
+            member.usedWeapons = []
             if squad.isAlien
               member.moves = moveCapacities[if member.revealed then weapon else 'blip']
               # get alien moves from their kind if revealed, or 5 for blips

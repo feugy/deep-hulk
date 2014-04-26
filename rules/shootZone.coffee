@@ -63,8 +63,7 @@ class ShootZoneRule extends Rule
         weapon = actor.weapons[params.weaponIdx]
         return callback 'closeCombatWeapon', null unless weapon?.rc?
         # check that this weapon was not already used
-        used = JSON.parse actor.usedWeapons
-        return callback null, null if params.weaponIdx in used
+        return callback null, null if params.weaponIdx in actor.usedWeapons
         
         result = 
           weapon: weapon.id

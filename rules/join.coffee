@@ -52,9 +52,7 @@ class JoinRule extends Rule
         squad.player = player.email
         player.characters.push squad
         # update game players
-        players = JSON.parse game.players
-        players.push player: player.email, squad: params.squadName
-        game.players = JSON.stringify players
+        game.players.push player: player.email, squad: params.squadName
       
         # removes from free games if it was the last free squad
         unless _.find(game.squads, (squad) -> squad.player is null)?
