@@ -52,11 +52,11 @@ class JoinRule extends Rule
         
         # update game players array, but keep alien always at last position
         idx = game.players.length
-        idx-- if not squad.isAlien and _.findWhere(game.squads, isAlien:true)?
+        idx-- if not squad.isAlien and _.findWhere(game.players, squad:'alien')?
         game.players.splice idx, 0, player: player.email, squad: params.squadName
         
         # affect active squad wasn't set yet
-        if game.singleActive and not game.squads[0].acitveSquad?
+        if game.singleActive and not game.squads[0].activeSquad?
           other.activeSquad = squad.name for other in game.squads
           
         # removes from free games if it was the last free squad

@@ -21,7 +21,7 @@ class DeployZoneRule extends Rule
       within: squad.deployZone.split ','
     ]
 
-  # Returns tile of the chosen deployable zone, without checks on visibility, nor field existence
+  # Returns tiles of the chosen deployable zone, without checks on visibility, nor field existence
   #
   # @param player [Player] the concerned player
   # @param squad [Item] the concerned squad

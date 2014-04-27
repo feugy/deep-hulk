@@ -63,6 +63,13 @@ class HelpRule extends Rule
                 {msg: conf.values.texts.help["#{prefix}Welcome"], hPos: 'center', button: 'next'}
                 {msg: conf.values.texts.help.marinePanel, vPos: 'center'}
               ]
+        when 'select'
+          unless player.prefs.help?.cursorDisplayed
+            result = [msg: conf.values.texts.help["#{prefix}Cursor"], vPos: 'bottom']
+            if squad.activeSquad? and squad.activeSquad isnt squad.name
+              result[0].msg += conf.values.texts.help.singleActive
+              result[0].button = 'close'
+            updatePref player, 'cursorDisplayed', true
         when 'startDeploy'
           unless player.prefs.help?.scanDisplayed
             result = [msg: conf.values.texts.help["#{prefix}Deploy"], vPos: 'bottom', hPos:'right', button: 'close']
@@ -75,10 +82,6 @@ class HelpRule extends Rule
           unless player.prefs.help?.deployedDisplayed
             result = [msg: conf.values.texts.help.deployed, vPos: 'bottom', hPos:'right']
             updatePref player, 'deployedDisplayed', true
-        when 'select'
-          unless player.prefs.help?.cursorDisplayed
-            result = [msg: conf.values.texts.help["#{prefix}Cursor"], vPos: 'bottom']
-            updatePref player, 'cursorDisplayed', true
         when 'move'
           unless player.prefs.help?.moveDisplayed
             result = [msg: conf.values.texts.help["#{prefix}Move"], vPos: 'bottom', button: if squad.isAlien then 'close' else undefined]
@@ -91,7 +94,7 @@ class HelpRule extends Rule
             updatePref player, 'attackDisplayed', true
           else 
             result = displayTurn player, squad, conf.values
-            
+           
       if result is null and squad.points isnt 0 and not player.prefs.help?.missionDisplayed
         result = [msg: conf.values.texts.help["#{prefix}Mission"], button: 'close']
         updatePref player, 'missionDisplayed', true

@@ -31,8 +31,9 @@ class ShootRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (actor, target, context, callback) =>
-    # inhibit if wanting for deployment
-    return callback null, null if actor.squad?.deployZone?
+    # inhibit if waiting for deployment or other squad
+    if actor.squad?.deployZone? or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
+      return callback null, null 
     # deny if actor cannot attack anymore, or if target isnt a field
     return callback null, false unless not actor.dead and actor.rcNum >= 1 and target?.mapId?
     callback null, [
@@ -53,6 +54,9 @@ class ShootRule extends Rule
     # get near items to check shared position
     selectItemWithin actor.map.id, actor, {x:actor.x+1, y:actor.y+1}, (err, items) =>
       return callback err, null if err?
+      isDreadnought = actor.kind is 'dreadnought' and actor.revealed
+      # for dreadnought, abort if under a door
+      return callback new Error "underDoor" if isDreadnought and actor.underDoor
       # abort if sharing tile with a squadmate
       return callback new Error "sharedPosition" if hasSharedPosition items
       # get fields above attackers to check base

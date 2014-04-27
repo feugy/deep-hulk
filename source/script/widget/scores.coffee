@@ -40,3 +40,9 @@ define [
       @scope.getPlayerName = getPlayerName
       @scope.back = =>
         @location.path("#{conf.basePath}home").search {}
+      @scope.hasActions = (squad) =>
+        console.log "check #{squad.name}, #{squad.activeSquad}, #{@scope.game.singleActive}"
+        if @scope.game?.singleActive
+          squad.activeSquad is squad.name
+        else
+          squad.actions > 0

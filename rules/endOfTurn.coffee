@@ -48,13 +48,26 @@ class EndOfTurnRule extends Rule
       
       # set to -1 to avoid same squad triggering multiple times end of turn
       squad.actions = -1
-      
       console.log "end of turn #{game.turn} for squad #{squad.name}"
+      
+      # in single player mode, set next player as active
+      if game.singleActive
+        active = 'none'
+        for obj, i in game.players when obj.squad is squad.name
+          if game.players[i+1]?
+            active = game.players[i+1].squad
+            break
+        other.activeSquad = active for other in game.squads
+      
       # quit a first squad with remaining actions
       for other in game.squads when other.id isnt squad.id
         return callback null if other.actions >= 0
-          
-      # next turn ! Compute remaining actions for each squads
+         
+      # next turn ! in singl player mode, set first player as active
+      if game.singleActive
+        other.activeSquad = game.players[0].squad for other in game.squads
+        
+      # compute remaining actions for each squads
       async.each game.squads, (s, next) =>
         s.fetch (err, squad) =>
           # fetch squad to get members

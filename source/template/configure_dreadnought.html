@@ -2,7 +2,7 @@
   <label>{{'labels.'+src.kind|i18n:{sep:true} }}</label>
   <div>
     <div data-ng-repeat="_ in target.weapons track by $index" data-ng-init="i = $index" class="row">
-      <label>{{'labels.weaponNumber'|i18n}}{{i}}{{'labels.fieldSeparator'|i18n}}</label>
+      <label>{{'labels.weaponNumber'|i18n}}{{i+1}}{{'labels.fieldSeparator'|i18n}}</label>
       <ng-select data-value="target.weapons[i]" data-items="weapons" data-get-text="getWeaponLabel" data-on-hover="hoverOption"></ng-select>
     </div>
   </div>

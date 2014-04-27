@@ -30,8 +30,9 @@ class AssaultRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] empty parameter array, or null/undefined if rule does not apply
   canExecute: (actor, target, context, callback) =>
-    # inhibit if wanting for deployment
-    return callback null, null if actor.squad?.deployZone?
+    # inhibit if waiting for deployment or other squad
+    if actor.squad?.deployZone? or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
+      return callback null, null 
     # deny if actor cannot attack anymore. 
     return callback null, null unless not actor.dead and actor.ccNum >= 1 and actor.weapons[0].cc?
     # deny unless target is an item

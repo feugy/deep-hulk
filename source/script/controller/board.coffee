@@ -102,9 +102,8 @@ define [
         else
           # inhibit on turn end or deployment in progress unles is alien and needs deployement
           @_inhibit = if @scope.squad?.isAlien and @scope.squad?.deployZone? then false else @scope.squad?.actions < 0 or @scope.squad?.deployZone?
-          console.log "coucou", @scope.squad?.isAlien, @scope.squad?.deployZone
           @_currentZone = null
-          @_toggleDeployMode()
+          @_toggleDeployMode false
       
       # update on model changed
       rootScope.$on 'modelChanged', @_onModelChanged
@@ -226,6 +225,7 @@ define [
       # get squad and its members
       @atlas.Item.fetch [squad], (err, [squad]) => 
         return @scope.$apply( => @scope.notifs.push kind:'error', content: parseError err) if err?
+          
         # then get members
         @atlas.Item.fetch squad.members, (err) => @scope.$apply => 
           return @scope.notifs.push kind:'error', content: parseError err if err?
@@ -235,12 +235,15 @@ define [
           @scope.showHelp = not @atlas.player.prefs?.discardHelp
           @_askForHelp 'start'
 
+          # send notification in single player mode
+          @_onActiveSquadChange()
+            
           # blips deployment, blip displayal
           if @scope.squad?.deployZone?
             @_toggleDeployMode()
           if @scope.squad.actions < 0 
             @scope.canEndTurn = '' 
-            @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther
+            @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
           else
             @scope.canEndTurn = 'enabled'
           # inhibit on replay (always) or turn end (if not alien and deploy) or deploy (and not alien)
@@ -250,7 +253,9 @@ define [
     # Adapt UI to current deploy mode:
     # - If a deploy zone is added to squad: put info on deploy start, and for alien drop deploy zone
     # - If a deploy zone is removed: clean zone, and for marine, put info on deploy end
-    _toggleDeployMode: =>
+    #
+    # @param withNotifs [Boolean] set to false to inhibit notifications send to player. Default to true.
+    _toggleDeployMode: (withNotifs = true)=>
       return unless @scope.squad?
       if @scope.squad.deployZone?
         @_askForHelp 'startDeploy'
@@ -264,7 +269,7 @@ define [
           @_currentZone = first
           @scope.deployScope = 'deployBlip'
           # add notification
-          @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployBlips
+          @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployBlips if withNotifs
           # highligth deployable zone
           @atlas.ruleService.execute 'deployZone', @atlas.player, @scope.squad, {zone:@_currentZone}, (err, zone) => 
             @scope.$apply =>
@@ -285,7 +290,7 @@ define [
           @scope.notifs.splice 0, @scope.notifs.length
         else
           # indicates to marine that they can go on !
-          @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployEnded
+          @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployEnded if withNotifs
         @_currentZone = null
         @scope.deployScope = null
         # inhibit on turn end or replay pos
@@ -293,6 +298,15 @@ define [
         # Redraw previously highlighted zone
         @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
       
+    # **private**
+    # Display to player a notification on which squad is active, if game is in proper mode
+    _onActiveSquadChange: =>
+      return unless @scope.game.singleActive
+      @scope.notifs.push kind: 'info', content: if @scope.squad.activeSquad isnt @scope.squad.name
+        _.sprintf conf.texts.notifs.waitForSquad, conf.labels[@scope.squad.activeSquad]
+      else
+        conf.texts.notifs.playNow
+        
     # **private**
     # Multiple behaviour when model update is received:
     # - navigate away if game was removed
@@ -323,6 +337,8 @@ define [
                   @_onEndTurn() if @scope.squad.actions is 0
               if 'deployZone' in changes
                 @_toggleDeployMode() 
+              if 'activeSquad' in changes
+                @_onActiveSquadChange()
             else if model?.id is @scope.game?.id
               if 'finished' in changes
                 return @location.path "#{conf.basePath}end" if model.finished
@@ -471,7 +487,7 @@ define [
         @atlas.ruleService.execute 'endOfTurn', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
           return @scope.notifs.push kind: 'error', content: parseError err if err?
           # add a notification
-          @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther
+          @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
       return trigger() if @scope.squad.actions is 0
       # still actions ? confirm end of turn
       confirm = @dialog.messageBox conf.titles.confirmEndOfTurn, conf.texts.confirmEndOfTurn, [

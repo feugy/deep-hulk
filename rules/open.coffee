@@ -17,8 +17,9 @@ class OpenRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (actor, door, context, callback) =>
-    # inhibit if wanting for deployment
-    return callback null, null if actor.squad?.deployZone?
+    # inhibit if waiting for deployment or other squad
+    if actor.squad?.deployZone? or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
+      return callback null, null 
     return callback null, if actor.doorToOpen?.equals door then [] else null
       
   # Get the gemini door and open both.

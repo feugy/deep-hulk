@@ -321,6 +321,8 @@ define [
         @_hoverPos = null
         @_drawHover()
       )
+      # first loading if available
+      @_create() unless @scope.src?
 
     # Center map on given coordinate 
     #
@@ -378,7 +380,8 @@ define [
       previous = @scope.selected
       @scope.selected = null
       
-      @$el.wrapInner("<div class='temp'></div>").append '<div class="loading"><progress value="0"/></div>'
+      @$el.wrapInner("<div class='temp'></div>")
+      @$el.find('.temp').append '<div class="loading"><progress value="0"/></div>'
       
       # compute element dimensions and offset
       @_dims =
