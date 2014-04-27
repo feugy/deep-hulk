@@ -44,6 +44,11 @@ define [
       @scope.$watch 'src.within', @_refresh
       @scope.getLabel = (choice) => 
         filter('i18n') "labels['#{choice or 'select'}']"
+      @$el.on 'change', '.bool', (evt) =>
+        return unless @scope.src?
+        console.log $(evt.target).val()
+        @scope.$apply =>
+          @scope.target[@scope.src.name] = $(evt.target).val() is 'true'
   
     # **private**
     # Refresh scop values (and rendering) to reflect param source changes
@@ -56,4 +61,5 @@ define [
           @scope.type = if 'within' of @scope.src then 'select-string' else 'string'
         when 'integer', 'float'
           @scope.type = 'number'
-        # TODO  text, boolean, date, time, datetime, object
+        else 
+          @scope.type = @scope.src.type

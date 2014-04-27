@@ -3,6 +3,10 @@
   <span data-ng-switch on="type">
     <ng-select data-ng-switch-when="select-string" data-value="target[src.name]" data-items="src.within" data-get-text="getLabel" data-on-select="change"></ng-select>
     <input data-ng-switch-when="number" data-ng-model="target[src.name]" type="number" min="{{src.min}}" max="{{src.max}}" required data-ng-change="change()">
+    <form data-ng-switch-when="boolean" class="bool">
+      <input type="radio" name="boolean-{{src.name}}" id="true-{{src.name}}" value="true"/><label for="true-{{src.name}}">{{'labels.yes'|i18n}}</label>
+      <input type="radio" name="boolean-{{src.name}}" id="false-{{src.name}}" value="false"/><label for="false-{{src.name}}">{{'labels.no'|i18n}}</label>
+    </form>
     <input data-ng-switch-default data-ng-model="target[src.name]" type="text" required data-ng-change="change()">
   </span>
 </div>

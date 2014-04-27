@@ -26,6 +26,7 @@ class CreationRule extends Rule
       {name: 'gameName', type: 'string'}
       {name: 'mission', type: 'string', within: ['mission-0', 'mission-2', 'mission-3']}
       {name: 'squadName', type: 'string'}
+      {name: 'singleActive', type: 'boolean'}
     ]
 
   # Effectively creates a game, and its squads
@@ -64,37 +65,53 @@ class CreationRule extends Rule
         return callback err if err?
         players = [player: actor.email, squad: params.squadName]
         # creates the game
-        game = new Item id: "game-#{id}", name: params.gameName, players: players, mission:mission, squads: (
-          # creates squads
-          for i in [0...squadIds.length]
-            name = squadIds[i]
-            squad = new Item {
-              id: "squad-#{id}-#{i}"
-              name: name
-              type: Squad
-              imageNum: squadImages[name]
-              isAlien: name is 'alien'
-              mission: mission
-              members: []
-            }
-            if squadIds[i] is params.squadName
-              console.log "player #{actor.email} choose squad #{params.squadName}"
-              # save first squad into player's games
-              squad.player = actor.email
-              actor.characters.push squad
-            
-            # appart the alien squad
-            if name is 'alien'
-              @_createAliens squad, Alien, mission.aliens
-            else
-              @_createMarines squad, Marine, name
-                  
-            # order is important: save marine before squad
-            @saved.push squad
-            squad
-        ), type: Game
+        game = new Item 
+          id: "game-#{id}"
+          name: params.gameName
+          type: Game
+          players: players
+          mission: mission
+          singleActive: params.singleActive
+          squads: (
+            # creates squads
+            for i in [0...squadIds.length]
+              name = squadIds[i]
+              squad = new Item {
+                id: "squad-#{id}-#{i}"
+                name: name
+                type: Squad
+                imageNum: squadImages[name]
+                isAlien: name is 'alien'
+                mission: mission
+                members: []
+              }
+              # appart the alien squad
+              if name is 'alien'
+                @_createAliens squad, Alien, mission.aliens
+              else
+                @_createMarines squad, Marine, name
+                    
+              # order is important: save marine before squad
+              @saved.push squad
+              squad
+          )
         
-        squad.game = game for squad in game.squads 
+        for squad in game.squads
+          squad.game = game  
+          # set creation player as active squad unless singleActive isn't activated
+          unless params.squadName is 'alien' or not game.singleActive
+            squad.activeSquad = params.squadName 
+          
+          if squad.name is params.squadName
+            console.log "player #{actor.email} choose squad #{squad.name}"
+            # save first squad into player's games
+            squad.player = actor.email
+            actor.characters.push squad
+        
+        # for solo, set squad order to put active squad in first
+        if game.singleActive
+          game.squads = _.sortBy(game.squads, (s) -> s.activeSquad?.length or 0).reverse()
+            
         # order is important: save game before squads
         @saved.splice 0, 0, game
         

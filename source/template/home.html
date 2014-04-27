@@ -23,6 +23,8 @@
       <article data-ng-show="ruleParams.squadName != null" class="alert">
         <div ng-bind-html="'texts.indics[\''+ruleParams.squadName+'\']'|i18n"></div>
       </article>
+      <!-- rush or single active ? -->
+      <param data-src="currentRule.params[3]" data-target="ruleParams"></param>
     </form>
     <div class="buttons">
       <a href="" data-ng-click="onCreateGame()" class="btn">{{'buttons.createGame'|i18n}}</a>

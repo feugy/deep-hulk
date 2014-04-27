@@ -45,20 +45,27 @@ class JoinRule extends Rule
     Item.findCached [freeGamesId], (err, [freeGames]) =>
       return callback err if err?
       return callback new Error "notFree #{freeGamesId}" unless freeGames?
-      joining = null
       for squad in game.squads when squad.name is params.squadName
-        joining = squad
         # affect player to chosen squad
         squad.player = player.email
         player.characters.push squad
-        # update game players
-        game.players.push player: player.email, squad: params.squadName
-      
+        
+        # update game players array, but keep alien always at last position
+        idx = game.players.length
+        idx-- if not squad.isAlien and _.findWhere(game.squads, isAlien:true)?
+        game.players.splice idx, 0, player: player.email, squad: params.squadName
+        
+        # affect active squad wasn't set yet
+        if game.singleActive and not game.squads[0].acitveSquad?
+          other.activeSquad = squad.name for other in game.squads
+          
         # removes from free games if it was the last free squad
         unless _.find(game.squads, (squad) -> squad.player is null)?
           freeGames.games.splice freeGames.games.indexOf(game.id), 1
           console.log "game #{game.name} is full"
+          # at last, update 
           @saved.push freeGames
+          
       callback null
   
 # A rule object must be exported. You can set its category (constructor optionnal parameter)
