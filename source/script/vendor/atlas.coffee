@@ -1306,7 +1306,7 @@
       delete playersCache[email] for email, cached of playersCache when cached.since < limit 
 
       # first check in cache
-      notCached = _.difference emails, _.keys playersCache
+      notCached = _.compact _.difference emails, _.keys playersCache
       if notCached.length is 0
         # all is in cache ! invoke with an empty array to avoid changing since values
         _.defer => process rid, null, []

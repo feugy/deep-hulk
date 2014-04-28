@@ -39,6 +39,7 @@ define [
     constructor: (@scope, @element, @location, players) ->
       @scope.getInstanceImage = getInstanceImage
       @scope.getPlayerName = players.getPlayerName
+      @scope.isPlayerConnected = players.isPlayerConnected
       @scope.back = =>
         @location.path("#{conf.basePath}home").search {}
       @scope.hasActions = (squad) =>

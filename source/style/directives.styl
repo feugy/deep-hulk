@@ -601,9 +601,13 @@ blipSize = 50px
     margin 0 4px -0.5em 0
 
   .player
+    opacity 0.6
     display inline-block
     margin-right 1.5em
     margin-bottom 0.5em
+
+  .player.connected
+    opacity 1
 
 //------------------------------------------------------------------------------
 // Alerts
@@ -721,6 +725,7 @@ blipSize = 50px
       box-shadow 0 0 3px 2px hoverColor
     
     .squad
+      opacity 0.5
       padding 1px 3px
       border-radius 2px
       
@@ -728,6 +733,9 @@ blipSize = 50px
         width 25px      
       .value
         margin-left 5px
+    
+    .squad.connected
+      opacity 1
 
 //------------------------------------------------------------------------------
 // Custom selects

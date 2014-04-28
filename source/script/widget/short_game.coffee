@@ -32,6 +32,7 @@ define [
       @_players = {}
       @scope.squadImage = @_squadImage
       @scope.getPlayerName = players.getPlayerName
+      @scope.isPlayerConnected = players.isPlayerConnected
       
     # **private**
     # Compute squad image of a given squad
