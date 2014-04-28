@@ -322,7 +322,7 @@ define [
         @_drawHover()
       )
       # first loading if available
-      @_create() unless @scope.src?
+      @_create()
 
     # Center map on given coordinate 
     #
@@ -360,6 +360,13 @@ define [
     _create: (reload = true)=>
       # do not re-create if creation in progress
       return if @_progress
+      return unless @scope.dimensions? and @scope.src?
+      # renderer depends on the map kind
+      switch @scope.src.kind
+        when 'square' then @scope.renderer = new SquareRenderer()
+        # no kind ? just wait src to be loaded
+        when undefined, null then return 
+        else throw new Error "map kind #{@scope.src.kind} not supported"
         
       # Initialize internal state
       @_fields = []
@@ -372,29 +379,20 @@ define [
       @_hoverIndicator = null
       @_layers = {}
       @_hapticDelay = null
-      @_progress = null
       @_isDroppable = false
       @_loading = false
       @_dragging = false
       
       previous = @scope.selected
       @scope.selected = null
-      
-      @$el.wrapInner("<div class='temp'></div>")
-      @$el.find('.temp').append '<div class="loading"><progress value="0"/></div>'
-      
+        
       # compute element dimensions and offset
       @_dims =
         width: @$el.width()
         height: @$el.height()
       
-      return unless @scope.dimensions? and @scope.src?
-      # renderer depends on the map kind
-      switch @scope.src.kind
-        when 'square' then @scope.renderer = new SquareRenderer()
-        # no kind ? just wait src to be loaded
-        when undefined, null then return 
-        else throw new Error "map kind #{@scope.src.kind} not supported"
+      @$el.wrapInner("<div class='temp'></div>")
+      @$el.find('.temp').append '<div class="loading"><progress value="0"/></div>'
       @_progress = @$el.find '.loading progress'
       
       # expected map dimension

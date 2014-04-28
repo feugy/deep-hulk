@@ -61,6 +61,7 @@ require [
   './app'
   './service/atlas'
   './service/dialog'
+  './service/players'
   './filter/utils'
   './widget/alert'
   './widget/character_details'

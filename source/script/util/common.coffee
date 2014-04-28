@@ -35,18 +35,6 @@ define [
     euclidianDistance: (posA, posB) ->
       Math.round Math.sqrt Math.pow(posA.x-posB.x, 2) + Math.pow(posA.y-posB.y, 2)
       
-    # Get player friendly name
-    #
-    # @param player [Player|String] player model or just its email value
-    # @return the user-friendly player name 
-    getPlayerName: (player) ->
-      # replace players by their email
-      unless _.isString player
-        player = player?.email
-      return '' unless player?
-      # TODO
-      player
-      
     # Compute image source path for a given instance, to be loaded in an img markup
     # @param instance [Object] instance whom image is needed
     # @returns the corresponding image source string

@@ -287,7 +287,7 @@ module.exports = {
         , callback
       else if actor?.revealed is false
         # for an unrevealed blip, check if he revealed himself to other marines
-        for marine in items when marine.type.id is 'marine' and not module.exports.hasObstacle(marine, actor, items)?
+        for marine in items when marine.type.id is 'marine' and not marine.dead and not module.exports.hasObstacle(marine, actor, items)?
           return reveal actor, callback
         # not visible to anyone
         callback null

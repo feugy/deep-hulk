@@ -3,9 +3,8 @@
 define [
   'underscore'
   'app'
-  'util/common'
   'text!template/log.html'
-], (_, app, {getPlayerName}, template) ->
+], (_, app, template) ->
   
   app.directive 'log', -> 
     # directive template
@@ -26,7 +25,7 @@ define [
   class Log
                   
     # Controller dependencies
-    @$inject: ['$scope', '$element', '$attrs', '$animate']
+    @$inject: ['$scope', '$element', '$attrs', '$animate', 'players']
     
     # Controller scope, injected within constructor
     scope: null
@@ -46,10 +45,11 @@ define [
     #
     # @param scope [Object] directive scope
     # @param element [DOM] directive root element
-    constructor: (@scope, @element, attrs, @animate) ->
+    # @param players [Object] Players service
+    constructor: (@scope, @element, attrs, @animate, players) ->
       @_initialized = false
       @scope.toggle = @_toggle
-      @scope.getPlayerName = getPlayerName
+      @scope.getPlayerName = players.getPlayerName
       @_input = @element.find 'textarea'
       
       @scope._onMessage = (event) =>

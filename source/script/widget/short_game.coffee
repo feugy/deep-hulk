@@ -2,9 +2,8 @@
 
 define [
   'app'
-  'util/common'
   'text!template/short_game.html'
-], (app, {getPlayerName}, template) ->
+], (app, template) ->
       
   app.directive 'shortGame', -> 
     # directive template
@@ -24,14 +23,15 @@ define [
   
   class ShortGame 
     # Controller dependencies
-    @$inject: ['$scope']
+    @$inject: ['$scope', 'players']
     
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] Angular current scope
-    constructor: (@scope) ->
+    constructor: (@scope, players) ->
+      @_players = {}
       @scope.squadImage = @_squadImage
-      @scope.getPlayerName = getPlayerName
+      @scope.getPlayerName = players.getPlayerName
       
     # **private**
     # Compute squad image of a given squad

@@ -3,12 +3,12 @@
 define [
   'underscore'
   'util/common'
-], (_, {parseError, getPlayerName}) ->
+], (_, {parseError}) ->
   
   class HomeController
               
     # Controller dependencies
-    @$inject: ['$scope', '$location', 'atlas', '$rootScope']
+    @$inject: ['$scope', '$location', 'atlas', '$rootScope', 'players']
     
     # Controller scope, injected within constructor
     scope: null
@@ -29,7 +29,8 @@ define [
     # @param location [Object] Angular location service
     # @param atlas [Object] Atlas service
     # @param rootScope [Object] Angular root scope
-    constructor: (@scope, @location, @atlas, rootScope) -> 
+    # @param players [Object] Players service
+    constructor: (@scope, @location, @atlas, rootScope, players) -> 
       @scope.player = atlas.player
       err = @location.search()?.err or null
       @scope.error = if err? then parseError(new Error err) else null
@@ -48,7 +49,7 @@ define [
       @scope.onJoinGame = @_onExecuteRule
       @scope.onHideRule = @onHideRule
       @scope.onMissionSelected = @_onMissionSelected
-      @scope.getPlayerName = getPlayerName
+      @scope.getPlayerName = players.getPlayerName
       @scope.logout = @_onLogout
       
       # update openable door when selected model changed

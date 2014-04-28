@@ -369,13 +369,14 @@ define [
         return unless changes?
         # adapt new position if necessary
         @_positionnate('transition' in changes) if 'x' in changes or 'y' in changes
-        # console.log "received changes for model #{model.type.id} (#{model.id}): ", changes
+        console.log "received changes for model #{model.type.id} (#{model.id}): ", changes
         
         if 'log' in changes
           if @_logLength < model.log.length
             # assault specific case: display results on map as indication
             indics = []
             for log, i in model.log[@_logLength..]
+              console.log ">> display", log
               # split into two indication: damages and loss
               indics.push 
                 kind: 'damages'

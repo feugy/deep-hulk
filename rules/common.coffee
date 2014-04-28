@@ -221,7 +221,11 @@ module.exports = {
         console.log "game #{game.name} is finished"
         rule.saved.push game
         # check mission end
-        module.exports.checkMission item.squad, 'end', rule, null, callback         
+        if _.isString item.squad
+          return Item.findCached [item.squad], (err, [squad]) =>
+            return callback err if err?
+            module.exports.checkMission squad, 'end', rule, null, callback
+        module.exports.checkMission item.squad, 'end', rule, null, callback
      
   # It's possible for a rule to modify or remove items and then to select them
   # from db with their unmodified values, leading to unconsitant results.

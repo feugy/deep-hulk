@@ -4,7 +4,7 @@ define [
   'app'
   'util/common'
   'text!template/scores.html'
-], (app, {getInstanceImage, getPlayerName}, template) ->
+], (app, {getInstanceImage}, template) ->
   
   app.directive 'scores', -> 
     # directive template
@@ -22,7 +22,7 @@ define [
   class Scores
                   
     # Controller dependencies
-    @$inject: ['$scope', '$element', '$location']
+    @$inject: ['$scope', '$element', '$location', 'players']
     
     # Controller scope, injected within constructor
     scope: null
@@ -35,13 +35,13 @@ define [
     # @param scope [Object] directive scope
     # @param element [DOM] directive root element
     # @param location [Object] Angular service for navigation
-    constructor: (@scope, @element, @location) ->
+    # @param players [Object] Players service
+    constructor: (@scope, @element, @location, players) ->
       @scope.getInstanceImage = getInstanceImage
-      @scope.getPlayerName = getPlayerName
+      @scope.getPlayerName = players.getPlayerName
       @scope.back = =>
         @location.path("#{conf.basePath}home").search {}
       @scope.hasActions = (squad) =>
-        console.log "check #{squad.name}, #{squad.activeSquad}, #{@scope.game.singleActive}"
         if @scope.game?.singleActive
           squad.activeSquad is squad.name
         else
