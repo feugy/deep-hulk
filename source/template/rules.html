@@ -1,0 +1,18 @@
+<div>
+  <article data-ng-show="selected != null" class="content">
+    <h2>{{selected.title}}</h2>
+    <div data-ng-bind-html="selected.content"></div>
+  </article>
+  <h1 class="app-title"></h1>
+</div>
+<aside>
+  <div class="mini-panel">
+    <div class="content">
+      <a class='btn' href="" data-ng-click='back()'>{{'buttons.back'|i18n}}</a>
+    </div>
+  </div>
+  <div class="nav frame ng-class:navAnimated ? 'animated' : '';">
+    <h2 data-ng-repeat="paragraph in paragraphs"><a href="#{{paragraph.anchor}}">{{paragraph.title}}</a></h2>
+  </div>
+</aside>
+<div id="copyright" data-ng-bind-html="'texts.copyright'|i18n"></div>

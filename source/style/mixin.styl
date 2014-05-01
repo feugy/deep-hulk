@@ -32,12 +32,21 @@ user-select()
 cursor(value)
   cursor s('url(../image/mouse-%s.png)', value) 7 1, none
 
+selection()
+  ::-moz-selection
+    {block}
+  ::-webkit-selection
+    {block}
+  ::selection
+    {block}
+
 //------------------------------------------------------------------------------
 // Common styles
 
 // apply on current rule background and border for an alert
 applyAlertSkin()
   color alertColor
+  text-shadow 1px 1px 0 black
   padding 1em
   background url(../image/alert-background.png) repeat
   box-shadow 0 0 6px 1px alertColor inset
@@ -48,7 +57,7 @@ applyAlertSkin()
 applyMiniPanelSkin()
   border 2px solid transparent
   border-image-source url('../image/scores.png')
-  border-image-slice 50% 215
-  border-image-width 100%
+  border-image-slice 50% 50
+  border-image-width 100% 60px
   border-image-repeat repeat
-  padding 0px 20px 
+  padding 5px 25px 

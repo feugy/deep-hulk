@@ -3,6 +3,11 @@
   <h1 class="app-title">{{'titles.application'|i18n}}</h1>
 </div>
 <aside>
+  <div class="mini-panel">
+    <div class="content">
+      <a class='btn' href="" data-ng-click='navTo("rules")'>{{'buttons.rules'|i18n}}</a>
+    </div>
+  </div>
   <form class="login-frame frame" method="POST" action="{{loginUrl}}" data-ng-submit="_onSubmit()">
     <h1>{{'titles.welcome'|i18n}}</h1>
     <div>{{'labels.connectWith'|i18n:{sep:true} }}</div>
@@ -18,3 +23,4 @@
     <input type="submit" class="btn" value="{{'buttons.connect'|i18n}}"/>
   </form>
 </aside>
+<div id="copyright" data-ng-bind-html="'texts.copyright'|i18n"></div>

@@ -8,11 +8,12 @@ define [
   'controller/board'
   'controller/configure'
   'controller/end'
+  'controller/rules'
   'angular-route'
   'angular-sanitize'
   'angular-animate'
   'angular-mousewheel'
-], (angular, utils, LoginCtrl, HomeCtrl, BoardCtrl, ConfigureCtrl, EndCtrl) ->
+], (angular, utils, LoginCtrl, HomeCtrl, BoardCtrl, ConfigureCtrl, EndCtrl, RulesCtrl) ->
   
   # declare main module that configures routing
   app = angular.module 'app', ['ngRoute', 'ngSanitize', 'ngAnimate', 'monospaced.mousewheel']
@@ -28,7 +29,7 @@ define [
 
     # dynamically set root from which client files (images, stylesheets...) are loaded
     conf.rootPath = /^(.*\/)([^\/]*)\/\.$/g.exec(require.toUrl('.'))?[1] or ''
-    
+
     # use push state
     location.html5Mode true
     # configure routing
@@ -57,6 +58,10 @@ define [
       templateUrl: "#{conf.rootPath}template/end.html"
       controller: EndCtrl
       resolve: common: utils.enforceConnected
+    route.when "#{conf.basePath}rules",
+      name: 'rules'
+      templateUrl: "#{conf.rootPath}template/rules.html"
+      controller: RulesCtrl
     route.otherwise 
       redirectTo: "#{conf.basePath}login"
   ]
@@ -78,6 +83,8 @@ define [
     # listen to route change to update current controller
     scope.$on '$routeChangeSuccess', (ev, data) ->  
       scope.routeName = data.$$route.name if data.$$route?.name?
+    scope.$on '$routeChangeStart', (event, current, previous) ->
+      scope.previousRoute = previous
   ]
   
   # for debug purposes

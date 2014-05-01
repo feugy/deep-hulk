@@ -41,7 +41,7 @@ define ['jquery', 'util/common'], ($, {parseError}) ->
       ]
               
     # Controller dependencies
-    @$inject: ['$scope', 'check', '$animate']
+    @$inject: ['$scope', 'check', '$location']
     
     # Controller scope, injected within constructor
     scope: null
@@ -50,7 +50,8 @@ define ['jquery', 'util/common'], ($, {parseError}) ->
     #
     # @param scope [Object] Angular current scope
     # @param err [Error] Controller own resolver result
-    constructor: (@scope, err) -> 
+    # @param location [Object] Angular location provider
+    constructor: (@scope, err, location) -> 
       @scope.loginUrl = "#{conf.apiBaseUrl}/auth/login"
       @scope.twitterUrl = "#{conf.apiBaseUrl}/auth/twitter"
       @scope.googleUrl = "#{conf.apiBaseUrl}/auth/google"
@@ -58,6 +59,10 @@ define ['jquery', 'util/common'], ($, {parseError}) ->
       @scope.closeError = @closeError
       @scope._onSubmit = @_onSubmit
       
+      # navigate to other page
+      @scope.navTo = (path, params = {}) =>
+        location.path("#{conf.basePath}#{path}").search params
+        
     # Remove the current error, which hides the alert
     closeError: =>
       @scope.error = null

@@ -148,9 +148,6 @@ define [
     # @return nothing on `resolve()`, an Error object on `reject()`
     enforceConnected: ['$q', '$rootScope', '$location', 'atlas', (q, scope, location, atlas) ->
       dfd = q.defer()
-      
-      scope.$on '$routeChangeStart', callback = (event, current, previous) ->
-        console.log 'current route:', current?.$$route?.name, 'previous:', previous?.$$route?.name
         
       # handle enforcement rejections
       scope.$on '$routeChangeError', callback = (event, current, previous, reason) ->

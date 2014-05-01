@@ -1,13 +1,15 @@
+<!-- player name and logout -->
+<div class="mini-panel">
+  <div class="content">
+    <div class="player">{{'labels.welcome' | i18n:{args:[getPlayerName(current)]} }}</span></div>
+    <a href="" data-ng-click="onNewGame()" class="btn new-game">{{'buttons.newGame'|i18n}}</a>
+    <a class='btn' href="" data-ng-click='navTo("rules")'>{{'buttons.rules'|i18n}}</a>
+    <a class='btn' href="" data-ng-click='logout()'>{{'buttons.logout'|i18n}}</a>
+  </div>
+</div>
 <div>
   <alert data-ng-hide="error == null" close='closeError()'>{{error}}</alert>
   <h1 class="app-title"></h1>
-  <!-- player name and logout -->
-  <div class="player-details">
-    <div class="content">
-      <div class="player">{{'labels.welcome' | i18n:{args:[getPlayerName(current)]} }}</span></div>
-      <a class='btn' href="" data-ng-click='logout()'>{{'buttons.logout'|i18n}}</a>
-    </div>
-  </div>
   <!-- Game creation panel -->
   <div data-ng-hide="currentRuleName !== 'creation'" class="create-game frame">
     <h2>{{'titles.newGame'|i18n}}</h2>
@@ -53,7 +55,6 @@
 </div>
 <aside>
   <!-- Existing game list -->
-  <a href="" data-ng-click="onNewGame()" class="btn new-game">{{'buttons.newGame'|i18n}}</a>
   <div class="frame my-games">
     <h2>{{'titles.myGames'|i18n}}</h2>
     <ul>

@@ -52,6 +52,10 @@ define [
       @scope.getPlayerName = players.getPlayerName
       @scope.logout = @_onLogout
       
+      # navigate to other page
+      @scope.navTo = (path, params = {}) =>
+        @location.path("#{conf.basePath}#{path}").search params
+      
       # update openable door when selected model changed
       rootScope.$on 'modelChanged', @_onModelChanged
       
@@ -76,13 +80,13 @@ define [
     # Logout player
     _onLogout: =>
       localStorage.removeItem 'game.token'
-      @atlas.disconnect => @location.path("#{conf.basePath}").search {}
+      @atlas.disconnect => @scope.navTo ''
       
     # **private**
     # Navigate to a given game for playing
     _onPlay: (game) =>
       # navigate to game if possible
-      @location.path("#{conf.basePath}board").search id:game.id if game?
+      @scope.navTo 'board', id:game.id if game?
       
     # **private**
     # When select a given mission, set the allowed squads in consequence
@@ -151,7 +155,7 @@ define [
           @closeError()
           @onHideRule()
           # navigate to game if possible
-          @location.path("#{conf.basePath}board").search id:gameId if gameId?
+          @scope.navTo 'board', id:gameId if gameId?
       # execute rule with appropriate parameters
       if @scope.target?
         @atlas.ruleService.execute @scope.currentRuleName, @atlas.player, @scope.target, @scope.ruleParams, end

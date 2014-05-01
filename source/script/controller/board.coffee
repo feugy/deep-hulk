@@ -93,6 +93,10 @@ define [
       # show help unless specified
       @scope.showHelp = false
       @scope.help = null
+      
+      # navigate to other page
+      @scope.navTo = (path, params = {}) =>
+        @location.path("#{conf.basePath}#{path}").search params
         
       # update zone on replay quit/enter
       rootScope.$on 'replay', (ev, details) =>

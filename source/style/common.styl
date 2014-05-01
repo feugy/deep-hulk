@@ -38,6 +38,7 @@ body
 a, a:visited, a:link, a:hover
   text-decoration none
   color textColor
+  cursor pointer
 
 body > div 
   width mainWidth 
@@ -54,6 +55,22 @@ for i in(1..6)
     font-size headingSize*(1+(i - 1)*-0.15)
     margin-bottom unit(20*(1+(i - 1)*-0.15) , 'px') 
 
++selection()
+	background alertColor
+
+#copyright    
+  flex 1 0 75%
+  order 10
+  bottom 60px
+  font-size 70%
+  border-top 1px solid alertColor
+  margin 0 50px
+  padding 0
+  user-select text
+
+  p, a
+    color hoverButtonBorderColor
+
 //------------------------------------------------------------------------------
 // Common layering
 
@@ -61,12 +78,20 @@ for i in(1..6)
 .home
 .configure
 .end
+.rules
   display flex
+  flex-flow row wrap
   align-items center
   background-image  url('../image/bg-home.png')
-  background-size cover
+  background-size 100% auto
+  background-repeat no-repeat
+  background-position center right
 
-  > *:not(aside)
+  .alert
+    top 8%
+    position relative
+
+  > *:not(aside):not(.mini-panel)
     flex 1
     padding 2%
     position relative
@@ -97,11 +122,24 @@ for i in(1..6)
     background-repeat no-repeat
     background-position center
 
+  .mini-panel
+    position absolute
+    top 0
+    left 10%
+    z-index 1
+
+    .content
+      applyMiniPanelSkin()
+      padding 5px 25px 
+    
+      > *
+        display inline-flex
+
 //------------------------------------------------------------------------------
 // Login specificities
 
 .login
-  
+
   .providers
     display flex
     justify-content space-between
@@ -165,25 +203,10 @@ for i in(1..6)
 
 .home
 
-  .alert
-    top 8%
-    position relative
-
-  .player-details
-    position absolute
-    top 0
-    left 10%
-
-    .content
-      applyMiniPanelSkin()
-      padding 5px 25px 
-    
-      > *
-        display inline-flex
-      
-      .btn
-        font-size 80%
-        margin-left 1em
+  .mini-panel 
+    .btn
+      font-size 80%
+      margin-left 1em
 
   aside
     text-align center
@@ -218,7 +241,7 @@ for i in(1..6)
       background-image url('../image/replay-buttons.png')
       background-position -29px 0
       background-size 120px 74px
-      cursor default
+      cursor pointer
       display inline-block
       width 91px
       height 25px
@@ -294,12 +317,90 @@ for i in(1..6)
         display inline-block
         width 50px
         margin 0 0 -1em 1em
+  
+//------------------------------------------------------------------------------
+// Rules specificities
+
+.rules
+
+  > div 
+
+    .content
+      position absolute
+      left 0
+      top 10%
+      width 90%
+      max-height 75%
+      margin 50px
+      overflow auto
+      z-index 1
+      applyAlertSkin()
+
+      > *:first-child
+        margin-top -0
+
+      div:not(.imaged)
+        text-align justify
+        margin 1.5em 0
+      p
+        margin 0.5em 0
+
+      h1, h2, h3
+        text-shadow 0 0 3px #D40000
+        border-bottom 1px solid hoverColor
+        color hoverColor
+        padding 0.25em
+        margin 1em 0 0.5em
+
+      .imaged
+        display flex
+
+        > *:not(img)
+          flex 1
+          order 1
+          margin 0
+        img
+          order 1
+          width 250px
+          margin-left 50px
+
+      .imaged.right img
+        order 0
+        margin-left 0
+        margin-right 50px
+
+      strong
+        font-weight bolder
+        text-decoration underline
+
+      ol, ul
+        padding 0.5em 0 0.5em 1em
+
+      ol > li
+        list-style-type square
+
+      ul > li
+        list-style-type upper-roman
+
+  > aside
+    width 30%
+
+    .nav
+      position fixed
+      top 0
+      margin 130px 30px 0 30px 
+      padding 25px 30px
+
+      h2
+        font-size textSize
+        display block
 
 //------------------------------------------------------------------------------
 // Aside animations
 
 movable = {
-  '.login': '.login-frame', 
+  '.login': '.login-frame'
+  '.rules': '.nav.animated'
   '.home': 'aside > *'
   '.configure': 'aside > *'
 }
@@ -315,7 +416,8 @@ for selector, moved in movable
     opacity 0
     top -1000px
 
-fadable = '.create-game', '.join-game'
+fadable = '.create-game' '.join-game' '.rules > div .content'
+
 for faded in fadable
   {faded}.ng-hide-add
   {faded}.ng-hide-remove

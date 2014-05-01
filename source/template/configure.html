@@ -1,3 +1,8 @@
+<div class="mini-panel">
+  <div class="content">
+    <a class='btn' href="" data-ng-click='back()'>{{'buttons.back'|i18n}}</a>
+  </div>
+</div>
 <div>
   <alert data-ng-hide="error == null" data-close="closeError()">{{error}}</alert>
   <h1 class="app-title">{{'titles.application'|i18n}}</h1>
@@ -28,7 +33,6 @@
     </form>
     <div class="buttons">
       <a href="" data-ng-click="onDeploy()" class="btn">{{'buttons.deploy'|i18n}}</a>
-      <a href="" data-ng-click="back()" class="btn">{{'buttons.cancel'|i18n}}</a>
     </div>
   </div>
 </aside>
