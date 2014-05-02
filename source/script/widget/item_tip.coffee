@@ -6,6 +6,13 @@ define [
   'app'
   'text!template/item_tip.html'
 ], ($, _, app, template) ->
+
+  # Translate a json capacity descriptor into a string for displayal
+  # @param capacity [Object] descriptor containing 'r' and 'w' numeric properties
+  # @return corresponding string
+  capacityToString = (capacity) =>
+    return '' unless capacity?
+    ("#{num}#{kind}" for kind, num of capacity).join ''
     
   # The item tip give details on an alien or marine, notably its firepower.
   app.directive 'itemTip', -> 
@@ -19,7 +26,10 @@ define [
     controller: ItemTip
     # parent scope binding.
     scope: 
-      src: '=?'
+      # current player's squad
+      squad: '='
+      # displayed model
+      src: '='
   
   class ItemTip
   
@@ -46,17 +56,31 @@ define [
       @scope.squadImage = "#{conf.imagesUrl}squad-#{@scope.src.squad.imageNum}.png"
       @scope.ccDamages = ""
       @scope.rcDamages = []
+      @scope.armor = if _.contains(@scope.src?.equipment, 'forceField') then @scope.src?.armor-1 else @scope.src?.armor
+      @scope.canInspect = @scope.squad.revealBlips > 0
+      @scope.inspect = @_onInspect
+      @scope.inspected = false
       
       getDamages = =>
         # use first weapon for close combat
-        @scope.ccDamages = "labels.#{@scope.src.weapons[0]?.cc or 'noCc'}"
+        @scope.ccDamages = "labels.#{capacityToString(@scope.src.weapons[0]?.cc) or 'noCc'}"
         @scope.rcDamages = []
         for weapon in @scope.src.weapons
-          @scope.rcDamages.push "labels.#{weapon?.rc or 'noRc'}"
+          @scope.rcDamages.push "labels.#{capacityToString(weapon?.rc) or 'noRc'}"
         
       # Weapon resolution if needed
       return @_resolveWeapon(=> @scope.$apply getDamages) unless @scope.src.weapons[0]?.id?
       getDamages()
+      
+    # **private**
+    # Temporary unreveal the blip if allowed
+    _onInspect: =>
+      return unless @scope.canInspect
+      @scope.inspected = true
+      @atlas.ruleService.execute 'useEquipment', @scope.squad, @scope.squad.members[0], {equipment: 'detector'}, (err, message) =>
+        console.error err if err?
+        # update remaining inspection
+        @scope.canInspect = @scope.squad.revealBlips > 0
       
     # **private**
     # Resolve weapons to get details. Replace source own weapons

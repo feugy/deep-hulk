@@ -16,7 +16,7 @@ damageDreadnought, logResult, checkMission} = require './common'
 # @param target [Item] the tested item
 # @return true if this target is an alien or a marine.
 hasTargetType = (target) ->
-  target?.type?.id in ['marine', 'alien'] and not target?.dead
+  target?.type?.id in ['marine', 'alien'] and not target?.dead and not target?.immune
         
 # Marine ranged attack
 # Effect depends on the equiped weapon
@@ -91,10 +91,10 @@ class ShootRule extends Rule
      
           # consume close conbat unless already consumed during shoot with first weapon
           actor.ccNum-- if actor.ccNum > 0 and actor.usedWeapons.length is 0
-          # get used weapons to store this new one
+          # store this new weapon in used one
           actor.usedWeapons.push params.weaponIdx
-          # consume an attack if all weapons were used
-          if actor.usedWeapons.length is actor.weapons.length
+          # consume an attack if all weapons were used, or equipmed with combined weapon (can only shoot once)
+          if actor.usedWeapons.length is actor.weapons.length or actor.equipment? and 'combinedWeapon' in actor.equipment
             actor.usedWeapons = []
             actor.squad.actions--
           actor.rcNum-- if actor.usedWeapons.length is 0
@@ -104,8 +104,8 @@ class ShootRule extends Rule
             actor.moves = 0
             actor.squad.actions--
             
-          # roll dices
-          dices = rollDices weapon.rc
+          # roll dices, with re-roll if an equipment allows it
+          dices = rollDices weapon.rc, _.any actor.equipment, (equip) -> equip in ['bionicEye', 'digitalWeapons', 'targeter']
           console.log "#{actor.name or actor.kind} (#{actor.squad.name or 'alien'}) shoot with #{weapon.id} at #{target.x}:#{target.y}: #{dices.join ','}"
           
           # depending on the weapon
@@ -127,11 +127,13 @@ class ShootRule extends Rule
                     # edge case: target is shooter. Use modified actor instead fetched value
                     t = actor if t.id is actor.id
                     damages = if t.x is target.x and t.y is target.y then center else around 
+                    # for another edge case, specify center position and damages
                     @_applyDamage actor, t, damages, effects, hitten, (err, result) =>
                       if result?
                         results.push target: t, result: result
                         console.log "hit on target #{t.name or t.kind} (#{t.squad.name or 'alien'}) at #{t.x}:#{t.y}: #{result.loss} (#{result.damages}), died ? #{result.dead}"
                       next err
+                    , damages: center, x: target.x, y: target.y
                 , (err) =>
                   end err, results
                   
@@ -228,12 +230,17 @@ class ShootRule extends Rule
   # @param callback [Function] end callback, invoked with:
   # @option callback err [Error] an error object or null if no error occured
   # @option callback result [Object] an object describe shoot result
-  _applyDamage: (actor, target, damages, effects, hitten, callback) =>
+  # @param center [Object] for weapons with zone effect, store "damages", and "x" + "y" coordinate of center tile
+  _applyDamage: (actor, target, damages, effects, hitten, callback, center = null) =>
     # is a target is a part, apply damages on the main object
     if target.main?
       return target.main.fetch (err, target) =>
         return callback err if err?
-        @_applyDamage actor, target, damages, effects, hitten, callback
+        @_applyDamage actor, target, damages, effects, hitten, callback, center
+        
+    # evaluate damages: if any part is at center, use center damages
+    if center? and target.parts?
+      damages = center.damages for part in target.parts when part.x is center.x and part.y is center.y
         
     # abort if target was already hitten in that shoot
     if _.any(hitten, (hit) -> hit.equals target)

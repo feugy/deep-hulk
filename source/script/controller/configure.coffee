@@ -31,12 +31,13 @@ define [
     # @param dialog [Object] Angular dialog service
     # @param atlas [Object] Atlas service
     constructor: (@scope, @location, @dialog, @atlas) ->
-      @scope.configured = {}
+      @scope.configured = equipments: []
       @scope.getInstanceImage = getInstanceImage
       @scope.onDeploy = @_onDeploy
       @scope.closeError = @_closeError
       @scope.lastSelected = null
       @scope.onHoverOption = @_displayHelp
+      @scope.onHoverEquip = (event, choice) => @_displayHelp event, choice, false
       @scope.isAlien = false
       @scope.getExplanationImage = (weapon) => "#{conf.rootPath}image/effects-#{weapon?.toLowerCase()+if @scope.isAlien then '-dreadnought' else ''}.png"
       @scope.back = => @location.path("#{conf.basePath}home").search()
@@ -60,7 +61,15 @@ define [
         return @location.path "#{conf.basePath}board" if squad.map?
         # fetch squand and all of its members
         @_fetchSquad squad
-
+        # get possible choices for marine equipement
+        unless squad.isAlien
+          @atlas.ruleService.resolve @atlas.player, squad, 'configureSquad', (err, {configureSquad}) => @scope.$apply =>
+            @scope.error = parseError err?.message if err?
+            params = _.findWhere configureSquad?[0]?.params, name:'equipments'
+            @scope.equipNumber = params?.numMax
+            @scope.marines = (member for member in squad.members when not member.isCommander)
+            if params?.within
+              @scope.equipments = (name: item, selectMember: item is 'targeter' for item in params.within)
        
     # Remove the current error, which hides the alert
     _closeError: =>
@@ -71,8 +80,10 @@ define [
     # 
     # @param event [Event] option markup hover event
     # @param choice [String] hovered option's value
-    _displayHelp: (event, choice) =>
-      @scope.lastSelected = choice
+    _displayHelp: (event, choice, withImage=true) =>
+      @scope.lastSelected =
+        name: choice
+        withImage: withImage
       
     # **private**
     # Fetch the current squad and all its members.
@@ -111,15 +122,21 @@ define [
       if @scope.isAlien
         rule = 'configureAliens'
         # configure dreadnought
-        for id, spec of current
+        for id, spec of @scope.configured when id isnt 'equipments'
           for weapon, i in spec.weapons
             params["#{id}-weapon-#{i}"] = weapon
       else
         rule = 'configureSquad'
         # configure marines equipment
-        for id, spec of current
+        for id, spec of @scope.configured when id isnt 'equipments'
           params["#{id}-weapon"] = spec.weapon
-      
+        params.targeter = []
+        params.equipments = (for {name, memberId} in current.equipments
+          params.targeter.push memberId if memberId?
+          name
+        )
+        return if params.equipments.length is 0
+          
       @atlas.ruleService.execute rule, @atlas.player, @scope.squad, params, (err) => @scope.$apply =>
         @scope.error = parseError err?.message if err?
            

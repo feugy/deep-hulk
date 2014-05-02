@@ -4,19 +4,21 @@
   </div>
 </div>
 <div>
-  <alert data-ng-hide="error == null" data-close="closeError()">{{error}}</alert>
-  <h1 class="app-title">{{'titles.application'|i18n}}</h1>
-  <alert class="details" data-ng-hide="lastSelected == null" data-close="lastSelected = null">
-    <h1>{{'labels.'+lastSelected | i18n}}</h1>
-    <div data-ng-bind-html="'texts.indics.'+lastSelected+(isAlien ? 'Dreadnought' : '') | i18n"></div>
-    <div class="schema" style="background-image: url({{getExplanationImage(lastSelected)}});"></div>
-  </alert>
+  <span data-ng-if="game">
+    <alert data-ng-hide="error == null" data-close="closeError()">{{error}}</alert>
+    <h1 class="app-title">{{'titles.application'|i18n}}</h1>
+    <alert class="details" data-ng-hide="lastSelected == null" data-close="lastSelected = null">
+      <h1>{{'labels.'+lastSelected.name | i18n}}</h1>
+      <div data-ng-bind-html="'texts.indics.'+lastSelected.name+(isAlien ? 'Dreadnought' : '') | i18n"></div>
+      <div data-ng-if="lastSelected.withImage" class="schema" style="background-image: url({{getExplanationImage(lastSelected.name)}});"></div>
+    </alert>
+  </span>
 </div>
 <aside>
   <!-- for marine players: squad configuration -->
   <div class="frame ng-class: isAlien ? 'alien' : 'marine';">
     <div>
-      <h1>{{'labels.'+squad.name | i18n}}</h1> <img src="{{getInstanceImage(squad)}}"/>
+      <h1>{{'labels.'+squad.name | i18n}}</h1> <img data-ng-src="{{getInstanceImage(squad)}}"/>
     </div>
     <div ng-bind-html="'texts.configure' + (isAlien ? 'Aliens' : 'Marines') | i18n"></div>
     <form>
@@ -31,6 +33,14 @@
         data-hover-option="onHoverOption"
         class="row"></configure-dreadnought>
     </form>
+    <div data-ng-hide="isAlien">
+      <div ng-bind-html="'texts.chooseEquipment' | i18n:{args:[equipNumber]} "></div>
+      <select-equipment data-equipments="equipments" 
+                        data-target="configured.equipments" 
+                        data-number="equipNumber"
+                        data-members="marines"
+                        data-on-hover="onHoverEquip"></select-equipment>
+    </div>
     <div class="buttons">
       <a href="" data-ng-click="onDeploy()" class="btn">{{'buttons.deploy'|i18n}}</a>
     </div>

@@ -134,8 +134,8 @@ module.exports = {
   # @param withCharacters [Boolean] Takes in account characters when checking visibility. Default to false
   # @return null if target is visible, coordinate of obstacle otherwise
   hasObstacle: (from, to, items, withCharacters = false) ->
-    # dead characters are not visible :)
-    return to if to.dead
+    # dead and immune characters are not visible :)
+    return to if to.dead or to.immune
     return null if from?.x is to?.x and from?.y is to?.y
     #console.log "--- \n hasObstacle #{from.x}|#{from.y} -> #{to.x}|#{to.y}"
     # get tiles on the line, and walls

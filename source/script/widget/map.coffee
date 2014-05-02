@@ -23,6 +23,8 @@ define [
     restrict: 'EA'
     # parent scope binding.
     scope: 
+      # current player's squad
+      squad: '=?'
       # map displayed
       src: '=?'
       # map fields displayed
@@ -358,8 +360,9 @@ define [
     #
     # @param reload [Boolean] if true, reloads fields and items
     _create: (reload = true)=>
+      console.log ">>> create map reload:", reload, "in progress:", @_progress?, "src:", @scope.src?, "dimensions:", @scope.dimensions?
       # do not re-create if creation in progress
-      return if @_progress
+      return if @_progress?
       return unless @scope.dimensions? and @scope.src?
       # renderer depends on the map kind
       switch @scope.src.kind
@@ -538,6 +541,7 @@ define [
             _.defer (data) =>
               @_updateProgress()
               widget = @compile("""<item 
+                  data-squad='squad'
                   data-model-id='#{data.id}' 
                   data-selected='selected' 
                   data-deploy-scope='deployScope'

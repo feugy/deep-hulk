@@ -69,11 +69,12 @@ module.exports = {
   # @param item [Item] item used to retreive game id
   # @return the corresponding game id
   getGameId: (item) ->
-    (item.squad?.id or item.squad)?.replace(/-\d$/, '')?.replace 'squad', 'game'
+    id = if item.type.id is 'squad' then item.id else item.squad?.id or item.squad
+    id?.replace(/-\d$/, '')?.replace 'squad', 'game'
     
-  # Load game corresponding to a given item (that must have a squad)
+  # Load game corresponding to a given item (that must be or have a squad)
   #
-  # @param item [Item|String] item used to retreive game id, or gameId (as String)
+  # @param item [Item|String] marine/squad used to retreive game id, or gameId itself (as String)
   # @param callback [Function] end callback, invoked with:
   # @option callback err [Error] an error object or null if no error occured
   # @option callback game [Item] the corresponding game
@@ -82,7 +83,7 @@ module.exports = {
     unless item is String
       gameId = module.exports.getGameId item
       unless gameId?
-        return callback new Error "Cannot remove item #{item?.id} (#{item?.type?.id}) from map because it doesn't have a squad" 
+        return callback new Error "Failed to retrieve game from item #{item?.id} (#{item?.type?.id})" 
       
     Item.findCached [gameId], (err, [game]) ->
       err = new Error "no game with id #{gameId} found" if !err and !game?
@@ -118,17 +119,30 @@ module.exports = {
     
   # Roll dices
   #
-  # @param spec [String] a given dices specification: (DL)+ where D is a number and L is 'w' or 'r': 3w2r
+  # @param spec [Object] a given dices specification: r for red dices, w for white dices
+  # @param reroll [Boolean] true to allow one dice to be re-rolled. default to false
   # @return an array of dices results: numbers in the same order as spec
-  rollDices: (spec) ->
-    match = spec.match /(\d[wr])/g
+  rollDices: (spec, reroll = false) ->
+    return [0] unless spec
+    
     result = []
-    for spec in match
-      times = parseInt spec[0]
-      for t in [1..times]
+    for kind, num of spec when num > 0
+      for t in [1..num]
         # role a 6-face dice
-        idx = Math.floor Math.random()*6
-        result.push dices[spec[1]][idx]
+        result.push dices[kind][Math.floor Math.random()*6]
+        
+    if reroll
+      i = 0
+      # reroll rules: reroll first dice bellow last 2 possible results.
+      for kind, num of spec when num > 0 
+        for t in [1..num]
+          if result[i] < dices[kind][4]
+            value = dices[kind][Math.floor Math.random()*6]
+            console.log "reroll dice !"
+            #  Then use new roll if better.
+            result[i] = value if value > result[i]
+            return result
+          i++
     result
     
   # Distance function: number of tiles between two point on a map
@@ -202,7 +216,9 @@ module.exports = {
     
     # mark parts for death also
     if item.parts?
-      part.dead = true for part in item.parts
+      for part in item.parts
+        part.dead = true 
+        part.life = 0
     
     # decreases actions
     item.squad.actions-- unless item.moves is 0
@@ -250,7 +266,7 @@ module.exports = {
   # Add an action to current game, for action replay
   #
   # @param kind [String] action kind
-  # @param actor [Item] concerned actor, used to retrieve game. Must have a squad
+  # @param actor [Item] concerned actor, used to retrieve game. Must be or have a squad
   # @param effects [Array<Array>] for each modified model, an array with the modified object at first index
   # and an object containin modified attributes and their previous values at second index (must at least contain id).
   # @param rule [Rule] current rule of which saved/removed object are merges with previous parameter

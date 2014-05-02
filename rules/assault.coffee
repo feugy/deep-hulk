@@ -16,6 +16,34 @@ damageDreadnought, logResult, checkMission} = require './common'
 # @return the sum of array elements
 sum = (arr) =>
   _.reduce arr, ((memo, num) => memo+num), 0
+            
+# Compute the current close range capacity of a given character, taking into account its equipment
+# Equiped melta bomb will be removed
+# If other attackant has assault blad e equiped, remove a dice
+#
+# @param actor [Item] marine or alien for which cc is computed
+# @patam other [Item] opponent in this assault
+# @return the close range capacity used
+computeCc = (actor, other) ->
+  result = {}
+  _.extend result, actor.weapons[0]?.cc or {}
+  
+  if actor.equipment? and 'pistolBolters' in actor.equipment
+    result.w = (result.w or 0) + 1
+  if actor.equipment? and 'meltaBomb' in actor.equipment
+    console.log "#{actor.name or actor.kind} (#{actor.squad.name}) uses melta bomb"
+    result.r = (result.r or 0) + 2
+    # can only be used once
+    actor.equipment.splice actor.equipment.indexOf('meltaBomb'), 1
+  if other.equipment? and 'assaultBlades' in other.equipment and other.x isnt actor.x and other.y isnt actor.y
+    # malus if other has assault blade and in diagonal
+    if result.w > 1
+      result.w--
+    else if result.r > 1
+      result.r--
+    console.log ">> malus due to assault blade !"
+  console.log ">> cc: "+JSON.stringify(result)
+  result
   
 # Marine ranged attack
 # Effect depends on the equiped weapon
@@ -45,8 +73,9 @@ class AssaultRule extends Rule
       candidates = [actor]
       candidates = candidates.concat actor.parts if isDreadnought
       reachable = false
-      # target must be at distance 1 and not on diagonal
-      for candidate in candidates when 1 is distance(candidate, target) and (target.x is candidate.x or target.y is candidate.y)
+      hasBlade = actor.equipment? and 'assaultBlades' in actor.equipment
+      # target must be at distance 1 and not on diagonal (unless having assault blades)
+      for candidate in candidates when 1 is distance(candidate, target) and hasBlade or (target.x is candidate.x or target.y is candidate.y)
         reachable = true 
         break
       callback null, if reachable then [] else null
@@ -93,7 +122,7 @@ class AssaultRule extends Rule
           # consume an attack
           actor.ccNum--
           # consume an attack if all weapons were used
-          actor.rcNum--
+          actor.rcNum-- if actor.rcNum > 0
           actor.usedWeapons = []
           actor.squad.actions--
           # consume remaining moves if a move is in progress
@@ -102,8 +131,8 @@ class AssaultRule extends Rule
             actor.squad.actions--
           
           # roll dices for both actor and target, always take first weapon for close combat
-          actorAttack = sum rollDices actor.weapons[0].cc
-          targetAttack = sum rollDices(target.weapons[0]?.cc) or [0]
+          actorAttack = sum rollDices computeCc(actor, target), _.any actor.equipment, (equip) -> equip in ['digitalWeapons', 'bionicArm']
+          targetAttack = sum rollDices computeCc(target, actor), _.any target.equipment, (equip) -> equip in ['digitalWeapons', 'bionicArm']
           console.log "#{actor.name or actor.kind} (#{actor.squad.name}) assault "+
             "#{target.name or target.kind} (#{target.squad.name}) at #{target.x}:#{target.y}: "+
             "#{actorAttack} vs #{targetAttack}"

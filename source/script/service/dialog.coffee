@@ -88,12 +88,13 @@ define [
   # Dialog provider
   app.factory '$dialog', ['$rootScope', '$compile', '$animate', '$q', (rootScope, compile, animate, q) ->
       # Creates a new `Dialog` with the specified title, message and buttons, and default template.
-      messageBox: (title, message, buttons) -> 
+      messageBox: (title, message, buttons, tpl = template, outerScope = {}) -> 
         scope = rootScope.$new()
         scope.title = title
         scope.message = message
         scope.buttons = buttons
-        new Dialog scope, template, compile, animate, q
+        scope.outer = outerScope
+        new Dialog scope, tpl, compile, animate, q
     ]
       
   

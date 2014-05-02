@@ -53,17 +53,15 @@ define [
     # @param window [DOM] reference to window
     constructor: (@scope, @element, window) ->
       unless @scope.getText?
-        @scope.getText = (v) -> v
+        @scope.getText = (v) -> v or '...'
         
       @_menu = @element.find '.menu'
       @_menuVisible = false
-      console.log "build select for", @_menu
-      
+
       # use keydown, or tab won't be properly captured
       @element.on 'keydown', @_onKey
         
       @scope.select = (event, item, closeMenu=true) =>
-        console.log "select", item
         @scope.value = item
         @scope.closeMenu() if closeMenu
         @scope.onChange?(event, item)

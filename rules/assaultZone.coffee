@@ -1,7 +1,7 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Field = require 'hyperion/model/Field'
-{selectItemWithin} = require './common'
+{selectItemWithin, distance} = require './common'
 {isTargetable} = require './visibility'
 
 # The AssaultZone rule highlight damage zone in close combat
@@ -50,10 +50,18 @@ class AssaultZoneRule extends Rule
         isDreadnought = actor.kind is 'dreadnought' and actor.revealed
         candidates = [actor]
         candidates = candidates.concat actor.parts if isDreadnought
+        
+        hasBlade = actor.equipment? and 'assaultBlades' in actor.equipment
         tiles = []
-        # checks one possible candidate on the same line to exclude diagonals
         for tile in fields when isTargetable(actor, tile, 0, items)?
-          tiles.push tile if _.find(candidates, (candidate) -> tile.x is candidate.x or tile.y is candidate.y)?
+          # checks one possible candidate on the same line to exclude diagonals
+          tiles.push tile if _.find(candidates, (candidate) -> 
+            if hasBlade
+              # add diagonals only if assaultBlades are equiped
+              distance(tile, candidate) is 1
+            else 
+              tile.x is candidate.x or tile.y is candidate.y
+            )?
         callback null, tiles:tiles
   
 module.exports = new AssaultZoneRule 'hints'

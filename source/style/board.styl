@@ -50,12 +50,19 @@ asideHeight = 160px
     background-size 100% 100%
 
     .rules
+    .equipment
       top auto
-      right 34px
-      bottom 12px
       left auto
       font-size 80%
       padding 0.5em 1em
+    
+    .rules
+      right 34px
+      bottom 12px
+
+    .equipment
+      right 35px
+      bottom 55px
 
     > *
       top pad
@@ -105,7 +112,7 @@ asideHeight = 160px
       background-image url(../image/replay-buttons.png)
       background-position 0 0
       background-size 162px 102px
-      cursor default
+      cursor normal
 
     .commands a:hover
     .end-deploy:hover
@@ -231,3 +238,10 @@ asideHeight = 160px
 .board.ng-leave aside
   opacity 0
   bottom - asideHeight
+
+.use-equipment 
+  .alert
+    width 500px
+  .select-equipment
+    justify-content center
+    margin 1em 0

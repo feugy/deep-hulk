@@ -220,7 +220,7 @@ assaultRotation = 60deg
     cursor pointer
 
   .open:not(.active):hover
-    cursor default
+    cursor normal
 
   .open-fire
     // for ng-hide animations
@@ -284,6 +284,7 @@ assaultRotation = 60deg
 .item-tip
   position absolute
   applyAlertSkin()
+  cursor normal
   
   squadImgSize = 30px
 
@@ -297,7 +298,7 @@ assaultRotation = 60deg
       width squadImgSize
       margin -5px (- squadImgSize - 15px) 0 0
 
-  li 
+  > ul > li 
     font-size textSize*0.9
     margin-top 3px
 
@@ -311,8 +312,17 @@ assaultRotation = 60deg
       vertical-align top
 
     .value
+    .equip
       color characterHoverColor
       max-width 110px
+
+    .equip
+      span+span
+        display block
+      span+span::before
+        content '('
+      span+span::after
+        content ')'
 
 //------------------------------------------------------------------------------
 // Marine details directive
@@ -356,12 +366,12 @@ assaultRotation = 60deg
   .move, .life, .attack
     width 40px - padd
     height 18px
-  .move
+  .life
     left 10px
     top 50px
     padding-right padd
     text-align right
-  .life
+  .move
     left 10px
     top 28px
     padding-right padd
@@ -462,12 +472,14 @@ for selector, size in alienSizes
 
 .configure-marine
 .configure-dreadnought
-  margin 0.5em 0
 
   > div label
   > div select
     margin 0.5em 0
     
+.configure-dreadnought .select
+  margin-top 0.5em
+  margin-bottom 1em
 
 //------------------------------------------------------------------------------
 // Deployable blips directive
@@ -702,13 +714,6 @@ blipSize = 50px
     bottom 0
 
 //------------------------------------------------------------------------------
-// Configure marines and dreadnought
-
-.configure-dreadnought .select
-  margin-top 0.5em
-  margin-bottom 1em
-
-//------------------------------------------------------------------------------
 // Scores
 
 .scores
@@ -731,9 +736,10 @@ blipSize = 50px
       border-radius 2px
       
       img
-        width 25px      
-      .value
-        margin-left 5px
+        width 25px    
+
+    .value
+      margin-left 5px
     
     .squad.connected
       opacity 1
@@ -748,7 +754,7 @@ blipSize = 50px
   .value
     background rgba(white, 0.1)
     display block
-    padding 0.25em
+    padding 3px
 
   .selector
     position absolute
@@ -809,10 +815,6 @@ blipSize = 50px
       list-style-type square
       margin-left 1em
 
-    .order
-      font-style italic
-      color hoverColor
-
   .discard
     padding 2px 5px
     border-radius 5px
@@ -822,3 +824,33 @@ blipSize = 50px
     float right
     cursor pointer
     font-size 80%
+
+//------------------------------------------------------------------------------
+// Equipment choice
+
+.select-equipment
+  display flex
+  flex-flow row wrap
+  align-items center
+
+  > *
+    margin 5px
+    width 89px
+    height 60px
+    display flex
+    flex-direction column
+    justify-content space-around
+    align-items center
+    text-align center
+    background rgba(white, 0.1)
+    border-radius 5px
+
+    .select
+      width 90%
+      font-size 80%
+      text-align left
+      .selector
+        padding-top 0
+
+  > .selected
+    box-shadow 0 0 6px 1px alertColor inset

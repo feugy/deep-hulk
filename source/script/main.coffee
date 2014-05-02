@@ -15,12 +15,11 @@ requirejs.config
 
  # paths to vendor libs
   paths:
-    'angular': 'vendor/angular-1.2.7'
-    'angular-animate': 'vendor/angular-animate-1.2.7-min'
+    'angular': 'vendor/angular-1.2.16-min'
+    'angular-animate': 'vendor/angular-animate-1.2.16-min'
     'angular-mousewheel': 'vendor/angular-mousewheel-1.0.4'
-    'angular-route': 'vendor/angular-route-1.2.7-min'
-    'angular-sanitize': 'vendor/angular-sanitize-1.2.7-min'
-    'angular-ui-select': 'vendor/angular-ui-select2-0.5.0'
+    'angular-route': 'vendor/angular-route-1.2.16-min'
+    'angular-sanitize': 'vendor/angular-sanitize-1.2.16-min'
     'atlas': 'vendor/atlas'
     'async': 'vendor/async-0.2.7-min'
     'hamster': 'vendor/hamster-1.0.4'
@@ -29,8 +28,8 @@ requirejs.config
     'socket.io': 'vendor/socket.io-1.0.0-pre'
     'text': 'vendor/require-text-2.0.10'
     'template': '../template'
-    'underscore': 'vendor/underscore-1.4.4-min'
-    'underscore.string': 'vendor/underscore.string-2.3.0-min'
+    'underscore': 'vendor/underscore-1.6.0-min'
+    'underscore.string': 'vendor/underscore.string-2.3.3-min'
     
   # vendor libs dependencies and exported variable
   shim:
@@ -75,6 +74,7 @@ require [
   './widget/notify'
   './widget/rule_params'
   './widget/select'
+  './widget/select_equipment'
   './widget/scores' 
   './widget/short_game' 
   './widget/zone_display' 

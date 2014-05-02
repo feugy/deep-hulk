@@ -4,14 +4,15 @@ define [
   'underscore'
   'jquery'
   'util/common'
-], (_, $, {getInstanceImage, parseError}) ->
+  'text!template/equipment_dialog.html'
+], (_, $, {getInstanceImage, parseError}, equipmentDialogTpl) ->
     
   # two mode controller: displays squad configuration (for marines, before starting game)
   # or displays the game board (for marines and alien)
   class BoardController
               
     # Controller dependencies
-    @$inject: ['$scope', '$location', '$dialog', 'atlas', '$rootScope']
+    @$inject: ['$scope', '$location', '$dialog', 'atlas', '$rootScope', '$filter']
     
     # Controller scope, injected within constructor
     scope: null
@@ -24,6 +25,9 @@ define [
     
     # Link to Angular dialog service
     dialog: null
+    
+    # Angular's filter factory
+    filter: null
     
     #**private**
     # Inhibit commands while aliens are deploying, action replay active or when turn has ended
@@ -52,7 +56,8 @@ define [
     # @param dialog [Object] Angular dialog service
     # @param atlas [Object] Atlas service
     # @param rootScope [Object] Angular root scope
-    constructor: (@scope, @location, @dialog, @atlas, rootScope) ->
+    # @param filter [Object] Angular's filter factory
+    constructor: (@scope, @location, @dialog, @atlas, rootScope, @filter) ->
       @_applicableRules = {}
       @_inhibit = false
       @_currentZone = null
@@ -85,6 +90,7 @@ define [
       @scope._onEndDeploy = @_onEndDeploy
       @scope._onBlipDeployed = @_onBlipDeployed
       @scope._onSelectMenuItem = @_onSelectMenuItem
+      @scope._onDisplayEquipment = @_onDisplayEquipment
       @scope._onHover = (evt, details) =>
         @displayDamageZone(evt, details.field) if @scope.activeRule is 'shoot'
       @scope.getInstanceImage = getInstanceImage
@@ -122,6 +128,7 @@ define [
         # redirect to end if finished
         return @location.path "#{conf.basePath}end" if game.finished
         # keep game and player's squad
+        console.log ">>> display game", game
         @scope.game = game
         @atlas.initReplay game
         @_updateReplayCommands()
@@ -184,24 +191,6 @@ define [
       @atlas.ruleService.execute "sendMessage", @scope.game, @scope.squad, {content:content}, (err, result) => 
         @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
         
-    # **private**
-    # Update action zone depending on new active rule
-    #
-    # @param event [Event] triggering event
-    # @param rule [String] new value for active rule
-    # @param weapon [Numer] selected weapon rank (in weapons) to use in case of shoot
-    _onSelectActiveRule: (event, rule, weapon = 0) =>
-      @scope.activeRule = rule
-      @scope.activeWeapon = weapon
-      # reset targets
-      @scope.needMultipleTargets = false
-      @_multipleTargets = []
-      @scope.zone = null
-      if rule is 'move'
-        @displayMovable()
-      else if rule is 'assault'
-        @displayDamageZone event, @scope.selected
-          
     # **private**
     # Require help from the server if available.
     # Won't send any request if help is not wanted
@@ -301,7 +290,40 @@ define [
         @_inhibit = @scope.squad.actions < 0 or @atlas.replayPos?
         # Redraw previously highlighted zone
         @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
+              
+    # **private**
+    # Trigger a given rule of currently selected character, as it it was selected on menu
+    #
+    # @param rule [String] rule to trigger
+    _askToExecuteRule: (rule) =>
+      return if @_inhibit and not @scope.selected?
+      switch rule
+        when "open"
+          return unless @scope.selected.doorToOpen?
+          @_applicableRules = open: [target: @scope.selected.doorToOpen]
+          break
+        when "shoot"
+          @_applicableRules = shoot: [target: @_multipleTargets[0]]
+      @_onSelectMenuItem null, rule
       
+    # **private**
+    # Update action zone depending on new active rule
+    #
+    # @param event [Event] triggering event
+    # @param rule [String] new value for active rule
+    # @param weapon [Numer] selected weapon rank (in weapons) to use in case of shoot
+    _onSelectActiveRule: (event, rule, weapon = 0) =>
+      @scope.activeRule = rule
+      @scope.activeWeapon = weapon
+      # reset targets
+      @scope.needMultipleTargets = false
+      @_multipleTargets = []
+      @scope.zone = null
+      if rule is 'move'
+        @displayMovable()
+      else if rule is 'assault'
+        @displayDamageZone event, @scope.selected
+          
     # **private**
     # Display to player a notification on which squad is active, if game is in proper mode
     _onActiveSquadChange: =>
@@ -353,6 +375,18 @@ define [
                 @atlas.stopReplay()
               if 'prevActions' in changes
                 @_updateReplayCommands()
+                next = @scope.game.nextActions[-1..]?[0]
+                prev = @scope.game.prevActions[-1..]?[0]
+                # try to display notification when other squad uses equipment
+                if next?.kind is 'equip'
+                  equiped = _.difference(prev?.effects?[0]?.equipment, next.effects?[0]?.equipment)?[0]
+                  unless next.actorId is @scope.squad.id
+                    # find concerned squad name, and display notification
+                    @atlas.Item.findById next.actorId, (err, squad) =>
+                      content = conf.texts.notifs["#{equiped}Used"]
+                      return unless not err? and squad? and content?
+                      @scope.$apply =>
+                        @scope.notifs.push kind: 'info', content: _.sprintf content, @filter('i18n') "labels.#{squad.name}"
               if 'mainWinner' in changes and @scope.squad?
                 if @scope.game.mainWinner is @scope.squad.name
                   content = conf.texts.notifs.mainMissionCompleted
@@ -364,7 +398,6 @@ define [
             else if model is @atlas.player and 'prefs' in changes
               @scope.showHelp = not @atlas.player.prefs?.discardHelp
             
-    
     # **private**
     # Select a given item, or unselect it if previously selected
     #
@@ -436,21 +469,32 @@ define [
       else 
         # no selected item, just proceed.
         proceed()
-        
+      
     # **private**
-    # Trigger a given rule of currently selected character, as it it was selected on menu
-    #
-    # @param rule [String] rule to trigger
-    _askToExecuteRule: (rule) =>
-      return if @_inhibit and not @scope.selected?
-      switch rule
-        when "open"
-          return unless @scope.selected.doorToOpen?
-          @_applicableRules = open: [target: @scope.selected.doorToOpen]
-          break
-        when "shoot"
-          @_applicableRules = shoot: [target: @_multipleTargets[0]]
-      @_onSelectMenuItem null, rule
+    # Display a modal popup to choose equipement to apply
+    _onDisplayEquipment: (event) =>
+      outer = 
+        equipments: (name: item, selectMember: item is 'meltaBomb' for item in @scope.squad.equipment when item isnt 'detector')
+        selected: []
+        members: @scope.squad.members
+        hovered: null
+        displayHelp: (event, item) => outer.hovered = item
+      buttons = [label: conf.buttons.close]
+      
+      if outer.equipments.length
+        buttons.splice 0, 0, label: conf.buttons.equip, result: true
+        message = conf.texts.applyEquipment
+      else 
+        message = conf.texts.noEquipment
+        
+      @dialog.messageBox(conf.titles.equipment, message, buttons, equipmentDialogTpl, outer).open().then (confirmed) =>
+        return unless confirmed and outer.selected.length is 1
+        selected = outer.selected[0]
+        marine = _.findWhere(@scope.squad.members, id:selected.memberId) or @scope.squad.members[0]
+        @atlas.ruleService.execute 'useEquipment', @scope.squad, marine, {equipment: selected.name}, (err, message) => @scope.$apply =>
+          return @scope.notifs.push kind: 'error', content: parseError err if err?
+          # add a notification
+          @scope.notifs.push kind: 'info', content: _.sprintf conf.texts.notifs[message], marine?.name if message
           
     # **private**
     # Handler of map menu selection. Trigger the corresponding rule

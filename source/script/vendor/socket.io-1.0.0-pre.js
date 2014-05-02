@@ -2611,7 +2611,7 @@ JSONPPolling.prototype.doClose = function () {
  */
 
 JSONPPolling.prototype.doPoll = function () {
-  var self = this;
+	var self = this;
   var script = document.createElement('script');
 
   if (this.script) {
@@ -3258,7 +3258,7 @@ Polling.prototype.uri = function(){
   var schema = this.secure ? 'https' : 'http';
   var port = '';
 
-  // cache busting is forced for IE / android / iOS6 Â€_Â€
+  // cache busting is forced for IE / android / iOS6 ò _ò 
   if ('ActiveXObject' in global
     || util.ua.chromeframe
     || util.ua.android

@@ -1,4 +1,4 @@
 <div class="configure-marine">
-  <label><span data-ng-show="src.isCommander">Sgt.</span> {{src.name}}{{'labels.fieldSeparator'|i18n}}</label>
+  <label><span data-ng-show="src.isCommander">{{'labels.sergentPrefix'|i18n}}</span> {{src.name}}{{'labels.fieldSeparator'|i18n}}</label>
   <ng-select data-value="target.weapon" data-items="weapons" data-get-text="getWeaponLabel" data-on-hover="hoverOption"></ng-select>
 </div>

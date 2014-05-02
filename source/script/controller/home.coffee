@@ -73,7 +73,7 @@ define [
     onHideRule: =>
       @scope.currentRule = null
       @scope.currentRuleName = null
-      @scope.ruleParams = null
+      @scope.ruleParams = {}
       @scope.target = null
       
     # **private**
@@ -156,6 +156,7 @@ define [
           @onHideRule()
           # navigate to game if possible
           @scope.navTo 'board', id:gameId if gameId?
+          
       # execute rule with appropriate parameters
       if @scope.target?
         @atlas.ruleService.execute @scope.currentRuleName, @atlas.player, @scope.target, @scope.ruleParams, end

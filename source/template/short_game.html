@@ -3,7 +3,7 @@
   <div>
     <span class="player ng-class:isPlayerConnected(involved.player)?'connected':'';"
           data-ng-repeat="involved in game.players track by $index">
-      <img src="{{squadImage(involved.squad)}}"/>{{getPlayerName(involved.player)}}
+      <img data-ng-src="{{squadImage(involved.squad)}}"/>{{getPlayerName(involved.player)}}
     </span>
   </div>
 </li>

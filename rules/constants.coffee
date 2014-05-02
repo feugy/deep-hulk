@@ -143,4 +143,11 @@ module.exports = {
       armor: 3
       weapons: ['claws']
       points: 0
+      
+  # possible equipment for marine squad
+  equipments:
+    ultramarine: ['digitalWeapons', 'mediKit', 'detector', 'targeter', 'targeter', 'pistolBolters', 'meltaBomb', 'blindingGrenade']
+    imperialfist: ['bionicEye', 'combinedWeapon', 'suspensors', 'targeter', 'targeter', 'pistolBolters', 'meltaBomb', 'blindingGrenade']
+    bloodangel: ['bionicArm', 'forceField', 'assaultBlades', 'targeter', 'targeter', 'pistolBolters', 'meltaBomb', 'blindingGrenade']
+  
 }

@@ -1,0 +1,12 @@
+<div class="select-equipment">
+  <div data-ng-repeat="choice in equipments track by $index"
+       data-ng-click="toggle(choice.name, $index)"
+       data-ng-class="selected[$index] ? 'selected' : ''"
+       data-ng-mouseover="onHover($event, choice.name)">
+    <span>{{'labels.'+choice.name|i18n}}</span>
+    <ng-select data-ng-if="choice.selectMember" 
+               data-items="members" 
+               data-get-text="getMemberName"
+               data-value="_selectedMembers[$index]"></ng-select>
+  </div>
+</div> 

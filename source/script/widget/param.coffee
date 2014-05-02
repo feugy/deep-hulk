@@ -49,7 +49,7 @@ define [
         console.log $(evt.target).val()
         @scope.$apply =>
           @scope.target[@scope.src.name] = $(evt.target).val() is 'true'
-  
+      
     # **private**
     # Refresh scop values (and rendering) to reflect param source changes
     _refresh: =>

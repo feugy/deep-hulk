@@ -73,6 +73,8 @@ class EndOfTurnRule extends Rule
           # fetch squad to get members
           return next err if err?
           squad.actions = 0
+          # reset number of blip to reveal
+          squad.revealBlips = 3 if 'detector' in squad.equipment
           # reset each member, unless not on map
           for member in squad.members when member.map? and not member.dead
             # use first weapon to get allowed moves
@@ -82,6 +84,8 @@ class EndOfTurnRule extends Rule
             member.rcNum = 1
             member.ccNum = 1
             member.usedWeapons = []
+            # remove blinding grenade immunity
+            member.immune = false
             if squad.isAlien
               member.moves = moveCapacities[if member.revealed then weapon else 'blip']
               # get alien moves from their kind if revealed, or 5 for blips
@@ -93,6 +97,9 @@ class EndOfTurnRule extends Rule
             else
               # get marine moves from their weapon
               member.moves = moveCapacities[weapon]
+              # suspensors act as bolters !
+              member.moves = moveCapacities.bolter if member.equipment? and 'suspensors' in member.equipment
+                
           # no alive squad members ? set to -1 to prevent player hitting next turn
           squad.actions = 0 if squad.actions is -1
           next()

@@ -1,0 +1,19 @@
+<div class="modal">
+  <div class="frame modal-dialog use-equipment">
+    <header><h1>{{title}}</h1></header>
+    <div class="modal-body" data-ng-bind-html="message"></div>
+    <select-equipment data-equipments="outer.equipments"
+                      data-number="1"
+                      data-target="outer.selected"
+                      data-members="outer.members"
+                      data-selected-members="outer.selectedMembers"
+                      data-on-hover="outer.displayHelp"></select-equipment>
+    <alert data-close="outer.hovered = null">
+      <div data-ng-if="outer.hovered != null" data-ng-bind-html="'texts.indics.'+outer.hovered | i18n"></div>
+    </alert>
+    <footer class="buttons">
+      <a class="btn {{button.classes}}" href="" data-ng-click="close(button.result, $index)" data-ng-repeat="button in buttons">{{button.label}}</a>
+    </footer>
+  </div>
+</div>
+<div class="modal-backdrop"></div>

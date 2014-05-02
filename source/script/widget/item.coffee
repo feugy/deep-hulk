@@ -36,6 +36,8 @@ define [
     restrict: 'EA'
     # parent scope binding.
     scope: 
+      # current player squad
+      squad: '=?'
       # displayed item model id
       modelId: '@'
       # currently selected item
@@ -114,6 +116,10 @@ define [
     # Tooltip delay before displayal
     _tipDelay: null
     
+    # **private**
+    # Delay before tooltip hideout, to allow user reentering
+    _tipHideDelay: null
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] directive scope
@@ -130,16 +136,14 @@ define [
       @_start = null
       @_newPos = null
       @_reloadAfterAnimation = false
+      @_tipHideDelay = null
+      @_tipDelay = null
       
       # get model within map items
       @scope.model = _.find @scope.$parent.items, (item) => item.id is @scope.modelId
       
       if @scope.model?.type?.id in ['alien', 'marine']
-        @$el.on 'mouseenter', =>
-          @_tipDelay = _.delay @_showTip, Item.tooltipDelay
-        @$el.on 'mouseleave', =>
-          clearTimeout @_tipDelay
-          @_hideTip()
+        @$el.on('mouseenter', @_onHoverItem).on 'mouseleave', @_onLeaveItem
   
       @$el.addClass @scope.model.type.id
       @$el.attr 'id', @scope.model.id
@@ -369,14 +373,13 @@ define [
         return unless changes?
         # adapt new position if necessary
         @_positionnate('transition' in changes) if 'x' in changes or 'y' in changes
-        console.log "received changes for model #{model.type.id} (#{model.id}): ", changes
+        # console.log "received changes for model #{model.type.id} (#{model.id}): ", changes
         
         if 'log' in changes
           if @_logLength < model.log.length
             # assault specific case: display results on map as indication
             indics = []
             for log, i in model.log[@_logLength..]
-              console.log ">> display", log
               # split into two indication: damages and loss
               indics.push 
                 kind: 'damages'
@@ -422,10 +425,28 @@ define [
       next event, kind, model, changes
         
     # **private**
+    # On item (or tip) entering, display tip (or cancel its closure)
+    _onHoverItem: =>
+      if @_tipHideDelay
+        # cancel tip closure
+        clearTimeout @_tipHideDelay
+        @_tipHideDelay = null
+      else unless @_tip?
+        @_tipDelay = _.delay @_showTip, Item.tooltipDelay
+        
+    # **private**
+    # On item (or tip) leaving, start tip closure (or cancel tip opening)
+    _onLeaveItem: =>
+      clearTimeout @_tipDelay
+      # delay to let mouse reentering
+      @_tipHideDelay = _.delay @_hideTip, 200
+      
+    # **private**
     # Show information tooltip.
     _showTip: =>
       @scope.$apply =>
-        @_tip = @compile("<item-tip data-src='model'/>") @scope
+        @_tip = @compile("<item-tip data-squad='squad' data-src='model'/>") @scope
+        console.log ">> show tip:", @_tip
         pad = 20
         # item position and dimensions
         pos = @$el[0].getBoundingClientRect()
@@ -445,11 +466,17 @@ define [
           result.bottom = screen.height-pos.bottom+pad
         # positionnate into body
         @_tip.css result
+        @_tip.on('mouseenter', @_onHoverItem).on 'mouseleave', @_onLeaveItem
+        
+        @_tipHideDelay = null
         $('body').append @_tip
       
     # **private**
     # Hide information tooltip.
     _hideTip: =>
+      console.log ">> hide tip:", @_tip
+      @_tipHideDelay = null
       return unless @_tip?
+      @_tip.off()
       @_tip.remove()
       @_tip = null

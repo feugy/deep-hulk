@@ -1,15 +1,22 @@
 <article class="item-tip">
-  <h2 data-ng-hide="isAlien"><span data-ng-show="src.isCommander">{{'labels.sergentPrefix'|i18n}}</span>{{src.name}}<img src="{{squadImage}}"></h2>
-  <h2 data-ng-show="isAlien">{{(src.revealed ? 'labels.'+src.kind : 'labels.blip') | i18n}}<img src="{{squadImage}}"></h2>
-  <ul>
-    <li data-ng-hide="src.revealed === false"><label>{{'labels.life'|i18n:{sep:true} }}</label><span class="value">{{src.life}}</span></li>
-    <li data-ng-hide="src.revealed === false"><label>{{'labels.armor'|i18n:{sep:true} }}</label><span class="value">{{src.armor}}</span></li>
+  <h2 data-ng-if="!isAlien"><span data-ng-show="src.isCommander">{{'labels.sergentPrefix'|i18n}}</span>{{src.name}}<img src="{{squadImage}}"></h2>
+  <h2 data-ng-if="isAlien">{{(src.revealed || inspected? 'labels.'+src.kind : 'labels.blip') | i18n}}<img data-ng-src="{{squadImage}}"></h2>
+  <ul data-ng-if="src.revealed !== false || inspected">
+    <li><label>{{'labels.life'|i18n:{sep:true} }}</label><span class="value">{{src.life}}</span></li>
+    <li><label>{{'labels.armor'|i18n:{sep:true} }}</label><span class="value">{{armor}}</span></li>
     <li><label>{{'labels.moves'|i18n:{sep:true} }}</label><span class="value">{{src.moves}}</span></li>
-    <li data-ng-hide="src.revealed === false"><label>{{'labels.attacks'|i18n:{sep:true} }}</label><span class="value">{{src.rcNum || src.ccNum}}</span></li>
-    <li data-ng-hide="src.revealed === false"><label>{{'labels.closeDamages'|i18n:{sep:true} }}</label><span class="value">{{ccDamages | i18n}}</span></li>
-    <li data-ng-hide="src.revealed === false" 
-      data-ng-repeat-start="weapon in src.weapons"><label>{{'labels.weapon'|i18n:{sep:true} }}</label><span class="value">{{'labels.' + (weapon.id || weapon) | i18n}}</span></li>
-    <li data-ng-hide="src.revealed === false"
-      data-ng-repeat-end><label>{{'labels.rangeDamages'|i18n:{sep:true} }}</label><span class="value">{{rcDamages[$index] | i18n}}</span></li>
+    <li><label>{{'labels.attacks'|i18n:{sep:true} }}</label><span class="value">{{src.rcNum || src.ccNum}}</span></li>
+    <li><label>{{'labels.closeDamages'|i18n:{sep:true} }}</label><span class="value">{{ccDamages | i18n}}</span></li>
+    <li data-ng-repeat-start="weapon in src.weapons"><label>{{'labels.weapon'|i18n:{sep:true} }}</label><span class="value">{{'labels.' + (weapon.id || weapon) | i18n}}</span></li>
+    <li data-ng-repeat-end><label>{{'labels.rangeDamages'|i18n:{sep:true} }}</label><span class="value">{{rcDamages[$index] | i18n}}</span></li>
+    <li data-ng-if="src.equipment">
+      <label>{{'labels.equipment'|i18n:{sep:true} }}</label><ul class="equip">
+        <li data-ng-repeat="equip in src.equipment"><span>{{'labels.'+equip | i18n}}</span><span>{{'labels.'+equip+'Desc' | i18n}}</span></li>
+      </ul>
+    </li>
+  </ul>
+  <ul data-ng-if="src.revealed === false && !inspected">
+    <li><label>{{'labels.moves'|i18n:{sep:true} }}</label><span class="value">{{src.moves}}</span></li>
+    <a href="" data-ng-if="canInspect" class="btn" data-ng-click="inspect()">{{'buttons.inspect'|i18n}}</a>
   </ul>
 </article>

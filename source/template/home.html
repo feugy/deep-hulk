@@ -7,11 +7,11 @@
     <a class='btn' href="" data-ng-click='logout()'>{{'buttons.logout'|i18n}}</a>
   </div>
 </div>
-<div>
-  <alert data-ng-hide="error == null" close='closeError()'>{{error}}</alert>
+<div data-ng-if="player">
+  <alert data-ng-show="error != null" close='closeError()'>{{error}}</alert>
   <h1 class="app-title"></h1>
   <!-- Game creation panel -->
-  <div data-ng-hide="currentRuleName !== 'creation'" class="create-game frame">
+  <div data-ng-show="currentRuleName === 'creation'" class="create-game frame">
     <h2>{{'titles.newGame'|i18n}}</h2>
     <form>
       <param data-src="currentRule.params[0]" data-target="ruleParams"></param>
@@ -38,7 +38,7 @@
   </div>
   
   <!-- Game join panel -->
-  <div data-ng-hide="currentRuleName !== 'join'" class="join-game frame">
+  <div data-ng-show="currentRuleName === 'join'" class="join-game frame">
     <h2>{{'titles.joinGame'|i18n}}{{target.name}}</h2>
     <article class="alert">
       <div ng-bind-html="'texts.missions[\''+joinMission+'\']'|i18n"></div>

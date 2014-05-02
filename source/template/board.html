@@ -4,6 +4,7 @@
   
   <!-- map displayal and interactive cursor -->
   <map
+    data-squad="squad"
     data-src="squad.map" 
     data-dimensions="game.mapDimensions"
     data-vertical-tile-num="13"
@@ -52,7 +53,7 @@
         data-on-select="_onSelectMember"
         data-selected="$parent.selected"></character-details>
     </div>
-    <img class="logo" src="{{getInstanceImage(squad)}}"/>
+    <img class="logo" data-ng-src="{{getInstanceImage(squad)}}"/>
     <!-- messages -->
     <log data-src="game.warLog" data-send-message="sendMessage" data-current-squad="squad.name"/>
     <!-- action replay commands -->
@@ -62,6 +63,7 @@
       <a href="" class="ng-class:canStopReplay;" data-ng-click="_onStopReplay()"><i class="fa fa-stop"></i></a>
       <a href="" class="end-turn ng-class:canEndTurn;" data-ng-click="_onEndTurn()">{{'labels.endOfTurn'|i18n}}</i></a>
     </div>
+    <a class="btn equipment" href="" data-ng-click='_onDisplayEquipment()'>{{'buttons.equipment'|i18n}}</a>
     <a class="btn rules" href="" data-ng-click='navTo("rules")'>{{'buttons.rules'|i18n}}</a>
   </aside>
 </div>

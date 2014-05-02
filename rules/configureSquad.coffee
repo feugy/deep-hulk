@@ -2,7 +2,7 @@ _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 ItemType = require 'hyperion/model/ItemType'
-{heavyWeapons, marineWeapons, commanderWeapons, weapons, weaponImages, moveCapacities} = require './constants'
+{heavyWeapons, marineWeapons, commanderWeapons, weapons, weaponImages, moveCapacities, equipments} = require './constants'
   
 # Squad configuration: set weapons and equipment
 class ConfigureSquadRule extends Rule
@@ -10,25 +10,39 @@ class ConfigureSquadRule extends Rule
   # Player can configure their squad while not deployed.
   # Weapon must be provided as squad member parameter
   # 
-  # @param actor [Item] the concerned actor
-  # @param target [Item] the concerned target
+  # @param player [Item] the concerned player
+  # @param squad [Item] the concerned squad
   # @param context [Object] extra information on resolution context
   # @param callback [Function] called when the rule is applied, with two arguments:
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameters: one per squad members for its weapon.
-  canExecute: (actor, target, context, callback) =>
-    if actor?._className is 'Player' and target?.type?.id is 'squad' and !(target?.map?)
-      # check that target belongs to player
-      for squad in actor.characters when squad.id is target.id
-        return target.fetch (err, target) =>
-          return callback err if err?
-          callback null, (
-            for member in target.members
-              name: "#{member.id}-weapon"
-              type: "string"
-              within: if member.isCommander then commanderWeapons else marineWeapons
-          )
-      callback null, null
+  canExecute: (player, squad, context, callback) =>
+    if player?._className is 'Player' and squad?.type?.id is 'squad' and not squad?.map?
+      # check that squad belongs to player
+      return callback null, null unless _.findWhere player.characters, id:squad.id
+      squad.fetch (err, squad) =>
+        return callback err if err?
+        params = (
+          for member in squad.members
+            name: "#{member.id}-weapon"
+            type: "string"
+            within: if member.isCommander then commanderWeapons else marineWeapons
+        )
+        # adds equipment to be choosed
+        params.push {
+          name: 'equipments'
+          type: 'string'
+          numMin: 4
+          numMax: 4
+          within: equipments[squad.name]
+        }, {
+          name: 'targeter'
+          type: 'object'
+          numMin: 0
+          numMax: 2
+          within: squad.members
+        }
+        callback null, params
     else 
       callback null, null
 
@@ -69,8 +83,52 @@ class ConfigureSquadRule extends Rule
           member.points = if weaponId in heavyWeapons or weaponId in commanderWeapons then 10 else 5
           # adapt marine possible moves
           member.moves = moveCapacities[weaponId]
+          member.equipment = []
+        
         # init first actions number
         squad.actions = squad.members.length * 2
+        squad.equipment = []
+        squad.revealBlips = 0
+        
+        # apply equipment if needed
+        commander = _.findWhere members, isCommander:true
+        for equip,i in params.equipments or []
+          switch equip
+            # commander equipment
+            when 'forceField', 'digitalWeapons', 'bionicEye', 'bionicArm'
+              commander.equipment.push equip
+              commander.armor = 3 if equip is 'forceField'
+            # marines equipment
+            when 'suspensors'
+              for member in members when member.weapons[0] in heavyWeapons
+                member.equipment.push equip 
+                member.moves = moveCapacities.bolter
+            when 'pistolBolters', 'assaultBlades'
+              for member in members when member.weapons[0] is 'bolter'
+                member.equipment.push equip
+            when 'combinedWeapon'
+              return callback 'only heavy bolter can be combined with flamer' unless 'heavyBolter' in commander.weapons
+              commander.weapons.push 'flamer'
+              commander.equipment.push equip
+            when 'targeter'
+              err = "missing targeter parameter that match number of targeter equipment"
+              for member in members when member.id in params.targeter and not ('targeter' in member.equipment)
+                if member.isCommander
+                  err = "targeter can only be equiped on marines"
+                else
+                  member.equipment.push equip 
+                  err = null
+                  # applied only once !
+                  break
+              return callback err if err?
+            when 'detector'
+              # detector allows to reveal 3 blips
+              squad.revealBlips = 3
+              squad.equipment.push equip
+            # squad equipment: mediKit, meltaBomb, bondingGrenade
+            else
+              squad.equipment.push equip
+              
         callback null
   
 module.exports = new ConfigureSquadRule 'init'
