@@ -31,7 +31,7 @@ define [
     # @param dialog [Object] Angular dialog service
     # @param atlas [Object] Atlas service
     constructor: (@scope, @location, @dialog, @atlas) ->
-      @scope.configured = equipments: []
+      @scope.configured = equipments: [], orders: []
       @scope.getInstanceImage = getInstanceImage
       @scope.onDeploy = @_onDeploy
       @scope.closeError = @_closeError
@@ -65,11 +65,18 @@ define [
         unless squad.isAlien
           @atlas.ruleService.resolve @atlas.player, squad, 'configureSquad', (err, {configureSquad}) => @scope.$apply =>
             @scope.error = parseError err?.message if err?
+            @scope.marines = (member for member in squad.members when not member.isCommander)
+            # select possible equipments
             params = _.findWhere configureSquad?[0]?.params, name:'equipments'
             @scope.equipNumber = params?.numMax
-            @scope.marines = (member for member in squad.members when not member.isCommander)
             if params?.within
               @scope.equipments = (name: item, selectMember: item is 'targeter' for item in params.within)
+            # select possible orders
+            params = _.findWhere configureSquad?[0]?.params, name:'orders'
+            @scope.orderNumber = params?.numMax
+            if params?.within
+              @scope.orders = (name: order for order in params.within)
+            
        
     # Remove the current error, which hides the alert
     _closeError: =>
@@ -122,20 +129,21 @@ define [
       if @scope.isAlien
         rule = 'configureAliens'
         # configure dreadnought
-        for id, spec of @scope.configured when id isnt 'equipments'
+        for id, spec of @scope.configured when not (id in ['equipments', 'orders'])
           for weapon, i in spec.weapons
             params["#{id}-weapon-#{i}"] = weapon
       else
         rule = 'configureSquad'
         # configure marines equipment
-        for id, spec of @scope.configured when id isnt 'equipments'
+        for id, spec of @scope.configured when not (id in ['equipments', 'orders'])
           params["#{id}-weapon"] = spec.weapon
         params.targeter = []
         params.equipments = (for {name, memberId} in current.equipments
           params.targeter.push memberId if memberId?
           name
         )
-        return if params.equipments.length is 0
+        params.orders = (name for {name} in current.orders)
+        return if params.equipments.length is 0 or params.orders is 0
           
       @atlas.ruleService.execute rule, @atlas.player, @scope.squad, params, (err) => @scope.$apply =>
         @scope.error = parseError err?.message if err?

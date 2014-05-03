@@ -35,14 +35,13 @@ computeCc = (actor, other) ->
     result.r = (result.r or 0) + 2
     # can only be used once
     actor.equipment.splice actor.equipment.indexOf('meltaBomb'), 1
-  if other.equipment? and 'assaultBlades' in other.equipment and other.x isnt actor.x and other.y isnt actor.y
+  if other.equipment? and 'toDeath' in other.equipment or ('assaultBlades' in other.equipment and other.x isnt actor.x and other.y isnt actor.y)
     # malus if other has assault blade and in diagonal
+    # malus if other has toDeath special equipment
     if result.w > 1
       result.w--
     else if result.r > 1
       result.r--
-    console.log ">> malus due to assault blade !"
-  console.log ">> cc: "+JSON.stringify(result)
   result
   
 # Marine ranged attack
@@ -122,13 +121,17 @@ class AssaultRule extends Rule
           # consume an attack
           actor.ccNum--
           # consume an attack if all weapons were used
-          actor.rcNum-- if actor.rcNum > 0
+          actor.rcNum-- unless actor.rcNum is 0 or actor.equipment? and 'toDeath' in actor.equipment
           actor.usedWeapons = []
           actor.squad.actions--
+          actor.squad.firstAction = false
           # consume remaining moves if a move is in progress
-          unless actor.moves is moveCapacities[actor.weapons[0].id] or actor.moves is 0
+          if 0 < actor.moves < moveCapacities[actor.weapons[0].id]
             actor.moves = 0 
             actor.squad.actions--
+          # removes special equipment once used
+          if actor.equipment? and 'toDeath' in actor.equipment
+            actor.equipment.splice actor.equipment.indexOf('toDeath'), 1
           
           # roll dices for both actor and target, always take first weapon for close combat
           actorAttack = sum rollDices computeCc(actor, target), _.any actor.equipment, (equip) -> equip in ['digitalWeapons', 'bionicArm']

@@ -239,9 +239,22 @@ asideHeight = 160px
   opacity 0
   bottom - asideHeight
 
-.use-equipment 
+.modal-dialog.choose
+
+  .row
+    display flex
+    align-items flex-start
+    min-height 150px
+    margin-top 1em
+  
   .alert
-    width 500px
+    margin 0 0 0 25px
+    width 480px
+
+  .alert.ng-hide
+    visibility hidden
+    display flex !important
+
   .select-equipment
-    justify-content center
-    margin 1em 0
+    flex-flow column nowrap
+    align-items flex-start

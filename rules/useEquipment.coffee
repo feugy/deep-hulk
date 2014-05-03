@@ -39,6 +39,7 @@ class UseEquipmentRule extends Rule
     
     switch equipment
       when 'meltaBomb' 
+        return callback new Error "deadEquipedMarine #{marine.name}" unless not marine.dead and marine.weapons[0].id in heavyWeapons
         # melta bomb will be used on next assault
         effects.push [marine, equipment: marine.equipment.concat()]
         marine.equipment.push equipment

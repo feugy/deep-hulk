@@ -2,7 +2,7 @@ _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 ItemType = require 'hyperion/model/ItemType'
-{heavyWeapons, marineWeapons, commanderWeapons, weapons, weaponImages, moveCapacities, equipments} = require './constants'
+{heavyWeapons, marineWeapons, commanderWeapons, weapons, weaponImages, moveCapacities, equipments, orders} = require './constants'
   
 # Squad configuration: set weapons and equipment
 class ConfigureSquadRule extends Rule
@@ -28,7 +28,7 @@ class ConfigureSquadRule extends Rule
             type: "string"
             within: if member.isCommander then commanderWeapons else marineWeapons
         )
-        # adds equipment to be choosed
+        # adds equipment and orders to be choosed
         params.push {
           name: 'equipments'
           type: 'string'
@@ -41,6 +41,12 @@ class ConfigureSquadRule extends Rule
           numMin: 0
           numMax: 2
           within: squad.members
+        }, {
+          name: 'orders'
+          type: 'string'
+          numMin: 1
+          numMax: 1
+          within: orders[squad.name]
         }
         callback null, params
     else 
@@ -50,6 +56,11 @@ class ConfigureSquadRule extends Rule
   # - at least one bolter
   # - at least one heavy weapon
   # - at most one heavy weapon of a kind
+  #
+  # Also store choosen equipement, and applies some of them
+  # (forceField, suspensors, combinedWeapon, detector) 
+  #
+  # Stores choosen orders
   #
   # @param player [Player] the concerned player
   # @param squad [Item] the concerned squad
@@ -89,6 +100,7 @@ class ConfigureSquadRule extends Rule
         squad.actions = squad.members.length * 2
         squad.equipment = []
         squad.revealBlips = 0
+        squad.orders = if _.isArray params.orders then params.orders else [params.orders]
         
         # apply equipment if needed
         commander = _.findWhere members, isCommander:true
@@ -107,14 +119,14 @@ class ConfigureSquadRule extends Rule
               for member in members when member.weapons[0] is 'bolter'
                 member.equipment.push equip
             when 'combinedWeapon'
-              return callback 'only heavy bolter can be combined with flamer' unless 'heavyBolter' in commander.weapons
+              return callback new Error 'cantCombinedWeapon' unless 'heavyBolter' in commander.weapons
               commander.weapons.push 'flamer'
               commander.equipment.push equip
             when 'targeter'
-              err = "missing targeter parameter that match number of targeter equipment"
+              err = new Error 'missingTargeter'
               for member in members when member.id in params.targeter and not ('targeter' in member.equipment)
                 if member.isCommander
-                  err = "targeter can only be equiped on marines"
+                  err = new Error 'targeterMustBeMarine'
                 else
                   member.equipment.push equip 
                   err = null

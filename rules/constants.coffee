@@ -150,4 +150,9 @@ module.exports = {
     imperialfist: ['bionicEye', 'combinedWeapon', 'suspensors', 'targeter', 'targeter', 'pistolBolters', 'meltaBomb', 'blindingGrenade']
     bloodangel: ['bionicArm', 'forceField', 'assaultBlades', 'targeter', 'targeter', 'pistolBolters', 'meltaBomb', 'blindingGrenade']
   
+  # possible orders for marine squad
+  orders:
+    ultramarine: ['fireAtWill', 'goGoGo', 'toDeath', 'bySections']
+    imperialfist: ['fireAtWill', 'goGoGo', 'bySections', 'heavyWeapon']
+    bloodangel: ['fireAtWill', 'goGoGo', 'toDeath', 'photonGrenade']
 }

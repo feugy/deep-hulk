@@ -1,0 +1,20 @@
+<div class="modal">
+  <div class="frame modal-dialog choose">
+    <header><h1>{{title}}</h1></header>
+    <div class="modal-body" data-ng-bind-html="message"></div>
+    <div class="row">
+      <select-equipment data-equipments="outer.possibles"
+                        data-number="1"
+                        data-target="outer.selected"
+                        data-members="outer.members"
+                        data-on-hover="outer.displayHelp"></select-equipment>
+      <alert data-ng-show="outer.hovered" data-close="outer.hovered = null">
+        <div data-ng-bind-html="'texts.indics.'+outer.hovered | i18n"></div>
+      </alert>
+    </div>
+    <footer class="buttons">
+      <a class="btn {{button.classes}}" href="" data-ng-click="close(button.result, $index)" data-ng-repeat="button in buttons">{{button.label}}</a>
+    </footer>
+  </div>
+</div>
+<div class="modal-backdrop"></div>

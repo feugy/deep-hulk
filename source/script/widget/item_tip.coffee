@@ -60,6 +60,7 @@ define [
       @scope.canInspect = @scope.squad.revealBlips > 0
       @scope.inspect = @_onInspect
       @scope.inspected = false
+      @scope.isEquipment = (item) -> not(item in ['bySections', 'photonGrenade', 'toDeath'])
       
       getDamages = =>
         # use first weapon for close combat

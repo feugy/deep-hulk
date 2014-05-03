@@ -9,9 +9,9 @@
     <li><label>{{'labels.closeDamages'|i18n:{sep:true} }}</label><span class="value">{{ccDamages | i18n}}</span></li>
     <li data-ng-repeat-start="weapon in src.weapons"><label>{{'labels.weapon'|i18n:{sep:true} }}</label><span class="value">{{'labels.' + (weapon.id || weapon) | i18n}}</span></li>
     <li data-ng-repeat-end><label>{{'labels.rangeDamages'|i18n:{sep:true} }}</label><span class="value">{{rcDamages[$index] | i18n}}</span></li>
-    <li data-ng-if="src.equipment">
+    <li data-ng-if="src.equipment.length">
       <label>{{'labels.equipment'|i18n:{sep:true} }}</label><ul class="equip">
-        <li data-ng-repeat="equip in src.equipment"><span>{{'labels.'+equip | i18n}}</span><span>{{'labels.'+equip+'Desc' | i18n}}</span></li>
+        <li data-ng-repeat="equip in src.equipment | filter:isEquipment"><span>{{'labels.'+equip | i18n}}</span><span>{{'labels.'+equip+'Desc' | i18n}}</span></li>
       </ul>
     </li>
   </ul>

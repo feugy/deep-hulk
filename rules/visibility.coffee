@@ -270,7 +270,8 @@ module.exports = {
         # add attack action
         blip.fetch (err, blip) =>
           return end err if err?
-          blip.squad.actions++
+          # do not add action if alien already passed its turn
+          blip.squad.actions++ unless blip.squad.actions is -1
           blip.parts = parts
           console.log "reveal blip #{blip.kind} at #{blip.x}:#{blip.y}"
           # TODO : pas de detection automatique de la modification des actions de l'escouade !!!!

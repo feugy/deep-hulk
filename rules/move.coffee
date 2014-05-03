@@ -2,6 +2,7 @@ _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 Field = require 'hyperion/model/Field'
+{moveCapacities} = require './constants'
 {distance, selectItemWithin, removeFromMap, addAction} = require './common'
 {isReachable, detectBlips, findNextDoor, isDreadnoughtUnderDoor} = require './visibility'
 
@@ -77,9 +78,17 @@ class MoveRule extends Rule
       
       base = "base-#{actor.squad.name}"
       # consume a move unless in your base
-      actor.moves -= 1 unless targetType is base
+      unless targetType is base
+        actor.moves -= 1 
+        actor.squad.firstAction = false
       if actor.moves is 0
         actor.squad.actions--
+        
+      # if consumming more than 1 allowed moves and having by section order, then reduce range attacks
+      allowed = moveCapacities[actor.weapons[0].id]
+      if actor.moves < allowed and actor.equipment and 'bySections' in actor.equipment
+        actor.rcNum /= 2
+        actor.equipment.splice actor.equipment.indexOf('bySections'), 1
         
       # update actor coordinates
       console.log "#{actor.name or actor.kind} (#{actor.squad.name}) moves from #{actor.x}:#{actor.y} to #{x}:#{y} (remains #{actor.moves})"

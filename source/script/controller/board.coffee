@@ -4,8 +4,8 @@ define [
   'underscore'
   'jquery'
   'util/common'
-  'text!template/equipment_dialog.html'
-], (_, $, {getInstanceImage, parseError}, equipmentDialogTpl) ->
+  'text!template/choose_dialog.html'
+], (_, $, {getInstanceImage, parseError}, chooseDialogTpl) ->
     
   # two mode controller: displays squad configuration (for marines, before starting game)
   # or displays the game board (for marines and alien)
@@ -227,9 +227,10 @@ define [
           
           @scope.showHelp = not @atlas.player.prefs?.discardHelp
           @_askForHelp 'start'
-
+          
           # send notification in single player mode
           @_onActiveSquadChange()
+          @_onCheckFirstAction()
             
           # blips deployment, blip displayal
           if @scope.squad?.deployZone?
@@ -365,6 +366,8 @@ define [
                 @_toggleDeployMode() 
               if 'activeSquad' in changes
                 @_onActiveSquadChange()
+              if 'firstAction' in changes
+                @_onCheckFirstAction()
             else if model?.id is @scope.game?.id
               if 'finished' in changes
                 return @location.path "#{conf.basePath}end" if model.finished
@@ -377,16 +380,19 @@ define [
                 @_updateReplayCommands()
                 next = @scope.game.nextActions[-1..]?[0]
                 prev = @scope.game.prevActions[-1..]?[0]
-                # try to display notification when other squad uses equipment
-                if next?.kind is 'equip'
-                  equiped = _.difference(prev?.effects?[0]?.equipment, next.effects?[0]?.equipment)?[0]
-                  unless next.actorId is @scope.squad.id
-                    # find concerned squad name, and display notification
-                    @atlas.Item.findById next.actorId, (err, squad) =>
-                      content = conf.texts.notifs["#{equiped}Used"]
-                      return unless not err? and squad? and content?
-                      @scope.$apply =>
-                        @scope.notifs.push kind: 'info', content: _.sprintf content, @filter('i18n') "labels.#{squad.name}"
+                # try to display notification when other squad uses equipment or orders
+                if next?.kind in ['equip', 'order'] and next?.actorId isnt @scope.squad.id
+                  if next.kind is 'equip'
+                    concerned = _.difference(prev?.effects?[0]?.equipment, next.effects?[0]?.equipment)?[0]
+                  else
+                    concerned = _.difference(prev?.effects?[0]?.orders, next.effects?[0]?.orders)?[0]
+                  # find concerned squad name, and display notification
+                  @atlas.Item.findById next.actorId, (err, squad) =>
+                    content = conf.texts.notifs["#{concerned}Used"]
+                    return unless not err? and squad? and content?
+                    @scope.$apply =>
+                      @scope.notifs.push kind: 'info', content: _.sprintf content, @filter('i18n') "labels.#{squad.name}"
+                      
               if 'mainWinner' in changes and @scope.squad?
                 if @scope.game.mainWinner is @scope.squad.name
                   content = conf.texts.notifs.mainMissionCompleted
@@ -426,6 +432,35 @@ define [
           @scope.selected = item
           _.defer => @_askForHelp 'select'
           
+    # **private**
+    # Handler of map menu selection. Trigger the corresponding rule
+    #
+    # @param event [Event] click event inside map menu
+    # @param rule [String] name of the selected item inside menu
+    _onSelectMenuItem: (event, rule) =>
+      # do not support yet multiple targets nor parameters
+      return console.error "multiple targets not supported yet for rule #{rule}" if @_applicableRules[rule].length > 1
+      return console.error "parameters not supported yet for rule #{rule}" if rule isnt 'shoot' and @_applicableRules[rule][0].params?.length > 0
+            
+      # trigger rule
+      if rule is 'shoot'
+        params = 
+          weaponIdx: @scope.activeWeapon 
+          multipleTargets: ("#{target.x}:#{target.y}" for target in @_multipleTargets)
+          
+        # reset mutliple targets
+        @scope.needMultipleTargets = false
+        @_multipleTargets = []
+      else 
+        params = {}
+        
+      @atlas.ruleService.execute rule, @scope.selected, @_applicableRules[rule][0].target, params, (err, result) =>
+        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?   
+        # refresh movable tiles
+        @displayMovable()
+      
+      @_askForHelp rule
+      
     # **private**
     # Handler invoked when clicking on map. Try to fire move rule, or to display
     # menu with move and selection.
@@ -474,20 +509,20 @@ define [
     # Display a modal popup to choose equipement to apply
     _onDisplayEquipment: (event) =>
       outer = 
-        equipments: (name: item, selectMember: item is 'meltaBomb' for item in @scope.squad.equipment when item isnt 'detector')
+        possibles: (name: item, selectMember: item is 'meltaBomb' for item in @scope.squad.equipment when item isnt 'detector')
         selected: []
-        members: @scope.squad.members
+        members: (marine for marine in @scope.squad.members when not marine.dead) 
         hovered: null
         displayHelp: (event, item) => outer.hovered = item
       buttons = [label: conf.buttons.close]
       
-      if outer.equipments.length
+      if outer.possibles.length
         buttons.splice 0, 0, label: conf.buttons.equip, result: true
         message = conf.texts.applyEquipment
       else 
         message = conf.texts.noEquipment
         
-      @dialog.messageBox(conf.titles.equipment, message, buttons, equipmentDialogTpl, outer).open().then (confirmed) =>
+      @dialog.messageBox(conf.titles.equipment, message, buttons, chooseDialogTpl, outer).open().then (confirmed) =>
         return unless confirmed and outer.selected.length is 1
         selected = outer.selected[0]
         marine = _.findWhere(@scope.squad.members, id:selected.memberId) or @scope.squad.members[0]
@@ -495,35 +530,33 @@ define [
           return @scope.notifs.push kind: 'error', content: parseError err if err?
           # add a notification
           @scope.notifs.push kind: 'info', content: _.sprintf conf.texts.notifs[message], marine?.name if message
-          
+  
     # **private**
-    # Handler of map menu selection. Trigger the corresponding rule
-    #
-    # @param event [Event] click event inside map menu
-    # @param rule [String] name of the selected item inside menu
-    _onSelectMenuItem: (event, rule) =>
-      # do not support yet multiple targets nor parameters
-      return console.error "multiple targets not supported yet for rule #{rule}" if @_applicableRules[rule].length > 1
-      return console.error "parameters not supported yet for rule #{rule}" if rule isnt 'shoot' and @_applicableRules[rule][0].params?.length > 0
-            
-      # trigger rule
-      if rule is 'shoot'
-        params = 
-          weaponIdx: @scope.activeWeapon 
-          multipleTargets: ("#{target.x}:#{target.y}" for target in @_multipleTargets)
-          
-        # reset mutliple targets
-        @scope.needMultipleTargets = false
-        @_multipleTargets = []
-      else 
-        params = {}
-        
-      @atlas.ruleService.execute rule, @scope.selected, @_applicableRules[rule][0].target, params, (err, result) =>
-        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?   
-        # refresh movable tiles
-        @displayMovable()
-      
-      @_askForHelp rule
+    # If first action and remaining orders, display dialog box to trigger them.
+    _onCheckFirstAction: =>
+      if @scope.squad.firstAction and @scope.squad.orders.length > 0
+        outer = 
+          # heavyWeapon is the only order that requires to select a marine
+          possibles: (name: order, selectMember: order is 'heavyWeapon' for order in @scope.squad.orders)
+          selected: []
+          # only members with heavy weapons can be ordered
+          members: (marine for marine in @scope.squad.members when not marine.dead and 
+            not marine.isCommander and 
+            _.any marine.weapons, (w) -> (w?.id or w) in ['flamer', 'autoCannon', 'missileLauncher'])
+          hovered: null
+          displayHelp: (event, order) => outer.hovered = order
+
+        @dialog.messageBox(conf.titles.orders, null, [
+          {label: conf.buttons.apply, result: true}
+          {label: conf.buttons.close}
+        ], chooseDialogTpl, outer).open().then (confirmed) =>
+          return unless confirmed and outer.selected.length is 1
+          selected = outer.selected[0]
+          marine = _.findWhere(@scope.squad.members, id:selected.memberId) or @scope.squad.members[0]
+          @atlas.ruleService.execute 'applyOrder', @scope.squad, marine, {order: selected.name}, (err, message) => @scope.$apply =>
+            return @scope.notifs.push kind: 'error', content: parseError err if err?
+            # add a notification
+            @scope.notifs.push kind: 'info', content: _.sprintf conf.texts.notifs[message], marine?.name if message
                 
     # **private**
     # After a modal confirmation, trigger the end of turn.

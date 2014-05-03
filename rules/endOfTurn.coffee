@@ -73,6 +73,7 @@ class EndOfTurnRule extends Rule
           # fetch squad to get members
           return next err if err?
           squad.actions = 0
+          squad.firstAction = true
           # reset number of blip to reveal
           squad.revealBlips = 3 if 'detector' in squad.equipment
           # reset each member, unless not on map
@@ -99,6 +100,9 @@ class EndOfTurnRule extends Rule
               member.moves = moveCapacities[weapon]
               # suspensors act as bolters !
               member.moves = moveCapacities.bolter if member.equipment? and 'suspensors' in member.equipment
+              # removes photon grenade on new turn
+              if 'photonGrenade' in member.equipment
+                member.equipment.splice member.equipment.indexOf('photonGrenade'), 1
                 
           # no alive squad members ? set to -1 to prevent player hitting next turn
           squad.actions = 0 if squad.actions is -1

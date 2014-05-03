@@ -89,8 +89,9 @@ class ShootRule extends Rule
               checkMission actor.squad, 'attack', @, resultAndTargets, (err) =>
                 callback err, results
      
-          # consume close conbat unless already consumed during shoot with first weapon
-          actor.ccNum-- if actor.ccNum > 0 and actor.usedWeapons.length is 0
+          actor.squad.firstAction = false
+          # consume close conbat if not already consumed during shoot with first weapon
+          actor.ccNum-- unless actor.ccNum is 0 or actor.usedWeapons.length > 0 or actor.equipment? and 'toDeath' in actor.equipment
           # store this new weapon in used one
           actor.usedWeapons.push params.weaponIdx
           # consume an attack if all weapons were used, or equipmed with combined weapon (can only shoot once)
@@ -99,8 +100,16 @@ class ShootRule extends Rule
             actor.squad.actions--
           actor.rcNum-- if actor.usedWeapons.length is 0
           
+          # if consumming all range attacks and having by section order, then reduce moves
+          if actor.rcNum is 0 and actor.equipment? and 'bySections' in actor.equipment
+            actor.moves /= 2
+            actor.equipment.splice actor.equipment.indexOf('bySections'), 1
+          # removes special equipment once used
+          if actor.equipment? and 'toDeath' in actor.equipment
+            actor.equipment.splice actor.equipment.indexOf('toDeath'), 1
+            
           # consume remaining moves if a move is in progress
-          unless actor.moves is moveCapacities[weapon.id] or actor.moves is 0
+          if 0 < actor.moves < moveCapacities[weapon.id]
             actor.moves = 0
             actor.squad.actions--
             
