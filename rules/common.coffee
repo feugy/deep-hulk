@@ -282,7 +282,12 @@ module.exports = {
         kind: kind
         actorId: actor.id
         gameId: game.id
-        effects: cleanValues _.pluck effects, 1
+        effects: cleanValues (
+          for effect in effects
+            # adds id if not already present
+            effect[1].id = effect[0].id
+            effect[1]
+        )
         
       # and next state, computed from current models
       game.nextActions.push
@@ -291,7 +296,7 @@ module.exports = {
         gameId: game.id
         effects: cleanValues (
           for effect in effects
-            newEffect = {}
+            newEffect = id: effect[0].id
             # get values directly from modified model
             newEffect[attr] = effect[0][attr] for attr of effect[1]
             newEffect

@@ -38,12 +38,13 @@ input, textarea, select
   border-radius 4px
   padding 0.2em
   margin 0
+  background-color inputBackground
   
 :focus, :active
   outline 0 none
 
-input:focus, select:focus, .select:focus, .btn:focus, textarea:focus
-  box-shadow 0 1px 1px hoverColor inset, 0 0 4px hoverColor
+input:focus, select:focus, .select:focus, .btn:not(.disabled):focus, textarea:focus, button:not(.disabled):focus
+  box-shadow 0 0 1px hoverColor inset, 0 0 4px hoverColor
 
 //------------------------------------------------------------------------------
 // Buttons
@@ -81,14 +82,13 @@ a.btn
   border-image-outset 2px
   background none
 
-.btn:hover
+.btn:not(.disabled):hover
   border-image-source url('../image/button-hover.png')
   border-image-width 100%
 
-.btn:hover
+.btn:not(.disabled):hover
 button.close:hover
   cursor pointer
-  //top (- buttonMove)
 
 button.close
   background buttonBackground
@@ -102,6 +102,43 @@ button.close:hover
 
 .btn + .btn
   margin-left 1em
+
+.btn.disabled
+button.disabled
+.btn.disabled:hover
+a.btn.disabled:hover
+button.disabled:hover
+  border-image-source url('../image/button-disabled.png')
+  border-image-width 100%
+  color rgba(buttonColor, 0.5)
+  cursor normal
+
+.command
+  display inline-block
+  box-sizing border-box
+  text-align center
+  cursor normal
+  border 1px solid transparent
+  border-image-source url('../image/replay-buttons.png')
+  border-image-repeat stretch
+  border-image-slice 100% 0 0 40
+  border-image-width 100% 0 0 0
+
+.command.tiny
+  width 40px
+  border-image-slice 100% 122 0 0
+  border-image-width 100% 0 0 0
+
+.command:hover
+  color textDarkColor
+  cursor pointer
+  border-image-source url('../image/replay-buttons-hover.png')
+
+.command.disabled
+.command.disabled:hover
+  color textDarkColor
+  cursor normal
+  border-image-source url('../image/replay-buttons-disabled.png')
 
 //------------------------------------------------------------------------------
 // Frames

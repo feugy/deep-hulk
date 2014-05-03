@@ -1,7 +1,7 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
-{addAction} = require './common'
 {heavyWeapons} = require './constants'
+{addAction} = require './common'
 
 # Apply an order at turn start
 class ApplyOrderRule extends Rule
@@ -35,26 +35,27 @@ class ApplyOrderRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback result [Object] an arbitrary result of this rule.
   execute: (squad, marine, {order}, context, callback) =>
-    effects = [[squad, orders: squad.orders.concat(), actions: squad.actions]]
+    log = 
+      id: squad.id
+      name: squad.name
+      kind: 'order'
+      used: order
     message = order
     
     switch order
       when 'fireAtWill'
         # double shoots
         for member in squad.members when not member.dead
-          effects.push [member, rcNum: member.rcNum]
           member.rcNum *= 2
           squad.actions++
       when 'goGoGo'
         # double moves
         for member in squad.members when not member.dead
-          effects.push [member, moves: member.moves]
           member.moves *= 2
           squad.actions++
       when 'bySections'
         # double moves and shoot and store as equipment to be restricted further
         for member in squad.members when not member.dead
-          effects.push [member, moves: member.moves, rcNum: member.rcNum, equipment: member.equipment.concat()]
           member.moves *= 2
           member.rcNum *= 2
           # only one additionnal action per marine: move or shoot
@@ -63,14 +64,13 @@ class ApplyOrderRule extends Rule
       when 'heavyWeapon'
         # check that marine isn't dead and has heavy weapon, and double moves and shoots
         return callback new Error "notHeavyWeapon #{marine.name}" unless not marine.dead and marine.weapons[0].id in heavyWeapons
-        effects.push [marine, moves: marine.moves, rcNum: marine.rcNum]
         marine.moves *= 2
         marine.rcNum *= 2
         squad.actions += 2
+        order.marine = marine.id
       when 'photonGrenade', 'toDeath'
         # photonGrenade and toDeath are stored as equipement to be applied further
         for member in squad.members when not member.dead
-          effects.push [member, equipment: member.equipment.concat()]
           squad.actions++ if order is 'toDeath'
           member.equipment.push order
       else
@@ -82,7 +82,8 @@ class ApplyOrderRule extends Rule
     squad.firstAction = false
     
     # add in history for replay and other players
-    addAction 'order', squad, effects, @, (err) =>
-      callback err, message
+    effects = [[squad.game, events: squad.game.events.concat()]]
+    squad.game.events.push log
+    addAction 'order', squad, effects, @, (err) => callback err, message
   
 module.exports = new ApplyOrderRule()

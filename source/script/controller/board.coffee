@@ -64,10 +64,10 @@ define [
       @scope.zoom = 1
       @scope.menuItems = null
       @scope.zone = null
-      @scope.canEndTurn = ''
-      @scope.hasNextAction = ''
-      @scope.hasPrevAction = ''
-      @scope.canStopReplay = ''
+      @scope.canEndTurn = false
+      @scope.hasNextAction = false
+      @scope.hasPrevAction = false
+      @scope.canStopReplay = false
       @scope.activeRule = null
       @scope.activeWeapon = 0
       # If selected character is shooting with a weapon needing multiple targets, 
@@ -128,7 +128,6 @@ define [
         # redirect to end if finished
         return @location.path "#{conf.basePath}end" if game.finished
         # keep game and player's squad
-        console.log ">>> display game", game
         @scope.game = game
         @atlas.initReplay game
         @_updateReplayCommands()
@@ -205,9 +204,9 @@ define [
     # **private**
     # Update replay commands after a replay action
     _updateReplayCommands: =>
-      @scope.canStopReplay = if @atlas.replayPos? then 'enabled' else ''
-      @scope.hasPrevAction = if @atlas.hasPreviousAction then 'enabled' else ''
-      @scope.hasNextAction = if @atlas.hasNextAction then 'enabled' else ''
+      @scope.canStopReplay = @atlas.replayPos?
+      @scope.hasPrevAction = @atlas.hasPreviousAction
+      @scope.hasNextAction = @atlas.hasNextAction
       
     # **private**
     # Fetch the current squad and all its members.
@@ -236,10 +235,10 @@ define [
           if @scope.squad?.deployZone?
             @_toggleDeployMode()
           if @scope.squad.actions < 0 
-            @scope.canEndTurn = '' 
+            @scope.canEndTurn = false 
             @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
           else
-            @scope.canEndTurn = 'enabled'
+            @scope.canEndTurn = true
           # inhibit on replay (always) or turn end (if not alien and deploy) or deploy (and not alien)
           @_inhibit = if @scope.squad.isAlien and @scope.squad.deployZone? then @atlas.replayPos? else @atlas.replayPos? or @scope.squad.actions < 0 or @scope.squad.deployZone?
           
@@ -253,7 +252,7 @@ define [
       return unless @scope.squad?
       if @scope.squad.deployZone?
         @_askForHelp 'startDeploy'
-        @scope.canEndTurn = '' 
+        @scope.canEndTurn = false
         @_inhibit = true
         if @scope.squad.isAlien
           # Auto select the first zone to deploy
@@ -279,7 +278,7 @@ define [
       else
         @_askForHelp 'endDeploy'
         if @scope.squad.isAlien
-          @scope.canEndTurn = 'enabled' 
+          @scope.canEndTurn = true
           # clean alien previous notifications
           @scope.notifs.splice 0, @scope.notifs.length
         else
@@ -356,12 +355,7 @@ define [
                 # inhibit on replay (always) or turn end (if not alien and deploy) or deploy (and not alien)
                 @_inhibit = if @scope.squad.isAlien and @scope.squad.deployZone? then @atlas.replayPos? else 
                   @atlas.replayPos? or @scope.squad.actions < 0 or @scope.squad.deployZone?
-                if @scope.squad.actions < 0
-                  @scope.canEndTurn = ''
-                else
-                  @scope.canEndTurn = 'enabled'
-                  # auto trigger turn end
-                  @_onEndTurn() if @scope.squad.actions is 0
+                @scope.canEndTurn = @scope.squad.actions >= 0
               if 'deployZone' in changes
                 @_toggleDeployMode() 
               if 'activeSquad' in changes
@@ -378,21 +372,14 @@ define [
                 @atlas.stopReplay()
               if 'prevActions' in changes
                 @_updateReplayCommands()
-                next = @scope.game.nextActions[-1..]?[0]
-                prev = @scope.game.prevActions[-1..]?[0]
+              if 'events' in changes
                 # try to display notification when other squad uses equipment or orders
-                if next?.kind in ['equip', 'order'] and next?.actorId isnt @scope.squad.id
-                  if next.kind is 'equip'
-                    concerned = _.difference(prev?.effects?[0]?.equipment, next.effects?[0]?.equipment)?[0]
-                  else
-                    concerned = _.difference(prev?.effects?[0]?.orders, next.effects?[0]?.orders)?[0]
-                  # find concerned squad name, and display notification
-                  @atlas.Item.findById next.actorId, (err, squad) =>
-                    content = conf.texts.notifs["#{concerned}Used"]
-                    return unless not err? and squad? and content?
-                    @scope.$apply =>
-                      @scope.notifs.push kind: 'info', content: _.sprintf content, @filter('i18n') "labels.#{squad.name}"
-                      
+                event = @scope.game.events[-1..]?[0]
+                if event?.id isnt @scope.squad.id
+                  # Display notification
+                  content = conf.texts.notifs["#{event.used}Used"]
+                  return unless content?
+                  @scope.notifs.push kind: 'info', content: _.sprintf content, @filter('i18n') "labels.#{event.name}"
               if 'mainWinner' in changes and @scope.squad?
                 if @scope.game.mainWinner is @scope.squad.name
                   content = conf.texts.notifs.mainMissionCompleted

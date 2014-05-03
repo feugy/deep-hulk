@@ -87,7 +87,7 @@ class MoveRule extends Rule
       # if consumming more than 1 allowed moves and having by section order, then reduce range attacks
       allowed = moveCapacities[actor.weapons[0].id]
       if actor.moves < allowed and actor.equipment and 'bySections' in actor.equipment
-        actor.rcNum /= 2
+        actor.rcNum--
         actor.equipment.splice actor.equipment.indexOf('bySections'), 1
         
       # update actor coordinates

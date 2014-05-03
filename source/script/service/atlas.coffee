@@ -114,6 +114,8 @@ define [
         
         @hasNextAction = @replayPos < @replayLength
         @hasPreviousAction = @replayPos > 0
+        
+        console.log action
             
         # always start from fresh item and apply all previous actions
         async.each action.effects, (effect, next) =>

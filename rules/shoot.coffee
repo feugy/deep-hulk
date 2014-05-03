@@ -77,7 +77,7 @@ class ShootRule extends Rule
           return callback null, null unless reachable?
          
           # action history
-          effects = [[actor, _.pick actor, 'id', 'ccNum', 'rcNum', 'moves', 'usedWeapons']]
+          effects = [[actor, _.pick actor, 'ccNum', 'rcNum', 'moves', 'usedWeapons']]
           effects[0][1].log = actor.log.concat()
           
           end = (err, resultAndTargets) =>
@@ -267,7 +267,7 @@ class ShootRule extends Rule
     
     # apply damages on target
     if damages > target.armor
-      effects.push [target, _.pick target, 'id', 'life', 'dead', 'weapons']
+      effects.push [target, _.pick target, 'life', 'dead', 'weapons']
       @saved.push target unless target in @saved
       points = damages-target.armor
       result.loss = if target.life >= points then points else target.life

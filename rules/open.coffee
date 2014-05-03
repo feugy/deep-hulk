@@ -57,7 +57,7 @@ class OpenRule extends Rule
       return callback err if err?
       # opens all doors
       for candidate in doors when candidate?.type?.id is 'door'
-        effects.push [candidate, _.pick candidate, 'id', 'closed', 'imageNum']
+        effects.push [candidate, _.pick candidate, 'closed', 'imageNum']
         candidate.closed = false
         candidate.imageNum -= 2
         candidate.transition = 'open'

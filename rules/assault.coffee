@@ -35,7 +35,7 @@ computeCc = (actor, other) ->
     result.r = (result.r or 0) + 2
     # can only be used once
     actor.equipment.splice actor.equipment.indexOf('meltaBomb'), 1
-  if other.equipment? and 'toDeath' in other.equipment or ('assaultBlades' in other.equipment and other.x isnt actor.x and other.y isnt actor.y)
+  if other.equipment? and ('toDeath' in other.equipment or ('assaultBlades' in other.equipment and other.x isnt actor.x and other.y isnt actor.y))
     # malus if other has assault blade and in diagonal
     # malus if other has toDeath special equipment
     if result.w > 1
@@ -114,8 +114,8 @@ class AssaultRule extends Rule
     
           # action history
           effects = [
-            [actor, _.pick actor, 'id', 'ccNum', 'rcNum', 'moves', 'life', 'dead', 'usedWeapons', 'log']
-            [target, _.pick target, 'id', 'life', 'dead', 'log']
+            [actor, _.pick actor, 'ccNum', 'rcNum', 'moves', 'life', 'dead', 'usedWeapons', 'log']
+            [target, _.pick target, 'life', 'dead', 'log']
           ]
     
           # consume an attack

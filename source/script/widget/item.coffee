@@ -446,7 +446,6 @@ define [
     _showTip: =>
       @scope.$apply =>
         @_tip = @compile("<item-tip data-squad='squad' data-src='model'/>") @scope
-        console.log ">> show tip:", @_tip
         pad = 20
         # item position and dimensions
         pos = @$el[0].getBoundingClientRect()
@@ -474,7 +473,6 @@ define [
     # **private**
     # Hide information tooltip.
     _hideTip: =>
-      console.log ">> hide tip:", @_tip
       @_tipHideDelay = null
       return unless @_tip?
       @_tip.off()

@@ -35,21 +35,24 @@ class UseEquipmentRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback result [Object] an arbitrary result of this rule.
   execute: (squad, marine, {equipment}, context, callback) =>
-    effects = [[squad, revealBlips: squad.revealBlips, equipment: squad.equipment.concat()]]
-    
+    log = 
+      id: squad.id
+      name: squad.name
+      kind: 'equipment'
+      used: equipment
     switch equipment
       when 'meltaBomb' 
-        return callback new Error "deadEquipedMarine #{marine.name}" unless not marine.dead and marine.weapons[0].id in heavyWeapons
+        return callback new Error "deadEquipedMarine #{marine.name}" unless not marine.dead
         # melta bomb will be used on next assault
-        effects.push [marine, equipment: marine.equipment.concat()]
         marine.equipment.push equipment
+        log.marine = marine.id
         message = 'meltaBombEquiped'
       when 'mediKit' 
         # medi kit is applied immediately
         commander = _.findWhere squad.members, isCommander:true
         if not commander.dead
-          effects.push [commander, _.pick commander, 'life']
           commander.life = 6
+          log.marine = commander
           message = 'commanderHealed'
         else
           message = 'commanderAlreadyDead'
@@ -64,7 +67,9 @@ class UseEquipmentRule extends Rule
     # removes from inventory
     squad.equipment.splice squad.equipment.indexOf(equipment), 1 unless equipment is 'detector'
     
-    addAction 'equip', squad, effects, @, (err) =>
-      callback err, message
+    # add in history for replay and other players
+    effects = [[squad.game, events: squad.game.events.concat()]]
+    squad.game.events.push log
+    addAction 'equip', squad, effects, @, (err) => callback err, message
   
 module.exports = new UseEquipmentRule()

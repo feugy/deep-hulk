@@ -35,8 +35,8 @@ class EndOfTurnRule extends Rule
       return callback err if err?
       # do not allow to pass if game is finished
       return callback "gameFinished" if game.finished
-      # check that no team members share the same tile
-      return callback new Error 'sharedPosition' if hasSharedPosition squad.members
+      # allow shared position to avoid deadlocks
+      # return callback new Error 'sharedPosition' if hasSharedPosition squad.members
         
       for member in squad.members
         # check that dreadnought are not stuck under a door

@@ -10,27 +10,25 @@ class ConfigureAliensRule extends Rule
   # Player can configure their squad while not deployed.
   # Weapon must be provided as squad member parameter
   # 
-  # @param actor [Item] the concerned actor
-  # @param target [Item] the concerned target
+  # @param player [Item] the concerned player
+  # @param squad [Item] the concerned squad
   # @param context [Object] extra information on resolution context
   # @param callback [Function] called when the rule is applied, with two arguments:
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameters: one per squad members for its weapon.
-  canExecute: (actor, target, context, callback) =>
-    if actor?._className is 'Player' and target?.type?.id is 'squad' and !(target?.map?)
-      # check that target belongs to player
-      for squad in actor.characters when squad.id is target.id
-        return target.fetch (err, target) =>
-          params = []
-          for member in target.members when member.kind is 'dreadnought'
-            # adds a parameter per weapon per dreadnought
-            for i in [0...member.life-1]
-              params.push
-                name: "#{member.id}-weapon-#{i}"
-                type: "string"
-                within: heavyWeapons
-          callback err, params
-      callback null, null
+  canExecute: (player, squad, context, callback) =>
+    if player?._className is 'Player' and squad?.type?.id is 'squad' and !(squad?.map?)
+      # check that squad belongs to player
+      return callback null, null unless _.findWhere player.characters, id:squad.id
+      params = []
+      for member in squad.members when member.kind is 'dreadnought'
+        # adds a parameter per weapon per dreadnought
+        for i in [0...member.life-1]
+          params.push
+            name: "#{member.id}-weapon-#{i}"
+            type: "string"
+            within: heavyWeapons
+      callback null, params
     else 
       callback null, null
 
@@ -52,17 +50,18 @@ class ConfigureAliensRule extends Rule
         return callback new Error "twoMany"+configured[0][0].toUpperCase()+configured[0][1..]
     
     # update members weapons
-    squad.fetch (err, squad) =>
+    Item.fetch squad.members, (err, members) =>
       return callback err if err?
-      Item.fetch squad.members, (err, members) =>
-        return callback err if err?
-        # remove previous weapons
-        member.weapons = [member.weapons[0]]
-        # for each dreadnought, affect choosed weapons
-        for member in members when member.kind is 'dreadnought'
-          for i in [0...member.life-1]
-            weaponId = params["#{member.id}-weapon-#{i}"]
-            member.weapons.push weaponId
-        callback null
+      # remove previous weapons
+      member.weapons = [member.weapons[0]]
+      # for each dreadnought, affect choosed weapons
+      for member in members when member.kind is 'dreadnought'
+        for i in [0...member.life-1]
+          weaponId = params["#{member.id}-weapon-#{i}"]
+          member.weapons.push weaponId
+          
+      # ready for deploy
+      squad.configured = true
+      callback null
   
 module.exports = new ConfigureAliensRule 'init'

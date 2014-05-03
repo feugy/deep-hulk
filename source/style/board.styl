@@ -49,21 +49,6 @@ asideHeight = 160px
     background url(../image/board-commands.png)
     background-size 100% 100%
 
-    .rules
-    .equipment
-      top auto
-      left auto
-      font-size 80%
-      padding 0.5em 1em
-    
-    .rules
-      right 34px
-      bottom 12px
-
-    .equipment
-      right 35px
-      bottom 55px
-
     > *
       top pad
       bottom 0
@@ -80,7 +65,7 @@ asideHeight = 160px
       top auto
       left 780px
       bottom 67px
-      width 240px
+      width 318px
       height 60px
       transition height logsDuration
 
@@ -88,72 +73,26 @@ asideHeight = 160px
       height 200px
 
     .commands
-      left  pad + logoWidth + squadWidth + 13px
+      left  pad + logoWidth + squadWidth + 12px
       top pad + 90px
-      width 270px
-      padding 8px
+      width 350px
+      padding 8px 10px
       box-sizing border-box
       display flex
-      align-items center
 
       a + a
         margin-left 4px
       .fa
         padding 0
 
-    .commands a
-    .end-deploy
-      display inline-block
-      box-sizing border-box
-      width 40px
-      height h=34px
-      line-height h
-      text-align center
-      background-image url(../image/replay-buttons.png)
-      background-position 0 0
-      background-size 162px 102px
-      cursor normal
+      a
+        flex-grow 0
+        line-height 34px
 
-    .commands a:hover
-    .end-deploy:hover
-      background-position 0 -34px
-      color textDarkColor
-      cursor pointer
-
-    .commands a:not(.enabled)
-    .end-deploy:not(.enabled)
-      background-position 0 -68px
-      color textDarkColor
-
-    .commands .end-turn
-      flex 1
-      background-position -40px 0
-
-    .commands .end-turn:hover
-      background-position -40px -34px
-
-    .commands .end-turn:not(.enabled)
-      background-position -40px -68px
-
-    .score
-      // TODO remove
-      top pad + 10px
-      bottom 65px
-
-    .turn
-      // TODO remove
-      top pad + 75px
-
-    .score
-    .turn
-      // TODO remove
-      right pad
-      width 80px
-      color textDarkColor
-      display flex
-      flex-direction column
-      align-items center
-      justify-content center
+      .end-turn
+      .rules
+        flex-grow 1
+        padding 0 0.5em
 
     .squad 
       margin = 5px
@@ -187,6 +126,17 @@ asideHeight = 160px
       left pad
       width squadWidth
 
+    .logo
+      top auto
+      bottom -2px
+
+    .equipment
+      position absolute
+      left pad + squadWidth + 17px
+      bottom auto
+      top pad + 17px
+      padding 6px 1em
+
   aside.alien
     background url(../image/board-alien-commands.png)
     
@@ -204,20 +154,12 @@ asideHeight = 160px
       width blipSize
   
       .end-deploy
-        background-size 119px 102px
-        background-position -29px 0
-        display inline-block
-        padding-top 4px
-        margin 12px 5px 0
-        line-height 1em
-        width 90px
-        font-size 82%
-
-      .end-deploy:hover
-        background-position -29px -34px
-  
-      .end-deploy:not(.enabled)
-        background-position -29px -68px
+        position absolute
+        bottom 9px
+        left 9px
+        padding 2px 0
+        font-size 80%
+        width 84px
 
     .squad
       left pad + blipSize

@@ -46,7 +46,6 @@ define [
         filter('i18n') "labels['#{choice or 'select'}']"
       @$el.on 'change', '.bool', (evt) =>
         return unless @scope.src?
-        console.log $(evt.target).val()
         @scope.$apply =>
           @scope.target[@scope.src.name] = $(evt.target).val() is 'true'
       

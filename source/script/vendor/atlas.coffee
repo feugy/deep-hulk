@@ -565,6 +565,8 @@
       Atlas.Map.findById id, (err, map) ->
         return callback err if err?
         if map?
+          # if map only has its Id, try to enrich it
+          _.extend map, item.map if not map.kind? and item.map.kind?
           # already cached
           item.map = map
           return callback null
@@ -1098,7 +1100,7 @@
         
         if err?
           options.debug and console.error "Fail to resolve rules: #{err}" 
-          return callback new Error "Fail to resolve rules: #{err}" 
+          return callback new Error err
 
         # enrich targets with models
         async.each _.keys(results), (ruleId, next) ->
@@ -1138,7 +1140,7 @@
         
         return callback null, result unless err?
         options.debug and console.error "Fail to execute rule: #{err}" 
-        return callback new Error "Fail to execute rule: #{err}" 
+        return callback new Error err
 
     # Only provide a singleton of RuleService
     Atlas.ruleService = new RuleService()

@@ -58,7 +58,7 @@ class DeployBlipRule extends Rule
     wasOnMap = blip.map?
     # action history
     effects = [
-      [blip, _.pick blip, 'id', 'x', 'y', 'map', 'doorToOpen']
+      [blip, _.pick blip, 'x', 'y', 'map', 'doorToOpen']
     ]
     
     # get deployable zone dimensions

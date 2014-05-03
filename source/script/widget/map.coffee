@@ -360,7 +360,6 @@ define [
     #
     # @param reload [Boolean] if true, reloads fields and items
     _create: (reload = true)=>
-      console.log ">>> create map reload:", reload, "in progress:", @_progress?, "src:", @scope.src?, "dimensions:", @scope.dimensions?
       # do not re-create if creation in progress
       return if @_progress?
       return unless @scope.dimensions? and @scope.src?
@@ -368,7 +367,6 @@ define [
       switch @scope.src.kind
         when 'square' then @scope.renderer = new SquareRenderer()
         # no kind ? just wait src to be loaded
-        when undefined, null then return _.defer @_create
         else throw new Error "map kind #{@scope.src.kind} not supported"
         
       # Initialize internal state

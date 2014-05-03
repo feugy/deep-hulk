@@ -41,7 +41,7 @@
         data-label="{{'labels.blips'|i18n:{sep:true} }}"
         data-squad="squad"
         data-deploy-scope="deployScope"></deployable-blips>
-        <a href="" class="end-deploy" data-ng-show="deployScope != null" data-ng-click="_onEndDeploy()">{{'labels.endDeploy'|i18n}}</a>
+        <a href="" class="end-deploy command" data-ng-show="deployScope != null" data-ng-click="_onEndDeploy()">{{'labels.endDeploy'|i18n}}</a>
     </div>
     <!-- squad details -->
     <div class="squad">
@@ -54,16 +54,16 @@
         data-selected="$parent.selected"></character-details>
     </div>
     <img class="logo" data-ng-src="{{getInstanceImage(squad)}}"/>
+    <a data-ng-if="squad.isAlien === false" href="" class="command equipment" data-ng-click='_onDisplayEquipment()'>{{'buttons.equipment'|i18n}}</a>
     <!-- messages -->
     <log data-src="game.warLog" data-send-message="sendMessage" data-current-squad="squad.name"/>
     <!-- action replay commands -->
     <div class="commands">
-      <a href="" class="ng-class:hasPrevAction;" data-ng-click="_onPrevAction()"><i class="fa fa-backward"></i></a>
-      <a href="" class="ng-class:hasNextAction;" data-ng-click="_onNextAction()"><i class="fa fa-forward"></i></a>
-      <a href="" class="ng-class:canStopReplay;" data-ng-click="_onStopReplay()"><i class="fa fa-stop"></i></a>
-      <a href="" class="end-turn ng-class:canEndTurn;" data-ng-click="_onEndTurn()">{{'labels.endOfTurn'|i18n}}</i></a>
+      <a href="" class="command tiny ng-class:hasPrevAction?'':'disabled';" data-ng-click="_onPrevAction()"><i class="fa fa-backward"></i></a>
+      <a href="" class="command tiny ng-class:hasNextAction?'':'disabled';" data-ng-click="_onNextAction()"><i class="fa fa-forward"></i></a>
+      <a href="" class="command tiny ng-class:canStopReplay?'':'disabled';" data-ng-click="_onStopReplay()"><i class="fa fa-stop"></i></a>
+      <a href="" class="command end-turn ng-class:canEndTurn?'':'disabled';" data-ng-click="_onEndTurn()">{{'labels.endOfTurn'|i18n}}</i></a>
+      <a href="" class="command rules" data-ng-click='navTo("rules")'>{{'buttons.rules'|i18n}}</a>
     </div>
-    <a class="btn equipment" href="" data-ng-click='_onDisplayEquipment()'>{{'buttons.equipment'|i18n}}</a>
-    <a class="btn rules" href="" data-ng-click='navTo("rules")'>{{'buttons.rules'|i18n}}</a>
   </aside>
 </div>

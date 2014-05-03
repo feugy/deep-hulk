@@ -20,7 +20,7 @@ class DeploySquadRule extends Rule
   canExecute: (actor, target, context, callback) =>
     if actor?._className is 'Player' and target?.type?.id is 'squad' and !(target?.map?)
       # check that target belongs to player
-      return callback null, [] for squad in actor.characters when squad.id is target.id
+      return callback null, [] for squad in actor.characters when squad.id is target.id and squad.configured
     # otherwise, disallow
     callback null, null
 

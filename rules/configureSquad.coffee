@@ -20,35 +20,33 @@ class ConfigureSquadRule extends Rule
     if player?._className is 'Player' and squad?.type?.id is 'squad' and not squad?.map?
       # check that squad belongs to player
       return callback null, null unless _.findWhere player.characters, id:squad.id
-      squad.fetch (err, squad) =>
-        return callback err if err?
-        params = (
-          for member in squad.members
-            name: "#{member.id}-weapon"
-            type: "string"
-            within: if member.isCommander then commanderWeapons else marineWeapons
-        )
-        # adds equipment and orders to be choosed
-        params.push {
-          name: 'equipments'
-          type: 'string'
-          numMin: 4
-          numMax: 4
-          within: equipments[squad.name]
-        }, {
-          name: 'targeter'
-          type: 'object'
-          numMin: 0
-          numMax: 2
-          within: squad.members
-        }, {
-          name: 'orders'
-          type: 'string'
-          numMin: 1
-          numMax: 1
-          within: orders[squad.name]
-        }
-        callback null, params
+      params = (
+        for member in squad.members
+          name: "#{member.id}-weapon"
+          type: "string"
+          within: if member.isCommander then commanderWeapons else marineWeapons
+      )
+      # adds equipment and orders to be choosed
+      params.push {
+        name: 'equipments'
+        type: 'string'
+        numMin: 4
+        numMax: 4
+        within: equipments[squad.name]
+      }, {
+        name: 'targeter'
+        type: 'object'
+        numMin: 0
+        numMax: 2
+        within: squad.members
+      }, {
+        name: 'orders'
+        type: 'string'
+        numMin: 1
+        numMax: 1
+        within: orders[squad.name]
+      }
+      callback null, params
     else 
       callback null, null
 
@@ -82,65 +80,65 @@ class ConfigureSquadRule extends Rule
     return callback new Error "twoManyAutoCannon" if groups.autoCannon?.length > 1
 
     # update members weapons
-    squad.fetch (err, squad) =>
+    Item.fetch squad.members, (err, members) =>
       return callback err if err?
-      Item.fetch squad.members, (err, members) =>
-        return callback err if err?
-        for member in members
-          weaponId = params["#{member.id}-weapon"]
-          # reuse always the same weapon by their ids
-          member.weapons = [weaponId]
-          member.imageNum = weaponImages[squad.name][weaponId]
-          member.points = if weaponId in heavyWeapons or weaponId in commanderWeapons then 10 else 5
-          # adapt marine possible moves
-          member.moves = moveCapacities[weaponId]
-          member.equipment = []
-        
-        # init first actions number
-        squad.actions = squad.members.length * 2
-        squad.equipment = []
-        squad.revealBlips = 0
-        squad.orders = if _.isArray params.orders then params.orders else [params.orders]
-        
-        # apply equipment if needed
-        commander = _.findWhere members, isCommander:true
-        for equip,i in params.equipments or []
-          switch equip
-            # commander equipment
-            when 'forceField', 'digitalWeapons', 'bionicEye', 'bionicArm'
-              commander.equipment.push equip
-              commander.armor = 3 if equip is 'forceField'
-            # marines equipment
-            when 'suspensors'
-              for member in members when member.weapons[0] in heavyWeapons
+      for member in members
+        weaponId = params["#{member.id}-weapon"]
+        # reuse always the same weapon by their ids
+        member.weapons = [weaponId]
+        member.imageNum = weaponImages[squad.name][weaponId]
+        member.points = if weaponId in heavyWeapons or weaponId in commanderWeapons then 10 else 5
+        # adapt marine possible moves
+        member.moves = moveCapacities[weaponId]
+        member.equipment = []
+      
+      # init first actions number
+      squad.actions = squad.members.length * 2
+      squad.equipment = []
+      squad.revealBlips = 0
+      squad.orders = if _.isArray params.orders then params.orders else [params.orders]
+      
+      # apply equipment if needed
+      commander = _.findWhere members, isCommander:true
+      for equip,i in params.equipments or []
+        switch equip
+          # commander equipment
+          when 'forceField', 'digitalWeapons', 'bionicEye', 'bionicArm'
+            commander.equipment.push equip
+            commander.armor = 3 if equip is 'forceField'
+          # marines equipment
+          when 'suspensors'
+            for member in members when member.weapons[0] in heavyWeapons
+              member.equipment.push equip 
+              member.moves = moveCapacities.bolter
+          when 'pistolBolters', 'assaultBlades'
+            for member in members when member.weapons[0] is 'bolter'
+              member.equipment.push equip
+          when 'combinedWeapon'
+            return callback new Error 'cantCombinedWeapon' unless 'heavyBolter' in commander.weapons
+            commander.weapons.push 'flamer'
+            commander.equipment.push equip
+          when 'targeter'
+            err = new Error 'missingTargeter'
+            for member in members when member.id in params.targeter and not ('targeter' in member.equipment)
+              if member.isCommander
+                err = new Error 'targeterMustBeMarine'
+              else
                 member.equipment.push equip 
-                member.moves = moveCapacities.bolter
-            when 'pistolBolters', 'assaultBlades'
-              for member in members when member.weapons[0] is 'bolter'
-                member.equipment.push equip
-            when 'combinedWeapon'
-              return callback new Error 'cantCombinedWeapon' unless 'heavyBolter' in commander.weapons
-              commander.weapons.push 'flamer'
-              commander.equipment.push equip
-            when 'targeter'
-              err = new Error 'missingTargeter'
-              for member in members when member.id in params.targeter and not ('targeter' in member.equipment)
-                if member.isCommander
-                  err = new Error 'targeterMustBeMarine'
-                else
-                  member.equipment.push equip 
-                  err = null
-                  # applied only once !
-                  break
-              return callback err if err?
-            when 'detector'
-              # detector allows to reveal 3 blips
-              squad.revealBlips = 3
-              squad.equipment.push equip
-            # squad equipment: mediKit, meltaBomb, bondingGrenade
-            else
-              squad.equipment.push equip
-              
-        callback null
+                err = null
+                # applied only once !
+                break
+            return callback err if err?
+          when 'detector'
+            # detector allows to reveal 3 blips
+            squad.revealBlips = 3
+            squad.equipment.push equip
+          # squad equipment: mediKit, meltaBomb, bondingGrenade
+          else
+            squad.equipment.push equip
+      
+      # ready for deploy
+      squad.configured = true  
+      callback null
   
 module.exports = new ConfigureSquadRule 'init'

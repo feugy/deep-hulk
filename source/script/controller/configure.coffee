@@ -41,6 +41,7 @@ define [
       @scope.isAlien = false
       @scope.getExplanationImage = (weapon) => "#{conf.rootPath}image/effects-#{weapon?.toLowerCase()+if @scope.isAlien then '-dreadnought' else ''}.png"
       @scope.back = => @location.path("#{conf.basePath}home").search()
+      @scope.isValid = false
         
       # bind configuration change
       @scope.$watch 'configured', @_onConfigure, true
@@ -64,7 +65,7 @@ define [
         # get possible choices for marine equipement
         unless squad.isAlien
           @atlas.ruleService.resolve @atlas.player, squad, 'configureSquad', (err, {configureSquad}) => @scope.$apply =>
-            @scope.error = parseError err?.message if err?
+            @scope.error = parseError err if err?
             @scope.marines = (member for member in squad.members when not member.isCommander)
             # select possible equipments
             params = _.findWhere configureSquad?[0]?.params, name:'equipments'
@@ -104,7 +105,7 @@ define [
         return @scope.$apply( => @scope.error = err?.message) if err?
         # then get members
         @atlas.Item.fetch squad.members, (err) => @scope.$apply => 
-          return @scope.error = err?.message if err?
+          return @scope.error = parseError err if err?
           @scope.isAlien = squad.name is 'alien'
           for member in squad.members
             if @scope.isAlien
@@ -146,12 +147,14 @@ define [
         return if params.equipments.length is 0 or params.orders is 0
           
       @atlas.ruleService.execute rule, @atlas.player, @scope.squad, params, (err) => @scope.$apply =>
-        @scope.error = parseError err?.message if err?
+        @scope.error = parseError err if err?
+        @scope.isValid = not err?
            
     # **private**
     # Handler invoked when the squad is deployed.
     # Confirm deployement and proceed.
     _onDeploy: =>
+      return unless @scope.isValid
       confirm = @dialog.messageBox conf.titles.confirmDeploy, conf.texts.confirmDeploy, [
         {label: conf.buttons.yes, result: true}
         {label: conf.buttons.no}
@@ -159,6 +162,6 @@ define [
       confirm.open().then (confirmed) =>
         return unless confirmed
         @atlas.ruleService.execute 'deploySquad', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
-          return @scope.error = err?.message if err?   
+          return @scope.error = parseError err if err?   
           # navigate to game
           @location.path "#{conf.basePath}board"
