@@ -22,8 +22,7 @@ class MoveRule extends Rule
     # inhibit if waiting for deployment or other squad
     if actor.squad?.deployZone? or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
       return callback null, null 
-    # check simple conditions before selecting items
-    # Dreadnaughts can go up to 2 tiles
+    # simple conditions, target is field, actor not dead or reinforcing, target at 1~2 distance
     unless target.mapId? and not actor.dead and actor.moves >= 1 and 2 >= distance actor, target
       return callback null, null
     # for dreadnaught, select enought tiles to check that no part share tile with other aliens

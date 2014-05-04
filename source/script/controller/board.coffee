@@ -62,7 +62,6 @@ define [
       @_inhibit = false
       @_currentZone = null
       @scope.zoom = 1
-      @scope.menuItems = null
       @scope.zone = null
       @scope.canEndTurn = false
       @scope.hasNextAction = false
@@ -82,14 +81,13 @@ define [
       @scope._onStopReplay = => 
         @atlas.stopReplay => @scope.$apply => @_updateReplayCommands()
         
-      @scope._onMapClick = (event, details) => @_onClick event, details
+      @scope._onMapClick = @_onClick
       @scope._onMapRightclick = @_onSelect
       @scope._onSelectMember = (member) => _.defer => @_onSelect null, items:[member]
       @scope._askToExecuteRule = @_askToExecuteRule
       @scope._onEndTurn = @_onEndTurn
       @scope._onEndDeploy = @_onEndDeploy
       @scope._onBlipDeployed = @_onBlipDeployed
-      @scope._onSelectMenuItem = @_onSelectMenuItem
       @scope._onDisplayEquipment = @_onDisplayEquipment
       @scope._onHover = (evt, details) =>
         @displayDamageZone(evt, details.field) if @scope.activeRule is 'shoot'
@@ -292,7 +290,7 @@ define [
         @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
               
     # **private**
-    # Trigger a given rule of currently selected character, as it it was selected on menu
+    # Trigger a given rule of currently selected character
     #
     # @param rule [String] rule to trigger
     _askToExecuteRule: (rule) =>
@@ -304,7 +302,35 @@ define [
           break
         when "shoot"
           @_applicableRules = shoot: [target: @_multipleTargets[0]]
-      @_onSelectMenuItem null, rule
+      @_executeRule rule
+                
+    # **private**
+    # Execute the given rule, using _applicableRules to get parameters and so one 
+    #
+    # @param rule [String] name of the selected rule to execute inside applicables
+    _executeRule: (rule) =>
+      # do not support yet multiple targets nor parameters
+      return console.error "multiple targets not supported yet for rule #{rule}" if @_applicableRules[rule].length > 1
+      return console.error "parameters not supported yet for rule #{rule}" if rule isnt 'shoot' and @_applicableRules[rule][0].params?.length > 0
+            
+      # trigger rule
+      if rule is 'shoot'
+        params = 
+          weaponIdx: @scope.activeWeapon 
+          multipleTargets: ("#{target.x}:#{target.y}" for target in @_multipleTargets)
+          
+        # reset mutliple targets
+        @scope.needMultipleTargets = false
+        @_multipleTargets = []
+      else 
+        params = {}
+        
+      @atlas.ruleService.execute rule, @scope.selected, @_applicableRules[rule][0].target, params, (err, result) =>
+        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?   
+        # refresh movable tiles
+        @displayMovable()
+      
+      @_askForHelp rule
       
     # **private**
     # Update action zone depending on new active rule
@@ -418,40 +444,12 @@ define [
         else
           @scope.selected = item
           _.defer => @_askForHelp 'select'
-          
-    # **private**
-    # Handler of map menu selection. Trigger the corresponding rule
-    #
-    # @param event [Event] click event inside map menu
-    # @param rule [String] name of the selected item inside menu
-    _onSelectMenuItem: (event, rule) =>
-      # do not support yet multiple targets nor parameters
-      return console.error "multiple targets not supported yet for rule #{rule}" if @_applicableRules[rule].length > 1
-      return console.error "parameters not supported yet for rule #{rule}" if rule isnt 'shoot' and @_applicableRules[rule][0].params?.length > 0
-            
-      # trigger rule
-      if rule is 'shoot'
-        params = 
-          weaponIdx: @scope.activeWeapon 
-          multipleTargets: ("#{target.x}:#{target.y}" for target in @_multipleTargets)
-          
-        # reset mutliple targets
-        @scope.needMultipleTargets = false
-        @_multipleTargets = []
-      else 
-        params = {}
-        
-      @atlas.ruleService.execute rule, @scope.selected, @_applicableRules[rule][0].target, params, (err, result) =>
-        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?   
-        # refresh movable tiles
-        @displayMovable()
-      
-      @_askForHelp rule
       
     # **private**
-    # Handler invoked when clicking on map. Try to fire move rule, or to display
-    # menu with move and selection.
-    # Resolves relevant rules if a squad member is selected.
+    # Handler invoked when clicking on map: 
+    # - selected member ? resolves (an applies) active rule on clicked target
+    # - selected member, 'shoot' is active and autoCannon ? adds a target
+    # - reinforcement target and alien ? tries to reinforce.
     #
     # @param event [Event] click event
     # @param details [Object] map details: 
@@ -462,23 +460,7 @@ define [
     # @option details field [Field] field model at this coordinates (may be null)
     _onClick: (event, details) =>
       return if @_inhibit or not @scope.activeRule? or @scope.squad?.deployZone?
-      @scope.$apply =>
-        @scope.menuItems = []
-        @scope.path = []
       
-      proceed = (err = null, applicables = {}) =>
-        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
-        # keep for further use
-        @_applicableRules = applicables
-        keys = _.keys applicables
-        return if keys.length is 0
-        if keys.length is 1 and keys
-          @_onSelectMenuItem null, keys[0]
-        else
-          # Display choices in map menu 
-          @scope.$apply =>
-            @scope.menuItems = keys
-          
       if @scope.selected?
         # for shoot with autocannon, need to select targets
         if @scope.activeRule is 'shoot' and @scope.selected.weapons[@scope.activeWeapon]?.id is 'autoCannon'
@@ -487,10 +469,25 @@ define [
           @_multipleTargets.push details.field if details.field?
         else
           # resolve board rules for the selected item at this coord
-          @atlas.ruleService.resolve @scope.selected, details.x, details.y, @scope.activeRule, proceed
-      else 
-        # no selected item, just proceed.
-        proceed()
+          @atlas.ruleService.resolve @scope.selected, details.x, details.y, @scope.activeRule, (err, applicables) =>
+            return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
+            # keep for further use
+            @_applicableRules = applicables
+            keys = _.keys applicables
+            return if keys.length is 0
+            @_executeRule keys[0] if keys.length is 1 and keys
+      else if @scope.squad.supportBlips > 0 and _.any(details?.items, (item) -> item?.type?.id is 'reinforcement')
+        # click on reinforcement get possible blip to reinforce
+        blipIdx = (i for member, i in @scope.squad.members when member?.map is null and member?.isSupport)
+        return unless blipIdx.length
+        # randomly pick one and go !
+        @atlas.ruleService.execute 'reinforce', @atlas.player, @scope.squad, 
+          x: details.x
+          y: details.y
+          rank: blipIdx[_.random 0, blipIdx.length-1]
+        , (err, result) =>
+          # displays deployement errors
+          return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
       
     # **private**
     # Display a modal popup to choose equipement to apply
@@ -568,7 +565,7 @@ define [
     # **private**
     # After a model confirmation, trigger the blip deployement end
     _onEndDeploy: =>
-      return if @_inhibit
+      return if @_inhibit or @_currentZone is null
       # rule triggering
       trigger = =>
         @atlas.ruleService.execute 'endDeploy', @atlas.player, @scope.squad, {zone: @_currentZone}, (err) =>
@@ -597,7 +594,7 @@ define [
       else
         # randomly choose one of the deployable blip: 
         # we must send its rank into the squad.members array that also contains deployed blips
-        blipIdx = (i for member, i in @scope.squad.members when member?.map is null)
+        blipIdx = (i for member, i in @scope.squad.members when member?.map is null and not member?.isSupport)
         return unless blipIdx.length > 0
         _.extend coord, 
           zone: @_currentZone
@@ -605,7 +602,6 @@ define [
       # trigger the relevant rule
       @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) =>
         # displays deployement errors
-        console.log err, parseError err if err?
         @_askForHelp 'deploy'
         return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
 

@@ -181,13 +181,11 @@ define [
     # Read error value into labels, and return human readable error message.
     parseError: (err) ->
       # error may contain arguments
-      console.log err+""
       err = err.toString()
       err = err[err.lastIndexOf('Error: ')+7..]
       args = []
       key = err
       split = err.split ' '
-      console.log split
       if split.length >= 2
         key = split[0]
         split.splice 0, 1

@@ -61,7 +61,7 @@ class CreationRule extends Rule
       @saved.push map
 
       # get items types
-      ItemType.findCached ['squad', 'game', 'marine', 'wall', 'alien'], (err, [Squad, Game, Marine, Wall, Alien]) =>
+      ItemType.findCached ['squad', 'game', 'marine', 'alien'], (err, [Squad, Game, Marine, Alien]) =>
         return callback err if err?
         players = [player: actor.email, squad: params.squadName]
         # creates the game
@@ -88,6 +88,7 @@ class CreationRule extends Rule
               # appart the alien squad
               if name is 'alien'
                 @_createAliens squad, Alien, mission.aliens
+                @_createAliens squad, Alien, mission.reinforcement, true
               else
                 @_createMarines squad, Marine, name
                     
@@ -163,7 +164,7 @@ class CreationRule extends Rule
   #
   # @param squad [Item] the populated squad
   # @param type [ItemType] item type to create aliens
-  _createAliens: (squad, type, specs) =>
+  _createAliens: (squad, type, specs, reinforcement=false) =>
     # alien forces depends on the mission selected
     for kind, number of specs
       for i in [0...number]
@@ -174,6 +175,7 @@ class CreationRule extends Rule
           revealed: false
           moves: moveCapacities.blip
           squad: squad
+          isSupport: reinforcement
         @saved.push alien
         squad.members.push alien
     console.log "aliens created"

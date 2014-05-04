@@ -1,9 +1,7 @@
 _ = require 'underscore'
 utils = require 'hyperion/util/model'
 Rule = require 'hyperion/model/Rule'
-Item = require 'hyperion/model/Item'
 Field = require 'hyperion/model/Field'
-ItemType = require 'hyperion/model/ItemType'
 {rollDices, selectItemWithin, countPoints, sum, 
 distance, removeFromMap, addAction, hasSharedPosition, 
 damageDreadnought, logResult, checkMission} = require './common'

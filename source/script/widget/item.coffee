@@ -129,7 +129,6 @@ define [
     constructor: (@scope, element, @atlas, @compile, rootScope) ->
       @_isDraggable = false
       @$el = $(element)
-      @$el.on 'click', @_onClick
       @_sprite = null
       @_step = 0
       @_offset = x:0, y:0

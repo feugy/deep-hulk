@@ -21,12 +21,8 @@ define [
     controller: DeployableBlipsController
     # parent scope binding.
     scope: 
-      # label displayed
-      label: '@'
       # alien squad concerned
       squad: '='
-      # added css className
-      className: '='
       # if set to null, disable widget. Otherwise, set the scope used for drag'n drop
       deployScope: '=?'
       
@@ -61,12 +57,14 @@ define [
           @$el.find('.handle').clone().wrap('<div class="deploying-blip"/>').parent()
         start: =>
           # cancel unless we still have blips
-          return false unless @scope.number > 0
+          return false unless @scope.deployable > 0
           
       @scope.$watch 'squad', (value, old) =>
         return unless value? and value isnt old
         # get number of available blips
-        @scope.number = _.where(@scope.squad?.members, map: null)?.length or 0
+        @_updateCounters()
+        @scope.deployable = _.where(@scope.squad?.members, map: null, isSupport: false)?.length or 0
+        @scope.reinforcement = _.where(@scope.squad?.members, map: null, isSupport: true)?.length or 0
         
       @scope.$watch 'deployScope', (value, old) => 
         return unless value? and value isnt old
@@ -78,8 +76,16 @@ define [
         # it's an update on alien map attribute
         return unless _.find(@scope.squad?.members, (member) -> member?.id is model?.id)?
         # it's an update on a member
-        @scope.$apply =>
-          @scope.number = _.where(@scope.squad?.members, map: null)?.length or 0
+        @scope.$apply @_updateCounters
+      
+      @_updateCounters()
+      @_toggleDeployment()
+        
+    # **private**
+    # Update number of deployable blips and available reinforcements
+    _updateCounters: =>
+      @scope.deployable = _.where(@scope.squad?.members, map: null, isSupport: false)?.length or 0
+      @scope.reinforcement = _.where(@scope.squad?.members, map: null, isSupport: true)?.length or 0
     
     # **private**
     # Toggle drag'n drop scope and activation regarding the widget scope values

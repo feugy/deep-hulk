@@ -20,8 +20,6 @@
     data-ask-to-execute-rule="_askToExecuteRule"
     data-deploy-scope="deployScope"
     data-blip-deployed="_onBlipDeployed"
-    data-menu-items="menuItems"
-    data-select-menu-item="_onSelectMenuItem"
     data-display-grid="false"
     data-display-markers="false"
     data-need-multiple-targets="needMultipleTargets"
@@ -36,12 +34,9 @@
   <!-- commands panel -->
   <aside class="ng-class: squad ? squad.isAlien ? 'alien' : 'marine': '';">
     <!-- blips and reinforcements -->
-    <div class="blips" data-ng-show="squad.isAlien">
-      <deployable-blips 
-        data-label="{{'labels.blips'|i18n:{sep:true} }}"
-        data-squad="squad"
-        data-deploy-scope="deployScope"></deployable-blips>
-        <a href="" class="end-deploy command" data-ng-show="deployScope != null" data-ng-click="_onEndDeploy()">{{'labels.endDeploy'|i18n}}</a>
+    <div class="blips" data-ng-if="squad.isAlien">
+      <deployable-blips data-squad="squad" data-deploy-scope="deployScope"></deployable-blips>
+      <a href="" class="end-deploy command ng-class:deployScope ? '': 'disabled'" data-ng-click="_onEndDeploy()">{{'labels.endDeploy'|i18n}}</a>
     </div>
     <!-- squad details -->
     <div class="squad">

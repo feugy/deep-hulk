@@ -1,6 +1,5 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
-Item = require 'hyperion/model/Item'
 {moveCapacities} = require './constants'
 {selectItemWithin, addAction, getDeployZone} = require './common'
 {hasObstacle, findNextDoor} = require './visibility'
