@@ -7,9 +7,13 @@ updatePref = (player, pref, value) ->
   player.prefs.help[pref] = value
 
 displayTurn = (player, squad, values) ->
-  if squad.actions < 4 and not player.prefs.help?.turnDisplayed
-    updatePref player, 'turnDisplayed', true
-    [msg: values.texts.help.endTurn, button: 'close']
+  if squad.actions < 4 
+    if not player.prefs.help?.turnDisplayed
+      updatePref player, 'turnDisplayed', true
+      [msg: values.texts.help.endTurn, button: 'close']
+    else if squad.isAlien and not player.prefs.help?.reinforceDisplayed
+      updatePref player, 'reinforceDisplayed', true
+      [msg: values.texts.help.reinforcement]
   else
     null
     
@@ -88,6 +92,11 @@ class HelpRule extends Rule
             updatePref player, 'moveDisplayed', true
           else 
             result = displayTurn player, squad, conf.values
+        when 'order'
+          unless player.prefs.help?.orderDisplayed
+            result = [msg: conf.values.texts.help.marineOrder, vPos: 'bottom', hPos:'right', button: 'close']
+            updatePref player, 'orderDisplayed', true
+          
         when 'shoot', 'assault'
           unless player.prefs.help?.attackDisplayed
             result = [msg: conf.values.texts.help["#{prefix}Attack"], button: 'close']
@@ -102,4 +111,4 @@ class HelpRule extends Rule
       callback null, result
     
 # A rule object must be exported. You can set its category (constructor optionnal parameter)
-module.exports = new HelpRule()
+module.exports = new HelpRule 'help'

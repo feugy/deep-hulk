@@ -77,7 +77,7 @@ class EndOfTurnRule extends Rule
           # reset number of blip to reveal
           squad.revealBlips = 3 if 'detector' in squad.equipment
           # reset number of blip to reinforce
-          squad.supportBlips = 3 if squad.isAlien
+          squad.supportBlips = 6 if squad.isAlien
           
           # reset each member, unless not on map
           for member in squad.members when member.map? and not member.dead

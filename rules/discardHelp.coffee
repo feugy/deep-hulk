@@ -28,4 +28,4 @@ class DiscardHelpRule extends Rule
     callback null
   
 # A rule object must be exported. You can set its category (constructor optionnal parameter)
-module.exports = new DiscardHelpRule()
+module.exports = new DiscardHelpRule 'help'

@@ -53,7 +53,7 @@ class ConfigureAliensRule extends Rule
     Item.fetch squad.members, (err, members) =>
       return callback err if err?
       # remove previous weapons
-      member.weapons = [member.weapons[0]]
+      member.weapons.splice 1
       # for each dreadnought, affect choosed weapons
       for member in members when member.kind is 'dreadnought'
         for i in [0...member.life-1]

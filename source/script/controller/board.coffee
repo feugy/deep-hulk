@@ -410,7 +410,7 @@ define [
                 if @scope.game.mainWinner is @scope.squad.name
                   content = conf.texts.notifs.mainMissionCompleted
                 else
-                  content = _.sprintf conf.texts.notifs.mainMissionCompletedBy, @scope.game.mainWinner
+                  content = _.sprintf conf.texts.notifs.mainMissionCompletedBy, @filter('i18n') "labels.#{@scope.game.mainWinner}"
                 @scope.notifs.push kind: 'info', content: content
             else if model is @scope.selected and model.dead
               @scope.selected = null
@@ -519,6 +519,7 @@ define [
     # If first action and remaining orders, display dialog box to trigger them.
     _onCheckFirstAction: =>
       if @scope.squad.firstAction and @scope.squad.orders.length > 0
+        @_askForHelp 'order'
         outer = 
           # heavyWeapon is the only order that requires to select a marine
           possibles: (name: order, selectMember: order is 'heavyWeapon' for order in @scope.squad.orders)

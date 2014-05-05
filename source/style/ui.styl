@@ -177,15 +177,17 @@ button.disabled:hover
   align-items center
   justify-content center
   z-index 1001
+  pointer-events none
   // we need to animate something in modal otherwise ngAnimate won't wait for inner animation to finish
-  margin-bottom -1px
-  transition margin modalDuration
+  top -1px
+  transition top modalDuration
 
   .modal-dialog
     position relative
     opacity 0
     top -200px
     transition opacity modalDuration, top modalDuration
+    pointer-events all
     
     footer
       margin-top 1em
@@ -195,11 +197,11 @@ button.disabled:hover
         margin-left 1em
 
 .modal.ng-show
-  margin-bottom 0px
+  top 0
 
   .modal-dialog
     opacity 1
-    top -150px
+    top -100px
 
 .modal
 .modal-backdrop

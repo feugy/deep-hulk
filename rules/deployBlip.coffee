@@ -54,6 +54,7 @@ class DeployBlipRule extends Rule
     # checks that blip is undeployed
     blip = squad.members[params.rank]
     return callback new Error "alreadyDeployed" if blip.revealed
+    return callback new Error "isReinforcement" if blip.isSupport
     wasOnMap = blip.map?
     # action history
     effects = [

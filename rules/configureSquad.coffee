@@ -138,7 +138,9 @@ class ConfigureSquadRule extends Rule
             squad.equipment.push equip
       
       # ready for deploy
-      squad.configured = true  
+      squad.configured = true
+      # do not allow order at first turn
+      squad.firstAction = false
       callback null
   
 module.exports = new ConfigureSquadRule 'init'
