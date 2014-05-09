@@ -84,7 +84,7 @@ class HelpRule extends Rule
             updatePref player, 'panelDisplayed', true
         when 'deploy'
           unless player.prefs.help?.deployedDisplayed
-            result = [msg: conf.values.texts.help.deployed, vPos: 'bottom', hPos:'right']
+            result = [msg: conf.values.texts.help.deployed, vPos: 'bottom', hPos:'right', button: 'close']
             updatePref player, 'deployedDisplayed', true
         when 'move'
           unless player.prefs.help?.moveDisplayed

@@ -20,7 +20,7 @@ class DeploySquadRule extends Rule
   canExecute: (actor, target, context, callback) =>
     if actor?._className is 'Player' and target?.type?.id is 'squad' and !(target?.map?)
       # check that target belongs to player
-      return callback null, [] for squad in actor.characters when squad.id is target.id and squad.configured
+      return callback null, [] for squad in actor.characters when squad.id is target.id
     # otherwise, disallow
     callback null, null
 
@@ -50,6 +50,9 @@ class DeploySquadRule extends Rule
           return callback err if err?
           # arbitrary affect marines to base tiles.
           for member, i in squad.members
+            # checks that dreadnought have been configured !
+            if squad.isAlien and not squad.configured and member.kind is 'dreadnought'
+              return callback "needConfiguration"
             member.map = map
             member.x = tiles[i].x
             member.y = tiles[i].y

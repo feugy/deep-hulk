@@ -106,17 +106,29 @@ define [
         # then get members
         @atlas.Item.fetch squad.members, (err) => @scope.$apply => 
           return @scope.error = parseError err if err?
-          @scope.isAlien = squad.name is 'alien'
+          @scope.isAlien = squad.isAlien
+          oneConfigured = if @scope.isAlien then false else true
           for member in squad.members
             if @scope.isAlien
               # only dreadnought are configurable
               if member.kind is 'dreadnought'
+                oneConfigured = true
                 @scope.configured[member.id] = weapons: ('autoCannon' for i in [0...member.life-1])
             else
               # marines can just configure first weapon (they usually wear only one weapon)
               @scope.configured[member.id] = weapon: member?.weapons[0]?.id
           @scope.squad = squad
-      
+          # no configuration needed ? deploy immediately
+          @_deploy() unless oneConfigured
+        
+    # **private**
+    # Deploys squad, which triggers nav to board view.
+    _deploy: =>
+      @atlas.ruleService.execute 'deploySquad', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
+        return @scope.error = parseError err if err?   
+        # navigate to game
+        @location.path "#{conf.basePath}board"
+        
     # **private**
     # Handler invoked when a marine changed.
     # check on server that changes can be applied.
@@ -161,7 +173,4 @@ define [
       ]
       confirm.open().then (confirmed) =>
         return unless confirmed
-        @atlas.ruleService.execute 'deploySquad', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
-          return @scope.error = parseError err if err?   
-          # navigate to game
-          @location.path "#{conf.basePath}board"
+        @_deploy()

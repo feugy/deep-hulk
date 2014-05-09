@@ -37,10 +37,6 @@ class OpenRule extends Rule
       actor.doorToOpen = null
       return callback null
       
-    # deny opening zone door to aliens
-    if (door.zone1? or door.zone2?) and actor.type.id isnt 'marine'
-      return callback new Error "cantLeaveZone"
-      
     effects = []
     # get next door, depending on image num
     switch door.imageNum
@@ -61,6 +57,7 @@ class OpenRule extends Rule
         candidate.closed = false
         candidate.imageNum -= 2
         candidate.transition = 'open'
+        candidate.needClosure = actor.squad.isAlien and (candidate.zone1? or candidate.zone2?)
         @saved.push candidate
         
       console.log "#{actor.name or actor.kind} (#{actor.squad.name}) opens door at #{door.x}:#{door.y}"
@@ -79,8 +76,8 @@ class OpenRule extends Rule
           return callback err if err?
           addAction 'open', actor, effects, @, (err) =>
             return callback err if err?
-            # toggle deployement if needed
-            return callback() unless door.zone1? or door.zone2?
+            # toggle deployement if needed (aliens cannot)
+            return callback() unless (door.zone1? or door.zone2?) and not actor.squad.isAlien
             # select relevant zone regarding actor position
             switch door.imageNum 
               # vertical door, zone1 is left, zone2 is right
