@@ -355,7 +355,7 @@ define [
     _onActiveSquadChange: =>
       return unless @scope.game.singleActive
       @scope.notifs.push kind: 'info', content: if @scope.squad.activeSquad isnt @scope.squad.name
-        _.sprintf conf.texts.notifs.waitForSquad, conf.labels[@scope.squad.activeSquad]
+        _.sprintf conf.texts.notifs.waitForSquad, conf.labels[@scope.squad.activeSquad or 'noActiveSquad']
       else
         conf.texts.notifs.playNow
         

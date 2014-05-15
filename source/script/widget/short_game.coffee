@@ -23,16 +23,20 @@ define [
   
   class ShortGame 
     # Controller dependencies
-    @$inject: ['$scope', 'players']
+    @$inject: ['$scope', 'players', '$rootScope']
     
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] Angular current scope
-    constructor: (@scope, players) ->
+    # @param players [Object] Player name service
+    # @param rootScope [Object] Angular root scope
+    constructor: (@scope, players, rootScope) ->
       @_players = {}
       @scope.squadImage = @_squadImage
       @scope.getPlayerName = players.getPlayerName
       @scope.isPlayerConnected = players.isPlayerConnected
+      # when player where retrieved, update rendering
+      rootScope.$on 'playerRetrieved', => @scope.$digest()
       
     # **private**
     # Compute squad image of a given squad

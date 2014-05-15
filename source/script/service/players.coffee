@@ -5,8 +5,8 @@ define [
   'app'
 ], (_, app) ->
   
-  app.factory 'players', ['atlas', (atlas) ->
-    new PlayersService atlas
+  app.factory 'players', ['$rootScope', 'atlas', (rootScope, atlas) ->
+    new PlayersService rootScope, atlas
   ]
   
   # @param player [Object] a player object from server
@@ -16,6 +16,9 @@ define [
     
   # Player service will manage other player names and connection status
   class PlayersService
+  
+    # Angular root scope
+    rootScope: null
   
     # Link to Atlas service
     atlas: null
@@ -30,8 +33,9 @@ define [
     _players: {}
     
     # Builds the Player service
+    # @param rootScope [Object] Angular root scope
     # @param atlas [Object] Atlas service
-    constructor: (@atlas) ->
+    constructor: (@rootScope, @atlas) ->
       @_pending = []
       # waits during 50ms before getting players
       @_invoke = _.debounce @_invoke, 50
@@ -83,4 +87,5 @@ define [
       @atlas.getPlayers @_pending.concat(), (err, players) =>
         return console.error err if err?
         @_players[player.email] = player for player in players
+        @rootScope.$emit 'playerRetrieved'
       @_pending = []
