@@ -50,20 +50,23 @@ class EndOfTurnRule extends Rule
       # set to -1 to avoid same squad triggering multiple times end of turn
       squad.actions = -1
       console.log "end of turn #{game.turn} for squad #{squad.name}"
-      
-      # in single player mode, set next player as active
-      if game.singleActive
-        active = 'none'
-        for obj, i in game.players when obj.squad is squad.name
-          if game.players[i+1]?
-            active = game.players[i+1].squad
-            break
-        other.activeSquad = active for other in game.squads
         
       process = =>
-        # quit a first squad with remaining actions
+        active = null
+        # in single player mode, set next player as active
+        if game.singleActive
+          active = 'none'
+          for obj, i in game.players when obj.squad is squad.name
+            if game.players[i+1]?
+              active = game.players[i+1].squad
+            break
+          other.activeSquad = active for other in game.squads
+        
+        # quit a first squad with remaining actions, unless active is 'none'
+        # if active is none, then we are waiting for a player not arrived yet. 
+        # in this case, we consider that turn is finished
         for other in game.squads when other.id isnt squad.id
-          return callback null if other.actions >= 0
+          return callback null if other.actions >= 0 and active isnt 'none'
            
         # next turn ! in singl player mode, set first player as active
         if game.singleActive

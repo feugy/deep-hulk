@@ -25,7 +25,7 @@ requirejs.config
     'hamster': 'vendor/hamster-1.0.4'
     'jquery': 'vendor/jquery-2.0.0-min'
     'jquery-ui': 'vendor/jquery-ui-1.10.3-min'
-    'socket.io': 'vendor/socket.io-1.0.0-pre'
+    'socket.io': 'vendor/socket.io-1.0.0-pre2'
     'text': 'vendor/require-text-2.0.10'
     'template': '../template'
     'underscore': 'vendor/underscore-1.6.0-min'
