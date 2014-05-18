@@ -24,7 +24,8 @@ define [
     # @param compile [Object] Angular directive compiler
     # @param rootScope [Object] Angular root scope used to get navigation events
     constructor: (@scope, location, compile, rootScope) -> 
-      @scope.paragraphs = conf.texts.rules
+      # make a deep copy because we'll modifies images
+      @scope.paragraphs = (_.extend {}, p for p in conf.texts.rules)
       # compiles directive in content
       for paragraph in @scope.paragraphs
         paragraph.content = paragraph.content.replace /image\//g, "#{conf.rootPath}image/"
