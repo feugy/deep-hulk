@@ -388,7 +388,22 @@ for i in(1..6)
           font-size 120%
         > dd
           margin 0.5em 0 0 2em
-          
+
+      table
+        width 100%
+        table-layout fixed
+        text-align center
+
+        th
+          background rgba(black, 0.5)
+          border-bottom 1px solid alertColor
+          color hoverColor
+        td
+          background rgba(hoverColor, 0.3)
+        tr > *
+          padding 0.3em
+        tr > *:not(:last-child)
+          border-right 1px solid alertColor
 
   > aside
     width 30%
@@ -396,7 +411,7 @@ for i in(1..6)
     .nav
       position fixed
       top 0
-      margin 130px 30px 0 30px 
+      margin 5% 30px 0 30px 
       padding 25px 30px
 
       h2
