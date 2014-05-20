@@ -21,12 +21,16 @@ define [
     # Link to Angular location service
     location: null
     
+    # Angular's filter factory
+    filter: null
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] Angular current scope
     # @param location [Object] Angular location service
     # @param atlas [Object] Atlas service
-    constructor: (@scope, @location, @atlas) ->
+    # @param filter [Object] Angular's filter factory
+    constructor: (@scope, @location, @atlas, @filter) ->
       @scope._onBackHome = @_onBackHome
       @scope.getInstanceImage = getInstanceImage
       @scope.current = @atlas.player.email
@@ -42,6 +46,8 @@ define [
         return @location.path("#{conf.basePath}home").search err: err if err?
         # redirect to board if not finished
         return @location.path "#{conf.basePath}board" unless game.finished
+        
+        document.title = @filter('i18n') 'titles.app', args: [game.name]
         @scope.game = game
       
     # **private**

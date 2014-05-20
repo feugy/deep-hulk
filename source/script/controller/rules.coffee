@@ -12,7 +12,7 @@ define [
   class RulesController
               
     # Controller dependencies
-    @$inject: ['$scope', '$location', '$compile', '$rootScope']
+    @$inject: ['$scope', '$location', '$compile', '$rootScope', '$filter']
     
     # Controller scope, injected within constructor
     scope: null
@@ -23,7 +23,9 @@ define [
     # @param location [Object] Angular location service
     # @param compile [Object] Angular directive compiler
     # @param rootScope [Object] Angular root scope used to get navigation events
-    constructor: (@scope, location, compile, rootScope) -> 
+    # @param filter [Object] Angular's filter factory
+    constructor: (@scope, location, compile, rootScope, filter) -> 
+      document.title = filter('i18n') 'titles.rules'
       # make a deep copy because we'll modifies images
       @scope.paragraphs = (_.extend {}, p for p in conf.texts.rules)
       # compiles directive in content

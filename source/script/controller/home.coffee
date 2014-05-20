@@ -8,7 +8,7 @@ define [
   class HomeController
               
     # Controller dependencies
-    @$inject: ['$scope', '$location', 'atlas', '$rootScope', 'players']
+    @$inject: ['$scope', '$location', 'atlas', '$rootScope', 'players', '$filter']
     
     # Controller scope, injected within constructor
     scope: null
@@ -30,7 +30,9 @@ define [
     # @param atlas [Object] Atlas service
     # @param rootScope [Object] Angular root scope
     # @param players [Object] Players service
-    constructor: (@scope, @location, @atlas, rootScope, players) -> 
+    # @param filter [Object] Angular's filter factory
+    constructor: (@scope, @location, @atlas, rootScope, players, filter) -> 
+      document.title = filter('i18n') 'titles.home'
       @scope.player = atlas.player
       err = @location.search()?.err or null
       @scope.error = if err? then parseError(new Error err) else null

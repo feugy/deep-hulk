@@ -125,6 +125,8 @@ define [
         return @location.path("#{conf.basePath}home").search err: err if err?
         # redirect to end if finished
         return @location.path "#{conf.basePath}end" if game.finished
+        
+        document.title = @filter('i18n') 'titles.app', args: [game.name]
         # keep game and player's squad
         @scope.game = game
         @atlas.initReplay game

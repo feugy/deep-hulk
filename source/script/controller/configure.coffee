@@ -24,13 +24,17 @@ define [
     # Link to Angular dialog service
     dialog: null
     
+    # Angular's filter factory
+    filter: null
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] Angular current scope
     # @param location [Object] Angular location service
     # @param dialog [Object] Angular dialog service
     # @param atlas [Object] Atlas service
-    constructor: (@scope, @location, @dialog, @atlas) ->
+    # @param filter [Object] Angular's filter factory
+    constructor: (@scope, @location, @dialog, @atlas, @filter) ->
       @scope.configured = equipments: [], orders: []
       @scope.getInstanceImage = getInstanceImage
       @scope.onDeploy = @_onDeploy
@@ -55,6 +59,8 @@ define [
         return @location.path("#{conf.basePath}home").search err: err if err?
         # redirect to end if finished
         return @location.path "#{conf.basePath}end" if game.finished
+        
+        document.title = @filter('i18n') 'titles.app', args: [game.name]
         # keep game and player's squad
         @scope.game = game
         squad = _.find game.squads, (squad) => squad.player is @atlas.player.email

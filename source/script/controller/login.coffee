@@ -41,7 +41,7 @@ define ['jquery', 'util/common'], ($, {parseError}) ->
       ]
               
     # Controller dependencies
-    @$inject: ['$scope', 'check', '$location']
+    @$inject: ['$scope', 'check', '$location', '$filter']
     
     # Controller scope, injected within constructor
     scope: null
@@ -51,7 +51,9 @@ define ['jquery', 'util/common'], ($, {parseError}) ->
     # @param scope [Object] Angular current scope
     # @param err [Error] Controller own resolver result
     # @param location [Object] Angular location provider
-    constructor: (@scope, err, location) -> 
+    # @param filter [Object] Angular's filter factory
+    constructor: (@scope, err, location, filter) -> 
+      document.title = filter('i18n') 'titles.login'
       @scope.loginUrl = "#{conf.apiBaseUrl}/auth/login"
       @scope.twitterUrl = "#{conf.apiBaseUrl}/auth/twitter"
       @scope.googleUrl = "#{conf.apiBaseUrl}/auth/google"
