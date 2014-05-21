@@ -235,6 +235,7 @@ define [
         @$el.css(pos).show()
         @$el.children().css(scale)
         @_rear.css(pos).show()
+        
         addClasses = =>
           @$el.addClass 'animated'
           @_rear.addClass 'animated'

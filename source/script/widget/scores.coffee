@@ -39,11 +39,14 @@ define [
     constructor: (@scope, @element, @location, players) ->
       @scope.getInstanceImage = getInstanceImage
       @scope.getPlayerName = players.getPlayerName
-      @scope.isPlayerConnected = players.isPlayerConnected
+      @scope.getState = (squad) =>
+        state = []
+        if @scope.game?.singleActive 
+          state.push 'active' if squad.activeSquad is squad.name
+        else
+          state.push 'active' if squad.actions > 0
+        if players.isPlayerConnected squad.player
+          state.push 'connected'
+        state
       @scope.back = =>
         @location.path("#{conf.basePath}home").search {}
-      @scope.hasActions = (squad) =>
-        if @scope.game?.singleActive
-          squad.activeSquad is squad.name
-        else
-          squad.actions > 0

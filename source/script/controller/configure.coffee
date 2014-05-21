@@ -10,7 +10,7 @@ define [
   class BoardController
               
     # Controller dependencies
-    @$inject: ['$scope', '$location', '$dialog', 'atlas']
+    @$inject: ['$scope', '$location', '$dialog', 'atlas', '$filter']
     
     # Controller scope, injected within constructor
     scope: null

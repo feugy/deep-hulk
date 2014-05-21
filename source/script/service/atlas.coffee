@@ -27,7 +27,7 @@ define [
       # updates game replay action length if needed
       if operation is 'update' and model.id is replayGame?.id and 'nextActions' in changes
         service.replayLength = replayGame.nextActions?.length
-        service.hasNextAction = service.replayPos? and  service.replayPos < service.replayLength
+        service.hasNextAction = service.replayPos? and service.replayPos < service.replayLength
         service.hasPreviousAction = service.replayLength > 0
       # refresh scope when model changed
       scope.$apply()
@@ -99,9 +99,10 @@ define [
       step = Math.abs amount
             
       # enter in replay action mode if not already the case
-      @replayPos = @replayLength unless @replayPos? 
+      pos = if @replayPos? then @replayPos else @replayLength
       # check new expected position
-      return unless 0 <= @replayPos+amount <= @replayLength
+      return unless 0 <= pos+amount <= @replayLength
+      @replayPos = pos
              
       applyAction = =>
         # use nextActions if amount is positive, and prevActions otherwise
@@ -115,8 +116,6 @@ define [
         @hasNextAction = @replayPos < @replayLength
         @hasPreviousAction = @replayPos > 0
         
-        console.log action
-            
         # always start from fresh item and apply all previous actions
         async.each action.effects, (effect, next) =>
           @Item.findById effect.id, (err, item) =>

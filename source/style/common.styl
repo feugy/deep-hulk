@@ -58,7 +58,7 @@ for i in(1..6)
 +selection()
 	background alertColor
 
-#copyright    
+#copyright 
   flex 1 0 75%
   order 10
   bottom 60px
@@ -66,7 +66,8 @@ for i in(1..6)
   border-top 1px solid alertColor
   margin 0 50px
   padding 0
-  user-select text
+  user-select text   
+  z-index 0
 
   p, a
     color logTimeColor
@@ -127,6 +128,7 @@ for i in(1..6)
     background-size auto 100%
     background-repeat no-repeat
     background-position center
+    z-index 1
 
   .mini-panel
     position absolute
