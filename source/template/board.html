@@ -31,6 +31,11 @@
   <!-- scores displayal -->
   <scores data-src="game"></scores>
   
+  <!-- orders selection -->
+  <orders data-ng-if="!squad.isAlien" 
+    data-squad="squad">
+    data-on-choose="_onApplyOrder"></orders>
+  
   <!-- commands panel -->
   <aside class="ng-class: squad ? squad.isAlien ? 'alien' : 'marine': '';">
     <!-- blips and reinforcements -->

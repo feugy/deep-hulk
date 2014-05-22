@@ -105,6 +105,10 @@ define [
     _logLength: 0
     
     # **private**
+    # stores previous logs, to perform backward replay
+    _previousLog: null
+    
+    # **private**
     # flag to indicate wether to reload image after animation
     _reloadAfterAnimation: false
     
@@ -119,6 +123,10 @@ define [
     # **private**
     # Delay before tooltip hideout, to allow user reentering
     _tipHideDelay: null
+    
+    # **private**
+    # inhibit update handling when fetching dirty models
+    _wasDirty: false
     
     # Controller constructor: bind methods and attributes to current scope
     #
@@ -140,6 +148,8 @@ define [
       
       # get model within map items
       @scope.model = _.find @scope.$parent.items, (item) => item.id is @scope.modelId
+      @_wasDirty = false
+      @_previousLog = @scope.model.log
       
       if @scope.model?.type?.id in ['alien', 'marine']
         @$el.on('mouseenter', @_onHoverItem).on 'mouseleave', @_onLeaveItem
@@ -277,7 +287,6 @@ define [
       transition = null unless @_imageSpec.sprites? and transition of @_imageSpec.sprites
       # gets the item sprite's details.
       if transition? and _.isObject @_imageSpec.sprites
-        console.log "render transition #{transition} on model #{@scope.model.id}"
         @_sprite = @_imageSpec.sprites[transition]
       else
         @_sprite = null
@@ -362,7 +371,9 @@ define [
     # @param model [Model] model updated
     # @param changes [Array<String] array of attributes that have been modified
     _onUpdate: (event, kind, model, changes) =>
-      return unless model?.id is @scope.model?.id
+      # inhibit model update while fetching dirty models
+      return unless model?.id is @scope.model?.id and not @_wasDirty
+      
       # deletion received: delay removal to let animation be rendered
       if kind is 'deletion'
         @scope.$destroy()
@@ -375,10 +386,17 @@ define [
         # console.log "received changes for model #{model.type.id} (#{model.id}): ", changes
         
         if 'log' in changes
+          logs = []
+          
           if @_logLength < model.log.length
-            # assault specific case: display results on map as indication
+            logs = model.log[@_logLength..]
+          else if @atlas.replayPos
+            logs = @_previousLog[@_previousLog.length-1..]
+          
+          # display indications if available
+          if logs.length > 0
             indics = []
-            for log, i in model.log[@_logLength..]
+            for log, i in logs
               # split into two indication: damages and loss
               indics.push 
                 kind: 'damages'
@@ -399,9 +417,10 @@ define [
               else if log.kind is 'shoot'
                 indics.push {dest: log.at, at: log.from, duration: 50, kind: log.kind}
             @scope.displayIndications indics
-              
-          # update inner value
+            
+          # update inner values
           @_logLength = model.log.length
+          @_previousLog = model.log.concat()
           
         needsReload = 'imageNum' in changes or 'dead' in changes
         if 'transition' in changes
@@ -415,10 +434,12 @@ define [
           @_loadImage()
           
       # if dirty, resolve model before processing.
-      if model.__dirty__
-        console.log "fetch dirty item #{model.id} (#{model.type.id}) before update"
-        return model.constructor.fetch [model.id], (err, [model]) ->
+      if model.__dirty__ and not @atlas.replayPos
+        @_wasDirty = true
+        console.log "fetch dirty item #{model.id} (#{model.type.id}) before update", changes
+        return model.constructor.fetch [model.id], (err, [model]) =>
           return console.error err if err?
+          @_wasDirty = false
           next event, kind, model, changes
       
       next event, kind, model, changes

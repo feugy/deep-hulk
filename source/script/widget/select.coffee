@@ -65,7 +65,9 @@ define [
         @scope.value = item
         @scope.closeMenu() if closeMenu
         @scope.onChange?(event, item)
-        0 # to avoir returning an element
+        # to stop event propagation
+        event.stopPropagation()
+        false 
 
       @scope.closeMenu = =>
         @_menu.hide()

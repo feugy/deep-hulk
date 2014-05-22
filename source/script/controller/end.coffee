@@ -10,7 +10,7 @@ define [
   class EndController
               
     # Controller dependencies
-    @$inject: ['$scope', '$location', 'atlas']
+    @$inject: ['$scope', '$location', 'atlas', '$filter']
     
     # Controller scope, injected within constructor
     scope: null

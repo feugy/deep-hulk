@@ -71,6 +71,7 @@ require [
   './widget/help'
   './widget/log'
   './widget/map'
+  './widget/orders' 
   './widget/notify'
   './widget/rule_params'
   './widget/select'

@@ -791,6 +791,7 @@ blipSize = 50px
     color hoverColor
 
   .menu
+
     > *:hover
     > .selected
       box-shadow 0 0 0.5em 0.25em #112B00
@@ -857,3 +858,29 @@ blipSize = 50px
 
   > .selected
     box-shadow 0 0 6px 1px alertColor inset
+
+//------------------------------------------------------------------------------
+// Orders choice
+
+.orders
+
+  > .content
+    display inline-block
+    applyMiniPanelSkin()
+    transform scale(-1)
+    
+    > *
+      transform scale(-1)
+      
+  .select-equipment 
+    display inline-flex
+    align-items stretch
+    
+    .command
+      width auto
+      height auto
+      padding 0.5em 1em
+
+    .menu
+      top auto
+      bottom 100%

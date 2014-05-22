@@ -24,6 +24,8 @@ define [
       members: '=?'
       # invoked with event and choice when mouse is over a given choice
       onHover: '=?'
+      # extra css class applied on rendering
+      extraClass: '=?'
       
     # controller
     controller: SelectEquipment

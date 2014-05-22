@@ -69,6 +69,7 @@ define [
       @scope.canStopReplay = false
       @scope.activeRule = null
       @scope.activeWeapon = 0
+      @scope.orders = null
       # If selected character is shooting with a weapon needing multiple targets, 
       @scope.needMultipleTargets = false
       @scope.log = []
@@ -521,6 +522,10 @@ define [
     # If first action and remaining orders, display dialog box to trigger them.
     _onCheckFirstAction: =>
       if @scope.squad.firstAction and @scope.squad.orders.length > 0
+        # new version
+        @scope.orders = (name: order, selectMember: order is 'heavyWeapon' for order in @scope.squad.orders)
+        
+        # TODO old version
         @_askForHelp 'order'
         outer = 
           # heavyWeapon is the only order that requires to select a marine
@@ -544,6 +549,9 @@ define [
             return @scope.notifs.push kind: 'error', content: parseError err if err?
             # add a notification
             @scope.notifs.push kind: 'info', content: _.sprintf conf.texts.notifs[message], marine?.name if message
+      else
+        # TODO new version
+        @scope.orders = null
                 
     # **private**
     # After a modal confirmation, trigger the end of turn.

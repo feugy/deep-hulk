@@ -176,6 +176,19 @@ asideHeight = 160px
     right 5%
     z-index 1
 
+  .orders
+    margin-bottom -15px
+    display none // TODO new version
+
+  .orders.ng-hide
+    margin-bottom (- asideHeight)
+    opacity 0
+    display block  !important
+  
+  .orders.ng-hide-add
+  .orders.ng-hide-remove
+    transition margin-bottom moveDuration, opacity moveDuration
+
 .board.ng-enter aside
 .board.ng-leave aside
   opacity 0
