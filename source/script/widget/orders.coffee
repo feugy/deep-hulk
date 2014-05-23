@@ -16,7 +16,11 @@ define [
     scope: 
       # Squad for which orders can be selected
       squad: '='
-      
+      # method invoked when an order has been choosen, 
+      # with the order name and selected marine as parameters
+      orderChosen: '=?'
+      # true to display, false otherwise
+      isShown: '='
     # controller
     controller: Orders
     controllerAs: 'ctrl'
@@ -44,30 +48,28 @@ define [
     # flag to distinguish hovered text from hover visibility
     hasHover: false
     
-    # flag to distinguish order availability and component visibility
-    isShown: false
-    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] directive scope
     constructor: (scope) ->
+      scope.$watchCollection 'ctrl.selected', (value) =>
+        return unless @selected?.length > 0
+        # check member for orders that need them
+        for {name, selectMember} in @orders when name is @selected[0].name
+          return if selectMember and not @selected[0].memberId?
+        # propagate selected name and memberId
+        scope.orderChosen?(@selected[0].name, @selected[0].memberId)
+        scope.ctrl.isShown = false
+        
       scope.$watch 'squad', (value, old) =>
         @squad = value
-        return unless value isnt old
-        @isShown = @squad?
-        if @isShown
-          # show component
-          @orders = (name: order, selectMember: order is 'heavyWeapon' for order in @squad.orders)
-          @selected = []
-          # only members with heavy weapons can be ordered
-          @members = (marine for marine in @squad.members when not marine.dead and 
-            not marine.isCommander and 
-            _.any marine.weapons, (w) -> (w?.id or w) in ['flamer', 'autoCannon', 'missileLauncher'])
-        else
-          # hide component
-          @selected = null;
-          @orders = null;
-          @members = null;
+        return unless value? and value isnt old
+        @orders = (name: order, selectMember: order is 'heavyWeapon' for order in @squad.orders)
+        @selected = []
+        # only members with heavy weapons can be ordered
+        @members = (marine for marine in @squad.members when not marine.dead and 
+          not marine.isCommander and 
+          _.any marine.weapons, (w) -> (w?.id or w) in ['flamer', 'autoCannon', 'missileLauncher'])
     
     # Invoked o display details on an hovered order
     #

@@ -863,6 +863,9 @@ blipSize = 50px
 // Orders choice
 
 .orders
+  display flex
+  flex-direction column
+  align-items center
 
   > .content
     display inline-block
@@ -870,7 +873,11 @@ blipSize = 50px
     transform scale(-1)
     
     > *
+      display inline-block
       transform scale(-1)
+
+  .alert
+    z-index 1
       
   .select-equipment 
     display inline-flex

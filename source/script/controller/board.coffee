@@ -69,7 +69,7 @@ define [
       @scope.canStopReplay = false
       @scope.activeRule = null
       @scope.activeWeapon = 0
-      @scope.orders = null
+      @scope.showOrders = false
       # If selected character is shooting with a weapon needing multiple targets, 
       @scope.needMultipleTargets = false
       @scope.log = []
@@ -90,6 +90,7 @@ define [
       @scope._onEndDeploy = @_onEndDeploy
       @scope._onBlipDeployed = @_onBlipDeployed
       @scope._onDisplayEquipment = @_onDisplayEquipment
+      @scope._onApplyOrder = @_onApplyOrder
       @scope._onHover = (evt, details) =>
         @displayDamageZone(evt, details.field) if @scope.activeRule is 'shoot'
       @scope.getInstanceImage = getInstanceImage
@@ -109,7 +110,7 @@ define [
           @scope.zone = null
           @_inhibit = true
         else
-          # inhibit on turn end or deployment in progress unles is alien and needs deployement
+          # inhibit on turn end or deployment in progress unless is alien and needs deployement
           @_inhibit = if @scope.squad?.isAlien and @scope.squad?.deployZone? then false else @scope.squad?.actions < 0 or @scope.squad?.deployZone?
           @_currentZone = null
           @_toggleDeployMode false
@@ -190,7 +191,16 @@ define [
     sendMessage: (content) =>
       @atlas.ruleService.execute "sendMessage", @scope.game, @scope.squad, {content:content}, (err, result) => 
         @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
-        
+      
+    # **private**
+    # Inihibit interface when:
+    # - single player and not current player
+    # - multipl payers and no actions left
+    # - replay in progress
+    # - deployment in progress
+    _inhibit: =>
+      # TODO
+      
     # **private**
     # Require help from the server if available.
     # Won't send any request if help is not wanted
@@ -230,7 +240,7 @@ define [
           
           # send notification in single player mode
           @_onActiveSquadChange()
-          @_onCheckFirstAction()
+          @_updateChosenOrders()
             
           # blips deployment, blip displayal
           if @scope.squad?.deployZone?
@@ -336,6 +346,12 @@ define [
       @_askForHelp rule
       
     # **private**
+    # If first action and remaining orders, display dialog box to trigger them.
+    _updateChosenOrders: =>
+      @scope.showOrders = @scope.squad.firstAction and @scope.squad.orders.length > 0 and not @_inhibit
+      @_askForHelp 'order' if @scope.showOrders
+        
+    # **private**
     # Update action zone depending on new active rule
     #
     # @param event [Event] triggering event
@@ -390,7 +406,7 @@ define [
               if 'activeSquad' in changes
                 @_onActiveSquadChange()
               if 'firstAction' in changes
-                @_onCheckFirstAction()
+                @_updateChosenOrders()
             else if model?.id is @scope.game?.id
               if 'finished' in changes
                 return @location.path "#{conf.basePath}end" if model.finished
@@ -517,41 +533,18 @@ define [
           return @scope.notifs.push kind: 'error', content: parseError err if err?
           # add a notification
           @scope.notifs.push kind: 'info', content: _.sprintf conf.texts.notifs[message], marine?.name if message
-  
-    # **private**
-    # If first action and remaining orders, display dialog box to trigger them.
-    _onCheckFirstAction: =>
-      if @scope.squad.firstAction and @scope.squad.orders.length > 0
-        # new version
-        @scope.orders = (name: order, selectMember: order is 'heavyWeapon' for order in @scope.squad.orders)
         
-        # TODO old version
-        @_askForHelp 'order'
-        outer = 
-          # heavyWeapon is the only order that requires to select a marine
-          possibles: (name: order, selectMember: order is 'heavyWeapon' for order in @scope.squad.orders)
-          selected: []
-          # only members with heavy weapons can be ordered
-          members: (marine for marine in @scope.squad.members when not marine.dead and 
-            not marine.isCommander and 
-            _.any marine.weapons, (w) -> (w?.id or w) in ['flamer', 'autoCannon', 'missileLauncher'])
-          hovered: null
-          displayHelp: (event, order) => outer.hovered = order
-
-        @dialog.messageBox(conf.titles.orders, null, [
-          {label: conf.buttons.apply, result: true}
-          {label: conf.buttons.close}
-        ], chooseDialogTpl, outer).open().then (confirmed) =>
-          return unless confirmed and outer.selected.length is 1
-          selected = outer.selected[0]
-          marine = _.findWhere(@scope.squad.members, id:selected.memberId) or @scope.squad.members[0]
-          @atlas.ruleService.execute 'applyOrder', @scope.squad, marine, {order: selected.name}, (err, message) => @scope.$apply =>
-            return @scope.notifs.push kind: 'error', content: parseError err if err?
-            # add a notification
-            @scope.notifs.push kind: 'info', content: _.sprintf conf.texts.notifs[message], marine?.name if message
-      else
-        # TODO new version
-        @scope.orders = null
+    # **private**
+    # On order selection, relay to server o effectively apply the order
+    #
+    # @param order [String] chosen order
+    # @param memberId [String] if required by chosen order, selected member id
+    _onApplyOrder: (order, memberId = null) =>
+      marine = _.findWhere(@scope.squad.members, id:memberId) or @scope.squad.members[0]
+      @atlas.ruleService.execute 'applyOrder', @scope.squad, marine, {order: order}, (err, message) => @scope.$apply =>
+        return @scope.notifs.push kind: 'error', content: parseError err if err?
+        # add a notification
+        @scope.notifs.push kind: 'info', content: _.sprintf conf.texts.notifs[message], marine?.name if message
                 
     # **private**
     # After a modal confirmation, trigger the end of turn.

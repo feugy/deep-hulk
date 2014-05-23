@@ -33,8 +33,9 @@
   
   <!-- orders selection -->
   <orders data-ng-if="!squad.isAlien" 
-    data-squad="squad">
-    data-on-choose="_onApplyOrder"></orders>
+    data-is-shown="showOrders"
+    data-squad="squad"
+    data-order-chosen="_onApplyOrder"></orders>
   
   <!-- commands panel -->
   <aside class="ng-class: squad ? squad.isAlien ? 'alien' : 'marine': '';">

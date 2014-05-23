@@ -1,14 +1,15 @@
-<div class="orders" data-ng-show="ctrl.isShown">
+<div class="orders" data-ng-show="isShown">
   <alert data-ng-show="ctrl.hasHover" data-close="ctrl.hasHover = false">
     <div data-ng-bind-html="'texts.indics.'+ctrl.hovered | i18n"></div>
   </alert>
   <div class="content">
-    <button type='button' class='close' data-ng-click='ctrl.isShown = false'>&times;</button>
+    <button type='button' class='close' data-ng-click='isShown = false'>&times;</button>
     <select-equipment data-equipments="ctrl.orders"
       data-number="1"
       data-target="ctrl.selected"
       data-members="ctrl.members"
       data-on-hover="ctrl.onDetails"
       data-extra-class="'command'"></select-equipment>
+    <span>{{'labels.apply'|i18n:{sep:true} }}</span>
   </div>
 </div>
