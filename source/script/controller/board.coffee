@@ -106,12 +106,10 @@ define [
         
       # update zone on replay quit/enter
       rootScope.$on 'replay', (ev, details) =>
+        @_updateInhibition()
         if details.active
           @scope.zone = null
-          @_inhibit = true
         else
-          # inhibit on turn end or deployment in progress unless is alien and needs deployement
-          @_inhibit = if @scope.squad?.isAlien and @scope.squad?.deployZone? then false else @scope.squad?.actions < 0 or @scope.squad?.deployZone?
           @_currentZone = null
           @_toggleDeployMode false
       
@@ -194,12 +192,22 @@ define [
       
     # **private**
     # Inihibit interface when:
-    # - single player and not current player
-    # - multipl payers and no actions left
     # - replay in progress
-    # - deployment in progress
-    _inhibit: =>
-      # TODO
+    # - deployment in progress and not alien
+    # - single player and not current player
+    # - multiple payers and no actions left
+    _updateInhibition: =>
+      if @atlas.replayPos?
+        # action replay in progress
+        @_inhibit = true
+      else if @scope.squad?.deployZone?
+        # during deployement, only alien can play
+        @_inhibit = not @scope.squad.isAlien
+      else if @scope.squad?.actions < 0 or @scope.game?.singleActive and @scope.squad?.activeSquad isnt @scope.squad?.name
+        # squad is not active or has no actions left
+        @_inhibit = true
+      else
+        @_inhibit = false
       
     # **private**
     # Require help from the server if available.
@@ -250,8 +258,7 @@ define [
             @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
           else
             @scope.canEndTurn = true
-          # inhibit on replay (always) or turn end (if not alien and deploy) or deploy (and not alien)
-          @_inhibit = if @scope.squad.isAlien and @scope.squad.deployZone? then @atlas.replayPos? else @atlas.replayPos? or @scope.squad.actions < 0 or @scope.squad.deployZone?
+          @_updateInhibition()
           
     # ** private**
     # Adapt UI to current deploy mode:
@@ -261,10 +268,10 @@ define [
     # @param withNotifs [Boolean] set to false to inhibit notifications send to player. Default to true.
     _toggleDeployMode: (withNotifs = true)=>
       return unless @scope.squad?
+      @_updateInhibition()
       if @scope.squad.deployZone?
         @_askForHelp 'startDeploy'
         @scope.canEndTurn = false
-        @_inhibit = true
         if @scope.squad.isAlien
           # Auto select the first zone to deploy
           first = @scope.squad.deployZone.split(',')[0]
@@ -297,8 +304,6 @@ define [
           @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployEnded if withNotifs
         @_currentZone = null
         @scope.deployScope = null
-        # inhibit on turn end or replay pos
-        @_inhibit = @scope.squad.actions < 0 or @atlas.replayPos?
         # Redraw previously highlighted zone
         @_onSelectActiveRule null, @scope.activeRule, @scope.activeWeapon
               
@@ -373,6 +378,7 @@ define [
     # Display to player a notification on which squad is active, if game is in proper mode
     _onActiveSquadChange: =>
       return unless @scope.game.singleActive
+      @_updateInhibition()
       @scope.notifs.push kind: 'info', content: if @scope.squad.activeSquad isnt @scope.squad.name
         _.sprintf conf.texts.notifs.waitForSquad, conf.labels[@scope.squad.activeSquad or 'noActiveSquad']
       else
@@ -397,9 +403,7 @@ define [
           @scope.$apply =>
             if model?.id is @scope.squad?.id 
               if 'actions' in changes
-                # inhibit on replay (always) or turn end (if not alien and deploy) or deploy (and not alien)
-                @_inhibit = if @scope.squad.isAlien and @scope.squad.deployZone? then @atlas.replayPos? else 
-                  @atlas.replayPos? or @scope.squad.actions < 0 or @scope.squad.deployZone?
+                @_updateInhibition()
                 @scope.canEndTurn = @scope.squad.actions >= 0
               if 'deployZone' in changes
                 @_toggleDeployMode() 
@@ -447,7 +451,7 @@ define [
     # @option details items [Array<Item>] item models at this coordinates (may be empty)
     # @option details field [Field] field model at this coordinates (may be null)
     _onSelect: (event, details) =>
-      return if @scope.squad?.deployZone?
+      return if @_inhibit
       # find selectable item inside clicked items
       item = _.find details.items, (item) => 
         return false if item.dead

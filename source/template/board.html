@@ -25,9 +25,6 @@
     data-need-multiple-targets="needMultipleTargets"
     data-shortcuts='{"downleft":"end", "down":"down", "downright":"pgdown", "left":"left", "right":"right", "upleft":"home", "up":"up", "upright":"pgup"}'></map>
     
-  <!-- persistent notifications -->
-  <notify data-src="notifs"></notify>
-  
   <!-- scores displayal -->
   <scores data-src="game"></scores>
   
@@ -36,6 +33,9 @@
     data-is-shown="showOrders"
     data-squad="squad"
     data-order-chosen="_onApplyOrder"></orders>
+  
+  <!-- persistent notifications -->
+  <notify data-src="notifs"></notify>
   
   <!-- commands panel -->
   <aside class="ng-class: squad ? squad.isAlien ? 'alien' : 'marine': '';">

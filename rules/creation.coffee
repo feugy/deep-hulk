@@ -22,9 +22,11 @@ class CreationRule extends Rule
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (actor, target, context, callback) =>
     return callback null, null unless actor?._className is 'Player' and actor?.id is target?.id
+    missions = ['mission-2', 'mission-3'];
+    missions.push 'mission-0' if context.player?.isAdmin
     callback null, [
       {name: 'gameName', type: 'string'}
-      {name: 'mission', type: 'string', within: ['mission-2', 'mission-3']} #, 'mission-0']}
+      {name: 'mission', type: 'string', within: missions}
       {name: 'squadName', type: 'string'}
       {name: 'singleActive', type: 'boolean'}
     ]
