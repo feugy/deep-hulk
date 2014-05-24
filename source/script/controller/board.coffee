@@ -156,7 +156,7 @@ define [
         # send a desktop notification
         popup = new Notification @filter('i18n')('titles.desktopNotification', args: @scope.game), 
           body: notif.content
-          icon: "#{conf.basePath}image/notif-alien.png"
+          icon: "#{conf.rootPath}image/notif-alien.png"
         # click will open the game
         popup.onclick = => window.focus()
         # auto close after 4 seconds
