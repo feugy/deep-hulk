@@ -27,16 +27,16 @@
     
   <!-- scores displayal -->
   <scores data-src="game"></scores>
+    
+  <!-- persistent notifications -->
+  <notify data-src="notifs"></notify>
   
   <!-- orders selection -->
   <orders data-ng-if="!squad.isAlien" 
     data-is-shown="showOrders"
     data-squad="squad"
     data-order-chosen="_onApplyOrder"></orders>
-  
-  <!-- persistent notifications -->
-  <notify data-src="notifs"></notify>
-  
+    
   <!-- commands panel -->
   <aside class="ng-class: squad ? squad.isAlien ? 'alien' : 'marine': '';">
     <!-- blips and reinforcements -->

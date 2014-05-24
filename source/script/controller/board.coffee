@@ -12,7 +12,7 @@ define [
   class BoardController
               
     # Controller dependencies
-    @$inject: ['$scope', '$location', '$dialog', 'atlas', '$rootScope', '$filter']
+    @$inject: ['$scope', '$location', '$dialog', 'atlas', '$rootScope', '$filter', '$interpolate']
     
     # Controller scope, injected within constructor
     scope: null
@@ -28,6 +28,9 @@ define [
     
     # Angular's filter factory
     filter: null
+    
+    # Angular's expression interpolation factory
+    interpolate: null
     
     #**private**
     # Inhibit commands while aliens are deploying, action replay active or when turn has ended
@@ -56,8 +59,9 @@ define [
     # @param dialog [Object] Angular dialog service
     # @param atlas [Object] Atlas service
     # @param rootScope [Object] Angular root scope
-    # @param filter [Object] Angular's filter factory
-    constructor: (@scope, @location, @dialog, @atlas, rootScope, @filter) ->
+    # @param filter [Function] Angular's filter factory
+    # @param interpolate [Function] Angular's expression interpolation factory
+    constructor: (@scope, @location, @dialog, @atlas, rootScope, @filter, @interpolate) ->
       @_applicableRules = {}
       @_inhibit = false
       @_currentZone = null
@@ -126,7 +130,7 @@ define [
         # redirect to end if finished
         return @location.path "#{conf.basePath}end" if game.finished
         
-        document.title = @filter('i18n') 'titles.app', args: [game.name]
+        document.title = @filter('i18n') 'titles.app', args: game
         # keep game and player's squad
         @scope.game = game
         @atlas.initReplay game
@@ -247,6 +251,7 @@ define [
           @_askForHelp 'start'
           
           # send notification in single player mode
+          @_updateInhibition()
           @_onActiveSquadChange()
           @_updateChosenOrders()
             
@@ -258,7 +263,6 @@ define [
             @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
           else
             @scope.canEndTurn = true
-          @_updateInhibition()
           
     # ** private**
     # Adapt UI to current deploy mode:
@@ -302,6 +306,7 @@ define [
         else
           # indicates to marine that they can go on !
           @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployEnded if withNotifs
+          @_updateChosenOrders()
         @_currentZone = null
         @scope.deployScope = null
         # Redraw previously highlighted zone
@@ -380,7 +385,7 @@ define [
       return unless @scope.game.singleActive
       @_updateInhibition()
       @scope.notifs.push kind: 'info', content: if @scope.squad.activeSquad isnt @scope.squad.name
-        _.sprintf conf.texts.notifs.waitForSquad, conf.labels[@scope.squad.activeSquad or 'noActiveSquad']
+        @interpolate(conf.texts.notifs.waitForSquad) target: conf.labels[@scope.squad.activeSquad or 'noActiveSquad']
       else
         conf.texts.notifs.playNow
         
@@ -428,12 +433,12 @@ define [
                   # Display notification
                   content = conf.texts.notifs["#{event.used}Used"]
                   return unless content?
-                  @scope.notifs.push kind: 'info', content: _.sprintf content, @filter('i18n') "labels.#{event.name}"
+                  @scope.notifs.push kind: 'info', content: @interpolate(content) target: @filter('i18n') "labels.#{event.name}"
               if 'mainWinner' in changes and @scope.squad?
                 if @scope.game.mainWinner is @scope.squad.name
                   content = conf.texts.notifs.mainMissionCompleted
                 else
-                  content = _.sprintf conf.texts.notifs.mainMissionCompletedBy, @filter('i18n') "labels.#{@scope.game.mainWinner}"
+                  content = @interpolate(conf.texts.notifs.mainMissionCompletedBy) target: @filter('i18n') "labels.#{@scope.game.mainWinner}"
                 @scope.notifs.push kind: 'info', content: content
             else if model is @scope.selected and model.dead
               @scope.selected = null
@@ -536,7 +541,8 @@ define [
         @atlas.ruleService.execute 'useEquipment', @scope.squad, marine, {equipment: selected.name}, (err, message) => @scope.$apply =>
           return @scope.notifs.push kind: 'error', content: parseError err if err?
           # add a notification
-          @scope.notifs.push kind: 'info', content: _.sprintf conf.texts.notifs[message], marine?.name if message
+          if message
+            @scope.notifs.push kind: 'info', content: @interpolate(conf.texts.notifs[message]) target: marine?.name
         
     # **private**
     # On order selection, relay to server o effectively apply the order
@@ -548,7 +554,8 @@ define [
       @atlas.ruleService.execute 'applyOrder', @scope.squad, marine, {order: order}, (err, message) => @scope.$apply =>
         return @scope.notifs.push kind: 'error', content: parseError err if err?
         # add a notification
-        @scope.notifs.push kind: 'info', content: _.sprintf conf.texts.notifs[message], marine?.name if message
+        if message
+          @scope.notifs.push kind: 'info', content: @interpolate(conf.texts.notifs[message]) target: marine?.name 
                 
     # **private**
     # After a modal confirmation, trigger the end of turn.

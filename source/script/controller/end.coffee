@@ -47,7 +47,7 @@ define [
         # redirect to board if not finished
         return @location.path "#{conf.basePath}board" unless game.finished
         
-        document.title = @filter('i18n') 'titles.app', args: [game.name]
+        document.title = @filter('i18n') 'titles.app', args: game
         @scope.game = game
       
     # **private**

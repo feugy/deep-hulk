@@ -603,28 +603,6 @@ blipSize = 50px
   overflow auto
 
 //------------------------------------------------------------------------------
-// Short game representation
-
-.short-game
-  margin-top .5em
-
-  h3
-    color alertColor
-
-  img 
-    width 1.5em
-    margin 0 4px -0.5em 0
-
-  .player
-    opacity 0.6
-    display inline-block
-    margin-right 1.5em
-    margin-bottom 0.5em
-
-  .player.connected
-    opacity 1
-
-//------------------------------------------------------------------------------
 // Alerts
 
 .alert
@@ -717,6 +695,24 @@ blipSize = 50px
     bottom 0
 
 //------------------------------------------------------------------------------
+// Short game representation
+
+.short-game
+
+  h3
+    color alertColor
+    margin 1.25em 0 .25em
+  
+  .squad.active
+    background-color rgba(hoverColor, 0.3)
+
+  .squad.me
+    background-color rgba(alertColor, 0.3)
+
+.short-game:first-child h3
+  margin-top 0.5em
+
+//------------------------------------------------------------------------------
 // Scores
 
 .scores
@@ -724,27 +720,31 @@ blipSize = 50px
     applyMiniPanelSkin()
     padding 0px 16px 
 
-    > *
-      display inline-flex
-      align-items center
-      margin 4px 2px
-      vertical-align middle
-
-    .value
-      margin-left 5px
-
-    .squad
-      opacity 0.5
-      padding 1px 3px
-      border-radius 2px
-      
-      img
-        width 25px    
-
     .squad.active
       background-color rgba(textBackground, 0.5)
-    .squad.connected
-      opacity 1
+
+.scores
+.short-game
+
+  .content > *
+    display inline-flex
+    align-items center
+    margin 4px 2px
+    vertical-align middle
+
+  .value
+    margin-left 5px
+
+  .squad
+    opacity 0.5
+    padding 1px 3px
+    border-radius 2px
+    
+    img
+      width 25px    
+
+  .squad.connected
+    opacity 1
 
 //------------------------------------------------------------------------------
 // Custom selects

@@ -6,7 +6,7 @@ define [
 ], (_, app) ->
   
   # add the i18n filter
-  app.filter 'i18n', ['$parse', (parse) -> (input, options) -> 
+  app.filter 'i18n', ['$parse', '$interpolate', (parse, interpolate) -> (input, options) -> 
     sep = ''
     # optionnal field separator
     if options?.sep is true
@@ -14,8 +14,8 @@ define [
     try
       value = parse(input) conf
       # performs replacements
-      if options?.args? and _.isArray options.args
-        value = _.sprintf.apply _, [value].concat options.args
+      if options?.args?
+        value = interpolate(value) options.args
     catch exc
       console.error "Failed to parse i18n key '#{input}':", exc
     "#{if value? then value else input}#{sep}"

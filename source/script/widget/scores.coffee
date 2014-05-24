@@ -2,9 +2,9 @@
 
 define [
   'app'
-  'util/common'
+  'widget/short_game'
   'text!template/scores.html'
-], (app, {getInstanceImage}, template) ->
+], (app, ShortGame, template) ->
   
   app.directive 'scores', -> 
     # directive template
@@ -18,35 +18,26 @@ define [
       game: '=?src'
     # controller
     controller: Scores
+    controllerAs: 'ctrl'
     
-  class Scores
+  class Scores extends ShortGame
                   
     # Controller dependencies
-    @$inject: ['$scope', '$element', '$location', 'players']
+    @$inject: ['$scope', '$filter', 'players', 'atlas', '$location']
     
-    # Controller scope, injected within constructor
-    scope: null
-    
-    # enriched element for directive root
-    element: null
+    # Angular service for navigation
+    location: null
     
     # Controller constructor: bind methods and attributes to current scope
     #
-    # @param scope [Object] directive scope
-    # @param element [DOM] directive root element
-    # @param location [Object] Angular service for navigation
+    # @param scope [Object] directive outer scope
+    # @param filter [Function] Angular's filter factory
     # @param players [Object] Players service
-    constructor: (@scope, @element, @location, players) ->
-      @scope.getInstanceImage = getInstanceImage
-      @scope.getPlayerName = players.getPlayerName
-      @scope.getState = (squad) =>
-        state = []
-        if @scope.game?.singleActive 
-          state.push 'active' if squad.activeSquad is squad.name
-        else
-          state.push 'active' if squad.actions > 0
-        if players.isPlayerConnected squad.player
-          state.push 'connected'
-        state
-      @scope.back = =>
-        @location.path("#{conf.basePath}home").search {}
+    # @param atlas [Object] Atlas service
+    # @param location [Object] Angular service for navigation
+    constructor: (scope, filter, players, atlas, @location) ->
+      super(scope, filter, players, atlas)
+        
+    # Navigate back to home screen
+    back: =>
+      @location.path("#{conf.basePath}home").search {}

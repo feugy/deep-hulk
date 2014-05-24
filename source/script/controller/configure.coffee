@@ -33,7 +33,7 @@ define [
     # @param location [Object] Angular location service
     # @param dialog [Object] Angular dialog service
     # @param atlas [Object] Atlas service
-    # @param filter [Object] Angular's filter factory
+    # @param filter [Function] Angular's filter factory
     constructor: (@scope, @location, @dialog, @atlas, @filter) ->
       @scope.configured = equipments: [], orders: []
       @scope.getInstanceImage = getInstanceImage
@@ -60,7 +60,7 @@ define [
         # redirect to end if finished
         return @location.path "#{conf.basePath}end" if game.finished
         
-        document.title = @filter('i18n') 'titles.app', args: [game.name]
+        document.title = @filter('i18n') 'titles.app', args: game
         # keep game and player's squad
         @scope.game = game
         squad = _.find game.squads, (squad) => squad.player is @atlas.player.email

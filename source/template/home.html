@@ -1,7 +1,7 @@
 <!-- player name and logout -->
 <div class="mini-panel">
   <div class="content">
-    <div class="player">{{'labels.welcome' | i18n:{args:[getPlayerName(current)]} }}</span></div>
+    <div class="player">{{'labels.welcome' | i18n:{args:{player:getPlayerName(current)} } }}</span></div>
     <a href="" data-ng-click="onNewGame()" class="btn new-game">{{'buttons.newGame'|i18n}}</a>
     <a class='btn' href="" data-ng-click='navTo("rules")'>{{'buttons.rules'|i18n}}</a>
     <a class='btn' href="" data-ng-click='logout()'>{{'buttons.logout'|i18n}}</a>
@@ -60,7 +60,6 @@
     <ul>
       <short-game data-ng-repeat="squad in player.characters track by squad.id" 
         data-src="squad.game" 
-        data-current="current" 
         data-ng-click="onPlay(squad.game)"/>
     </ul>
     <div data-ng-show="player.characters.length === 0" class="empty-list">{{'labels.noGames'|i18n}}</div>
@@ -69,8 +68,7 @@
     <h2>{{'titles.freeGames'|i18n}}</h2>
     <ul>
       <short-game data-ng-repeat="game in freeGames" 
-        data-src="game" 
-        data-current="current">
+        data-src="game">
         <a href="" class="command" data-ng-click="onAskJoin(game)">{{'buttons.joinGame'|i18n}}</a>
       </short-game>
     </ul>

@@ -1,9 +1,12 @@
 <li class="short-game">
-  <h3><i class="fa fa-toggle-right"></i>{{game.name}}<span ng-transclude></span></h3>
-  <div>
-    <span class="player ng-class:isPlayerConnected(involved.player)?'connected':'';"
-          data-ng-repeat="involved in game.players track by $index">
-      <img data-ng-src="{{squadImage(involved.squad)}}"/>{{getPlayerName(involved.player)}}
-    </span>
+  <h3><i class="fa fa-toggle-right"></i>{{ctrl.game.name}}<span ng-transclude></span></h3>
+  <div class="content">
+    <div class="turn"><span>{{'labels.turn'|i18n}}</span><span class="value">{{ctrl.game.turn}}</span></div>
+    <div data-ng-repeat="involved in ctrl.getInvolved() track by $index"
+          class="squad ng-class:ctrl.getState(involved.squadObj);"
+          title="{{ctrl.getTip(involved.squadObj)}}">
+      <span><img data-ng-src="{{ctrl.getImage(involved.squadObj)}}"/></span>
+      <span class="value">{{involved.squadObj.points}}</span>
+    </div>
   </div>
 </li>

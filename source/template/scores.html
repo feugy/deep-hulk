@@ -1,12 +1,12 @@
 <div class="scores">
   <div class="content">
-    <div class="turn"><span>{{'labels.turn'|i18n}}</span><span class="value">{{game.turn}}</span></div>
-    <div data-ng-repeat="squad in game.squads track by $index" 
-        class="squad ng-class:getState(squad);"
-        title="{{'labels.'+squad.name|i18n:{sep:true} }}{{getPlayerName(squad.player)}}">
-      <span><img data-ng-src="{{getInstanceImage(squad)}}"/></span>
+    <div class="turn"><span>{{'labels.turn'|i18n}}</span><span class="value">{{ctrl.game.turn}}</span></div>
+    <div data-ng-repeat="squad in ctrl.game.squads track by $index" 
+        class="squad ng-class:ctrl.getState(squad);"
+        title="{{ctrl.getTip(squad)}}">
+      <span><img data-ng-src="{{ctrl.getImage(squad)}}"/></span>
       <span class="value">{{squad.points}}</span>
     </div>
-    <button type='button' class='close' data-ng-click='back()'>&times;</button>
+    <button type='button' class='close' data-ng-click='ctrl.back()'>&times;</button>
   </div>
 </div>

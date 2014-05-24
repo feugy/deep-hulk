@@ -34,13 +34,13 @@
         class="row"></configure-dreadnought>
     </form>
     <div data-ng-if="!isAlien">
-      <div ng-bind-html="'texts.chooseEquipment' | i18n:{args:[equipNumber]} "></div>
+      <div ng-bind-html="'texts.chooseEquipment' | i18n:{args:{num:equipNumber} }"></div>
       <select-equipment data-equipments="equipments" 
                         data-target="configured.equipments" 
                         data-number="equipNumber"
                         data-members="marines"
                         data-on-hover="onHoverEquip"></select-equipment>
-      <div ng-bind-html="'texts.chooseOrders' | i18n:{args:[orderNumber]} "></div>
+      <div ng-bind-html="'texts.chooseOrders' | i18n:{args:{num:orderNumber} }"></div>
       <select-equipment data-equipments="orders" 
                         data-target="configured.orders" 
                         data-number="orderNumber"
