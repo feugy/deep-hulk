@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg3921"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="Nouveau document 3">
+  <defs
+     id="defs3923" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="12.792004"
+     inkscape:cx="15.324878"
+     inkscape:cy="19.500871"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="1002"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3926">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="alien"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="color:#000000;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.30000000999999998;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4724"
+       width="32"
+       height="32"
+       x="0"
+       y="1020.3622"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccccscccccccccsccc"
+       inkscape:connector-curvature="0"
+       id="path5316"
+       d="m 1.6509999,1032.6217 c -1.2558289,0.2093 -1.33055542,1.2467 -0.4933362,1.8746 3.4884135,3.4885 4.0144038,7.744 4.0144038,7.744 -0.1395366,1.3953 1.3813412,1.3813 1.3813412,1.3813 0.8372193,0.2093 2.1706794,-0.1973 2.1706794,-0.1973 0,0 -0.049332,1.48 0.3946682,1.776 2.9806977,0.9414 4.4946867,1.7513 6.8080387,1.7267 2.49813,-0.027 5.377365,-1.3814 7.104042,-2.0227 0.493336,-0.444 0.789337,-1.7267 0.789337,-1.7267 0,0 1.37433,1.1248 2.072012,0.148 0.279074,-3.3489 5.472526,-7.4967 5.402758,-8.9618 0.488378,-1.3954 -0.789338,-1.5787 -0.789338,-1.5787 l -3.388734,0.067 -1.153461,2.0127 -1.147989,-1.9671 -2.812127,0.056 c -0.767451,-2.8605 -1.442085,-4.6848 -6.088469,-4.765 -4.507906,-0.078 -5.385829,2.5084 -6.2230473,4.9503 -3.6977187,0 -8.0407788,-0.5173 -8.0407788,-0.5173 z"
+       style="color:#000000;fill:#657b4f;stroke:#3b4331;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1;fill-rule:nonzero"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path5324"
+       d="m 12.325441,1044.8056 c 2.121346,3.8974 6.610705,1.628 7.104041,0"
+       style="color:#000000;fill:none;stroke:#3b4331;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path5358"
+       d="m 8.082751,1037.9976 c 0,0 -0.9080596,-1.5055 -0.7400043,-2.22 -0.8879147,-1.0853 -5.1411658,-1.8239 -5.1800298,-1.8254 2.3680135,1.0854 3.8973557,6.1174 3.7986884,6.8574"
+       style="color:#000000;fill:none;stroke:#3b4331;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path5358-1"
+       d="m 23.707894,1037.2693 c 0,0 0.873754,-1.4605 0.840163,-2.1938 0,0 3.554835,-1.0018 5.427578,-0.8402 -1.787377,2.456 -4.661202,5.443 -4.700488,6.1885"
+       style="color:#000000;fill:none;stroke:#3b4331;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path5384"
+       d="m 10.006762,1040.6123 -0.2960015,1.036 c 2.7626825,3.404 12.4320705,1.5293 12.7774055,0.4933 l -0.641336,-0.9373"
+       style="color:#000000;fill:none;stroke:#3b4331;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path5392"
+       d="m 12.613357,1038.8917 c 0,0 1.692292,0.8606 2.688336,1.8402 0.433328,0.2651 0.985811,0.041 0.985811,0.041 1.314453,-0.7351 3.273799,-1.5422 3.273799,-1.5422 0.09041,-0.9837 -0.585264,-1.3576 -0.585264,-1.3576"
+       style="color:#000000;fill:none;stroke:#3b4331;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path5418"
+       d="m 9.8587615,1036.7642 c -0.6413372,0.296 -0.9373393,2.0227 -0.9373393,2.0227 -0.098667,0.5427 0.4933362,0.4934 0.4933362,0.4934 0.9373386,-1.1841 3.6013536,-1.0854 3.6013536,-1.0854"
+       style="color:#000000;fill:none;stroke:#3b4331;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path5418-4"
+       d="m 21.17528,1036.6403 c 0.69067,0.2467 1.393376,1.8707 1.393376,1.8707 0.09867,0.5426 -0.493336,0.4933 -0.493336,0.4933 -0.937339,-1.184 -2.824051,-0.884 -2.824051,-0.884"
+       style="color:#000000;fill:none;stroke:#3b4331;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path5444"
+       d="m 9.4640924,1034.946 1.6351016,-0.6978 c 0,0 1.32576,0.8723 3.977275,1.7881 l -1.104798,-0.3052 c -1.900253,0.7414 -2.916669,0.218 -2.916669,0.218 -0.397726,-0.1308 -0.530303,-1.4392 -0.530303,-1.4392 z"
+       style="color:#000000;fill:#ffdd55;stroke:#3b4331;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1;fill-rule:nonzero"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path5444-1"
+       d="m 22.334339,1034.9926 -1.635102,-0.6978 c 0,0 -1.32576,0.8722 -3.977276,1.7881 l 1.104799,-0.3053 c 1.900253,0.7414 2.916669,0.2181 2.916669,0.2181 0.397726,-0.1309 0.530302,-1.4392 0.530302,-1.4392 z"
+       style="color:#000000;fill:#ffdd55;stroke:#3b4331;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1;fill-rule:nonzero"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#fffbc7;fill-opacity:0.58823529;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 10.866163,1031.4898 c 0.605847,-1.9934 2.696998,-2.5407 2.696998,-2.5407 2.677454,-0.7036 5.276734,0.1564 5.276734,0.1564 2.09115,0.5863 2.755627,4.2995 2.755627,4.2995 l 2.958732,0.01 0.712391,1.2237 -1.189598,-0.7937 -2.483194,0.063 -0.998184,-0.3978 c -1.049228,0.1783 -2.636244,0.3728 -3.456055,0.8559 0,0 -1.270325,1.2314 -2.247498,-0.039 -1.270325,-0.5276 -1.797999,-0.1953 -2.227955,-0.9966 0,0 -0.410413,-0.3323 0.50813,-0.1955 2.286585,0.9381 5.198561,0.1564 5.198561,0.1564 2.570971,-2.4848 -0.401287,-3.2627 -1.778455,-3.3811 0,0 -3.146498,-0.2931 -4.358192,0.9186 0,0 -0.957629,1.4071 -1.368042,0.6644 z"
+       id="path8397"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#fffbc7;fill-opacity:0.58823529;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 1.3289552,1033.9522 c 0,0 0.6253907,0.4105 0.7426515,-0.3517 1.2898683,-0.5081 2.0520632,0.4691 4.4168218,0.3518 1.192151,-0.2345 1.2703248,-0.3714 1.2703248,-0.3714 l -5.9021247,-0.4495 c 0,0 -1.25078139,0.02 -0.5276734,0.8208 z"
+       id="path8416"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#fffbc7;fill-opacity:0.58823529;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 26.930887,1034.2063 c 0,0 0.644934,-0.1172 0.703564,-0.4299 l 2.325672,-0.039 c 0.625391,0 0.840369,0.8012 0.840369,0.8012 0,0 0.429955,-1.2116 -0.312696,-1.2507 l -3.126953,0.059 z"
+       id="path8435"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#fffbc7;fill-opacity:0.58823529;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 15.810658,1036.7079 c 1.915259,0.7427 1.817542,1.7393 1.817542,1.7393 0,0 -0.879455,1.1336 -2.110693,0.9186 -0.977173,-0.5472 -1.52439,-0.2736 -1.52439,-0.2736 l 1.622107,1.2117 c 0,0 0.234521,0.1759 0.429956,0 l 3.029236,-1.3485 c 0,0 0.07817,-0.43 -0.371326,-0.6841 -0.742651,-1.1922 -1.973889,-1.8956 -2.892432,-1.5634 z"
+       id="path8443"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#353f3d;fill-opacity:0.68348622;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 4.8272344,1039.2485 c 0.9380861,1.3095 1.231238,2.443 1.231238,2.443 0.9576295,-0.2345 2.0325197,0.8208 2.0325197,0.8208 0.4299561,0.1954 1.0944338,-0.7036 1.0944338,-0.7036 0,0 1.1139771,1.3485 2.7947151,1.8175 0.527673,0.2541 3.752344,0.6841 3.67417,0.6841 -0.07817,0 -3.009693,-0.3127 -3.126954,0.4104 l -0.390869,0.2541 0.644934,0.9185 -3.4005616,-1.114 c -0.2149779,-0.5027 -0.1758908,-1.9544 -0.1758908,-1.9544 0,0 -3.5178226,1.0945 -3.5373661,-0.4103 0,0 -0.2736088,-1.9739 -0.8403691,-3.1661 z"
+       id="path8451"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccsccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#353f3d;fill-opacity:0.68348622;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 18.488112,1044.3494 c 0.56676,-0.078 1.172608,0.5276 1.172608,0.5276 0,0 -0.136804,0.7232 -0.605847,0.9577 0.4495,0 3.752344,-1.3681 3.752344,-1.3681 0,0 0.644934,-1.1922 0.781738,-2.1498 l -0.547217,-0.1758 -0.195434,0.4104 c -1.055347,0.9576 -2.833802,1.1139 -2.833802,1.1139 0,0 -0.273609,0.5473 -1.52439,0.6841 z"
+       id="path8470"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#353f3d;fill-opacity:0.68348622;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 9.4976277,1039.5264 -0.710945,-0.1739 c 0.039087,1.0749 2.3240443,1.0698 2.3240443,1.0698 l 1.326654,-0.1106 c 0.332239,1.1531 1.381932,1.7136 1.381932,1.7136 0.703565,0.5472 1.824149,0.1659 1.824149,0.1659 1.758911,-0.469 3.675937,-2.294 3.675937,-2.294 0,0 -2.3272,0.9129 -2.874417,1.3819 0,0 -0.883285,0.3423 -1.489133,-0.2049 0,0 -1.30342,-1.2608 -2.573745,-1.7298 l 0.497495,-0.9121 c 0,0 -2.424342,-0.1176 -3.3819713,1.0941 z"
+       id="path8478"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#fffbc7;fill-opacity:0.58823529;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 21.088271,1036.8569 0.373121,0.8292 c 0,0 -1.893245,0.1108 -1.824149,0.1381 1.506308,-0.1378 2.570392,0.8845 2.570392,0.8845 0,0 0.19347,0.042 0.138193,-0.097 0,0 -0.773881,-1.6722 -1.257557,-1.7551 z"
+       id="path8486"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#353f3d;fill-opacity:0.68348622;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 4.7099737,1036.3756 c 0,0 -0.6937929,-1.2117 -0.6058473,-1.3485 0.830597,0.049 1.4853029,0.8013 1.4853029,0.8013 0.7328797,0.127 0.6253907,0.9381 0.6253907,0.9381 -0.6547059,1.3778 0.5472169,2.0912 0.5472169,2.0912 0.9087709,0.127 1.2703248,1.2898 1.2703248,1.2898 l 0.2345215,-0.6058 c -0.6058472,-0.8892 -0.3126953,-1.4267 -0.3126953,-1.4267 -0.8599122,-0.9869 -0.8989991,-2.228 -0.8989991,-2.228 0,0 -0.146576,-0.5667 -3.7914311,-1.4657 0.4201844,0.2834 1.446216,1.9543 1.446216,1.9543 z"
+       id="path8505"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#353f3d;fill-opacity:0.68348622;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 23.962688,1037.382 c 0.0691,-0.014 0.960442,0.3455 0.925894,-0.6909 l 0.359302,-0.5528 c 0.456037,-0.1589 0.732424,0.539 0.732424,0.539 l 0.359302,-0.6219 c 0,0 0.469856,-0.8223 1.437208,-0.4975 0.19347,0.5459 -0.207289,1.2714 -0.207289,1.2714 0,0 1.734324,-1.8725 1.907065,-2.3493 0,0 -1.2161,-0.028 -2.922785,0.3593 l -0.573501,0.9812 -0.469857,-0.7462 -0.718604,0.1934 c -0.04837,0.6495 -0.829159,2.1143 -0.829159,2.1143 z"
+       id="path8524"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\notif-alien.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

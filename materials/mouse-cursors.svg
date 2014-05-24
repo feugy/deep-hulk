@@ -1,0 +1,1049 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="384"
+   height="192.00002"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+   inkscape:export-xdpi="28.799999"
+   inkscape:export-ydpi="28.799999"
+   sodipodi:docname="mouse-cursors.svg"
+   enable-background="new">
+  <defs
+     id="defs4">
+    <filter
+       inkscape:collect="always"
+       id="filter6877"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5921033"
+         id="feGaussianBlur6879" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter6881"
+       x="-0.14164989"
+       width="1.2832998"
+       y="-0.14645156"
+       height="1.2929031"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5921033"
+         id="feGaussianBlur6883" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter6877-6"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5921033"
+         id="feGaussianBlur6879-7" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter7630"
+       x="-0.11323315"
+       width="1.2264663"
+       y="-0.08331947"
+       height="1.1666389"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.0746212"
+         id="feGaussianBlur7632" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter7782"
+       x="-0.11803451"
+       width="1.236069"
+       y="-0.12203568"
+       height="1.2440714">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.3266733"
+         id="feGaussianBlur7784" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter8547">
+      <feBlend
+         inkscape:collect="always"
+         mode="screen"
+         in2="BackgroundImage"
+         id="feBlend8549" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter6881-9"
+       x="-0.14164989"
+       width="1.2832998"
+       y="-0.14645156"
+       height="1.2929031"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5921033"
+         id="feGaussianBlur6883-0" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter6881-9-3"
+       x="-0.14164989"
+       width="1.2832998"
+       y="-0.14645156"
+       height="1.2929031"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5921033"
+         id="feGaussianBlur6883-0-4" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter6881-9-4"
+       x="-0.14164989"
+       width="1.2832998"
+       y="-0.14645156"
+       height="1.2929031"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5921033"
+         id="feGaussianBlur6883-0-1" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter6881-9-8"
+       x="-0.14164989"
+       width="1.2832998"
+       y="-0.14645156"
+       height="1.2929031"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5921033"
+         id="feGaussianBlur6883-0-2" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter7782-5"
+       x="-0.11803451"
+       width="1.236069"
+       y="-0.12203568"
+       height="1.2440714">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.3266733"
+         id="feGaussianBlur7784-1" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter7782-5-1"
+       x="-0.11803451"
+       width="1.236069"
+       y="-0.12203568"
+       height="1.2440714">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.3266733"
+         id="feGaussianBlur7784-1-1" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter6877-4"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5921033"
+         id="feGaussianBlur6879-2" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter6877-4-8"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.5921033"
+         id="feGaussianBlur6879-2-5" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.8262874"
+     inkscape:cx="214.67152"
+     inkscape:cy="24.938917"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1280"
+     inkscape:window-height="1002"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="marqueurs"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline;filter:url(#filter8547);opacity:0"
+     transform="translate(0,-860.26219)">
+    <rect
+       style="opacity:0.50000000000000000;color:#000000;fill:#cbcbcb;fill-opacity:0.50196078000000000;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3759-6"
+       width="96"
+       height="96"
+       x="0"
+       y="956.26221"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <rect
+       y="956.26221"
+       x="96"
+       height="96"
+       width="96"
+       id="rect6886"
+       style="opacity:0.50000000000000000;color:#000000;fill:none;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-pointer.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <rect
+       transform="translate(0,952.36218)"
+       y="-92.099991"
+       x="96"
+       height="96"
+       width="96"
+       id="rect6886-0"
+       style="opacity:0.50000000000000000;color:#000000;fill:#cbcbcb;fill-opacity:0.50196078000000000;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-top.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <rect
+       inkscape:export-ydpi="29.660151"
+       inkscape:export-xdpi="29.660151"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-pointer.png"
+       style="opacity:0.50000000000000000;color:#000000;fill:none;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect7634"
+       width="96"
+       height="96"
+       x="288"
+       y="956.26221" />
+    <rect
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-bottom.png"
+       style="opacity:0.50000000000000000;color:#000000;fill:#cbcbcb;fill-opacity:0.50196078000000000;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect7647"
+       width="96"
+       height="96"
+       x="288"
+       y="860.26221" />
+    <rect
+       y="860.26221"
+       x="0"
+       height="96"
+       width="96"
+       id="rect7649"
+       style="opacity:0.50000000000000000;color:#000000;fill:none;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-left.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <rect
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-right.png"
+       style="opacity:0.50000000000000000;color:#000000;fill:none;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect7651"
+       width="96"
+       height="96"
+       x="192"
+       y="860.26221" />
+    <rect
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-move.png"
+       style="opacity:0.50000000000000000;color:#000000;fill:#cbcbcb;fill-opacity:0.50196078000000000;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect7653"
+       width="96"
+       height="96"
+       x="192"
+       y="956.26221" />
+    <rect
+       y="860.26221"
+       x="192"
+       height="96"
+       width="96"
+       id="rect4389"
+       style="opacity:0.50000000000000000;color:#000000;fill:none;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-right.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="normal"
+     style="display:inline"
+     transform="translate(0,-860.26219)">
+    <path
+       sodipodi:nodetypes="cccczcc"
+       inkscape:connector-curvature="0"
+       id="path6873"
+       d="m 2.71177,1031.8776 2.642753,-68.63017 55.028205,41.61367 -8.853887,10.9136 c 0,0 -10.021744,-19.42191 -27.196505,-11.7497 -17.174761,7.6722 -7.344276,27.8012 -7.344276,27.8012 z"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6877);enable-background:accumulate"
+       transform="matrix(1.1472482,0,0,1.1452938,9.2726169,-134.03925)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       transform="matrix(1.1472482,0,0,1.1452938,7.0126029,-121.30573)"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       sodipodi:ry="13.045431"
+       sodipodi:rx="13.487649"
+       sodipodi:cy="1007.0349"
+       sodipodi:cx="34.050785"
+       id="path6875"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6881);enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;fill-rule:nonzero;stroke:#263919;stroke-width:2.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 15.912038,1039.6144 3.031894,-78.60175 63.131009,47.65995 -10.157606,12.4993 c 0,0 -11.497428,-22.24382 -31.201141,-13.4569 -19.703714,8.7869 -8.425708,31.8406 -8.425708,31.8406 z"
+       id="path3757"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccczcc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;stroke:#263919;stroke-width:2.61718297;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3761"
+       sodipodi:cx="34.050785"
+       sodipodi:cy="1007.0349"
+       sodipodi:rx="13.487649"
+       sodipodi:ry="13.045431"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       transform="matrix(1.1472482,0,0,1.1452938,10.540951,-127.45514)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 20.191155,964.03969 13.666563,26.81374 c 0,0 -19.846357,18.34167 -3.523724,47.52917 l -13.070772,-0.1309 z"
+       id="path6825"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="fill:#ffffff;fill-opacity:0.78431373;stroke:none;display:inline"
+       d="m 20.216288,963.59976 13.748867,27.24558 c 0,0 26.773697,-3.49072 38.187605,27.93536 l 7.764492,-9.7195 z"
+       id="path6825-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#ffffff;fill-opacity:0.78431373;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path6845"
+       sodipodi:cx="58.538609"
+       sodipodi:cy="1017.2611"
+       sodipodi:rx="4.477457"
+       sodipodi:ry="4.6985664"
+       d="m 63.016066,1017.2611 a 4.477457,4.6985664 0 1 1 -8.954914,0 4.477457,4.6985664 0 1 1 8.954914,0 z"
+       transform="matrix(1.1472482,0,0,0.82191674,-17.489243,183.52409)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 38.906206,1017.2537 c -6.088005,14.6876 13.678337,22.9801 23.444514,14.6233 -9.980489,17.8229 -36.085819,1.457 -23.444514,-14.6233 z"
+       id="path6847"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       transform="matrix(1.1472482,0,0,1.1452938,10.540951,-127.45514)"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       sodipodi:ry="13.045431"
+       sodipodi:rx="13.487649"
+       sodipodi:cy="1007.0349"
+       sodipodi:cx="34.050785"
+       id="path7846"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;stroke:#263919;stroke-width:2.61718297;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       transform="matrix(1.1472482,0,0,0.82191674,-17.489243,183.52409)"
+       d="m 63.016066,1017.2611 a 4.477457,4.6985664 0 1 1 -8.954914,0 4.477457,4.6985664 0 1 1 8.954914,0 z"
+       sodipodi:ry="4.6985664"
+       sodipodi:rx="4.477457"
+       sodipodi:cy="1017.2611"
+       sodipodi:cx="58.538609"
+       id="path7848"
+       style="color:#000000;fill:#ffffff;fill-opacity:0.78431373;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path7850"
+       d="m 38.906206,1017.2537 c -6.088005,14.6876 13.678337,22.9801 23.444514,14.6233 -9.980489,17.8229 -36.085819,1.457 -23.444514,-14.6233 z"
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;stroke:#263919;stroke-width:2.61718297;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path7852"
+       sodipodi:cx="34.050785"
+       sodipodi:cy="1007.0349"
+       sodipodi:rx="13.487649"
+       sodipodi:ry="13.045431"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       transform="matrix(1.1472482,0,0,1.1452938,10.540951,-127.45514)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#ffffff;fill-opacity:0.78431373;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path7854"
+       sodipodi:cx="58.538609"
+       sodipodi:cy="1017.2611"
+       sodipodi:rx="4.477457"
+       sodipodi:ry="4.6985664"
+       d="m 63.016066,1017.2611 a 4.477457,4.6985664 0 1 1 -8.954914,0 4.477457,4.6985664 0 1 1 8.954914,0 z"
+       transform="matrix(1.1472482,0,0,0.82191674,-15.489243,183.52409)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 38.906206,1017.2537 c -6.088005,14.6876 13.678337,22.9801 23.444514,14.6233 -9.980489,17.8229 -36.085819,1.457 -23.444514,-14.6233 z"
+       id="path7856"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="pointer"
+     transform="translate(0,92.099988)"
+     style="display:inline">
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-pointer.png"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3.43881178;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7782-5-1);enable-background:accumulate"
+       d="m 117.63927,96.021011 -18.374254,-79.213488 9.480854,-4.155209 21.88723,31.145428 31.44479,-2.213235 21.72428,23.494704 -10.15761,12.4993 c 0,0 -11.49742,-22.24383 -31.20114,-13.4569 -19.70371,8.7869 -8.42571,31.8406 -8.42571,31.8406 z"
+       id="path4099"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccczcc" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-pointer.png"
+       sodipodi:type="arc"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7782);enable-background:accumulate"
+       id="path7731"
+       sodipodi:cx="34.050785"
+       sodipodi:cy="1007.0349"
+       sodipodi:rx="13.487649"
+       sodipodi:ry="13.045431"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       transform="matrix(1.1472482,0,0,1.1452938,112.89421,-1072.1849)" />
+    <path
+       sodipodi:nodetypes="ccccccczcc"
+       inkscape:connector-curvature="0"
+       id="path6935"
+       d="m 120.53908,89.021468 -18.37425,-79.2134877 9.48085,-4.1552096 21.88723,31.1454283 31.44479,-2.213235 21.72428,23.494704 -10.15761,12.4993 c 0,0 -11.49742,-22.24383 -31.20114,-13.4569 -19.70371,8.7869 -8.42571,31.8406 -8.42571,31.8406 z"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;fill-rule:nonzero;stroke:#263919;stroke-width:2.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-pointer.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       transform="matrix(1.1472482,0,0,1.1452938,115.85244,-1078.5956)"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       sodipodi:ry="13.045431"
+       sodipodi:rx="13.487649"
+       sodipodi:cy="1007.0349"
+       sodipodi:cx="34.050785"
+       id="path6937"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;fill-rule:nonzero;stroke:#263919;stroke-width:2.61718297;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-pointer.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path6939"
+       d="m 103.90694,10.84504 17.92059,39.686636 c 0,0 -6.6716,23.492792 12.96767,36.981592 l -13.01942,-0.02 z"
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-pointer.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path6941"
+       d="m 111.26423,7.5743502 19.9575,36.7638368 c 0,0 37.23969,-12.772569 45.55807,23.849581 l 7.90138,-9.993279 -20.31874,-22.124355 -31.63464,2.253615 z"
+       style="color:#000000;fill:#ffffff;fill-opacity:0.78431373;fill-rule:nonzero;stroke:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-pointer.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       transform="matrix(1.1472482,0,0,0.82191674,89.822229,-767.61641)"
+       d="m 63.016066,1017.2611 a 4.477457,4.6985664 0 1 1 -8.954914,0 4.477457,4.6985664 0 1 1 8.954914,0 z"
+       sodipodi:ry="4.6985664"
+       sodipodi:rx="4.477457"
+       sodipodi:cy="1017.2611"
+       sodipodi:cx="58.538609"
+       id="path6943"
+       style="color:#000000;fill:#ffffff;fill-opacity:0.78431373;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-pointer.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path6945"
+       d="m 144.2177,66.113209 c -6.08801,14.6876 13.5125,22.8143 23.27868,14.4575 -9.98049,17.822905 -35.91999,1.6228 -23.27868,-14.4575 z"
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-pointer.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="move"
+     style="display:inline"
+     transform="translate(0,96.099993)">
+    <path
+       id="path4074"
+       d="m 216.125,8.275007 c -0.8557,0.433404 -1.13889,33.77597 -1.4375,34.6875 -0.2986,0.91153 -19.8084,27.9568 -19.375,28.8125 0.43341,0.85569 33.77597,1.1389 34.6875,1.4375 0.91153,0.29861 27.98805,19.80841 28.84375,19.375 0.85569,-0.4334 1.10765,-33.77597 1.40625,-34.6875 0.29861,-0.91153 19.80841,-27.95681 19.375,-28.8125 -0.4334,-0.85569 -33.77597,-1.1389 -34.6875,-1.4375 -0.91153,-0.2986 -27.95681,-19.808404 -28.8125,-19.375 z m 21.34375,22.96875 c 10.96515,0 19.84375,8.59257 19.84375,19.1875 0,10.59493 -8.8786,19.1875 -19.84375,19.1875 -10.96515,0 -19.84375,-8.59257 -19.84375,-19.1875 0,-10.59493 8.8786,-19.1875 19.84375,-19.1875 z"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3.43881178;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7782-5);enable-background:accumulate"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-move.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;fill-rule:nonzero;stroke:#263919;stroke-width:2.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 220.125 98.375 C 219.2693 98.808404 218.98611 132.15097 218.6875 133.0625 C 218.3889 133.97403 198.8791 161.0193 199.3125 161.875 C 199.74591 162.73069 233.08847 163.0139 234 163.3125 C 234.91153 163.61111 261.98805 183.12091 262.84375 182.6875 C 263.69944 182.2541 263.9514 148.91153 264.25 148 C 264.54861 147.08847 284.05841 120.04319 283.625 119.1875 C 283.1916 118.33181 249.84903 118.0486 248.9375 117.75 C 248.02597 117.4514 220.98069 97.941596 220.125 98.375 z M 241.46875 121.34375 C 252.4339 121.34375 261.3125 129.93632 261.3125 140.53125 C 261.3125 151.12618 252.4339 159.71875 241.46875 159.71875 C 230.5036 159.71875 221.625 151.12618 221.625 140.53125 C 221.625 129.93632 230.5036 121.34375 241.46875 121.34375 z "
+       transform="translate(0,-96.099993)"
+       id="path3990"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-move.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       transform="matrix(1.1472482,0,0,1.1452938,202.51585,-1108.9144)"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       sodipodi:ry="13.045431"
+       sodipodi:rx="13.487649"
+       sodipodi:cy="1007.0349"
+       sodipodi:cx="34.050785"
+       id="path6937-4"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;fill-rule:nonzero;stroke:#263919;stroke-width:2.61718297;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-move.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       transform="matrix(1.1472482,0,0,0.82191674,176.48565,-797.93528)"
+       d="m 63.016066,1017.2611 a 4.477457,4.6985664 0 1 1 -8.954914,0 4.477457,4.6985664 0 1 1 8.954914,0 z"
+       sodipodi:ry="4.6985664"
+       sodipodi:rx="4.477457"
+       sodipodi:cy="1017.2611"
+       sodipodi:cx="58.538609"
+       id="path6943-5"
+       style="color:#000000;fill:#ffffff;fill-opacity:0.78431373;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-move.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path6945-7"
+       d="m 230.88111,35.794335 c -6.08801,14.6876 13.5125,22.8143 23.27868,14.4575 -9.98049,17.8229 -35.91999,1.6228 -23.27868,-14.4575 z"
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-move.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="fill:#000000;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;color:#000000;fill-opacity:0.44796382000000001;fill-rule:nonzero;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 221.21381,100.69456 8.21338,14.51032 -9.17161,18.06944 z"
+       id="path3997"
+       inkscape:connector-curvature="0"
+       transform="translate(0,-96.099993)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-move.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 219.70802,133.95877 -4.24358,17.93255 19.02767,10.12984 -33.2642,-1.09511 z"
+       id="path4016"
+       inkscape:connector-curvature="0"
+       transform="translate(0,-96.099993)"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-move.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="fill:#000000;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;color:#000000;fill-opacity:0.44796382000000001;fill-rule:nonzero;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 234.90278,162.02116 18.61701,1.64268 8.35027,16.97433 z"
+       id="path4024"
+       inkscape:connector-curvature="0"
+       transform="translate(0,-96.099993)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-move.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="fill:#ffffff;stroke:none;stroke-width:2.91315675000000020;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;color:#000000;fill-opacity:0.78431373000000004;fill-rule:nonzero;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 229.56408,114.9311 18.7539,4.24358 17.11121,6.5707 -2.46401,21.49169 -9.44539,16.42677 8.21338,16.83744 1.09512,-33.4011 18.617,-26.83038 -33.12731,-1.09512 -27.24106,-18.7539 z"
+       id="path4032"
+       inkscape:connector-curvature="0"
+       transform="translate(0,-96.099993)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-move.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="left"
+     style="display:inline">
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-left.png"
+       transform="matrix(1.1472482,0,0,1.1452938,15.579159,-1100.6009)"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       sodipodi:ry="13.045431"
+       sodipodi:rx="13.487649"
+       sodipodi:cy="1007.0349"
+       sodipodi:cx="34.050785"
+       id="path4169"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6877-4);enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-left.png"
+       sodipodi:nodetypes="cccczcc"
+       inkscape:connector-curvature="0"
+       id="path4171"
+       d="M 51.828781,86.256383 4.3657015,53.249935 52.063215,19.279219 55.99655,32.357731 c 0,0 -22.848774,1.11889 -22.446317,20.611505 0.402457,19.492615 22.367784,19.757895 22.367784,19.757895 z"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3.43881178;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6877-4);enable-background:accumulate" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;stroke:#263919;stroke-width:2.61718297;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3761-3"
+       sodipodi:cx="34.050785"
+       sodipodi:cy="1007.0349"
+       sodipodi:rx="13.487649"
+       sodipodi:ry="13.045431"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       transform="matrix(1.1472482,0,0,1.1452938,18.547114,-1106.3433)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-left.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 46.912369,38.365478 c -6.088004,14.6876 13.678333,22.9801 23.444513,14.6233 -9.98049,17.822903 -36.085818,1.457 -23.444513,-14.6233 z"
+       id="path6847-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-left.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;fill-rule:nonzero;stroke:#263919;stroke-width:2.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 54.796736,80.514064 7.3336575,47.507616 55.03117,13.5369 58.964505,26.615412 c 0,0 -22.848774,1.11889 -22.446317,20.611505 0.402457,19.492615 22.367784,19.757895 22.367784,19.757895 z"
+       id="path3757-2"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccczcc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-left.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 9.9847683,47.497387 29.993967,47.374906 c 0,0 0.329581,23.695764 26.901994,20.906966 l -2.918068,9.764914 z"
+       id="path6825-76"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-left.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="fill:#ffffff;fill-opacity:0.78431373;stroke:none;display:inline"
+       d="M 9.9836091,47.385951 30.031918,47.27407 c 0,0 -1.172072,-23.039994 26.90991,-22.079387 l -2.63702,-9.105269 z"
+       id="path6825-7-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-left.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#ffffff;fill-opacity:0.78431373;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path4285"
+       sodipodi:cx="58.538609"
+       sodipodi:cy="1017.2611"
+       sodipodi:rx="4.477457"
+       sodipodi:ry="4.6985664"
+       d="m 63.016066,1017.2611 a 4.477457,4.6985664 0 1 1 -8.954914,0 4.477457,4.6985664 0 1 1 8.954914,0 z"
+       transform="matrix(1.1472482,0,0,0.82191674,-7.48308,-795.36413)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-left.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer8"
+     inkscape:label="top"
+     style="display:inline">
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-top.png"
+       sodipodi:nodetypes="cccczcc"
+       inkscape:connector-curvature="0"
+       id="path4314"
+       d="M 141.50143,102.51406 188.96451,69.507616 141.267,35.5369 137.33366,48.615412 c 0,0 22.84878,1.11889 22.44632,20.611505 -0.40246,19.492615 -22.36778,19.757895 -22.36778,19.757895 z"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3.43881178;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6877-4-8);enable-background:accumulate"
+       transform="matrix(0,-1,1,0,72.699056,204.55643)" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-top.png"
+       transform="matrix(1.1472482,0,0,1.1452938,103.57916,-1090.6009)"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       sodipodi:ry="13.045431"
+       sodipodi:rx="13.487649"
+       sodipodi:cy="1007.0349"
+       sodipodi:cx="34.050785"
+       id="path4316"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6877-4);enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;stroke:#263919;stroke-width:2.61718297;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path4318"
+       sodipodi:cx="34.050785"
+       sodipodi:cy="1007.0349"
+       sodipodi:rx="13.487649"
+       sodipodi:ry="13.045431"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       transform="matrix(1.1472482,0,0,1.1452938,106.54711,-1096.3433)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-top.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#ffffff;fill-opacity:0.78431373;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path4320"
+       sodipodi:cx="58.538609"
+       sodipodi:cy="1017.2611"
+       sodipodi:rx="4.477457"
+       sodipodi:ry="4.6985664"
+       d="m 63.016066,1017.2611 a 4.477457,4.6985664 0 1 1 -8.954914,0 4.477457,4.6985664 0 1 1 8.954914,0 z"
+       transform="matrix(1.1472482,0,0,0.82191674,80.51692,-785.36413)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-top.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 134.91237,48.365478 c -6.088,14.6876 13.67833,22.9801 23.44451,14.6233 -9.98049,17.822903 -36.08582,1.457 -23.44451,-14.6233 z"
+       id="path4322"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-top.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <g
+       id="g4343"
+       transform="matrix(0,-1,-1,0,206.62953,200.90332)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-top.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30">
+      <g
+         id="g4338">
+        <path
+           style="color:#000000;fill:#a7ef75;fill-opacity:1;fill-rule:nonzero;stroke:#263919;stroke-width:2.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           d="M 145.50143,94.514064 192.96451,61.507616 145.267,27.5369 141.33366,40.615412 c 0,0 22.84878,1.11889 22.44632,20.611505 -0.40246,19.492615 -22.36778,19.757895 -22.36778,19.757895 z"
+           id="path4324"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cccczcc"
+           inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+           inkscape:export-xdpi="29.660151"
+           inkscape:export-ydpi="29.660151" />
+        <path
+           style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           d="m 190.3134,61.497387 -20.0092,-0.122481 c 0,0 -0.32958,23.695764 -26.90199,20.906966 l 2.91807,9.764914 z"
+           id="path4326"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccc"
+           inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+           inkscape:export-xdpi="29.660151"
+           inkscape:export-ydpi="29.660151" />
+        <path
+           style="fill:#ffffff;fill-opacity:0.78431373;stroke:none;display:inline"
+           d="M 190.31456,61.385951 170.26625,61.27407 c 0,0 1.17207,-23.039994 -26.90991,-22.079387 l 2.63702,-9.105269 z"
+           id="path4328"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccc"
+           inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+           inkscape:export-xdpi="29.660151"
+           inkscape:export-ydpi="29.660151" />
+      </g>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer7"
+     inkscape:label="right"
+     style="display:inline">
+    <path
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3.43881178;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6877-4-8);enable-background:accumulate"
+       d="M 227.50143,88.514064 274.96451,55.507616 227.267,21.5369 223.33366,34.615412 c 0,0 22.84878,1.11889 22.44632,20.611505 -0.40246,19.492615 -22.36778,19.757895 -22.36778,19.757895 z"
+       id="path4289"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccczcc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-right.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6877-4);enable-background:accumulate"
+       id="path4233"
+       sodipodi:cx="34.050785"
+       sodipodi:cy="1007.0349"
+       sodipodi:rx="13.487649"
+       sodipodi:ry="13.045431"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       transform="matrix(1.1472482,0,0,1.1452938,187.57916,-1100.6009)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-right.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-right.png"
+       transform="matrix(1.1472482,0,0,1.1452938,190.54711,-1106.3433)"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       sodipodi:ry="13.045431"
+       sodipodi:rx="13.487649"
+       sodipodi:cy="1007.0349"
+       sodipodi:cx="34.050785"
+       id="path4243"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;stroke:#263919;stroke-width:2.61718297;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-right.png"
+       transform="matrix(1.1472482,0,0,0.82191674,164.51692,-795.36413)"
+       d="m 63.016066,1017.2611 a 4.477457,4.6985664 0 1 1 -8.954914,0 4.477457,4.6985664 0 1 1 8.954914,0 z"
+       sodipodi:ry="4.6985664"
+       sodipodi:rx="4.477457"
+       sodipodi:cy="1017.2611"
+       sodipodi:cx="58.538609"
+       id="path4245"
+       style="color:#000000;fill:#ffffff;fill-opacity:0.78431373;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-right.png"
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path4247"
+       d="m 218.91237,38.365478 c -6.088,14.6876 13.67833,22.9801 23.44451,14.6233 -9.98049,17.822903 -36.08582,1.457 -23.44451,-14.6233 z"
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-right.png"
+       sodipodi:nodetypes="cccczcc"
+       inkscape:connector-curvature="0"
+       id="path4253"
+       d="M 231.50143,80.514064 278.96451,47.507616 231.267,13.5369 227.33366,26.615412 c 0,0 22.84878,1.11889 22.44632,20.611505 -0.40246,19.492615 -22.36778,19.757895 -22.36778,19.757895 z"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;fill-rule:nonzero;stroke:#263919;stroke-width:2.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-right.png"
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path4255"
+       d="m 276.3134,47.497387 -20.0092,-0.122481 c 0,0 -0.32958,23.695764 -26.90199,20.906966 l 2.91807,9.764914 z"
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-right.png"
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path4257"
+       d="M 276.31456,47.385951 256.26625,47.27407 c 0,0 1.17207,-23.039994 -26.90991,-22.079387 l 2.63702,-9.105269 z"
+       style="fill:#ffffff;fill-opacity:0.78431373;stroke:none;display:inline" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer9"
+     inkscape:label="bottom"
+     style="display:inline">
+    <path
+       transform="matrix(0,1,1,0,263.49472,-104.19567)"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3.43881178;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6877-4-8);enable-background:accumulate"
+       d="M 141.50143,102.51406 188.96451,69.507616 141.267,35.5369 137.33366,48.615412 c 0,0 22.84878,1.11889 22.44632,20.611505 -0.40246,19.492615 -22.36778,19.757895 -22.36778,19.757895 z"
+       id="path4349"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccczcc"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-bottom.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#333333;fill-opacity:0.45248868;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter6877-4);enable-background:accumulate"
+       id="path4351"
+       sodipodi:cx="34.050785"
+       sodipodi:cy="1007.0349"
+       sodipodi:rx="13.487649"
+       sodipodi:ry="13.045431"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       transform="matrix(1.1472482,0,0,1.1452938,294.37482,-1119.0548)"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-bottom.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-bottom.png"
+       transform="matrix(1.1472482,0,0,1.1452938,297.34277,-1124.7972)"
+       d="m 47.538434,1007.0349 a 13.487649,13.045431 0 1 1 -26.975298,0 13.487649,13.045431 0 1 1 26.975298,0 z"
+       sodipodi:ry="13.045431"
+       sodipodi:rx="13.487649"
+       sodipodi:cy="1007.0349"
+       sodipodi:cx="34.050785"
+       id="path4353"
+       style="color:#000000;fill:#a7ef75;fill-opacity:1;stroke:#263919;stroke-width:2.61718297;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-bottom.png"
+       transform="matrix(1.1472482,0,0,0.82191674,271.31258,-813.81806)"
+       d="m 63.016066,1017.2611 a 4.477457,4.6985664 0 1 1 -8.954914,0 4.477457,4.6985664 0 1 1 8.954914,0 z"
+       sodipodi:ry="4.6985664"
+       sodipodi:rx="4.477457"
+       sodipodi:cy="1017.2611"
+       sodipodi:cx="58.538609"
+       id="path4355"
+       style="color:#000000;fill:#ffffff;fill-opacity:0.78431373;fill-rule:nonzero;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="30"
+       inkscape:export-xdpi="30"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-bottom.png"
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path4357"
+       d="m 325.70803,19.911547 c -6.088,14.6876 13.67833,22.9801 23.44451,14.6233 -9.98049,17.822903 -36.08582,1.457 -23.44451,-14.6233 z"
+       style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <g
+       style="display:inline"
+       transform="matrix(0,1,-1,0,397.42519,-115.84878)"
+       id="g4359"
+       inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-bottom.png"
+       inkscape:export-xdpi="30"
+       inkscape:export-ydpi="30">
+      <g
+         id="g4361">
+        <path
+           inkscape:export-ydpi="29.660151"
+           inkscape:export-xdpi="29.660151"
+           inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+           sodipodi:nodetypes="cccczcc"
+           inkscape:connector-curvature="0"
+           id="path4363"
+           d="M 145.50143,94.514064 192.96451,61.507616 145.267,27.5369 141.33366,40.615412 c 0,0 22.84878,1.11889 22.44632,20.611505 -0.40246,19.492615 -22.36778,19.757895 -22.36778,19.757895 z"
+           style="color:#000000;fill:#a7ef75;fill-opacity:1;fill-rule:nonzero;stroke:#263919;stroke-width:2.99999976;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+        <path
+           inkscape:export-ydpi="29.660151"
+           inkscape:export-xdpi="29.660151"
+           inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+           sodipodi:nodetypes="ccccc"
+           inkscape:connector-curvature="0"
+           id="path4365"
+           d="m 190.3134,61.497387 -20.0092,-0.122481 c 0,0 -0.32958,23.695764 -26.90199,20.906966 l 2.91807,9.764914 z"
+           style="color:#000000;fill:#000000;fill-opacity:0.44796382;fill-rule:nonzero;stroke:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+        <path
+           inkscape:export-ydpi="29.660151"
+           inkscape:export-xdpi="29.660151"
+           inkscape:export-filename="D:\Programmation\workspace\proto-game\materials\mouse-normal.png"
+           sodipodi:nodetypes="ccccc"
+           inkscape:connector-curvature="0"
+           id="path4367"
+           d="M 190.31456,61.385951 170.26625,61.27407 c 0,0 1.17207,-23.039994 -26.90991,-22.079387 l 2.63702,-9.105269 z"
+           style="fill:#ffffff;fill-opacity:0.78431373;stroke:none;display:inline" />
+      </g>
+    </g>
+  </g>
+</svg>
