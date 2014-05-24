@@ -66,6 +66,9 @@ define [
         return @scope.error = parseError err.message if err?
         @scope.player.characters = currentGames
         @_fetchFreeGames()
+        
+      # Request desktop notification
+      Notification.requestPermission() if Notification?
        
     # Remove the current error, which hides the alert
     closeError: =>

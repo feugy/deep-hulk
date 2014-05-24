@@ -146,6 +146,17 @@ define [
       $(window).on 'keydown.board', @_onKey
       @scope.$on '$destroy', => 
         $(window).off 'keydown.board'
+      
+    # Display a notification to player.
+    # If tab has not focus, tries to display a desktop notification
+    notify: (notif) =>
+      # always displays in-game
+      @scope.notifs.push notif
+      if Notification?.permission is 'granted' and document.hidden
+        # send a desktop notification
+        new Notification @filter('i18n')('titles.desktopNotification', args: @scope.game), 
+          body: notif.content
+          icon: 'image/notif-alien.png'
           
     # When toggeling move mode, changing selected character, or after a move, 
     # check on server reachable tiles and display them
@@ -192,7 +203,7 @@ define [
     # @param content the message sent
     sendMessage: (content) =>
       @atlas.ruleService.execute "sendMessage", @scope.game, @scope.squad, {content:content}, (err, result) => 
-        @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
+        @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
       
     # **private**
     # Inihibit interface when:
@@ -221,7 +232,7 @@ define [
     _askForHelp: (action) =>
       return unless @scope.showHelp and @scope.squad?
       @atlas.ruleService.execute 'getHelp', @atlas.player, @scope.squad, {action: action}, (err, result) => @scope.$apply =>
-        return @scope.notifs.push kind:'error', content: parseError err if err?
+        return @notify kind:'error', content: parseError err if err?
         @scope.help = result
       
     # **private**
@@ -239,11 +250,11 @@ define [
     _fetchSquad: (squad) =>
       # get squad and its members
       @atlas.Item.fetch [squad], (err, [squad]) => 
-        return @scope.$apply( => @scope.notifs.push kind:'error', content: parseError err) if err?
+        return @scope.$apply( => @notify kind:'error', content: parseError err) if err?
           
         # then get members
         @atlas.Item.fetch squad.members, (err) => @scope.$apply => 
-          return @scope.notifs.push kind:'error', content: parseError err if err?
+          return @notify kind:'error', content: parseError err if err?
           @scope.selected = null
           @scope.squad = squad
           
@@ -260,7 +271,7 @@ define [
             @_toggleDeployMode()
           if @scope.squad.actions < 0 
             @scope.canEndTurn = false 
-            @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
+            @notify kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
           else
             @scope.canEndTurn = true
           
@@ -284,18 +295,18 @@ define [
           @_currentZone = first
           @scope.deployScope = 'deployBlip'
           # add notification
-          @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployBlips if withNotifs
+          @notify kind: 'info', content: conf.texts.notifs.deployBlips if withNotifs
           # highligth deployable zone
           @atlas.ruleService.execute 'deployZone', @atlas.player, @scope.squad, {zone:@_currentZone}, (err, zone) => 
             @scope.$apply =>
-              @scope.notifs.push kind: 'error', content: parseError err if err?
+              @notify kind: 'error', content: parseError err if err?
               return @scope.zone = null if err? or !zone? or zone.length is 0
               @scope.zone = 
                 tiles: zone
                 kind: 'deploy'
         else
           # add notification and inhibit
-          @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployInProgress
+          @notify kind: 'info', content: conf.texts.notifs.deployInProgress
           @scope.selected = null
       else
         @_askForHelp 'endDeploy'
@@ -305,7 +316,7 @@ define [
           @scope.notifs.splice 0, @scope.notifs.length
         else
           # indicates to marine that they can go on !
-          @scope.notifs.push kind: 'info', content: conf.texts.notifs.deployEnded if withNotifs
+          @notify kind: 'info', content: conf.texts.notifs.deployEnded if withNotifs
           @_updateChosenOrders()
         @_currentZone = null
         @scope.deployScope = null
@@ -349,7 +360,7 @@ define [
         params = {}
         
       @atlas.ruleService.execute rule, @scope.selected, @_applicableRules[rule][0].target, params, (err, result) =>
-        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?   
+        return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?   
         # refresh movable tiles
         @displayMovable()
       
@@ -384,10 +395,10 @@ define [
     _onActiveSquadChange: =>
       return unless @scope.game.singleActive
       @_updateInhibition()
-      @scope.notifs.push kind: 'info', content: if @scope.squad.activeSquad isnt @scope.squad.name
-        @interpolate(conf.texts.notifs.waitForSquad) target: conf.labels[@scope.squad.activeSquad or 'noActiveSquad']
+      if @scope.squad.activeSquad isnt @scope.squad.name
+        @notify kind: 'info', content: @interpolate(conf.texts.notifs.waitForSquad) target: conf.labels[@scope.squad.activeSquad or 'noActiveSquad']
       else
-        conf.texts.notifs.playNow
+        @notify kind: 'info', content: conf.texts.notifs.playNow
         
     # **private**
     # Multiple behaviour when model update is received:
@@ -421,7 +432,7 @@ define [
                 return @location.path "#{conf.basePath}end" if model.finished
               if 'turn' in changes
                 # if turn has change, notify
-                @scope.notifs.push kind: 'info', content: conf.texts.notifs.newTurn
+                @notify kind: 'info', content: conf.texts.notifs.newTurn
                 # quit replay
                 @atlas.stopReplay()
               if 'prevActions' in changes
@@ -433,13 +444,13 @@ define [
                   # Display notification
                   content = conf.texts.notifs["#{event.used}Used"]
                   return unless content?
-                  @scope.notifs.push kind: 'info', content: @interpolate(content) target: @filter('i18n') "labels.#{event.name}"
+                  @notify kind: 'info', content: @interpolate(content) target: @filter('i18n') "labels.#{event.name}"
               if 'mainWinner' in changes and @scope.squad?
                 if @scope.game.mainWinner is @scope.squad.name
                   content = conf.texts.notifs.mainMissionCompleted
                 else
                   content = @interpolate(conf.texts.notifs.mainMissionCompletedBy) target: @filter('i18n') "labels.#{@scope.game.mainWinner}"
-                @scope.notifs.push kind: 'info', content: content
+                @notify kind: 'info', content: content
             else if model is @scope.selected and model.dead
               @scope.selected = null
             else if model is @atlas.player and 'prefs' in changes
@@ -498,7 +509,7 @@ define [
         else
           # resolve board rules for the selected item at this coord
           @atlas.ruleService.resolve @scope.selected, details.x, details.y, @scope.activeRule, (err, applicables) =>
-            return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
+            return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
             # keep for further use
             @_applicableRules = applicables
             keys = _.keys applicables
@@ -515,7 +526,7 @@ define [
           rank: blipIdx[_.random 0, blipIdx.length-1]
         , (err, result) =>
           # displays deployement errors
-          return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
+          return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
       
     # **private**
     # Display a modal popup to choose equipement to apply
@@ -539,10 +550,10 @@ define [
         selected = outer.selected[0]
         marine = _.findWhere(@scope.squad.members, id:selected.memberId) or @scope.squad.members[0]
         @atlas.ruleService.execute 'useEquipment', @scope.squad, marine, {equipment: selected.name}, (err, message) => @scope.$apply =>
-          return @scope.notifs.push kind: 'error', content: parseError err if err?
+          return @notify kind: 'error', content: parseError err if err?
           # add a notification
           if message
-            @scope.notifs.push kind: 'info', content: @interpolate(conf.texts.notifs[message]) target: marine?.name
+            @notify kind: 'info', content: @interpolate(conf.texts.notifs[message]) target: marine?.name
         
     # **private**
     # On order selection, relay to server o effectively apply the order
@@ -552,10 +563,10 @@ define [
     _onApplyOrder: (order, memberId = null) =>
       marine = _.findWhere(@scope.squad.members, id:memberId) or @scope.squad.members[0]
       @atlas.ruleService.execute 'applyOrder', @scope.squad, marine, {order: order}, (err, message) => @scope.$apply =>
-        return @scope.notifs.push kind: 'error', content: parseError err if err?
+        return @notify kind: 'error', content: parseError err if err?
         # add a notification
         if message
-          @scope.notifs.push kind: 'info', content: @interpolate(conf.texts.notifs[message]) target: marine?.name 
+          @notify kind: 'info', content: @interpolate(conf.texts.notifs[message]) target: marine?.name 
                 
     # **private**
     # After a modal confirmation, trigger the end of turn.
@@ -565,9 +576,9 @@ define [
       # rule triggering
       trigger = =>
         @atlas.ruleService.execute 'endOfTurn', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
-          return @scope.notifs.push kind: 'error', content: parseError err if err?
+          return @notify kind: 'error', content: parseError err if err?
           # add a notification
-          @scope.notifs.push kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
+          @notify kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
       return trigger() if @scope.squad.actions is 0
       # still actions ? confirm end of turn
       confirm = @dialog.messageBox conf.titles.confirmEndOfTurn, conf.texts.confirmEndOfTurn, [
@@ -584,7 +595,7 @@ define [
       # rule triggering
       trigger = =>
         @atlas.ruleService.execute 'endDeploy', @atlas.player, @scope.squad, {zone: @_currentZone}, (err) =>
-          return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
+          return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
           # proceed with next deployement or quit mode
           @_toggleDeployMode()
       # still actions ? confirm end of turn
@@ -618,7 +629,7 @@ define [
       @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) =>
         # displays deployement errors
         @_askForHelp 'deploy'
-        return @scope.$apply( => @scope.notifs.push kind: 'error', content: parseError err) if err?
+        return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
 
     # **private**
     # Key up handler, to select this character with shortcut
