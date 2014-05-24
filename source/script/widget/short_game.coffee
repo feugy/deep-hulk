@@ -55,7 +55,6 @@ define [
         @_fetched = true
         # once an unresolved squad is detected, ask fot whole game resolution
         for squad in @game.squads when angular.isString squad
-          console.log '>> fetch', @game.name
           return @atlas.Item.fetch [@game.id]
         
     # Get image of a given squad

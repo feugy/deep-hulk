@@ -154,9 +154,15 @@ define [
       @scope.notifs.push notif
       if Notification?.permission is 'granted' and document.hidden
         # send a desktop notification
-        new Notification @filter('i18n')('titles.desktopNotification', args: @scope.game), 
+        popup = new Notification @filter('i18n')('titles.desktopNotification', args: @scope.game), 
           body: notif.content
-          icon: 'image/notif-alien.png'
+          icon: "#{conf.basePath}image/notif-alien.png"
+        # click will open the game
+        popup.onclick = => window.focus()
+        # auto close after 4 seconds
+        _.delay =>
+          popup.close()
+        , 4000
           
     # When toggeling move mode, changing selected character, or after a move, 
     # check on server reachable tiles and display them
