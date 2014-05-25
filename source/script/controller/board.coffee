@@ -99,7 +99,8 @@ define [
         @displayDamageZone(evt, details.field) if @scope.activeRule is 'shoot'
       @scope.getInstanceImage = getInstanceImage
       @scope.deployScope = null
-      @scope.sendMessage = @sendMessage
+      # throttle to avoid chat flood
+      @scope.sendMessage = _.throttle @sendMessage, 200
       # show help unless specified
       @scope.showHelp = false
       @scope.help = null
@@ -349,6 +350,9 @@ define [
     #
     # @param rule [String] name of the selected rule to execute inside applicables
     _executeRule: (rule) =>
+      # avoid triggering the same rule multiple time
+      return if @atlas.ruleService.isBusy rule
+      
       # do not support yet multiple targets nor parameters
       return console.error "multiple targets not supported yet for rule #{rule}" if @_applicableRules[rule].length > 1
       return console.error "parameters not supported yet for rule #{rule}" if rule isnt 'shoot' and @_applicableRules[rule][0].params?.length > 0
