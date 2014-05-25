@@ -3,7 +3,7 @@ Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 Field = require 'hyperion/model/Field'
 {moveCapacities} = require './constants'
-{distance, selectItemWithin, removeFromMap, addAction} = require './common'
+{distance, selectItemWithin, removeFromMap, addAction, makeState} = require './common'
 {isReachable, detectBlips, findNextDoor, isDreadnoughtUnderDoor} = require './visibility'
 
 # Map movement
@@ -46,7 +46,7 @@ class MoveRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   execute: (actor, target, params, context, callback) =>
     # game action current state 
-    effects = [[actor, _.pick actor, 'id', 'moves', 'x', 'y', 'transition', 'doorToOpen', 'underDoor']]
+    effects = [makeState actor, 'id', 'moves', 'x', 'y', 'transition', 'doorToOpen', 'underDoor']
       
     targetType = target.typeId
     x = target.x

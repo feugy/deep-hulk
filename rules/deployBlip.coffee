@@ -1,7 +1,7 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 {moveCapacities} = require './constants'
-{selectItemWithin, addAction, getDeployZone} = require './common'
+{selectItemWithin, addAction, makeState, getDeployZone} = require './common'
 {hasObstacle, findNextDoor} = require './visibility'
 
 # Blip deployement rule. Only possible for alien
@@ -57,9 +57,7 @@ class DeployBlipRule extends Rule
     return callback new Error "isReinforcement" if blip.isSupport
     wasOnMap = blip.map?
     # action history
-    effects = [
-      [blip, _.pick blip, 'x', 'y', 'map', 'doorToOpen']
-    ]
+    effects = [makeState blip, 'x', 'y', 'map', 'doorToOpen']
     
     # get deployable zone dimensions
     getDeployZone squad.mission?.id or squad.mission, params.zone, (err, {lowY, lowX, upX, upY}) =>

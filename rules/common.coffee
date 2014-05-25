@@ -317,6 +317,17 @@ module.exports = {
         return true
     return false
     
+  # Store current fields values of a given model into effects array, to be used in game log
+  #
+  # @param model [Model] model for which state is created
+  # @param fields [String] list of fields to add to created state
+  # @return the created state
+  makeState: (model, fields...) ->
+    state = [model, {}]
+    for field in fields
+      state[1][field] = if _.isArray model[field] then model[field].concat() else model[field]
+    state
+    
   # Store into an actor's log a given result (or list of results).
   #
   # @param actor [Item] the concerned actor

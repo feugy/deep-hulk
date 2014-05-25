@@ -2,7 +2,7 @@ _ = require 'underscore'
 async = require 'async'
 Item = require 'hyperion/model/Item'
 Ratio = require './ratio'
-{selectItemWithin, mergeChanges, distance} = require './common'
+{selectItemWithin, mergeChanges, distance, makeState} = require './common'
 {wallPositions, doorPositions, alienCapacities, moveCapacities} = require './constants'
   
 # Anything related to visibility:
@@ -210,7 +210,7 @@ module.exports = {
       
       reveal = (blip, end) =>
         # store previous blip state
-        effects.push [blip, _.pick blip, 'id', 'moves', 'rcNum', 'ccNum', 'imageNum', 'revealed', 'x', 'y']
+        effects.push makeState blip, 'id', 'moves', 'rcNum', 'ccNum', 'imageNum', 'revealed', 'x', 'y'
         blip.revealed = true
         imageNum = alienCapacities[blip.kind].imageNum
         # for dreadnought, choose the right image depending on the equiped weapons

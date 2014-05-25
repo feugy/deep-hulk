@@ -1,6 +1,6 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
-{addAction} = require './common'
+{addAction, makeState} = require './common'
 
 # Use some equipment during the game
 class UseEquipmentRule extends Rule
@@ -68,7 +68,7 @@ class UseEquipmentRule extends Rule
     squad.equipment.splice squad.equipment.indexOf(equipment), 1 unless equipment is 'detector'
     
     # add in history for replay and other players
-    effects = [[squad.game, events: squad.game.events.concat()]]
+    effects = [makeState squad.game, 'events']
     squad.game.events.push log
     addAction 'equip', squad, effects, @, (err) => callback err, message
   

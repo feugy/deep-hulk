@@ -4,7 +4,7 @@ Rule = require 'hyperion/model/Rule'
 Field = require 'hyperion/model/Field'
 {rollDices, selectItemWithin, countPoints, sum, 
 distance, removeFromMap, addAction, hasSharedPosition, 
-damageDreadnought, logResult, checkMission} = require './common'
+damageDreadnought, logResult, checkMission, makeState} = require './common'
 {isTargetable} = require './visibility'
 {moveCapacities} = require './constants'
                   
@@ -112,8 +112,8 @@ class AssaultRule extends Rule
     
           # action history
           effects = [
-            [actor, _.pick actor, 'ccNum', 'rcNum', 'moves', 'life', 'dead', 'usedWeapons', 'log']
-            [target, _.pick target, 'life', 'dead', 'log']
+            makeState actor, 'ccNum', 'rcNum', 'moves', 'life', 'dead', 'log', 'usedWeapons'
+            makeState target, 'life', 'dead', 'log'
           ]
     
           # consume an attack

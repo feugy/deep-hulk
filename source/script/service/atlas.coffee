@@ -112,7 +112,7 @@ define [
         else 
           @replayPos--
           action = replayGame.prevActions[@replayPos]
-        
+                  
         @hasNextAction = @replayPos < @replayLength
         @hasPreviousAction = @replayPos > 0
         

@@ -7,7 +7,7 @@ Item = require 'hyperion/model/Item'
 ItemType = require 'hyperion/model/ItemType'
 {rollDices, selectItemWithin, sum, countPoints, 
 removeFromMap, addAction, hasSharedPosition, 
-damageDreadnought, logResult, checkMission} = require './common'
+damageDreadnought, logResult, checkMission, makeState} = require './common'
 {isTargetable, hasObstacle, tilesOnLine, untilWall} = require './visibility'
 {moveCapacities} = require './constants'
 
@@ -77,8 +77,7 @@ class ShootRule extends Rule
           return callback null, null unless reachable?
          
           # action history
-          effects = [[actor, _.pick actor, 'ccNum', 'rcNum', 'moves', 'usedWeapons']]
-          effects[0][1].log = actor.log.concat()
+          effects = [makeState actor, 'ccNum', 'rcNum', 'moves', 'log', 'usedWeapons']
           
           end = (err, resultAndTargets) =>
             return callback err if err?
@@ -267,7 +266,7 @@ class ShootRule extends Rule
     
     # apply damages on target
     if damages > target.armor
-      effects.push [target, _.pick target, 'life', 'dead', 'weapons']
+      effects.push makeState target, 'life', 'dead', 'weapons'
       @saved.push target unless target in @saved
       points = damages-target.armor
       result.loss = if target.life >= points then points else target.life

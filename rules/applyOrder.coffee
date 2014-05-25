@@ -1,7 +1,7 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 {heavyWeapons} = require './constants'
-{addAction} = require './common'
+{addAction, makeState} = require './common'
 
 # Apply an order at turn start
 class ApplyOrderRule extends Rule
@@ -83,7 +83,7 @@ class ApplyOrderRule extends Rule
     squad.firstAction = false
     
     # add in history for replay and other players
-    effects = [[squad.game, events: squad.game.events.concat()]]
+    effects = [makeState squad.game, 'events']
     squad.game.events.push log
     addAction 'order', squad, effects, @, (err) => callback err, message
   

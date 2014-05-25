@@ -3,7 +3,7 @@ async = require 'async'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 {moveCapacities} = require './constants'
-{hasSharedPosition, addAction} = require './common'
+{hasSharedPosition, addAction, makeState} = require './common'
 
 # When player has finished its turn, may trigger another turn
 class EndOfTurnRule extends Rule
@@ -127,7 +127,7 @@ class EndOfTurnRule extends Rule
           return callback err if err?
           effects = [] 
           for door in doors
-            effects.push [door, _.pick door, 'closed', 'imageNum']
+            effects.push makeState door, 'closed', 'imageNum'
             door.closed = true
             door.imageNum += 2
             door.needClosure = false

@@ -1,7 +1,7 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
-{selectItemWithin, addAction, mergeChanges} = require './common'
+{selectItemWithin, addAction, makeState, mergeChanges} = require './common'
 {detectBlips, findNextDoor} = require './visibility'
 
 # Door opening rule
@@ -53,7 +53,7 @@ class OpenRule extends Rule
       return callback err if err?
       # opens all doors
       for candidate in doors when candidate?.type?.id is 'door'
-        effects.push [candidate, _.pick candidate, 'closed', 'imageNum']
+        effects.push makeState candidate, 'closed', 'imageNum'
         candidate.closed = false
         candidate.imageNum -= 2
         candidate.transition = 'open'

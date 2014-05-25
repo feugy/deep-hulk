@@ -1,7 +1,7 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
-{selectItemWithin, addAction} = require './common'
+{selectItemWithin, addAction, makeState} = require './common'
 {hasObstacle, findNextDoor} = require './visibility'
 
 # Blip reinforcement rule. Only possible for alien
@@ -65,9 +65,7 @@ class ReinforceRule extends Rule
             return callback new Error "sharedReinforce" if item.x is params.x and item.y is params.y
         
         # action history
-        effects = [
-          [blip, _.pick blip, 'x', 'y', 'map', 'doorToOpen']
-        ]
+        effects = [makeState blip, 'x', 'y', 'map', 'doorToOpen']
         
         # At last, reinforce blip
         blip.map = squad.map
