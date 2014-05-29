@@ -88,10 +88,6 @@ for i in(1..6)
   display flex
   flex-flow row wrap
   align-items center
-  background-image  url('../image/bg-home.png')
-  background-size 100% auto
-  background-repeat no-repeat
-  background-position center right
 
   > div > .alert
   > div > span > .alert
@@ -104,17 +100,6 @@ for i in(1..6)
     position relative
     box-sizing border-box
     height 100%
-
-    .app-title
-      background url(../image/title.png)
-      background-size auto 100%
-      background-repeat no-repeat
-      background-position center center
-      color transparent
-      height 250px
-      top 35%
-      position absolute
-      width 100%
 
   > aside
     width 40%
@@ -129,6 +114,29 @@ for i in(1..6)
     background-repeat no-repeat
     background-position center
     z-index 0
+
+.login
+.home
+.configure
+.end
+.rules
+.discover
+  background-image  url('../image/bg-home.png')
+  background-size 100% auto
+  background-repeat no-repeat
+  background-position center right
+
+  .app-title
+    background url(../image/title.png)
+    background-size auto 100%
+    background-repeat no-repeat
+    background-position center center
+    color transparent
+    height 250px
+    top 35%
+    position absolute
+    width 100%
+    border-bottom none
 
   .mini-panel
     position absolute
@@ -188,7 +196,7 @@ for i in(1..6)
       width 65%
 
       thead > tr
-        text-shadow 0 0 3px #D40000
+        text-shadow headingShadow
         background-color rgba(white, 0.3)
 
       td, th
@@ -318,6 +326,7 @@ for i in(1..6)
 // Rules specificities
 
 .rules
+.discover
 
   > div 
 
@@ -334,78 +343,83 @@ for i in(1..6)
 
       > *:first-child
         margin-top -0
-
+    
       div:not(.imaged)
         text-align justify
         margin 1.5em 0
-      p
-        margin 0.5em 0
 
-      h1, h2, h3
-        text-shadow 0 0 3px #D40000
-        border-bottom 1px solid hoverColor
-        color hoverColor
-        padding 0.25em
-        margin 1em 0 0.5em
+  > aside h2
+    border-bottom-color grey
 
-      .imaged
-        display flex
+  p
+    margin 0.5em 0
 
-        > *:not(img)
-          flex 1
-          order 1
-          margin 0
-        img
-          order 1
-          width 250px
-          margin-left 50px
-          box-shadow inset 0 0 8px 5px #112B00
-          border-radius 10px
+  article
+    h1, h2, h3
+      text-shadow headingShadow
+      border-bottom 1px solid hoverColor
+      color hoverColor
+      padding 0.25em
+      margin 1em 0 0.5em
 
-      .imaged.right img
-        order 0
-        margin-left 0
-        margin-right 50px
+  .imaged
+    display flex
+    align-items center
 
-      strong
-        font-weight bolder
-        text-decoration underline
+    > *:not(img)
+      flex 1
+      order 1
+      margin 0
+    img
+      order 1
+      margin-left 50px
+      box-shadow inset 0 0 8px 5px #112B00
+      border-radius 10px
 
-      ol, ul
-        padding 0.3em 0 0.5em 1em
+  .imaged.right img
+    order 0
+    margin-left 0
+    margin-right 50px
 
-        > li
-          padding-top 0.2em
+  strong
+    font-weight bolder
+    text-decoration underline
 
-      ul > li
-        list-style-type square
+  ol, ul
+    padding 0.3em 0 0.5em 1em
 
-      ol > li
-        list-style-type upper-roman
+    > li
+      padding-top 0.2em
 
-      dl
-        > dt
-          margin-top 1em
-          font-weight bold
-          font-size 120%
-        > dd
-          margin 0.5em 0 0 2em
+  ul > li
+    list-style-type square
 
-      table
-        width 100%
-        table-layout fixed
-        text-align center
+  ol > li
+    list-style-type upper-roman
 
-        th
-          background rgba(black, 0.5)
-          border-bottom 1px solid alertColor
-          color hoverColor
-        td
-          background rgba(hoverColor, 0.3)
-        tr > *
-          padding 0.3em
-        tr > *:not(:last-child)
-          border-right 1px solid alertColor
+  dl
+    > dt
+      margin-top 1em
+      font-weight bold
+      font-size 120%
+    > dd
+      margin 0.5em 0 0 2em
+
+  table
+    width 100%
+    table-layout fixed
+    text-align center
+
+    th
+      background rgba(black, 0.5)
+      border-bottom 1px solid alertColor
+      color hoverColor
+    td
+      background rgba(hoverColor, 0.3)
+    tr > *
+      padding 0.3em
+    tr > *:not(:last-child)
+      border-right 1px solid alertColor
 
   > aside
     width 30%
@@ -419,6 +433,48 @@ for i in(1..6)
       h2
         font-size textSize
         display block
+//------------------------------------------------------------------------------
+// Discover specificities
+
+.discover
+  overflow-y auto
+  padding-right 20px
+
+  > #copyright
+    position absolute
+    bottom 0
+    right 20px
+
+  > div.root
+    text-align center
+    flex 1 0 100%
+    margin-bottom 100px
+    position relative
+    z-index 0
+
+    > .btn
+      margin-top 50px
+      font-size headingSize
+      font-family headingFont
+      padding 1em 2em
+      text-shadow headingShadow
+    
+    article
+      margin-top 50px
+      position relative
+      z-index 1
+      applyAlertSkin()
+      
+      > h2
+        margin-top 0
+
+      p 
+        text-align left
+        font-size 115%
+
+    .app-title
+      position fixed
+      pointer-events none
 
 //------------------------------------------------------------------------------
 // Aside animations

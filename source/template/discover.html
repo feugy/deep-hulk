@@ -1,0 +1,14 @@
+<span class="mini-panel">
+  <div class="content">
+    <a class='btn' href="" data-ng-click='ctrl.back()'>{{'buttons.back'|i18n}}</a>
+  </div>
+</span>
+<div class="root">
+  <h1 class="app-title"></h1>
+  <article data-ng-repeat="paragraph in ctrl.paragraphs">
+    <h2><a href="#{{paragraph.anchor}}">{{paragraph.title}}</a></h2> 
+    <div data-ng-bind-html="paragraph.content"></div>
+  </article>
+  <a class="btn" href="/login">{{'buttons.playNow'|i18n}}</a>
+</div>
+<div id="copyright" data-ng-bind-html="'texts.copyright'|i18n"></div>

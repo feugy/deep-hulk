@@ -7,13 +7,14 @@ define [
   'controller/home'
   'controller/board'
   'controller/configure'
+  'controller/discover'
   'controller/end'
   'controller/rules'
   'angular-route'
   'angular-sanitize'
   'angular-animate'
   'angular-mousewheel'
-], (angular, utils, LoginCtrl, HomeCtrl, BoardCtrl, ConfigureCtrl, EndCtrl, RulesCtrl) ->
+], (angular, utils, LoginCtrl, HomeCtrl, BoardCtrl, ConfigureCtrl, DiscoverCtrl, EndCtrl, RulesCtrl) ->
   
   # declare main module that configures routing
   app = angular.module 'app', ['ngRoute', 'ngSanitize', 'ngAnimate', 'monospaced.mousewheel']
@@ -37,6 +38,7 @@ define [
       name: 'login'
       templateUrl: "#{conf.rootPath}template/login.html"
       controller: LoginCtrl
+      controllerAs: 'ctrl'
       resolve: LoginCtrl.checkRedirect
     route.when "#{conf.basePath}home",
       name: 'home'
@@ -62,6 +64,12 @@ define [
       name: 'rules'
       templateUrl: "#{conf.rootPath}template/rules.html"
       controller: RulesCtrl
+      controllerAs: 'ctrl'
+    route.when "#{conf.basePath}discover",
+      name: 'discover'
+      templateUrl: "#{conf.rootPath}template/discover.html"
+      controller: DiscoverCtrl
+      controllerAs: 'ctrl'
     route.otherwise 
       redirectTo: "#{conf.basePath}login"
   ]

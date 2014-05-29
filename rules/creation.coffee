@@ -118,48 +118,45 @@ class CreationRule extends Rule
         # order is important: save game before squads
         @saved.splice 0, 0, game
         
-        # get field types
-        FieldType.findCached ['corridor', 'room'], (err, [Corridor, Room]) =>
+        # get map template, to perform a copy
+        Field.find {mapId: mission.mapId}, (err, fields) =>
           return callback err if err?
-          # get map template, to perform a copy
-          Field.find {mapId: mission.mapId}, (err, fields) =>
+          [minX, minY, maxX, maxY] = [null, null, null, null]
+          # and fills it with template information
+          for f in fields
+            @saved.push new Field mapId: mapId, x:f.x, y:f.y, typeId: f.typeId, num: f.num
+            # compute map dimensions
+            minX = if !minX? or f.x < minX then f.x else minX
+            minY = if !minY? or f.y < minY then f.y else minY
+            maxX = if !maxX? or f.x > maxX then f.x else maxX
+            maxY = if !maxY? or f.y > maxY then f.y else maxY
+          console.log "#{fields.length} map fields copied"
+          # save map dimension to further loading
+          game.mapDimensions = "#{minX}:#{minY} #{maxX}:#{maxY}"
+          
+          Item.find {map: mission.mapId}, (err, items) =>
             return callback err if err?
-            [minX, minY, maxX, maxY] = [null, null, null, null]
-            # and fills it with template information
-            for f in fields
-              @saved.push new Field mapId: mapId, x:f.x, y:f.y, typeId: f.typeId, num: f.num
-              # compute map dimensions
-              minX = if !minX? or f.x < minX then f.x else minX
-              minY = if !minY? or f.y < minY then f.y else minY
-              maxX = if !maxX? or f.x > maxX then f.x else maxX
-              maxY = if !maxY? or f.y > maxY then f.y else maxY
-            console.log "#{fields.length} map fields copied"
-            # save map dimension to further loading
-            game.mapDimensions = "#{minX}:#{minY} #{maxX}:#{maxY}"
-            
-            Item.find {map: mission.mapId}, (err, items) =>
-              return callback err if err?
-              for item in items
-                specific = {}
-                switch item.type.id
-                  when 'door'
-                    specific = _.pick item, 'zone1', 'zone2', 'closed'
-                  else
-                    specific = {}
-                # adds an Item copy with common and specific fields
-                @saved.push new Item _.extend {
-                  map: map
-                  x:item.x
-                  y:item.y
-                  type: item.type
-                  imageNum: item.imageNum or 0
-                }, specific
-              console.log "#{items.length} walls and doors copied"
-              console.log "game #{params.gameName} (#{game.id}) created by #{actor.email} (#{params.squadName})"
-              freeGames.games.push game
-              @saved.push freeGames
-              # returns game id for client redirection
-              callback null, game.id
+            for item in items
+              specific = {}
+              switch item.type.id
+                when 'door'
+                  specific = _.pick item, 'zone1', 'zone2', 'closed'
+                else
+                  specific = {}
+              # adds an Item copy with common and specific fields
+              @saved.push new Item _.extend {
+                map: map
+                x:item.x
+                y:item.y
+                type: item.type
+                imageNum: item.imageNum or 0
+              }, specific
+            console.log "#{items.length} walls and doors copied"
+            console.log "game #{params.gameName} (#{game.id}) created by #{actor.email} (#{params.squadName})"
+            freeGames.games.push game
+            @saved.push freeGames
+            # returns game id for client redirection
+            callback null, game.id
 
   # **private**
   # Creates and adds alien blips to alien squad, regarding the chosen mission.

@@ -1,19 +1,20 @@
-<div data-ng-if="loginUrl">
-  <alert data-ng-hide="error == null" close='closeError()'>{{error}}</alert>
-  <h1 class="app-title"></h1>
+<div data-ng-if="ctrl.urls.manual">
+  <alert data-ng-hide="ctrl.error == null" close='ctrl.error = null'>{{ctrl.error}}</alert>
+  <h1 class="app-title" data-ng-click="ctrl.navTo('discover')"></h1>
 </div>
 <aside>
   <div class="mini-panel">
     <div class="content">
-      <a class='btn' href="" data-ng-click='navTo("rules")'>{{'buttons.rules'|i18n}}</a>
+      <a class='btn' href="" data-ng-click="ctrl.navTo('discover')">{{'buttons.discover'|i18n}}</a>
+      <a class='btn' href="" data-ng-click="ctrl.navTo('rules')">{{'buttons.rules'|i18n}}</a>
     </div>
   </div>
-  <form class="login-frame frame" method="POST" action="{{loginUrl}}" data-ng-submit="_onSubmit()">
+  <form class="login-frame frame" method="POST" action="{{ctrl.urls.manual}}" data-ng-submit="ctrl.onSubmit()">
     <h1>{{'titles.welcome'|i18n}}</h1>
     <div>{{'labels.connectWith'|i18n:{sep:true} }}</div>
     <div class="providers">
-      <a class="btn-social btn-google-plus" target="_self" data-ng-href="{{googleUrl}}"><i class="fa fa-google-plus"></i>{{'buttons.google'|i18n}}</a>
-      <a class="btn-social btn-twitter" target="_self" data-ng-href="{{twitterUrl}}"><i class="fa fa-twitter"></i>{{'buttons.twitter'|i18n}}</a>
+      <a class="btn-social btn-google-plus" target="_self" data-ng-href="{{ctrl.urls.google}}"><i class="fa fa-google-plus"></i>{{'buttons.google'|i18n}}</a>
+      <a class="btn-social btn-twitter" target="_self" data-ng-href="{{ctrl.urls.twitter}}"><i class="fa fa-twitter"></i>{{'buttons.twitter'|i18n}}</a>
     </div>
     <div>{{'labels.manualConnect'|i18n:{sep:true} }}</div>
     <div class="manual">

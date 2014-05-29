@@ -41,36 +41,36 @@ define ['jquery', 'util/common'], ($, {parseError}) ->
       ]
               
     # Controller dependencies
-    @$inject: ['$scope', 'check', '$location', '$filter']
+    @$inject: ['check', '$location', '$filter']
     
-    # Controller scope, injected within constructor
-    scope: null
+    # login urls
+    urls: 
+      manual: "#{conf.apiBaseUrl}/auth/login"
+      twitter: "#{conf.apiBaseUrl}/auth/twitter"
+      google: "#{conf.apiBaseUrl}/auth/google"
+    
+    # displayed error
+    error: null
+    
+    # Link to angular's location provider
+    location: null
     
     # Controller constructor: bind methods and attributes to current scope
     #
-    # @param scope [Object] Angular current scope
     # @param err [Error] Controller own resolver result
     # @param location [Object] Angular location provider
     # @param filter [Object] Angular's filter factory
-    constructor: (@scope, err, location, filter) -> 
+    constructor: (err, @location, filter) -> 
       document.title = filter('i18n') 'titles.login'
-      @scope.loginUrl = "#{conf.apiBaseUrl}/auth/login"
-      @scope.twitterUrl = "#{conf.apiBaseUrl}/auth/twitter"
-      @scope.googleUrl = "#{conf.apiBaseUrl}/auth/google"
-      @scope.error = parseError err if err?
-      @scope.closeError = @closeError
-      @scope._onSubmit = @_onSubmit
+      @error = parseError err if err?
       
-      # navigate to other page
-      @scope.navTo = (path, params = {}) =>
-        location.path("#{conf.basePath}#{path}").search params
+    # navigate to other page
+    # @param path [String] path to navigate to
+    # @param params [Object] optionnal path parameters, default to no params
+    navTo: (path, params = {}) =>
+      @location.path("#{conf.basePath}#{path}").search params
         
-    # Remove the current error, which hides the alert
-    closeError: =>
-      @scope.error = null
-      
-    #**private**
     # On form submission, trigger the leave animation on view
-    _onSubmit: =>
+    onSubmit: =>
       $('[data-ng-view]').addClass 'ng-leave ng-leave-active'
       null
