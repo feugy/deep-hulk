@@ -17,8 +17,8 @@ class ApplyOrderRule extends Rule
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (squad, marine, context, callback) =>
     # inhibit if waiting for deployment or other squad
-    unless squad?.type?.id is 'squad' and marine?.type?.id is 'marine' and 
-        marine in squad.members and squad.orders?.length > 0 and squad.firstAction
+    unless squad.type.id is 'squad' and marine.type?.id is 'marine' and 
+        not squad.waitTwist and marine in squad.members and squad.orders?.length > 0 and squad.firstAction
       return callback null, null 
     callback null, [
       name: 'order'
@@ -48,31 +48,25 @@ class ApplyOrderRule extends Rule
         # double shoots
         for member in squad.members when not member.dead
           member.rcNum *= 2
-          squad.actions++
       when 'goGoGo'
         # double moves
         for member in squad.members when not member.dead
           member.moves *= 2
-          squad.actions++
       when 'bySections'
         # double moves and shoot and store as equipment to be restricted further
         for member in squad.members when not member.dead
           member.moves *= 2
           member.rcNum *= 2
-          # only one additionnal action per marine: move or shoot
-          squad.actions++
           member.equipment.push order
       when 'heavyWeapon'
         # check that marine isn't dead and has heavy weapon, and double moves and shoots
         return callback new Error "notHeavyWeapon #{marine.name}" unless not marine.dead and marine.weapons[0].id in heavyWeapons
         marine.moves *= 2
         marine.rcNum *= 2
-        squad.actions += 2
         order.marine = marine.id
       when 'photonGrenade', 'toDeath'
         # photonGrenade and toDeath are stored as equipement to be applied further
         for member in squad.members when not member.dead
-          squad.actions++ if order is 'toDeath'
           member.equipment.push order
       else
         # unknown order ?!

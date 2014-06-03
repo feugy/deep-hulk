@@ -16,7 +16,7 @@ class DeployBlipRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameters (zone, x, y, and rank), or null/undefined if rule does not apply
   canExecute: (player, squad, context, callback) =>
-    return callback null, null unless squad?.type?.id is 'squad' and squad?.isAlien and squad?.deployZone?
+    return callback null, null unless squad.type?.id is 'squad' and squad.isAlien and squad.deployZone? and not squad.waitTwist
     callback null, [
       # deployement zone
       name:'zone'
@@ -55,7 +55,6 @@ class DeployBlipRule extends Rule
     blip = squad.members[params.rank]
     return callback new Error "alreadyDeployed" if blip.revealed
     return callback new Error "isReinforcement" if blip.isSupport
-    wasOnMap = blip.map?
     # action history
     effects = [makeState blip, 'x', 'y', 'map', 'doorToOpen']
     
@@ -86,7 +85,6 @@ class DeployBlipRule extends Rule
         blip.doorToOpen = findNextDoor params, items
         
         # add action for blip move
-        squad.actions++ unless wasOnMap
         @saved.push blip
         addAction 'deploy', blip, effects, @, callback
   

@@ -207,89 +207,18 @@ module.exports = {
       return callback err if err?
       # merge items with saved/removed object
       mergeChanges items, rule
-      
-      reveal = (blip, end) =>
-        # store previous blip state
-        effects.push makeState blip, 'id', 'moves', 'rcNum', 'ccNum', 'imageNum', 'revealed', 'x', 'y'
-        blip.revealed = true
-        imageNum = alienCapacities[blip.kind].imageNum
-        # for dreadnought, choose the right image depending on the equiped weapons
-        if blip.kind is 'dreadnought'
-          weapons = (weapon.id or weapon for weapon in blip.weapons[1..])
-          imageNum = imageNum[weapons.join '_']
-        blip.imageNum = imageNum
-        # subtract already done moves to possible moves (use first weapon to get infos)
-        weapon = blip.weapons[0]?.id or blip.weapons[0]
-        blip.moves = moveCapacities[weapon] - moveCapacities.blip + blip.moves
-        blip.moves = 0 if blip.moves < 0
-        blip.rcNum = 1
-        blip.ccNum = 1
-        parts = []
-        # for dreadnought, creates parts
-        if blip.kind is 'dreadnought'
-          # get dreadnought nearest walls and doors
-          blocks = (
-            for item in items when (item.type.id is 'wall' or item.type.id is 'door') and 
-                blip.x-2 <= item.x <= blip.x+2 and 
-                blip.y-2 <= item.y <= blip.y+2
-              item
-          )
-          # candidates position to reveal dreadnought
-          candidates = [
-            {x: blip.x, y: blip.y, moves: 0}
-            {x: blip.x-1, y: blip.y, moves: 0}
-            {x: blip.x, y: blip.y-1, moves: 0}
-            {x: blip.x-1, y: blip.y-1, moves: 0}
-          ]
-          # check that no block is sharing position with dreadnought part
-          for pos in candidates
-            # if no block is on the same tile than a part
-            if module.exports.isFreeForDreadnought blocks, pos, 'current', true
-              # update position and quit
-              blip.x = pos.x
-              blip.y = pos.y
-              break
-            # if no position is legal, we'll keep the same position.
-          # now creates the dreadnought parts
-          for i in [0..2]
-            part = new Item
-              type: blip.type
-              kind: blip.kind
-              revealed: true
-              squad: blip.squad
-              main: blip
-              x: blip.x+(if i is 0 then 1 else i-1)
-              y: blip.y+(if i is 0 then 0 else 1)
-              map: blip.map
-              imageNum: null
-            rule.saved.push part
-            parts.push part
-          # if we can't avoid being under a door, unless we know it
-          blip.underDoor = module.exports.isDreadnoughtUnderDoor items, blip
-        
-        # add attack action
-        blip.fetch (err, blip) =>
-          return end err if err?
-          # do not add action if alien already passed its turn
-          blip.squad.actions++ unless blip.squad.actions is -1
-          blip.parts = parts
-          console.log "reveal blip #{blip.kind} at #{blip.x}:#{blip.y}"
-          # TODO : pas de detection automatique de la modification des actions de l'escouade !!!!
-          # on est obligé de le déclarer nous même
-          rule.saved.push blip, blip.squad
-          end null
         
       # for a marine, check all other blips visibility
       if actor?.type?.id is 'marine'
         return async.each items, (blip, next) =>
           if blip.type.id is 'alien' and !blip.revealed and not module.exports.hasObstacle(actor, blip, items)?
-            return reveal blip, next
+            return module.exports.revealBlip blip, items, effects, rule, next
           next()
         , callback
       else if actor?.revealed is false
         # for an unrevealed blip, check if he revealed himself to other marines
         for marine in items when marine.type.id is 'marine' and not marine.dead and not module.exports.hasObstacle(marine, actor, items)?
-          return reveal actor, callback
+          return module.exports.revealBlip actor, items, effects, rule, callback
         # not visible to anyone
         callback null
       else 
@@ -304,10 +233,84 @@ module.exports = {
             if blip.revealed or module.exports.hasObstacle(marine, blip, items)?
               endBlip()
             else
-              reveal blip, endBlip
+              module.exports.revealBlip blip, items, effects, rule, endBlip
           , endMarine
         , callback
       
+  # Reveals a given blip.
+  # - make a state before revealing
+  # - adapt remaining moves to the beared weapon
+  # - for dreadnought, find a proper position depending on walls
+  # - for dreadnought, check if under a door
+  #
+  # @param blip [Item] blip to reveal
+  # @param walls [Array<Item>] array of walls and doors to check dreadnought position
+  # @param effects [Array] effects array for the current action
+  # @param rule [Rule] rule used to store saved models
+  # @param callback [Function] end callback invoked with optionnal error argument
+  revealBlip: (blip, walls, effects, rule, callback) =>
+    # store previous blip state
+    effects.push makeState blip, 'id', 'moves', 'rcNum', 'ccNum', 'imageNum', 'revealed', 'x', 'y'
+    blip.revealed = true
+    imageNum = alienCapacities[blip.kind].imageNum
+    # for dreadnought, choose the right image depending on the equiped weapons
+    if blip.kind is 'dreadnought'
+      weapons = (weapon.id or weapon for weapon in blip.weapons[1..])
+      imageNum = imageNum[weapons.join '_']
+    blip.imageNum = imageNum
+    # subtract already done moves to possible moves (use first weapon to get infos)
+    weapon = blip.weapons[0]?.id or blip.weapons[0]
+    blip.moves = moveCapacities[weapon] - moveCapacities.blip + blip.moves
+    blip.moves = 0 if blip.moves < 0
+    blip.rcNum = 1
+    blip.ccNum = 1
+    # for dreadnought, creates parts
+    if blip.kind is 'dreadnought'
+      blip.parts = []
+      # get dreadnought nearest walls and doors
+      blocks = (
+        for item in walls when (item.type.id is 'wall' or item.type.id is 'door') and 
+            blip.x-2 <= item.x <= blip.x+2 and 
+            blip.y-2 <= item.y <= blip.y+2
+          item
+      )
+      # candidates position to reveal dreadnought
+      candidates = [
+        {x: blip.x, y: blip.y, moves: 0}
+        {x: blip.x-1, y: blip.y, moves: 0}
+        {x: blip.x, y: blip.y-1, moves: 0}
+        {x: blip.x-1, y: blip.y-1, moves: 0}
+      ]
+      # check that no block is sharing position with dreadnought part
+      for pos in candidates
+        # if no block is on the same tile than a part
+        if module.exports.isFreeForDreadnought blocks, pos, 'current', true
+          # update position and quit
+          blip.x = pos.x
+          blip.y = pos.y
+          break
+        # if no position is legal, we'll keep the same position.
+      # now creates the dreadnought parts
+      for i in [0..2]
+        part = new Item
+          type: blip.type
+          kind: blip.kind
+          revealed: true
+          squad: blip.squad
+          main: blip
+          x: blip.x+(if i is 0 then 1 else i-1)
+          y: blip.y+(if i is 0 then 0 else 1)
+          map: blip.map
+          imageNum: null
+        rule.saved.push part
+        blip.parts.push part
+      # if we can't avoid being under a door, unless we know it
+      blip.underDoor = module.exports.isDreadnoughtUnderDoor walls, blip
+    
+    console.log "reveal blip #{blip.kind} at #{blip.x}:#{blip.y}"
+    rule.saved.push blip
+    callback null
+          
   # Checks that a given position is free for a dreadnought to move on.
   # Can also check current position for blip revealing.
   #

@@ -16,7 +16,8 @@ class UseEquipmentRule extends Rule
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (squad, marine, context, callback) =>
     # inhibit if waiting for deployment or other squad
-    unless squad?.type?.id is 'squad' and marine?.type?.id is 'marine' and marine in squad.members and squad.equipment?.length > 0
+    unless squad.type.id is 'squad' and marine.type?.id is 'marine' and 
+        not squad.waitTwist and not squad.turnEnded and marine in squad.members and squad.equipment?.length > 0
       return callback null, null 
     callback null, [
       name: 'equipment'

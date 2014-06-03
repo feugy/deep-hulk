@@ -19,6 +19,7 @@ define [
     # @option buttons result [Expression] result used in the current promise to distinguish buttons
     # @option buttons onClick [Expression] optionnal executed expression on click, executed before closure. Return false to cancel closure
     # @option buttons classes [String] May contain multiple classes (space separated) applied to button (optionnal)
+    # @param outer [Object] outer scope used to access values handled by directive within the dialog.
     scope: null
     
     # JQuery enriched element
@@ -88,12 +89,13 @@ define [
   # Dialog provider
   app.factory '$dialog', ['$rootScope', '$compile', '$animate', '$q', (rootScope, compile, animate, q) ->
       # Creates a new `Dialog` with the specified title, message and buttons, and default template.
-      messageBox: (title, message, buttons, tpl = template, outerScope = {}) -> 
+      messageBox: (title, message, buttons, tpl = template, outerScope = {}, onClose = null) -> 
         scope = rootScope.$new()
         scope.title = title
         scope.message = message
         scope.buttons = buttons
         scope.outer = outerScope
+        scope.onClose = onClose
         new Dialog scope, tpl, compile, animate, q
     ]
       

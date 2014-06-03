@@ -1,7 +1,6 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 removeGame = require './removeGame'
-{mergeChanges} = require './common'
 
 # When player acknoledge a game's end
 class EndOfGameRule extends Rule
@@ -36,7 +35,9 @@ class EndOfGameRule extends Rule
     @saved.push squad
     
     # when all players have finished, remove game
-    if _.every(game.squads, (squad) -> squad.finished)
+    if _.every(game.squads, (squad) -> squad.finished or not squad.map?)
+      removeGame.saved = []
+      removeGame.removed = []
       removeGame.execute player, game, params, {player: isAdmin:true}, (err) =>
         console.log "remove game #{game.name} and map #{squad.map}", err
         console.error err if err?

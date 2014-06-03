@@ -20,7 +20,7 @@ class MoveRule extends Rule
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (actor, target, context, callback) =>
     # inhibit if waiting for deployment or other squad
-    if actor.squad?.deployZone? or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
+    if actor.squad?.deployZone? or actor.squad?.waitTwist or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
       return callback null, null 
     # simple conditions, target is field, actor not dead or reinforcing, target at 1~2 distance
     unless target.mapId? and not actor.dead and actor.moves >= 1 and 2 >= distance actor, target
@@ -80,8 +80,6 @@ class MoveRule extends Rule
       unless targetType is base
         actor.moves -= 1 
         actor.squad.firstAction = false
-      if actor.moves is 0
-        actor.squad.actions--
         
       # if consumming more than 1 allowed moves and having by section order, then reduce range attacks
       allowed = moveCapacities[actor.weapons[0].id]

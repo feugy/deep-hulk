@@ -16,7 +16,8 @@ class ReinforceRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameters (zone, x, y, and rank), or null/undefined if rule does not apply
   canExecute: (player, squad, context, callback) =>
-    return callback null, null unless squad?.type?.id is 'squad' and squad?.isAlien and squad?.supportBlips > 0
+    return callback null, null unless squad.type?.id is 'squad' and squad.isAlien and squad.supportBlips > 0 and not squad.waitTwist
+    # no more reinforcement !
     return callback null, null unless _.filter(squad.members, (m) -> m.isSupport and not m.map?).length
     callback null, [
       # x coordinate for deployement
@@ -59,7 +60,7 @@ class ReinforceRule extends Rule
       selectItemWithin squad.map.id, (err, items) =>
         return callback err if err?
         for item in items 
-          if item?.type?.id is 'marine'
+          if item?.type?.id is 'marine' and item?.dead is false
             return callback new Error "positionVisible" unless hasObstacle(item, params, items)?
           else if item?.type?.id is 'alien'
             return callback new Error "sharedReinforce" if item.x is params.x and item.y is params.y

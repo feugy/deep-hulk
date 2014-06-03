@@ -62,9 +62,10 @@ define [
       @element.on 'keydown', @_onKey
         
       @scope.select = (event, item, closeMenu=true) =>
-        @scope.value = item
-        @scope.closeMenu() if closeMenu
-        @scope.onChange?(event, item)
+        if item isnt @scope.value
+          @scope.value = item
+          @scope.closeMenu() if closeMenu
+          @scope.onChange?(event, item)
         # to stop event propagation
         event.stopPropagation()
         false 

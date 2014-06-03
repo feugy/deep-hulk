@@ -38,8 +38,11 @@ class DeploySquadRule extends Rule
     Map.findCached ["map-#{id}"], (err, [map]) =>
       return callback err if err?
       squad.map = map
+      squad.turnEnded = false
       # alien are not deployed at starts
-      return callback null if squad.name is 'alien'
+      if squad.name is 'alien'
+        squad.trap.map = map
+        return callback null 
       # set all marine into their base
       Field.find {mapId: "map-#{id}", typeId:"base-#{squad.name}"}, (err, tiles) =>
         return callback err if err?

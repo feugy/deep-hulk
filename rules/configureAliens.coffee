@@ -17,7 +17,7 @@ class ConfigureAliensRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameters: one per squad members for its weapon.
   canExecute: (player, squad, context, callback) =>
-    if player?._className is 'Player' and squad?.type?.id is 'squad' and !(squad?.map?)
+    if player?._className is 'Player' and squad?.type?.id is 'squad' and not squad?.map?
       # check that squad belongs to player
       return callback null, null unless _.findWhere player.characters, id:squad.id
       params = []
@@ -44,22 +44,22 @@ class ConfigureAliensRule extends Rule
   # @param callback [Function] called when the rule is applied, with one arguments:
   # @option callback err [String] error string. Null if no error occured
   execute: (player, squad, params, context, callback) =>
+    # check that all weapons are use only once on a fiven dreadnought
     for member in squad.members when member.kind is 'dreadnought'
       configured = (weapon for id, weapon of params when id.match member.id)
-      if configured[0] is configured[1]
-        return callback new Error "twoMany"+configured[0][0].toUpperCase()+configured[0][1..]
+      for weapon in configured when _.filter(configured, (w) -> w is weapon).length > 1
+        return callback new Error "twoMany"+weapon[0].toUpperCase()+weapon[1..]
     
     # update members weapons
     Item.fetch squad.members, (err, members) =>
       return callback err if err?
-      # remove previous weapons
-      member.weapons.splice 1
       # for each dreadnought, affect choosed weapons
-      for member in members when member.kind is 'dreadnought'
-        for i in [0...member.life-1]
-          weaponId = params["#{member.id}-weapon-#{i}"]
-          member.weapons.push weaponId
-          
+      for dreadnought in members when dreadnought.kind is 'dreadnought'
+        # remove previous weapons
+        dreadnought.weapons.splice 1
+        for i in [0...dreadnought.life-1]
+          weaponId = params["#{dreadnought.id}-weapon-#{i}"]
+          dreadnought.weapons.push weaponId
       # ready for deploy
       squad.configured = true
       callback null

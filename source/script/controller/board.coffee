@@ -5,7 +5,8 @@ define [
   'jquery'
   'util/common'
   'text!template/choose_dialog.html'
-], (_, $, {getInstanceImage, parseError}, chooseDialogTpl) ->
+  'text!template/choose_orders.html'
+], (_, $, {getInstanceImage, parseError}, chooseDialogTpl, chooseOrderTpl) ->
     
   # two mode controller: displays squad configuration (for marines, before starting game)
   # or displays the game board (for marines and alien)
@@ -52,6 +53,10 @@ define [
     # Some weapons need to select multiple targets. Temporary store them
     _multipleTargets: []
     
+    # **private**
+    # Stores game event to allow notification during replay
+    _gameEvents: []
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] Angular current scope
@@ -63,17 +68,18 @@ define [
     # @param interpolate [Function] Angular's expression interpolation factory
     constructor: (@scope, @location, @dialog, @atlas, rootScope, @filter, @interpolate) ->
       @_applicableRules = {}
-      @_inhibit = false
       @_currentZone = null
+      @scope.inhibited = false
+      @scope.inhibitEndTurn = false
       @scope.zoom = 1
       @scope.zone = null
-      @scope.canEndTurn = false
       @scope.hasNextAction = false
       @scope.hasPrevAction = false
       @scope.canStopReplay = false
       @scope.activeRule = null
       @scope.activeWeapon = 0
       @scope.showOrders = false
+      @scope.blockedLabel = null
       # If selected character is shooting with a weapon needing multiple targets, 
       @scope.needMultipleTargets = false
       @scope.log = []
@@ -134,6 +140,7 @@ define [
         document.title = @filter('i18n') 'titles.app', args: game
         # keep game and player's squad
         @scope.game = game
+        @_gameEvents = @scope.game.events
         @atlas.initReplay game
         @_updateReplayCommands()
         
@@ -153,8 +160,8 @@ define [
     notify: (notif) =>
       # always displays in-game
       @scope.notifs.push notif
-      if Notification?.permission is 'granted' and document.hidden
-        # send a desktop notification
+      if Notification?.permission is 'granted' and not document.hasFocus()
+        # send a desktop notification if granted and no focus
         popup = new Notification @filter('i18n')('titles.desktopNotification', args: @scope.game), 
           body: notif.content
           icon: "#{conf.rootPath}image/notif-alien.png"
@@ -169,7 +176,7 @@ define [
     # check on server reachable tiles and display them
     displayMovable: =>
       # defer because click on mode button is processed before changing the activeRule value
-      unless not @_inhibit and @scope.selected? and @scope.activeRule is 'move' and !@atlas.ruleService.isBusy()
+      unless not @scope.inhibited and @scope.selected? and @scope.activeRule is 'move' and !@atlas.ruleService.isBusy()
         return
       # save variable locally to avoid changes while waiting for response
       selected = @scope.selected
@@ -186,7 +193,7 @@ define [
     # @param evt [Event] event that add trigger zone displayal (unused)
     # @param details [Item|Field] targeted item or field on which damage zone is evaluated
     displayDamageZone: (evt, details) =>
-      unless details? and not @_inhibit and details? and @scope.selected? and @scope.activeRule in ['shoot', 'assault']
+      unless details? and not @scope.inhibited and details? and @scope.selected? and @scope.activeRule in ['shoot', 'assault']
         return
       # do NOT ignore assault resolution if service is busy
       if @atlas.ruleService.isBusy() and @scope.activeRule isnt 'assault'
@@ -215,21 +222,38 @@ define [
     # **private**
     # Inihibit interface when:
     # - replay in progress
+    # - waiting or playing twist
     # - deployment in progress and not alien
     # - single player and not current player
     # - multiple payers and no actions left
     _updateInhibition: =>
-      if @atlas.replayPos?
+      @scope.blockedLabel = null
+      @scope.inhibitEndTurn = true
+      if @atlas.replayPos? 
         # action replay in progress
-        @_inhibit = true
+        @scope.inhibited = true
+        @scope.blockedLabel = 'labels.replayInProgress'
+      else if @scope.squad.waitTwist
+        # twist resolution
+        @scope.inhibited = true
+        @scope.blockedLabel = 'labels.waitingForOther'
       else if @scope.squad?.deployZone?
         # during deployement, only alien can play
-        @_inhibit = not @scope.squad.isAlien
-      else if @scope.squad?.actions < 0 or @scope.game?.singleActive and @scope.squad?.activeSquad isnt @scope.squad?.name
+        if @scope.squad.isAlien
+          @scope.inhibited = false
+        else
+          @scope.inhibited = true
+          @scope.blockedLabel = 'labels.deployInProgress'
+      else if @scope.squad?.turnEnded or @scope.game?.singleActive and @scope.squad?.activeSquad isnt @scope.squad?.name
         # squad is not active or has no actions left
-        @_inhibit = true
+        @scope.inhibited = true
+        @scope.blockedLabel = 'labels.waitingForOther'
       else
-        @_inhibit = false
+        @scope.inhibitEndTurn = false
+        @scope.inhibited = false
+      # update orders and unselect if necessary
+      @scope.selected = null if @scope.inhibited
+      @_updateChosenOrders()
       
     # **private**
     # Require help from the server if available.
@@ -272,15 +296,13 @@ define [
           @_updateInhibition()
           @_onActiveSquadChange()
           @_updateChosenOrders()
+          @_playTwist()
             
           # blips deployment, blip displayal
           if @scope.squad?.deployZone?
             @_toggleDeployMode()
-          if @scope.squad.actions < 0 
-            @scope.canEndTurn = false 
-            @notify kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
-          else
-            @scope.canEndTurn = true
+          if @scope.squad.turnEnded and not @scope.game.singleActive
+            @notify kind: 'info', content: conf.texts.notifs.waitForOther
           
     # ** private**
     # Adapt UI to current deploy mode:
@@ -293,7 +315,6 @@ define [
       @_updateInhibition()
       if @scope.squad.deployZone?
         @_askForHelp 'startDeploy'
-        @scope.canEndTurn = false
         if @scope.squad.isAlien
           # Auto select the first zone to deploy
           first = @scope.squad.deployZone.split(',')[0]
@@ -314,13 +335,11 @@ define [
         else
           # add notification and inhibit
           @notify kind: 'info', content: conf.texts.notifs.deployInProgress
-          @scope.selected = null
       else
         @_askForHelp 'endDeploy'
         if @scope.squad.isAlien
-          @scope.canEndTurn = true
           # clean alien previous notifications
-          @scope.notifs.splice 0, @scope.notifs.length
+          @scope.notifs.splice 0, @scope.notifs.length if withNotifs
         else
           # indicates to marine that they can go on !
           @notify kind: 'info', content: conf.texts.notifs.deployEnded if withNotifs
@@ -335,7 +354,7 @@ define [
     #
     # @param rule [String] rule to trigger
     _askToExecuteRule: (rule) =>
-      return if @_inhibit and not @scope.selected?
+      return if @scope.inhibited and not @scope.selected?
       switch rule
         when "open"
           return unless @scope.selected.doorToOpen?
@@ -379,9 +398,58 @@ define [
     # **private**
     # If first action and remaining orders, display dialog box to trigger them.
     _updateChosenOrders: =>
-      @scope.showOrders = @scope.squad.firstAction and @scope.squad.orders.length > 0 and not @_inhibit
+      @scope.showOrders = @scope.squad.firstAction and @scope.squad.orders.length > 0 and not @scope.inhibited
       @_askForHelp 'order' if @scope.showOrders
-        
+      
+    # **private**
+    # Play affected twist, by choosing possible parameters.
+    # Mostly appliable for alien squad, but may apply to marine squad also (choose another order)
+    _playTwist: =>
+      squad = @scope.squad
+      return unless squad.waitTwist and squad.twist?
+      
+      @scope.zone = null
+      # ask for parameters to be choosen
+      @atlas.ruleService.resolve @scope.game, squad, ['twists'], (err, result) =>
+        return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?   
+        # get first rule and its single target (which is current squad)
+        for rule, [spec] of result
+          
+          exec = (params) =>
+            @atlas.ruleService.execute rule, @scope.game, squad, params, (err, message) =>
+              return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?  
+              if message and conf.texts.notifs[message]
+                @notify kind: 'info', content: @interpolate(conf.texts.notifs[message]) {}
+              
+          # no parameters ? apply immediately
+          return exec {} unless spec.params?.length > 0
+          @scope.$apply =>
+            # get parameters: alien select from map
+            if squad.isAlien and not (squad.twist in ['newOrder'])
+              # display indication to give instruction
+              if conf.texts[squad.twist]?
+                @notify kind: 'info', content: conf.texts[squad.twist]
+              # use display zone to select target
+              target = _.findWhere spec.params, name: 'target'
+              if target?
+                @scope.zone =
+                  tiles: target.within
+                  kind: 'twist'
+                  onSelect: (selected) => @scope.$apply =>
+                    # execute on first item selected
+                    @scope.zone = null
+                    exec target: selected.items[0].id
+            else
+              # for other case, use a modal dialog to choose parameters
+              outer = rule: spec, params: {}
+              # set a default value to avoid empty parameters
+              for param in spec.params when param.within?
+                outer.params[param.name] = param.within[0]
+              @dialog.messageBox(conf.titles.twist, conf.texts[squad.twist+(if squad.isAlien then 'Alien' else '')], 
+                  [label: conf.buttons.ok], chooseOrderTpl, outer).open().then () =>
+                # and execute rule
+                exec outer.params
+      
     # **private**
     # Update action zone depending on new active rule
     #
@@ -406,7 +474,7 @@ define [
       return unless @scope.game.singleActive
       @_updateInhibition()
       if @scope.squad.activeSquad isnt @scope.squad.name
-        @notify kind: 'info', content: @interpolate(conf.texts.notifs.waitForSquad) target: conf.labels[@scope.squad.activeSquad or 'noActiveSquad']
+        @notify kind: 'info', content: @interpolate(conf.texts.notifs.waitForSquad)(target: conf.labels[@scope.squad.activeSquad or 'noActiveSquad'])
       else
         @notify kind: 'info', content: conf.texts.notifs.playNow
         
@@ -428,38 +496,49 @@ define [
         when 'update'
           @scope.$apply =>
             if model?.id is @scope.squad?.id 
-              if 'actions' in changes
+              if 'turnEnded' in changes or 'waitTwist' in changes
                 @_updateInhibition()
-                @scope.canEndTurn = @scope.squad.actions >= 0
               if 'deployZone' in changes
                 @_toggleDeployMode() 
               if 'activeSquad' in changes
                 @_onActiveSquadChange()
               if 'firstAction' in changes
                 @_updateChosenOrders()
+              if 'waitTwist' in changes
+                @_playTwist()
+                unless @scope.squad.waitTwist
+                  # turn has changed, ans twist is finished
+                  @notify kind: 'info', content: conf.texts.notifs.newTurn
             else if model?.id is @scope.game?.id
               if 'finished' in changes
                 return @location.path "#{conf.basePath}end" if model.finished
               if 'turn' in changes
-                # if turn has change, notify
-                @notify kind: 'info', content: conf.texts.notifs.newTurn
                 # quit replay
                 @atlas.stopReplay()
               if 'prevActions' in changes
                 @_updateReplayCommands()
-              if 'events' in changes
+              if 'events' in changes and @scope.squad?
+                # during forward replay, use inner storage instead of game model
+                storage = if @atlas.replayPos? and @_gameEvents.length > @scope.game.events.length then @_gameEvents else @scope.game.events
                 # try to display notification when other squad uses equipment or orders
-                event = @scope.game.events[-1..]?[0]
-                if event?.id isnt @scope.squad.id
+                event = storage[storage.length-1]
+                if event? and event.id isnt @scope.squad.id
                   # Display notification
-                  content = conf.texts.notifs["#{event.used}Used"]
+                  content = conf.texts.notifs[if event.name is @scope.squad.name then event.used else "#{event.used}Used"]
                   return unless content?
-                  @notify kind: 'info', content: @interpolate(content) target: @filter('i18n') "labels.#{event.name}"
+                  @notify kind: 'info', content: @interpolate(content)(target: @filter('i18n') "labels.#{event.name}")
+                
+                  # display secondary mission text
+                  if event?.used is 'mothershipCaptain'
+                    @notify kind: 'info', content: conf.texts.secondary[@scope.squad.mission.id or @scope.squad.mission]
+                  
+                # update inner storage
+                @_gameEvents = @scope.game.events
               if 'mainWinner' in changes and @scope.squad?
                 if @scope.game.mainWinner is @scope.squad.name
                   content = conf.texts.notifs.mainMissionCompleted
                 else
-                  content = @interpolate(conf.texts.notifs.mainMissionCompletedBy) target: @filter('i18n') "labels.#{@scope.game.mainWinner}"
+                  content = @interpolate(conf.texts.notifs.mainMissionCompletedBy)(target: @filter('i18n') "labels.#{@scope.game.mainWinner}")
                 @notify kind: 'info', content: content
             else if model is @scope.selected and model.dead
               @scope.selected = null
@@ -477,7 +556,7 @@ define [
     # @option details items [Array<Item>] item models at this coordinates (may be empty)
     # @option details field [Field] field model at this coordinates (may be null)
     _onSelect: (event, details) =>
-      return if @_inhibit
+      return if @scope.inhibited
       # find selectable item inside clicked items
       item = _.find details.items, (item) => 
         return false if item.dead
@@ -508,9 +587,28 @@ define [
     # @option details items [Array<Item>] item models at this coordinates (may be empty)
     # @option details field [Field] field model at this coordinates (may be null)
     _onClick: (event, details) =>
-      return if @_inhibit or not @scope.activeRule? or @scope.squad?.deployZone?
+      if @scope.squad.waitTwist and @scope.squad.twist and @scope.zone?
+        # special case: clicks must be caught during twist resolution
+        zone = _.findWhere @scope.zone.tiles, x: details.x, y: details.y
+        @scope.zone?.onSelect?(details) if zone?
+        return
       
-      if @scope.selected?
+      # ignore if inhibited or no active rule or deployement in progress
+      return if @scope.inhibited or not @scope.activeRule? or @scope.squad?.deployZone?
+      
+      if @scope.squad.supportBlips > 0 and _.any(details?.items, (item) -> item?.type?.id is 'reinforcement')
+        # click on reinforcement get possible blip to reinforce
+        blipIdx = (i for member, i in @scope.squad.members when member?.map is null and member?.isSupport)
+        return unless blipIdx.length
+        # randomly pick one and go !
+        @atlas.ruleService.execute 'reinforce', @atlas.player, @scope.squad, 
+          x: details.x
+          y: details.y
+          rank: blipIdx[_.random 0, blipIdx.length-1]
+        , (err, result) =>
+          # displays deployement errors
+          return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
+      else if @scope.selected?
         # for shoot with autocannon, need to select targets
         if @scope.activeRule is 'shoot' and @scope.selected.weapons[@scope.activeWeapon]?.id is 'autoCannon'
           @scope.needMultipleTargets = true
@@ -525,22 +623,11 @@ define [
             keys = _.keys applicables
             return if keys.length is 0
             @_executeRule keys[0] if keys.length is 1 and keys
-      else if @scope.squad.supportBlips > 0 and _.any(details?.items, (item) -> item?.type?.id is 'reinforcement')
-        # click on reinforcement get possible blip to reinforce
-        blipIdx = (i for member, i in @scope.squad.members when member?.map is null and member?.isSupport)
-        return unless blipIdx.length
-        # randomly pick one and go !
-        @atlas.ruleService.execute 'reinforce', @atlas.player, @scope.squad, 
-          x: details.x
-          y: details.y
-          rank: blipIdx[_.random 0, blipIdx.length-1]
-        , (err, result) =>
-          # displays deployement errors
-          return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
-      
+    
     # **private**
     # Display a modal popup to choose equipement to apply
     _onDisplayEquipment: (event) =>
+      return if @scope.inhibited
       outer = 
         possibles: (name: item, selectMember: item is 'meltaBomb' for item in @scope.squad.equipment when item isnt 'detector')
         selected: []
@@ -563,7 +650,7 @@ define [
           return @notify kind: 'error', content: parseError err if err?
           # add a notification
           if message
-            @notify kind: 'info', content: @interpolate(conf.texts.notifs[message]) target: marine?.name
+            @notify kind: 'info', content: @interpolate(conf.texts.notifs[message])(target: marine?.name)
         
     # **private**
     # On order selection, relay to server o effectively apply the order
@@ -571,50 +658,44 @@ define [
     # @param order [String] chosen order
     # @param memberId [String] if required by chosen order, selected member id
     _onApplyOrder: (order, memberId = null) =>
+      return if @scope.inhibited
       marine = _.findWhere(@scope.squad.members, id:memberId) or @scope.squad.members[0]
       @atlas.ruleService.execute 'applyOrder', @scope.squad, marine, {order: order}, (err, message) => @scope.$apply =>
         return @notify kind: 'error', content: parseError err if err?
         # add a notification
         if message
-          @notify kind: 'info', content: @interpolate(conf.texts.notifs[message]) target: marine?.name 
+          @notify kind: 'info', content: @interpolate(conf.texts.notifs[message])(target: marine?.name)
                 
     # **private**
     # After a modal confirmation, trigger the end of turn.
-    # No confirmation if squad hasn't any remaining actions
     _onEndTurn: =>
-      return if @_inhibit
-      # rule triggering
-      trigger = =>
-        @atlas.ruleService.execute 'endOfTurn', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
-          return @notify kind: 'error', content: parseError err if err?
-          # add a notification
-          @notify kind: 'info', content: conf.texts.notifs.waitForOther unless @scope.game.singleActive
-      return trigger() if @scope.squad.actions is 0
-      # still actions ? confirm end of turn
-      confirm = @dialog.messageBox conf.titles.confirmEndOfTurn, conf.texts.confirmEndOfTurn, [
+      return if @scope.inhibitEndTurn
+      @dialog.messageBox(conf.titles.confirmEndOfTurn, conf.texts.confirmEndOfTurn, [
         {label: conf.buttons.yes, result: true}
         {label: conf.buttons.no}
-      ]
-      confirm.open().then (confirmed) =>
-        trigger() if confirmed
+      ]).open().then (confirmed) =>
+        return unless confirmed
+        turn = @scope.game.turn
+        @atlas.ruleService.execute 'endOfTurn', @atlas.player, @scope.squad, {}, (err) => @scope.$apply =>
+          return @notify kind: 'error', content: parseError err if err?
+          # add a notification, only if necessary
+          unless turn isnt @scope.game.turn or @scope.game.singleActive
+            @notify kind: 'info', content: conf.texts.notifs.waitForOther
+        
         
     # **private**
     # After a model confirmation, trigger the blip deployement end
     _onEndDeploy: =>
-      return if @_inhibit or @_currentZone is null
-      # rule triggering
-      trigger = =>
+      return if @scope.inhibited or @_currentZone is null
+      @dialog.messageBox(conf.titles.confirmDeploy, conf.texts.confirmEndDeploy, [
+        {label: conf.buttons.yes, result: true}
+        {label: conf.buttons.no}
+      ]).open().then (confirmed) =>
+        return unless confirmed
         @atlas.ruleService.execute 'endDeploy', @atlas.player, @scope.squad, {zone: @_currentZone}, (err) =>
           return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
           # proceed with next deployement or quit mode
           @_toggleDeployMode()
-      # still actions ? confirm end of turn
-      confirm = @dialog.messageBox conf.titles.confirmDeploy, conf.texts.confirmEndDeploy, [
-        {label: conf.buttons.yes, result: true}
-        {label: conf.buttons.no}
-      ]
-      confirm.open().then (confirmed) =>
-        trigger() if confirmed
     
     # **private**
     # When a blip has been dropped into the map, randomly affect an available member to this position
@@ -640,14 +721,15 @@ define [
         # displays deployement errors
         @_askForHelp 'deploy'
         return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
-
+        
+            
     # **private**
     # Key up handler, to select this character with shortcut
     #
     # @param event [Event] key up event
     _onKey: (event) =>
       # disable if cursor currently in an editable element
-      return if event.target.nodeName.toLowerCase() in ['input', 'textarea', 'select']
+      return if @scope.inhibited or event.target.nodeName.toLowerCase() in ['input', 'textarea', 'select']
       # select current character if shortcut match
       if event.ctrlKey and event.keyCode in [49...57]
         @scope.$apply => @scope.selected = _.where(@scope.squad.members, dead:false)[event.keyCode-49]

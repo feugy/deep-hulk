@@ -153,7 +153,7 @@ define [
       tiles = @scope.src.tiles?.concat() or []
       switch @scope.src?.kind
       
-        when 'deploy'
+        when 'deploy', 'twist'
           # for deploy, fill each tiles with same color
           renderer.drawTile ctx, tile, color for tile in tiles
             

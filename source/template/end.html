@@ -2,13 +2,13 @@
   <h1>{{game.name}}{{'labels.fieldSeparator'|i18n}}{{'labels.gameEnd'|i18n}}</h1>
   <table class="result">
     <thead>
-      <tr><th>{{'labels.squad'|i18n}}</th><th>{{'labels.player'|i18n}}</th><th>{{'labels.points'|i18n}}</th></tr>
+      <tr><th>{{'labels.squad'|i18n}}</th><th>{{'labels.player'|i18n}}</th><th>{{'labels.score'|i18n}}</th></tr>
     </thead>
     <tbody>
       <tr data-ng-repeat="squad in game.squads|orderBy:'-points'" data-ng-class="squad.player === current ? 'current' : ''">
         <td class="squad"><img data-ng-src="{{getInstanceImage(squad)}}"/></td>
         <td class="player">{{squad.player}}</td>
-        <td class="score">{{squad.score}}</td>
+        <td class="score">{{squad.points}}</td>
       </tr>
     </tbody>
   </table>

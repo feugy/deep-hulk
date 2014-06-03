@@ -7,6 +7,7 @@ updatePref = (player, pref, value) ->
   player.prefs.help[pref] = value
 
 displayTurn = (player, squad, values) ->
+  # TODO
   if squad.actions < 4 
     if not player.prefs.help?.turnDisplayed
       updatePref player, 'turnDisplayed', true

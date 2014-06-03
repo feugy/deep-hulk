@@ -3,6 +3,8 @@ async = require 'async'
 utils = require 'hyperion/util/model'
 Item = require 'hyperion/model/Item'
 ClientConf = require 'hyperion/model/ClientConf'
+{checkMission} = require './missionUtils'
+{freeGamesId} = require './constants'
 
 dices =
   w: [0, 0, 0, 0, 1, 2]
@@ -174,10 +176,8 @@ module.exports = {
       Item.find {map: mapId, x: from.x, y: from.y}, callback
     else
       Item.where('map', mapId)
-        .where('x').gte(if from.x > to.x then to.x else from.x)
-        .where('x').lte(if from.x > to.x then from.x else to.x)
-        .where('y').gte(if from.y > to.y then to.y else from.y)
-        .where('y').lte(if from.y > to.y then from.y else to.y)
+        .where('x').gte(if from.x > to.x then to.x else from.x).lte(if from.x > to.x then from.x else to.x)
+        .where('y').gte(if from.y > to.y then to.y else from.y).lte(if from.y > to.y then from.y else to.y)
         .where('dead').ne(true)
         .exec callback
     
@@ -197,7 +197,6 @@ module.exports = {
     callback null
     
   # When a marine or alien character is removed from map (by killing it or when quitting)
-  # Marine/alien squad actions count is update unless specified (for example, in case of suicide)
   # this method checks that game still goes on. 
   # A game may end if:
   # - no more marine is on the map
@@ -219,12 +218,6 @@ module.exports = {
       for part in item.parts
         part.dead = true 
         part.life = 0
-    
-    # decreases actions
-    item.squad.actions-- unless item.moves is 0
-      
-    attacks = Math.max item.rcNum, item.ccNum
-    item.squad.actions -= attacks
 
     # removing last living marine on map
     Item.find {map: mapId, type: 'marine', dead:false}, (err, marines) ->
@@ -236,12 +229,19 @@ module.exports = {
         game.finished = true
         console.log "game #{game.name} is finished"
         rule.saved.push game
-        # check mission end
-        if _.isString item.squad
-          return Item.findCached [item.squad], (err, [squad]) =>
-            return callback err if err?
-            module.exports.checkMission squad, 'end', rule, null, callback
-        module.exports.checkMission item.squad, 'end', rule, null, callback
+        # removes also from free games list if necessary
+        Item.findCached [freeGamesId], (err, [freeGames]) =>
+          return callback err if err?
+          idx = freeGames.games.indexOf(game.id)
+          if idx isnt -1
+            freeGames.games.splice idx, 1
+            rule.saved.push freeGames
+          # check mission end
+          if _.isString item.squad
+            return Item.findCached [item.squad], (err, [squad]) =>
+              return callback err if err?
+              checkMission squad, 'end', null, rule, callback
+          checkMission item.squad, 'end', null, rule, callback
      
   # It's possible for a rule to modify or remove items and then to select them
   # from db with their unmodified values, leading to unconsitant results.
@@ -259,7 +259,7 @@ module.exports = {
         objects.splice i, 1
         last--
       else
-        saved = _.find rule.saved, (saved) -> saved?.id is obj?.id
+        saved = _.find rule.saved, (other) -> other?.id is obj?.id
         objects[i] = saved if saved?
         i++
   
@@ -303,6 +303,39 @@ module.exports = {
         )
       rule.saved.push game
       callback null
+      
+  # Enrich an existing action's effects, without adding a new action
+  #
+  # @param actor [Item] concerned actor, used to retrieve game. Must be or have a squad
+  # @param effects [Array<Array>] for each modified model, an array with the modified object at first index
+  # and an object containin modified attributes and their previous values at second index (must at least contain id).
+  # @param rPos [Number] reverse position to choose which action to enrich. Default to 0 (last action)
+  # @param callback [Function] end callback, invoked with: 
+  # @option callback err [Error] an Error object, or null it no error occurs
+  enrichAction: (actor, effects, rPos, callback) ->
+    # default values
+    if _.isFunction rPos
+      callback = rPos
+      rPos = 0
+      
+    # retrieve the corresponding game
+    module.exports.getGame actor, (err, game) ->
+      return callback err if err?
+    
+      last = game.prevActions[game.prevActions.length-(1+rPos)].effects
+      for effect in effects
+        # adds id if not already present
+        effect[1].id = effect[0].id
+        last.push cleanValues effect[1]
+        
+      last = game.nextActions[game.nextActions.length-(1+rPos)].effects
+      for effect in effects
+        newEffect = id: effect[0].id
+        # get values directly from modified model
+        newEffect[attr] = effect[0][attr] for attr of effect[1]
+        last.push cleanValues newEffect
+        
+      callback null
     
   # Indicates wether two items have the same position.
   # You need to select the right range of models
@@ -337,74 +370,35 @@ module.exports = {
       actor.log = actor.log.concat result
     else
       actor.log.push result
-    
-  # Check if a given squad has completed main or secondary mission.
-  # Invoked when an action has been performed. Supported actions are:
-  # - attack: elimination/destruction missions can be completed
-  # - move: race missions can be completed
-  # - endOfGame: highScore/mostKills/leastLosses missions can be completed
+   
+  # Common behaviour of all twist:
+  # - releases all squad from twist waiting
+  # - adds an event to game for replay and notification
+  # - send twist name to caller for notification
   #
-  # @param squad [Item] concerned squad
-  # @param action [String] performed action that determine how to interpret details
-  # @param rule [Rule] rule from which the mission is checked
-  # @param details [Object|Array] performed rule details (specific to rule)
-  # @param callback [Function] end callback, invoked with: 
-  # @option callback err [Error] an Error object, or null it no error occurs
-  checkMission: (squad, action, rule, details, callback) ->
-    winMain = (squad) =>
-      squad.game.mainCompleted = true
-      squad.game.mainWinner = squad.name
-      squad.points += 30
-      rule.saved.push squad
-                  
-    end = (game) =>
-      # specific case: at end of game, uncompleted mission goes to alien
-      return callback null unless action is 'end' and not game.mainCompleted
-      game.fetch (err, game) ->
-        for squad in game.squads when squad.isAlien
-          console.log "#{squad.name} has completed main mission be default !"
-          winMain squad
-          return callback null
-            
-    # get mission details
-    squad.fetch (err, squad) =>
-      return callback err if err
-      # mission already completed
-      return end squad.game if squad.game.mainCompleted
+  # @param twist [String] twist name applied
+  # @param game [Item] game concerned
+  # @param concerned [Item] squad concerned by this event
+  # @param effects [Array] twist effects to be stored in action history
+  # @param rule [Rule] rule used to store saved and removed objects
+  # @param callback [Function] called when the rule is applied, with an 
+  # optionnal error first argument and name of the applied twist as second
+  # @param stopWaiting [Boolean] release all squad from waiting. Default to true
+  useTwist: (twist, game, concerned, effects, rule, stopWaiting, callback) ->
+    # default values
+    if _.isFunction stopWaiting
+      callback = stopWaiting
+      stopWaiting = true
       
-      switch squad.mission.mainKind
-        when 'elimination'
-          # elimination can be completed if rule is assault or shoot
-          # details is an array of objects containing properties target and result
-          return end squad.game unless action is 'attack'
-          # target is specified in mission.details
-          expectation = squad.mission.mainExpectation
-          for {target, result} in details 
-            if target.kind is expectation.kind and result.dead
-              # target eliminated !
-              console.log "#{squad.name} has completed main mission by killing #{target.kind}"
-              winMain squad
-              break
-          end squad.game
-          
-        when 'highScore'
-          # highScore is determined at end. No details needed
-          return end squad.game unless action is 'end'
-          return squad.game.fetch (err, game) ->
-            return callback err if err?
-            max = -Infinity
-            winner = null
-            # get squad members
-            async.map game.squads, (candidate, next) =>
-              candidate.fetch next
-            , (err, squads) =>
-              # only living marines can win highscore
-              for candidate in squads when candidate.points > max and not candidate.isAlien
-                if _.any(candidate.members, (member) -> not member.dead)
-                  max = candidate.points
-                  winner = candidate
-              # and the mission is always won
-              console.log "#{winner.name} has completed main mission by highscore #{max}"
-              winMain winner
-              end winner.game
+    # release other squad from waiting
+    if stopWaiting
+      other.waitTwist = false for other in game.squads
+    
+    # add in history for replay and other players
+    effects.push module.exports.makeState game, 'events'
+    game.events.push 
+      name: concerned.name
+      kind: 'twist'
+      used: twist
+    module.exports.addAction 'twist', concerned, effects, rule, callback
 }

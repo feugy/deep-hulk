@@ -1,12 +1,13 @@
 <div class="select-equipment">
-  <div class="{{extraClass}} ng-class: selected[$index] ? 'selected' : '';"
-       data-ng-repeat="choice in equipments track by $index"
-       data-ng-click="toggle(choice.name, $index)"
-       data-ng-mouseover="onHover($event, choice.name)">
+  <div class="{{ctrl.scope.extraClass}} ng-class: ctrl.selected[$index] ? 'selected' : '';"
+       data-ng-repeat="choice in ctrl.scope.equipments track by $index"
+       data-ng-click="ctrl.toggle(choice.name, $index)"
+       data-ng-mouseover="ctrl.scope.onHover($event, choice.name)">
     <span>{{'labels.'+choice.name|i18n}}</span>
     <ng-select data-ng-if="choice.selectMember" 
-               data-items="members" 
-               data-get-text="getMemberName"
-               data-value="_selectedMembers[$index]"></ng-select>
+               data-items="ctrl.scope.members" 
+               data-get-text="ctrl.getMemberName"
+               data-value="ctrl.selectedMembers[$index]"
+               data-on-change="choice.chooseMember"></ng-select>
   </div>
 </div> 

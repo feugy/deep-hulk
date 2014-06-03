@@ -18,7 +18,7 @@ class OpenRule extends Rule
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (actor, door, context, callback) =>
     # inhibit if waiting for deployment or other squad
-    if actor.squad?.deployZone? or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
+    if actor.squad?.deployZone? or actor.squad?.waitTwist or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
       return callback null, null 
     return callback null, if actor.doorToOpen?.equals door then [] else null
       
@@ -68,6 +68,8 @@ class OpenRule extends Rule
       range = if isDreadnought then 2 else 1
       selectItemWithin actor.map.id, {x:actor.x-1, y:actor.y-1}, {x:actor.x+range, y:actor.y+range}, (err, items) =>
         return callback err if err?
+        # put actor and door into rule.saved to allow merge in detectBlipd
+        @saved.push actor, door
         # don't forget to take in account modified doors
         mergeChanges items, @
         

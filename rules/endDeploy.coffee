@@ -14,7 +14,7 @@ class EndDeployRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (player, squad, context, callback) =>
-    return callback null, null unless squad?.type?.id is 'squad' and squad?.isAlien and squad?.deployZone?
+    return callback null, null unless squad.type?.id is 'squad' and squad.isAlien and squad.deployZone? and not squad.waitTwist
     callback null, [
       name:'zone'
       type:'string'

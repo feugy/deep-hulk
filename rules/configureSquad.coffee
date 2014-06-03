@@ -92,8 +92,6 @@ class ConfigureSquadRule extends Rule
         member.moves = moveCapacities[weaponId]
         member.equipment = []
       
-      # init first actions number
-      squad.actions = squad.members.length * 2
       squad.equipment = []
       squad.revealBlips = 0
       squad.orders = if _.isArray params.orders then params.orders else [params.orders]

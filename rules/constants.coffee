@@ -84,6 +84,7 @@ module.exports = {
     blip: 5
     bolter: 6
     claws: 8
+    dreadnoughtBolter: 4
     flamer: 4
     gloveSword: 6
     heavyBolter: 6
@@ -91,7 +92,7 @@ module.exports = {
     pistolAxe: 6
     slugga: 8
     shoota: 6
-    dreadnoughtBolter: 4
+    trap: 0
     
   # store moves, armor and weapon capacities for aliens
   # use the same names as alien properties to allow quick copy during creation
@@ -142,7 +143,11 @@ module.exports = {
     genestealer:
       armor: 3
       weapons: ['claws']
-      points: 0
+    trap:
+      dead: true
+      weapons: ['smallLaser', 'missileLauncher']
+      x: 0
+      y: 0
       
   # possible equipment for marine squad
   equipments:
@@ -155,4 +160,18 @@ module.exports = {
     ultramarine: ['fireAtWill', 'goGoGo', 'toDeath', 'bySections']
     imperialfist: ['fireAtWill', 'goGoGo', 'bySections', 'heavyWeapon']
     bloodangel: ['fireAtWill', 'goGoGo', 'toDeath', 'photonGrenade']
+    
+  # List of possible twists
+  twists: [
+    'trappedCorridor'
+    'trappedCorridor'
+    'newOrder'
+    'combatPlan'
+    'mothershipCaptain'
+    'alienSpecialForces'
+    'generalAssault'
+    'mothershipDetector'
+	  'defectiveAndroids'
+    'psychoAttack'
+  ]
 }

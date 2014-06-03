@@ -23,7 +23,9 @@ define [
     
     # parent scope binding.
     scope: 
+      # applicable rule target, as returned by atlas.ruleService.resolve() in the target array
       rule: '='
+      # result parameters values: expect an object to be filled with parameters values
       values: '='
       
     # rendering linking function

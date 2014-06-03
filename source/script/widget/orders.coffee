@@ -61,15 +61,23 @@ define [
         scope.orderChosen?(@selected[0].name, @selected[0].memberId)
         scope.ctrl.isShown = false
         
+      scope.$watchCollection 'squad.orders', => @_reload()
+        
       scope.$watch 'squad', (value, old) =>
         @squad = value
         return unless value? and value isnt old
-        @orders = (name: order, selectMember: order is 'heavyWeapon' for order in @squad.orders)
-        @selected = []
-        # only members with heavy weapons can be ordered
-        @members = (marine for marine in @squad.members when not marine.dead and 
-          not marine.isCommander and 
-          _.any marine.weapons, (w) -> (w?.id or w) in ['flamer', 'autoCannon', 'missileLauncher'])
+        @_reload()
+        
+    # **private**
+    # Reload selectable orders
+    _reload: =>
+      return unless @squad?
+      @orders = (name: order, selectMember: order is 'heavyWeapon' for order in @squad.orders)
+      @selected = []
+      # only members with heavy weapons can be ordered
+      @members = (marine for marine in @squad.members when not marine.dead and 
+        not marine.isCommander and 
+        _.any marine.weapons, (w) -> (w?.id or w) in ['flamer', 'autoCannon', 'missileLauncher'])
     
     # Invoked o display details on an hovered order
     #

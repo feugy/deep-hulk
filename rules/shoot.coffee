@@ -7,7 +7,8 @@ Item = require 'hyperion/model/Item'
 ItemType = require 'hyperion/model/ItemType'
 {rollDices, selectItemWithin, sum, countPoints, 
 removeFromMap, addAction, hasSharedPosition, 
-damageDreadnought, logResult, checkMission, makeState} = require './common'
+damageDreadnought, logResult, makeState} = require './common'
+{checkMission} = require './missionUtils'
 {isTargetable, hasObstacle, tilesOnLine, untilWall} = require './visibility'
 {moveCapacities} = require './constants'
 
@@ -32,7 +33,7 @@ class ShootRule extends Rule
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (actor, target, context, callback) =>
     # inhibit if waiting for deployment or other squad
-    if actor.squad?.deployZone? or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
+    if actor.squad?.deployZone? or actor.squad?.waitTwist or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
       return callback null, null 
     # deny if actor cannot attack anymore, or if target isnt a field
     return callback null, false unless not actor.dead and actor.rcNum >= 1 and target?.mapId?
@@ -67,9 +68,9 @@ class ShootRule extends Rule
         
         # check that selected weapon as range combat
         weapon = actor.weapons[params.weaponIdx]
-        return callback 'closeCombatWeapon', null unless weapon?.rc?
+        return callback new Error 'closeCombatWeapon', null unless weapon?.rc?
         # check that this weapon was not already used
-        return callback 'alreadyUsed', null if params.weaponIdx in actor.usedWeapons
+        return callback new Error 'alreadyUsed', null if params.weaponIdx in actor.usedWeapons
         # now check visibility 
         isTargetable actor, target, params.weaponIdx, (err, reachable) =>
           return callback err, null if err?
@@ -85,7 +86,7 @@ class ShootRule extends Rule
             logResult actor, results
             addAction 'shoot', actor, effects, @, (err) =>
               return callback err if err?
-              checkMission actor.squad, 'attack', @, resultAndTargets, (err) =>
+              checkMission actor.squad, 'attack', resultAndTargets, @, (err) =>
                 callback err, results
      
           actor.squad.firstAction = false
@@ -96,7 +97,6 @@ class ShootRule extends Rule
           # consume an attack if all weapons were used, or equipmed with combined weapon (can only shoot once)
           if actor.usedWeapons.length is actor.weapons.length or actor.equipment? and 'combinedWeapon' in actor.equipment
             actor.usedWeapons = []
-            actor.squad.actions--
           actor.rcNum-- if actor.usedWeapons.length is 0
           
           # if consumming all range attacks and having by section order, then reduce moves
@@ -110,7 +110,6 @@ class ShootRule extends Rule
           # consume remaining moves if a move is in progress
           if 0 < actor.moves < moveCapacities[weapon.id]
             actor.moves = 0
-            actor.squad.actions--
             
           # roll dices, with re-roll if an equipment allows it
           dices = rollDices weapon.rc, _.any actor.equipment, (equip) -> equip in ['bionicEye', 'digitalWeapons', 'targeter']

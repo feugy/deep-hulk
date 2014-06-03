@@ -4,7 +4,8 @@ Rule = require 'hyperion/model/Rule'
 Field = require 'hyperion/model/Field'
 {rollDices, selectItemWithin, countPoints, sum, 
 distance, removeFromMap, addAction, hasSharedPosition, 
-damageDreadnought, logResult, checkMission, makeState} = require './common'
+damageDreadnought, logResult, makeState} = require './common'
+{checkMission} = require './missionUtils'
 {isTargetable} = require './visibility'
 {moveCapacities} = require './constants'
                   
@@ -56,7 +57,7 @@ class AssaultRule extends Rule
   # @option callback params [Array] empty parameter array, or null/undefined if rule does not apply
   canExecute: (actor, target, context, callback) =>
     # inhibit if waiting for deployment or other squad
-    if actor.squad?.deployZone? or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
+    if actor.squad?.deployZone? or actor.squad?.waitTwist or actor.squad?.activeSquad? and actor.squad.activeSquad isnt actor.squad.name
       return callback null, null 
     # deny if actor cannot attack anymore. 
     return callback null, null unless not actor.dead and actor.ccNum >= 1 and actor.weapons[0].cc?
@@ -121,12 +122,10 @@ class AssaultRule extends Rule
           # consume an attack if all weapons were used
           actor.rcNum-- unless actor.rcNum is 0 or actor.equipment? and 'toDeath' in actor.equipment
           actor.usedWeapons = []
-          actor.squad.actions--
           actor.squad.firstAction = false
           # consume remaining moves if a move is in progress
           if 0 < actor.moves < moveCapacities[actor.weapons[0].id]
             actor.moves = 0 
-            actor.squad.actions--
           # removes special equipment once used
           if actor.equipment? and 'toDeath' in actor.equipment
             actor.equipment.splice actor.equipment.indexOf('toDeath'), 1
@@ -191,7 +190,7 @@ class AssaultRule extends Rule
             
             countPoints winner, wounded, @, (err) => 
               return end err if err?
-              checkMission winner.squad, 'attack', @, [target: wounded, result:result], (err) =>
+              checkMission winner.squad, 'attack', [target: wounded, result:result], @, (err) =>
                 return end err if err?
                 removeFromMap wounded, @, (err) =>
                   end err, [resultActor, resultTarget]

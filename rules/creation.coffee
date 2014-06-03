@@ -6,7 +6,7 @@ ItemType = require 'hyperion/model/ItemType'
 Field = require 'hyperion/model/Field'
 FieldType = require 'hyperion/model/FieldType'
 {resetHelpFlags} = require './common'
-{maxGames, squadImages, weaponImages, alienCapacities, moveCapacities, freeGamesId} = require './constants'
+{maxGames, squadImages, weaponImages, alienCapacities, moveCapacities, twists, freeGamesId} = require './constants'
 
 # Game creation: initiate a game with its mission
 class CreationRule extends Rule
@@ -23,7 +23,7 @@ class CreationRule extends Rule
   canExecute: (actor, target, context, callback) =>
     return callback null, null unless actor?._className is 'Player' and actor?.id is target?.id
     missions = ['mission-2', 'mission-3'];
-    missions.push 'mission-0' if context.player?.isAdmin
+    missions.push 'mission-0' if context.player.isAdmin
     callback null, [
       {name: 'gameName', type: 'string'}
       {name: 'mission', type: 'string', within: missions}
@@ -73,6 +73,7 @@ class CreationRule extends Rule
           type: Game
           players: players
           mission: mission
+          twists: if context.player.isAdmin then twists else []
           singleActive: params.singleActive
           squads: (
             # creates squads
@@ -86,6 +87,7 @@ class CreationRule extends Rule
                 isAlien: name is 'alien'
                 mission: mission
                 members: []
+                turnEnded: true # set to true to allow play while not all squads are deployed
               }
               # appart the alien squad
               if name is 'alien'
@@ -176,7 +178,11 @@ class CreationRule extends Rule
           squad: squad
           isSupport: reinforcement
         @saved.push alien
-        squad.members.push alien
+        
+        if kind is 'trap'
+          squad.trap = alien
+        else
+          squad.members.push alien
     console.log "aliens created"
     
   # **private**

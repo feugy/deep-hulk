@@ -94,30 +94,27 @@ asideHeight = 160px
         flex-grow 1
         padding 0 0.5em
 
-    .squad 
+    .squad .blocked
+      display none
+
+    .squad.disabled .blocked
       margin = 5px
-
-      .replay
-        display none
-
-      .replay.enabled
-        position absolute
-        display flex
-        align-items flex-end
-        top margin + 10px
-        left margin
-        bottom margin
-        right margin
-        border-radius 5px
-        z-index 1
-        background mapLoadingBackground
-        
-        > *
-          flex 1
-          text-align center
-          padding-bottom 1em
-          font-family headingFont
-          font-size headingSize
+      position absolute
+      display flex
+      align-items center
+      justify-content center
+      top margin + 10px
+      left margin
+      bottom margin
+      right margin
+      border-radius 5px
+      z-index 1
+      background mapLoadingBackground
+      
+      > *
+        font-family headingFont
+        font-size headingSize
+        text-shadow headingShadow
 
   aside.marine
     background url(../image/board-marine-commands.png)
@@ -141,12 +138,6 @@ asideHeight = 160px
     background url(../image/board-alien-commands.png)
     
     blipSize = 100px
-    
-    .squad .replay.enabled
-      top 0
-      left 0
-      bottom 0
-      right 0
 
     .blips
       top pad
@@ -170,6 +161,14 @@ asideHeight = 160px
       .character-details
         margin 2px 0 4px 6px
 
+      .blocked
+        top 0
+        left 0
+        bottom 0
+        right 0
+
+    .squad.disabled
+      overflow hidden
   .scores
     position absolute
     top 0
@@ -213,3 +212,10 @@ asideHeight = 160px
   .select-equipment
     flex-flow column nowrap
     align-items flex-start
+
+.modal-dialog.choose-order
+  
+  .rule-params
+    margin-top 15px
+    > .param
+      margin-top 5px
