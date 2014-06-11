@@ -6,7 +6,7 @@ define [
   'util/common'
   'text!template/choose_dialog.html'
   'text!template/choose_orders.html'
-], (_, $, {getInstanceImage, parseError}, chooseDialogTpl, chooseOrderTpl) ->
+], (_, $, {getInstanceImage, parseError, hexToRgb}, chooseDialogTpl, chooseOrderTpl) ->
     
   # two mode controller: displays squad configuration (for marines, before starting game)
   # or displays the game board (for marines and alien)
@@ -398,7 +398,9 @@ define [
     # **private**
     # If first action and remaining orders, display dialog box to trigger them.
     _updateChosenOrders: =>
-      @scope.showOrders = @scope.squad.firstAction and @scope.squad.orders.length > 0 and not @scope.inhibited
+      return unless @scope.squad?
+      @scope.showOrders = @scope.squad.firstAction and @scope.squad.orders.length > 0 and 
+        @scope.squad.twist isnt 'defectiveCommunications' and not @scope.inhibited
       @_askForHelp 'order' if @scope.showOrders
       
     # **private**
@@ -424,21 +426,50 @@ define [
           # no parameters ? apply immediately
           return exec {} unless spec.params?.length > 0
           @scope.$apply =>
+            targetSpec = _.findWhere spec.params, name: 'target'
             # get parameters: alien select from map
-            if squad.isAlien and not (squad.twist in ['newOrder'])
+            if squad.isAlien and targetSpec?
               # display indication to give instruction
               if conf.texts[squad.twist]?
                 @notify kind: 'info', content: conf.texts[squad.twist]
+                
+              # for multiple selection, selected targets
+              targets = []
+              {r, g, b, a} = hexToRgb conf.colors.selected or '#FFFF'
+              selectedColor = "rgba(#{r}, #{g}, #{b}, #{a})"
+              
               # use display zone to select target
-              target = _.findWhere spec.params, name: 'target'
-              if target?
-                @scope.zone =
-                  tiles: target.within
-                  kind: 'twist'
-                  onSelect: (selected) => @scope.$apply =>
+              @scope.zone =
+                tiles: (x: candidate.x, y: candidate.y for candidate in targetSpec.within)
+                kind: 'twist'
+                onSelect: (selected) => @scope.$apply =>
+                  # possibly toggle previously selected target
+                  added = not _.findWhere(targets, x:selected.x, y:selected.y)?
+                  if added
+                    targets.push selected
+                  else
+                    targets = _.reject targets, (target) -> target.x is selected.x and target.y is selected.y
+                    
+                  # adapt colors in zone for marking the selected targets
+                  for tile, i in @scope.zone.tiles when tile.x is selected.x and tile.y is selected.y
+                    @scope.zone.tiles.splice i, 1
+                    @scope.zone.tiles.push
+                      x: tile.x
+                      y: tile.y
+                      color: if added then selectedColor else null
+                    break
+                  
+                  # when we reach enough targets
+                  if targetSpec.numMin is targets.length
                     # execute on first item selected
                     @scope.zone = null
-                    exec target: selected.items[0].id
+                    acceptable = _.pluck targetSpec.within, 'id'
+                    items = []
+                    for target in targets
+                      for item in target.items when item.id in acceptable
+                        items.push item.id
+                        break
+                    return exec target: items
             else
               # for other case, use a modal dialog to choose parameters
               outer = rule: spec, params: {}
@@ -521,12 +552,15 @@ define [
                 # during forward replay, use inner storage instead of game model
                 storage = if @atlas.replayPos? and @_gameEvents.length > @scope.game.events.length then @_gameEvents else @scope.game.events
                 # try to display notification when other squad uses equipment or orders
+                # TODO we may have more than one event ?!
                 event = storage[storage.length-1]
                 if event? and event.id isnt @scope.squad.id
                   # Display notification
                   content = conf.texts.notifs[if event.name is @scope.squad.name then event.used else "#{event.used}Used"]
                   return unless content?
-                  @notify kind: 'info', content: @interpolate(content)(target: @filter('i18n') "labels.#{event.name}")
+                  args = event.args or {}
+                  args.target = @filter('i18n') "labels.#{event.name}"
+                  @notify kind: 'info', content: @interpolate(content) args
                 
                   # display secondary mission text
                   if event?.used is 'mothershipCaptain'

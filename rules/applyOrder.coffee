@@ -17,7 +17,7 @@ class ApplyOrderRule extends Rule
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (squad, marine, context, callback) =>
     # inhibit if waiting for deployment or other squad
-    unless squad.type.id is 'squad' and marine.type?.id is 'marine' and 
+    unless squad.type.id is 'squad' and marine.type?.id is 'marine' and not squad.twist is 'defectiveCommunications' and
         not squad.waitTwist and marine in squad.members and squad.orders?.length > 0 and squad.firstAction
       return callback null, null 
     callback null, [

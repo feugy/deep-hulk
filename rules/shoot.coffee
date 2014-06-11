@@ -84,8 +84,17 @@ class ShootRule extends Rule
             return callback err if err?
             results = _.map resultAndTargets, (o) -> o.result
             logResult actor, results
+            # twist specific case !
+            if actor.twist is 'mekaniakOrk'
+              # mekaniak is victim from it's own weapon
+              effects.push makeState actor, 'life', 'dead'
+              # no need to wait for removeFromMap() end to complete rule execution
+              removeFromMap actor, @
+              
+            # add history entry
             addAction 'shoot', actor, effects, @, (err) =>
               return callback err if err?
+              # missions may have been fulfilled !
               checkMission actor.squad, 'attack', resultAndTargets, @, (err) =>
                 callback err, results
      
@@ -117,7 +126,7 @@ class ShootRule extends Rule
           
           # depending on the weapon
           switch weapon.id
-            when 'missileLauncher'
+            when 'missileLauncher', 'suicideAndroid'
               # tiles near target are also hit
               selectItemWithin actor.map.id, {x:target.x-1, y:target.y-1}, {x:target.x+1, y:target.y+1}, (err, targets) =>
                 return end err if err?
@@ -133,7 +142,7 @@ class ShootRule extends Rule
                     return next() if not hasTargetType(t) or hasObstacle(target, t, targets)?
                     # edge case: target is shooter. Use modified actor instead fetched value
                     t = actor if t.id is actor.id
-                    damages = if t.x is target.x and t.y is target.y then center else around 
+                    damages = if weapon.id is 'suicideAndroid' or t.x is target.x and t.y is target.y then center else around 
                     # for another edge case, specify center position and damages
                     @_applyDamage actor, t, damages, effects, hitten, (err, result) =>
                       if result?

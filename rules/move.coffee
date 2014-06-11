@@ -2,8 +2,9 @@ _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 Field = require 'hyperion/model/Field'
+shoot = require './shoot'
 {moveCapacities} = require './constants'
-{distance, selectItemWithin, removeFromMap, addAction, makeState} = require './common'
+{distance, selectItemWithin, removeFromMap, addAction, enrichAction, makeState} = require './common'
 {isReachable, detectBlips, findNextDoor, isDreadnoughtUnderDoor} = require './visibility'
 
 # Map movement
@@ -123,7 +124,25 @@ class MoveRule extends Rule
           detectBlips actor, @, effects, (err, revealed) =>
             return callback err if err?
             return callback() if targetType is base
-            addAction 'move', actor, effects, @, callback
+            
+            # apply twist specificities
+            unless actor.twist is 'suicideAndroid' and actor.moves is 0
+             return addAction 'move', actor, effects, @, callback
+            
+            # make an attack that will hit neighors, using the right weapon
+            Item.findCached ['suicideAndroid'], (err, weapons) =>
+              return callback err if err?
+              actor.weapons = weapons
+              shoot.execute actor, actor, {weaponIdx: 0}, {}, (err, results) =>
+                return callback err if err?
+                @saved = @saved.concat shoot.saved
+                @removed = @removed.concat shoot.removed
+                # remove the suicided android
+                effects[0][1].dead = false
+                effects[0][1].life = 1
+                removeFromMap actor, @, (err) =>
+                  # enrich effects saved by shoot to add move's own effect
+                  enrichAction actor, effects, callback
             
         # at last reveal new aliens
         processReveal()

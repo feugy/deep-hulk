@@ -82,13 +82,13 @@ assaultRotation = 60deg
       .shoot
         width 60px
         height 13px
-        background-image url(../image/shoot.png)
+        background-image url('../image/shoot.png')
         background-size 100% 100%
 
       .assault
         width 23px
         height 24px
-        background-image url(../image/claws.png)
+        background-image url('../image/claws.png')
         background-size 100% 100%
 
     .hover
@@ -188,7 +188,7 @@ assaultRotation = 60deg
     height innerActionSize
     pointer-events auto
     background-repeat no-repeat
-    background-image url(../image/commands.png)
+    background-image url('../image/commands.png')
     background-position -2*actionSize -3*innerActionSize
     
     > span
@@ -196,7 +196,7 @@ assaultRotation = 60deg
       display block
       width 100%
       height innerActionSize
-      background-image url(../image/commands.png)
+      background-image url('../image/commands.png')
       background-repeat no-repeat
 
     i 
@@ -251,7 +251,7 @@ assaultRotation = 60deg
 
 
 .cursor.rear
-  background-image url(../image/cursor.png)
+  background-image url('../image/cursor.png')
   background-size 100% auto
   background-position 50% 100%
   z-index 0
@@ -317,11 +317,11 @@ assaultRotation = 60deg
       max-width 110px
 
     .equip
-      span+span
+      span + span
         display block
-      span+span::before
+      span + span::before
         content '('
-      span+span::after
+      span + span::after
         content ')'
 
 //------------------------------------------------------------------------------
@@ -337,7 +337,7 @@ assaultRotation = 60deg
   color characterDetailsColor
   cursor pointer
   position relative
-  background-image url(../image/marine-details.png)
+  background-image url('../image/marine-details.png')
   background-size 100% 100%
 
   > *
@@ -358,7 +358,7 @@ assaultRotation = 60deg
   .weapon
     bottom 2px
     left 2px
-    background-image url(../image/weapon-wireframes.png)
+    background-image url('../image/weapon-wireframes.png')
     background-size 200px 330px
     width 100px
 
@@ -417,7 +417,7 @@ for selector, size in weaponSizes
   width 75px
   height 75px
   margin 8px
-  background-image url(../image/alien-details.png)
+  background-image url('../image/alien-details.png')
 
   padd = 4px
   .attack, .move
@@ -440,7 +440,7 @@ for selector, size in weaponSizes
     left 12.5px
     width 50px
     height 50px
-    background-image url(../image/alien-wireframes.png)
+    background-image url('../image/alien-wireframes.png')
     background-size 100px 450px
 
 alienSizes = {
@@ -504,7 +504,7 @@ blipSize = 50px
   width blipSize
   height blipSize
   background-size 100% 100%
-  background-image url(/images/alien-type.png)
+  background-image url('/images/alien-type.png')
   margin-bottom -4px
 
 .deployable-blips.disabled
@@ -537,7 +537,7 @@ blipSize = 50px
   box-sizing border-box
   border 1px solid transparent
   border 1px solid transparent
-  border-image-source url(../image/logs.png)
+  border-image-source url('../image/logs.png')
   border-image-slice 100% 50% 0 49%
   border-image-width 60px 50% 0
   border-image-outset 5px 10px 0
@@ -777,7 +777,7 @@ blipSize = 50px
 
     color alertColor
     padding 0.5em
-    background url(../image/alert-background.png) repeat
+    background url('../image/alert-background.png') repeat
     box-shadow 0 0 6px 1px alertColor inset
     border 1px solid alertColor
     border-radius 5px

@@ -2,7 +2,7 @@ _ = require 'underscore'
 async = require 'async'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
-{moveCapacities} = require './constants'
+{moveCapacities, alienCapacities} = require './constants'
 {hasSharedPosition, addAction, makeState} = require './common'
 
 # When player has finished its turn, may trigger another turn
@@ -93,6 +93,9 @@ class EndOfTurnRule extends Rule
               squad.twist = twist
               # reset number of blip to reinforce
               squad.supportBlips = 6 
+            else
+              # reset pending marine twist
+              squad.twist = null
               
             # wait for twist resolution
             squad.waitTwist = waitTwist
@@ -113,6 +116,8 @@ class EndOfTurnRule extends Rule
               member.immune = false
               if squad.isAlien
                 member.moves = moveCapacities[if member.revealed then weapon else 'blip']
+                member.weapons = alienCapacities.gretchin.weapons if member.twist is 'grenadierGretchin'
+                member.twist = null
                 # get alien moves from their kind if revealed, or 5 for blips
                 unless member.revealed
                   # blip specific case: no attacks, just moves

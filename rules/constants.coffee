@@ -163,6 +163,16 @@ module.exports = {
     
   # List of possible twists
   twists: [
+    'grenadierGretchin'
+    'amok'
+    'alienElite'
+    'bewitchment'
+    'jammedWeapon'
+    'depletedMunitions'
+    'mine'
+    'defectiveEquipment'
+    'defectiveCommunications'
+    'operationsReport'
     'trappedCorridor'
     'trappedCorridor'
     'newOrder'

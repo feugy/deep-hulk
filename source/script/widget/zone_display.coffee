@@ -129,18 +129,20 @@ define [
     constructor: (@scope, element, @atlas) ->
       @$el = $(element)                     
       # show menu, highlighted tiles
-      @scope.$watch 'src', @_highlight
-      @_highlight @scope.src
+      @scope.$watch 'src',  (value, old) =>
+        return if _.isEqual value, old
+        @_highlight()
+      @scope.$watchCollection 'src.tiles', @_highlight
+      @_highlight()
     
     # **private**
     # Highlight selected tiles
-    _highlight: (value, old) =>
-      return if _.isEqual value, old
+    _highlight: =>
       # clear previous highligts
       @$el[0].width = @$el[0].width
       ctx = @$el[0].getContext '2d'
       
-      return unless value?
+      return unless @scope.src?
       # get renderer from parent
       renderer = @scope.$parent.renderer
       
@@ -150,12 +152,12 @@ define [
       
       isDreadnought = @scope.src.origin?.kind is 'dreadnought' and @scope.src.origin?.revealed 
       # make a copy to allow drawing manipulations without breacking changes detection
-      tiles = @scope.src.tiles?.concat() or []
-      switch @scope.src?.kind
+      tiles = @scope.src.tiles.concat() or []
+      switch @scope.src.kind
       
         when 'deploy', 'twist'
           # for deploy, fill each tiles with same color
-          renderer.drawTile ctx, tile, color for tile in tiles
+          renderer.drawTile ctx, tile, tile.color or color for tile in tiles
             
         when 'move', 'assault'
           # move and assault will display a gradient centered on origin (character position)

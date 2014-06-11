@@ -198,14 +198,15 @@ module.exports = {
     
   # When a marine or alien character is removed from map (by killing it or when quitting)
   # this method checks that game still goes on. 
-  # A game may end if:
-  # - no more marine is on the map
+  # A game may end if no more marine is on the map
+  #
+  # It's possible to ignore callback, if you are absolutely certain that a marine is still living on map.
   #
   # @param item [Item] the removed item
   # @param rule [Rule] the concerned rule, for saves
   # @param callback [Function] end callback, invoked with: 
   # @option callback err [Error] an Error object, or null it no error occurs
-  removeFromMap: (item, rule, callback) ->     
+  removeFromMap: (item, rule, callback = ->) ->     
     mapId = item?.map?.id
     unless mapId?
       return callback new Error "Cannot remove item #{item?.id} (#{item?.type?.id}) from map because it doesn't have one"
@@ -381,14 +382,19 @@ module.exports = {
   # @param concerned [Item] squad concerned by this event
   # @param effects [Array] twist effects to be stored in action history
   # @param rule [Rule] rule used to store saved and removed objects
+  # @param stopWaiting [Boolean] release all squad from waiting. Default to true
+  # @param args [Object] twist message extra arguments (name is used to refer to twist target). Default to undefined
   # @param callback [Function] called when the rule is applied, with an 
   # optionnal error first argument and name of the applied twist as second
-  # @param stopWaiting [Boolean] release all squad from waiting. Default to true
-  useTwist: (twist, game, concerned, effects, rule, stopWaiting, callback) ->
+  useTwist: (twist, game, concerned, effects, rule, stopWaiting, args, callback) ->
     # default values
     if _.isFunction stopWaiting
       callback = stopWaiting
+      args = undefined
       stopWaiting = true
+    else if _.isFunction args
+      callback = args
+      args = undefined
       
     # release other squad from waiting
     if stopWaiting
@@ -400,5 +406,6 @@ module.exports = {
       name: concerned.name
       kind: 'twist'
       used: twist
+      args: args
     module.exports.addAction 'twist', concerned, effects, rule, callback
 }

@@ -56,6 +56,7 @@ define [
       @scope.squadImage = "#{conf.imagesUrl}squad-#{@scope.src.squad.imageNum}.png"
       @scope.ccDamages = ""
       @scope.rcDamages = []
+      @scope.attacks = Math.max @scope.src.rcNum, @scope.src.ccNum
       @scope.armor = if _.contains(@scope.src?.equipment, 'forceField') then @scope.src?.armor-1 else @scope.src?.armor
       @scope.canInspect = @scope.squad.revealBlips > 0
       @scope.inspect = @_onInspect

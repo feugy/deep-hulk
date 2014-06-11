@@ -47,6 +47,7 @@ define ['jquery', 'util/common'], ($, {parseError}) ->
     urls: 
       manual: "#{conf.apiBaseUrl}/auth/login"
       twitter: "#{conf.apiBaseUrl}/auth/twitter"
+      github: "#{conf.apiBaseUrl}/auth/github"
       google: "#{conf.apiBaseUrl}/auth/google"
     
     # displayed error

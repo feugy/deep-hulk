@@ -269,7 +269,7 @@ module.exports = {
       blip.parts = []
       # get dreadnought nearest walls and doors
       blocks = (
-        for item in walls when (item.type.id is 'wall' or item.type.id is 'door') and 
+        for item in walls when (item.type.id is 'wall' or (item.type.id is 'door' and item.closed)) and 
             blip.x-2 <= item.x <= blip.x+2 and 
             blip.y-2 <= item.y <= blip.y+2
           item

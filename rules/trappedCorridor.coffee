@@ -6,7 +6,8 @@ shoot = require './shoot'
 {makeState, enrichAction, useTwist} = require './common'
 {orders} = require './constants'
 
-# "trappedCorridor" twist rule: shoot on a marine in a corridor
+# "trappedCorridor and mine" twist rule: shoot on a marine in a corridor or 
+# fire with missile launcher on a marine (not a sergent)
 class TrappedCorridorRule extends Rule
 
   # Always appliable on alien squad if it has the relevant twist
@@ -19,13 +20,26 @@ class TrappedCorridorRule extends Rule
   # @option callback params [Array] array of awaited parameter (may be empty), or null/undefined if rule does not apply
   canExecute: (game, squad, context, callback) =>
     # inhibit if waiting for deployment or other squad
-    return callback null, null unless squad.isAlien and squad.waitTwist and squad.twist is 'trappedCorridor'
+    return callback null, null unless squad.isAlien and squad.waitTwist and squad.twist in ['trappedCorridor', 'mine']
     
     # select living marines on the map
     Item.where('map', squad.map.id).where('type', 'marine')
         .where('dead', false).exec (err, marines) =>
       return callback err if err?
+      params = []
+        
+      # mine can be anywhere
+      if squad.twist is 'mine'
+        # only keeps marines
+        candidates = _.where marines, isCommander: false
+        if candidates.length > 0
+          params.push
+            name: 'target'
+            type: 'object'
+            within: candidates
+        return callback null, params
       
+      # trappedCorridor is only in corridors
       [unused, lowX, lowY, upX, upY] = game.mapDimensions.match /^(.*):(.*) (.*):(.*)$/
       # select all fields
       Field.where('mapId', squad.map.id)
@@ -37,7 +51,6 @@ class TrappedCorridorRule extends Rule
         candidates = _.filter marines, (marine) ->
           _.findWhere(fields, {x: marine.x, y:marine.y})?.typeId is 'corridor'
 
-        params = []
         if candidates.length > 0
           params.push
             name: 'target'
@@ -76,7 +89,9 @@ class TrappedCorridorRule extends Rule
         # performs a shoot with this actor
         shoot.saved = []
         shoot.removed = []
-        shoot.execute trap, target, {weaponIdx:0}, {}, (err, results) =>
+        # use missile launcher for mine, laser for trapped corridor
+        weaponIdx = if twist is 'mine' then 1 else 0
+        shoot.execute trap, target, {weaponIdx: weaponIdx}, {}, (err, results) =>
           return callback err if err?
           @saved = @saved.concat shoot.saved
           @removed = @removed.concat shoot.removed

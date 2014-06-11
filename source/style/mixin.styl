@@ -28,9 +28,9 @@ box-sizing()
 
 user-select()
   vendor-prefix('user-select', arguments)
-
+"
 cursor(value)
-  cursor s('url(../image/mouse-%s.png)', value) 7 1, none
+  cursor s("url('../image/mouse-%s.png')", value) 7 1, none
 
 selection()
   ::-moz-selection
@@ -48,7 +48,7 @@ applyAlertSkin()
   color alertColor
   text-shadow 1px 1px 0 black
   padding 1em
-  background url(../image/alert-background.png) repeat
+  background url('../image/alert-background.png') repeat
   box-shadow 0 0 6px 1px alertColor inset
   border 1px solid alertColor
   border-radius 5px
