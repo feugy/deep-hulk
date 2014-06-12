@@ -37,8 +37,8 @@ class AlienBoosterRule extends Rule
   # for alienElite, double moves, rcNum and ccNum. 
   # for amok, double rcNum.
   #
-  # @param actor [Item] the concerned actor
-  # @param target [Item] the concerned target
+  # @param game [Item] the concerned game
+  # @param squad [Item] the concerned alien squad
   # @param params [Object] associative array (may be empty) of awaited parametes, specified by resolve.
   # @param context [Object] extra information on execution context
   # @param callback [Function] called when the rule is applied, with one arguments:

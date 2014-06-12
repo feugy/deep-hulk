@@ -57,6 +57,16 @@ define [
     # Stores game event to allow notification during replay
     _gameEvents: []
     
+    # **private**
+    # Current twist rule and parameters: 
+    # - ruleName is used to execute given rule
+    # - rule is parameters spec as returned by atlas.ruleService.resolve()
+    # - params are parameters values
+    _twistParams: 
+      ruleName: null
+      rule: null
+      params: {}
+    
     # Controller constructor: bind methods and attributes to current scope
     #
     # @param scope [Object] Angular current scope
@@ -69,6 +79,10 @@ define [
     constructor: (@scope, @location, @dialog, @atlas, rootScope, @filter, @interpolate) ->
       @_applicableRules = {}
       @_currentZone = null
+      @_twist = 
+        ruleName: null
+        rule: null
+        params: {}
       @scope.inhibited = false
       @scope.inhibitEndTurn = false
       @scope.zoom = 1
@@ -296,7 +310,7 @@ define [
           @_updateInhibition()
           @_onActiveSquadChange()
           @_updateChosenOrders()
-          @_playTwist()
+          @_displayTwistParams()
             
           # blips deployment, blip displayal
           if @scope.squad?.deployZone?
@@ -406,7 +420,8 @@ define [
     # **private**
     # Play affected twist, by choosing possible parameters.
     # Mostly appliable for alien squad, but may apply to marine squad also (choose another order)
-    _playTwist: =>
+    # Ineffective if squad is not waiting for a twist
+    _displayTwistParams: =>
       squad = @scope.squad
       return unless squad.waitTwist and squad.twist?
       
@@ -416,18 +431,17 @@ define [
         return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?   
         # get first rule and its single target (which is current squad)
         for rule, [spec] of result
+          @_twist = 
+            ruleName: rule
+            rule: spec
+            params: {}
           
-          exec = (params) =>
-            @atlas.ruleService.execute rule, @scope.game, squad, params, (err, message) =>
-              return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?  
-              if message and conf.texts.notifs[message]
-                @notify kind: 'info', content: @interpolate(conf.texts.notifs[message]) {}
-              
           # no parameters ? apply immediately
-          return exec {} unless spec.params?.length > 0
-          @scope.$apply =>
+          return @_playTwist() unless spec.params?.length > 0
+          return @scope.$apply =>
             targetSpec = _.findWhere spec.params, name: 'target'
-            # get parameters: alien select from map
+            
+            # get parameters: select target within candidates by clicking on map
             if squad.isAlien and targetSpec?
               # display indication to give instruction
               if conf.texts[squad.twist]?
@@ -437,50 +451,76 @@ define [
               targets = []
               {r, g, b, a} = hexToRgb conf.colors.selected or '#FFFF'
               selectedColor = "rgba(#{r}, #{g}, #{b}, #{a})"
-              
-              # use display zone to select target
-              @scope.zone =
-                tiles: (x: candidate.x, y: candidate.y for candidate in targetSpec.within)
-                kind: 'twist'
-                onSelect: (selected) => @scope.$apply =>
-                  # possibly toggle previously selected target
-                  added = not _.findWhere(targets, x:selected.x, y:selected.y)?
-                  if added
-                    targets.push selected
-                  else
-                    targets = _.reject targets, (target) -> target.x is selected.x and target.y is selected.y
+             
+              #  move by drag'n drop candidates on map
+              if squad.twist is 'redeployment'
+                # use display zone to selectable targets
+                @scope.deployScope = 'deployBlip'
+                @atlas.ruleService.execute 'deployZone', @atlas.player, @scope.squad, {}, (err, zone) => 
+                  @scope.$apply =>
+                    @notify kind: 'error', content: parseError err if err?
+                    @scope.zone = 
+                      tiles: zone
+                      kind: 'deploy'
+              else
+                # use display zone to selectable targets
+                @scope.zone =
+                  tiles: (x: candidate.x, y: candidate.y for candidate in targetSpec.within)
+                  kind: 'twist'
+                  onSelect: (selected) => @scope.$apply =>
+                    # possibly toggle previously selected target
+                    added = not _.findWhere(targets, x:selected.x, y:selected.y)?
+                    if added
+                      targets.push selected
+                    else
+                      targets = _.reject targets, (target) -> target.x is selected.x and target.y is selected.y
+                      
+                    # adapt colors in zone for marking the selected targets
+                    for tile, i in @scope.zone.tiles when tile.x is selected.x and tile.y is selected.y
+                      @scope.zone.tiles.splice i, 1
+                      @scope.zone.tiles.push
+                        x: tile.x
+                        y: tile.y
+                        color: if added then selectedColor else null
+                      break
                     
-                  # adapt colors in zone for marking the selected targets
-                  for tile, i in @scope.zone.tiles when tile.x is selected.x and tile.y is selected.y
-                    @scope.zone.tiles.splice i, 1
-                    @scope.zone.tiles.push
-                      x: tile.x
-                      y: tile.y
-                      color: if added then selectedColor else null
-                    break
-                  
-                  # when we reach enough targets
-                  if targetSpec.numMin is targets.length
-                    # execute on first item selected
-                    @scope.zone = null
-                    acceptable = _.pluck targetSpec.within, 'id'
-                    items = []
-                    for target in targets
-                      for item in target.items when item.id in acceptable
-                        items.push item.id
-                        break
-                    return exec target: items
+                    # when we reach maximum targets
+                    if targetSpec.numMax is targets.length
+                      # execute on first item selected
+                      acceptable = _.pluck targetSpec.within, 'id'
+                      @_twist.params.target = []
+                      for target in targets
+                        for item in target.items when item.id in acceptable
+                          @_twist.params.target.push item.id
+                          break
+                      @_playTwist()
             else
               # for other case, use a modal dialog to choose parameters
-              outer = rule: spec, params: {}
               # set a default value to avoid empty parameters
               for param in spec.params when param.within?
-                outer.params[param.name] = param.within[0]
+                @_twist.params[param.name] = param.within[0]
               @dialog.messageBox(conf.titles.twist, conf.texts[squad.twist+(if squad.isAlien then 'Alien' else '')], 
-                  [label: conf.buttons.ok], chooseOrderTpl, outer).open().then () =>
+                  [label: conf.buttons.ok], chooseOrderTpl, @_twist).open().then () =>
                 # and execute rule
-                exec outer.params
+                @_playTwist()
       
+    # **private**
+    # Send twist parameters to server to resume game.
+    # Use _twist values to execute rule
+    _playTwist: (params) =>
+      return unless @_twist.ruleName
+      # execute twist on server
+      @atlas.ruleService.execute @_twist.ruleName, @scope.game, @scope.squad, @_twist.params, (err, message) =>
+        return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?  
+        @_twist = 
+          ruleName: null
+          rule: null
+          params: {}
+        @scope.deployScope = null
+        @scope.zone = null
+        if message and conf.texts.notifs[message]
+          @notify kind: 'info', content: @interpolate(conf.texts.notifs[message]) {}
+          
     # **private**
     # Update action zone depending on new active rule
     #
@@ -536,7 +576,7 @@ define [
               if 'firstAction' in changes
                 @_updateChosenOrders()
               if 'waitTwist' in changes
-                @_playTwist()
+                @_displayTwistParams()
                 unless @scope.squad.waitTwist
                   # turn has changed, ans twist is finished
                   @notify kind: 'info', content: conf.texts.notifs.newTurn
@@ -720,6 +760,10 @@ define [
     # **private**
     # After a model confirmation, trigger the blip deployement end
     _onEndDeploy: =>
+      # redeployment twist 
+      return @_playTwist() if @_twist?.ruleName
+      
+      # normal deployment
       return if @scope.inhibited or @_currentZone is null
       @dialog.messageBox(conf.titles.confirmDeploy, conf.texts.confirmEndDeploy, [
         {label: conf.buttons.yes, result: true}
@@ -733,28 +777,46 @@ define [
     
     # **private**
     # When a blip has been dropped into the map, randomly affect an available member to this position
+    # If a twist is in progress, store new position for the blip and awaits to have all needed targets
     #
     # @param coord [Object] x and y coordinates of the deployed blip
     # @param model [Object] if set, redeploy an existing blip
     _onBlipDeployed: (coord, model) =>
-      if model?
-        # reuse an existing blip
-        _.extend coord, 
-          zone: @_currentZone
-          rank: @scope.squad.members.indexOf model
+      if @_twist?.ruleName
+        # redeployment twist        
+        @_twist.params = {target: [], x: [], y: []} unless @_twist.params.target?
+        # was model already moved ?
+        i = @_twist.params.target.length
+        for moved, j in @_twist.params.target when moved is model.id
+          i = j
+          break
+        @_twist.params.target[i] = model.id
+        @_twist.params.x[i] = coord.x
+        @_twist.params.y[i] = coord.y
+        # simulate server update for this blip
+        model.x = coord.x
+        model.y = coord.y
+        @scope.emit 'modelChanged', 'update', model, ['x', 'y']
       else
-        # randomly choose one of the deployable blip: 
-        # we must send its rank into the squad.members array that also contains deployed blips
-        blipIdx = (i for member, i in @scope.squad.members when member?.map is null and not member?.isSupport)
-        return unless blipIdx.length > 0
-        _.extend coord, 
-          zone: @_currentZone
-          rank: blipIdx[_.random 0, blipIdx.length-1]
-      # trigger the relevant rule
-      @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) =>
-        # displays deployement errors
-        @_askForHelp 'deploy'
-        return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
+        # normal deployment
+        if model?
+          # reuse an existing blip
+          _.extend coord, 
+            zone: @_currentZone
+            rank: @scope.squad.members.indexOf model
+        else
+          # randomly choose one of the deployable blip: 
+          # we must send its rank into the squad.members array that also contains deployed blips
+          blipIdx = (i for member, i in @scope.squad.members when member?.map is null and not member?.isSupport)
+          return unless blipIdx.length > 0
+          _.extend coord, 
+            zone: @_currentZone
+            rank: blipIdx[_.random 0, blipIdx.length-1]
+        # trigger the relevant rule
+        @atlas.ruleService.execute 'deployBlip', @atlas.player, @scope.squad, coord, (err, result) =>
+          # displays deployement errors
+          @_askForHelp 'deploy'
+          return @scope.$apply( => @notify kind: 'error', content: parseError err) if err?
         
             
     # **private**

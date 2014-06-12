@@ -13,13 +13,17 @@ class DeployZoneRule extends Rule
   # @option callback err [String] error string. Null if no error occured
   # @option callback params [Array] array of awaited parameter (zone), or null/undefined if rule does not apply
   canExecute: (player, squad, context, callback) =>
-    return callback null, null unless squad?.type?.id is 'squad' and squad?.isAlien and squad?.deployZone?
-    callback null, [
+    return callback null, null unless squad.type?.id is 'squad' and squad.isAlien
+    # twist specific case: can deploy on all map
+    return callback null, [] if squad.twist is 'redeployment'
+      
+    # only applicabl if a deploy zone is enabled
+    callback null, if squad.deployZone? then [
       # deployement zone
       name:'zone'
       type:'string'
       within: squad.deployZone.split ','
-    ]
+    ] else null
 
   # Returns tiles of the chosen deployable zone, without checks on visibility, nor field existence
   #
@@ -32,11 +36,15 @@ class DeployZoneRule extends Rule
   # @option callback result [Object] an arbitrary result of this rule.
   execute: (player, squad, params, context, callback) =>
     # get deployable zone dimensions in configuration
-    getDeployZone squad.mission?.id or squad.mission, params.zone, (err, zone) =>
+    getDeployZone squad.mission?.id or squad.mission, params?.zone, (err, zone) =>
       return callback err if err?
-      # returns tiles, but do not check visibility
       tiles = []
-      tiles.push x:x, y:y for y in [zone.lowY..zone.upY] for x in [zone.lowX..zone.upX] 
+      # only one zone
+      if squad.deployZone?
+        tiles.push x:x, y:y for y in [zone.lowY..zone.upY] for x in [zone.lowX..zone.upX] 
+      else
+        # all zones
+        tiles.push x:x, y:y for y in [lowY..upY] for x in [lowX..upX] for part, {lowY, lowX, upY, upX} of zone
       callback null, tiles
   
 module.exports = new DeployZoneRule 'hints'

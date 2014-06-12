@@ -5,7 +5,7 @@
   <ol class="content">
     <li ng-repeat="notif in notifs | reverseArray" class="notification alert alert-{{notif.kind || 'warning'}}">
       <button type='button' class='close' ng-click='close(notif)'>&times;</button>
-      <div>{{notif.content}}</div>
+      <div data-ng-bind-html="notif.content"></div>
     </li>
   </ol>
 </div>

@@ -163,7 +163,11 @@ module.exports = {
     
   # List of possible twists
   twists: [
+    'redeployment'
+    'alienTeleporter'
     'grenadierGretchin'
+    'mekaniakOrk'
+    'suicideAndroid'
     'amok'
     'alienElite'
     'bewitchment'
@@ -181,7 +185,7 @@ module.exports = {
     'alienSpecialForces'
     'generalAssault'
     'mothershipDetector'
-	  'defectiveAndroids'
+    'defectiveAndroids'
     'psychoAttack'
   ]
 }
