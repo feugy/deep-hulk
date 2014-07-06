@@ -94,6 +94,7 @@ define [
       @scope.activeWeapon = 0
       @scope.showOrders = false
       @scope.blockedLabel = null
+      @scope.twistEnd = false
       # If selected character is shooting with a weapon needing multiple targets, 
       @scope.needMultipleTargets = false
       @scope.log = []
@@ -117,6 +118,7 @@ define [
       @scope._onApplyOrder = @_onApplyOrder
       @scope._onHover = (evt, details) =>
         @displayDamageZone(evt, details.field) if @scope.activeRule is 'shoot'
+      @scope._playTwist = @_playTwist
       @scope.getInstanceImage = getInstanceImage
       @scope.deployScope = null
       # throttle to avoid chat flood
@@ -446,6 +448,9 @@ define [
               # display indication to give instruction
               if conf.texts[squad.twist]?
                 @notify kind: 'info', content: conf.texts[squad.twist]
+              
+              # if numMin isnt numMax, we need a button to end selection
+              @scope.twistEnd = targetSpec.numMax isnt targetSpec.numMin
                 
               # for multiple selection, selected targets
               targets = []
@@ -483,17 +488,18 @@ define [
                         y: tile.y
                         color: if added then selectedColor else null
                       break
-                    
-                    # when we reach maximum targets
-                    if targetSpec.numMax is targets.length
-                      # execute on first item selected
-                      acceptable = _.pluck targetSpec.within, 'id'
-                      @_twist.params.target = []
-                      for target in targets
-                        for item in target.items when item.id in acceptable
-                          @_twist.params.target.push item.id
-                          break
-                      @_playTwist()
+                      
+                    # updates selected parameters
+                    acceptable = _.pluck targetSpec.within, 'id'
+                    @_twist.params.target = []
+                    for target in targets
+                      for item in target.items when item.id in acceptable
+                        @_twist.params.target.push item.id
+                        break
+                        
+                    # when we reach maximum targets, play twist
+                    @_playTwist() if targetSpec.numMax is targets.length
+                      
             else
               # for other case, use a modal dialog to choose parameters
               # set a default value to avoid empty parameters
@@ -507,7 +513,7 @@ define [
     # **private**
     # Send twist parameters to server to resume game.
     # Use _twist values to execute rule
-    _playTwist: (params) =>
+    _playTwist: () =>
       return unless @_twist.ruleName
       # execute twist on server
       @atlas.ruleService.execute @_twist.ruleName, @scope.game, @scope.squad, @_twist.params, (err, message) =>
@@ -516,6 +522,7 @@ define [
           ruleName: null
           rule: null
           params: {}
+        @scope.twistEnd = false
         @scope.deployScope = null
         @scope.zone = null
         if message and conf.texts.notifs[message]

@@ -161,7 +161,7 @@ define [
         dfd.resolve() 
       else
         # get token from locale storage
-        token = localStorage.getItem 'game.token'
+        token = localStorage.getItem conf.gameToken
         # Immediately redirect to login if no token found
         unless token?
           dfd.reject new Error 'no token found' 
@@ -172,7 +172,7 @@ define [
               if err?
                 return dfd.reject err
               # save new token an proceed
-              localStorage.setItem 'game.token', player.token
+              localStorage.setItem conf.gameToken, player.token
               dfd.resolve()
       
       dfd.promise

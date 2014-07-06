@@ -23,16 +23,20 @@ define ['jquery', 'util/common'], ($, {parseError}) ->
         if err?
           dfd.resolve new Error err
         else
-          token = location.$$search.token
+          # look for token into url or into local storage.
+          token = location.$$search.token or localStorage.getItem conf.gameToken
           unless token?
+            # no token: let user authentcate
             dfd.resolve()
           else
             # server login succeed ! connect atlas.
             atlas.connect token, (err, player) ->
               scope.$apply ->
-                return dfd.resolve err if err?
+                if err?
+                  localStorage.removeItem conf.gameToken
+                  return dfd.resolve err 
                 # for reconnection usage
-                localStorage.setItem 'game.token', player.token
+                localStorage.setItem conf.gameToken, player.token
                 # goes to home and reset query parameters
                 if location.path()is "#{conf.basePath}login"
                   location.path("#{conf.basePath}home").search({}).replace()

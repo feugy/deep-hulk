@@ -3,6 +3,7 @@ async = require 'async'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
 {moveCapacities, alienCapacities} = require './constants'
+
 {hasSharedPosition, addAction, makeState} = require './common'
 
 # When player has finished its turn, may trigger another turn
@@ -87,6 +88,7 @@ class EndOfTurnRule extends Rule
             # fetch squad to get members
             return next err if err?
             squad.firstAction = true
+            squad.notified = false
             
             if squad.isAlien
               # affect twist

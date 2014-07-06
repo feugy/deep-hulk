@@ -36,6 +36,12 @@
     data-is-shown="showOrders"
     data-squad="squad"
     data-order-chosen="_onApplyOrder"></orders>
+  <!-- twist end -->
+  <div class="orders" data-ng-if="squad.isAlien" data-ng-show="twistEnd">
+    <div class="content">
+      <a href="" class="command" data-ng-click="_playTwist()">{{'buttons.endTwist' | i18n}}</i></a>
+    </div>
+  </div>
     
   <!-- commands panel -->
   <aside class="ng-class: squad ? squad.isAlien ? 'alien' : 'marine': '';">

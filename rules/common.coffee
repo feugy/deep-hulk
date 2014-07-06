@@ -178,9 +178,13 @@ module.exports = {
       from = null
     else if _.isFunction to
       [callback, to] = [to, from]
-    return Item.find {map: mapId}, callback unless from?
+    return Item.where('map', mapId).where('dead').ne(true).exec callback unless from?
     if from.x is to.x and from.y is to.y
-      Item.find {map: mapId, x: from.x, y: from.y}, callback
+      Item.where('map', mapId)
+        .where('x', from.x)
+        .where('y', from.y)
+        .where('dead').ne(true)
+        .exec callback
     else
       Item.where('map', mapId)
         .where('x').gte(if from.x > to.x then to.x else from.x).lte(if from.x > to.x then from.x else to.x)
@@ -203,6 +207,19 @@ module.exports = {
     rule.saved.push looser.squad, winner.squad
     callback null
     
+  # Get position of the next door, using the door's image number
+  #
+  # @param door [Item] door to find neighbor
+  # @return the next's door position (x/y coordinates)
+  getNextDoor: (door) ->
+    # get next door, depending on image num
+    switch door.imageNum
+      when 0, 2, 8, 10 then x:door.x+1, y:door.y
+      when 1, 3, 9, 11 then x:door.x-1, y:door.y
+      when 4, 6, 12, 14, 16, 18 then x:door.x, y:door.y-1
+      when 5, 7, 13, 15, 17, 19 then x:door.x, y:door.y+1
+      else null
+        
   # When a marine or alien character is removed from map (by killing it or when quitting)
   # this method checks that game still goes on. 
   # A game may end if no more marine is on the map

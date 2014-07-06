@@ -1,7 +1,7 @@
 _ = require 'underscore'
 Rule = require 'hyperion/model/Rule'
 Item = require 'hyperion/model/Item'
-{selectItemWithin, addAction, makeState, mergeChanges} = require './common'
+{selectItemWithin, addAction, makeState, mergeChanges, getNextDoor} = require './common'
 {detectBlips, findNextDoor} = require './visibility'
 
 # Door opening rule
@@ -38,18 +38,7 @@ class OpenRule extends Rule
       return callback null
       
     effects = []
-    # get next door, depending on image num
-    switch door.imageNum
-      when 2, 10
-        to = x:door.x+1, y:door.y
-      when 3, 11
-        to = x:door.x-1, y:door.y
-      when 6, 14, 18
-        to = x:door.x, y:door.y-1
-      when 7, 15, 19
-        to = x:door.x, y:door.y+1
-        
-    selectItemWithin actor.map.id, door, to, (err, doors) =>
+    selectItemWithin actor.map.id, door, getNextDoor(door), (err, doors) =>
       return callback err if err?
       # opens all doors
       for candidate in doors when candidate?.type?.id is 'door'

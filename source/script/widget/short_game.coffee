@@ -93,10 +93,13 @@ define [
     getState: (squad) =>
       state = []
       return state unless squad?
-      if @game?.singleActive 
-        state.push 'active' if squad.activeSquad is squad.name
+      unless squad.deployZone?
+        if @game?.singleActive 
+          state.push 'active' if squad.activeSquad is squad.name
+        else
+          state.push 'active' if squad.actions > 0
       else
-        state.push 'active' if squad.actions > 0
+        state.push 'active' if squad.isAlien
       if @players.isPlayerConnected squad.player
         state.push 'connected'
       if squad.player is @atlas.player.email

@@ -163,6 +163,7 @@ module.exports = {
     
   # List of possible twists
   twists: [
+    'generalControl'
     'redeployment'
     'alienTeleporter'
     'grenadierGretchin'

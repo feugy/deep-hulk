@@ -93,6 +93,9 @@ define [
       scope.routeName = data.$$route.name if data.$$route?.name?
     scope.$on '$routeChangeStart', (event, current, previous) ->
       scope.previousRoute = previous
+    scope.$on 'disconnected', ->
+      console.log 'user logged-out'
+      localStorage.removeItem conf.gameToken
   ]
   
   # for debug purposes
