@@ -22,8 +22,9 @@ define [
   $(document).on "#{prefix}visibilitychange", (event) -> $(document).trigger 'visibilitychange', event
 
   # use same name for animation frames facilities
-  window.requestAnimationFrame = window[prefix+'RequestAnimationFrame']
-  window.cancelAnimationFrame = window[prefix+'CancelAnimationFrame']
+  unless window.requestAnimationFrame?
+    window.requestAnimationFrame = window[prefix+'RequestAnimationFrame']
+    window.cancelAnimationFrame = window[prefix+'CancelAnimationFrame']
   
   exports = 
     
